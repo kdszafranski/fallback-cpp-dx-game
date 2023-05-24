@@ -14,7 +14,7 @@
 //=============================================================================
 // Create game class
 //=============================================================================
-class Spacewar : public Game
+class Breakout : public Game
 {
 private:
     // variables
@@ -32,10 +32,10 @@ private:
 
 public:
     // Constructor
-    Spacewar();
+    Breakout();
 
     // Destructor
-    virtual ~Spacewar();
+    virtual ~Breakout();
 
     // Initialize the game
     void initialize(HWND hwnd);

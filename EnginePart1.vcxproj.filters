@@ -27,7 +27,7 @@
     <ClCompile Include="winmain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="spacewar.cpp">
+    <ClCompile Include="breakout.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="textureManager.cpp">
@@ -56,7 +56,7 @@
     <ClInclude Include="input.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="spacewar.h">
+    <ClInclude Include="breakout.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="textureManager.h">

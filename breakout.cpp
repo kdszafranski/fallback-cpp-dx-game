@@ -5,12 +5,12 @@
 // Chapter 4 spacewar.cpp v1.0
 // Spacewar is the class we create.
 
-#include "spaceWar.h"
+#include "breakout.h"
 
 //=============================================================================
 // Constructor
 //=============================================================================
-Spacewar::Spacewar()
+Breakout::Breakout()
 {
     velocityX = 0;
     velocityY = 0;
@@ -19,7 +19,7 @@ Spacewar::Spacewar()
 //=============================================================================
 // Destructor
 //=============================================================================
-Spacewar::~Spacewar()
+Breakout::~Breakout()
 {
     releaseAll();           // call onLostDevice() for every graphics item
 }
@@ -28,7 +28,7 @@ Spacewar::~Spacewar()
 // Initializes the game
 // Throws GameError on error
 //=============================================================================
-void Spacewar::initialize(HWND hwnd)
+void Breakout::initialize(HWND hwnd)
 {
     Game::initialize(hwnd); // throws GameError
 
@@ -40,7 +40,7 @@ void Spacewar::initialize(HWND hwnd)
 //=============================================================================
 // Initializes all the game sprites from textures
 //=============================================================================
-void Spacewar::initSprites() {
+void Breakout::initSprites() {
     // nebula texture
     if (!nebulaTexture.initialize(graphics, NEBULA_PATH))
     {
@@ -90,7 +90,7 @@ void Spacewar::initSprites() {
 //=============================================================================
 // Update all game items
 //=============================================================================
-void Spacewar::update()
+void Breakout::update()
 {
     // check if we want to exit
     CheckForExit();
@@ -106,7 +106,7 @@ void Spacewar::update()
     wrapScreenEdge();
 }
 
-void Spacewar::doCircle()
+void Breakout::doCircle()
 {
     // circle challenge
     // move in circle around planet
@@ -125,7 +125,7 @@ void Spacewar::doCircle()
 //=============================================================================
 // Handle input, flipping the sprite and velocity/momentum
 //=============================================================================
-void Spacewar::handleInputAndMomentum() {
+void Breakout::handleInputAndMomentum() {
     // move right
     if (input->isKeyDown(SHIP_RIGHT_KEY)) {
         ship.flipHorizontal(false);
@@ -163,7 +163,7 @@ void Spacewar::handleInputAndMomentum() {
     ship.setY(ship.getY() + frameTime * velocityY);
 }
 
-void Spacewar::wrapScreenEdge() {
+void Breakout::wrapScreenEdge() {
     // left/right bounds wrapping
     if (ship.getX() > GAME_WIDTH) {
         // off the edge to the right
@@ -187,19 +187,19 @@ void Spacewar::wrapScreenEdge() {
 //=============================================================================
 // Artificial Intelligence
 //=============================================================================
-void Spacewar::ai()
+void Breakout::ai()
 {}
 
 //=============================================================================
 // Handle collisions
 //=============================================================================
-void Spacewar::collisions()
+void Breakout::collisions()
 {}
 
 //=============================================================================
 // Render game items
 //=============================================================================
-void Spacewar::render()
+void Breakout::render()
 {
     try {
         graphics->spriteBegin();
@@ -215,7 +215,7 @@ void Spacewar::render()
 }
 
 
-void Spacewar::CheckForExit() {
+void Breakout::CheckForExit() {
     // ESC key
     if (input->isKeyDown(ESC_KEY)) {
         PostQuitMessage(0);
@@ -231,7 +231,7 @@ void Spacewar::CheckForExit() {
 // The graphics device was lost.
 // Release all reserved video memory so graphics device may be reset.
 //=============================================================================
-void Spacewar::releaseAll()
+void Breakout::releaseAll()
 {
     nebulaTexture.onLostDevice();
     planetTexture.onLostDevice();
@@ -245,7 +245,7 @@ void Spacewar::releaseAll()
 // The grahics device has been reset.
 // Recreate all surfaces.
 //=============================================================================
-void Spacewar::resetAll()
+void Breakout::resetAll()
 {
     nebulaTexture.onResetDevice();
     planetTexture.onResetDevice();
