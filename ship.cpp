@@ -60,6 +60,14 @@ void Ship::update(float frameTime)
     if (input->isKeyDown(SHIP_LEFT_KEY)) {
        spriteData.x -= frameTime * shipNS::SPEED;
     }
+
+    // keep it on the screen
+    if (spriteData.x > GAME_WIDTH - shipNS::WIDTH) {
+        spriteData.x = GAME_WIDTH - shipNS::WIDTH;    // position at right screen edge
+    } else if (spriteData.x < 0) {
+        spriteData.x = 0;                             // position at left screen edge
+    }
+
 }
 
 //=============================================================================

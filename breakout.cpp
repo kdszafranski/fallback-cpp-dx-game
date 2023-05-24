@@ -60,9 +60,9 @@ void Breakout::initSprites() {
     ship.setFrames(shipNS::SHIP1_START_FRAME, shipNS::SHIP1_END_FRAME);
 
     // start center, near the bottom
-    ship.setX(GAME_WIDTH / 2 - ship.getCenter()->x);
+    ship.setX(GAME_WIDTH / 2 - shipNS::WIDTH / 2);
     ship.setY(GAME_HEIGHT - 82);
-    ship.setVelocity(VECTOR2(111, 0)); // start standing still
+    ship.setVelocity(VECTOR2(0, 0)); // start standing still
 
 
     // ball texture and entity init
@@ -91,11 +91,8 @@ void Breakout::update()
     ship.update(frameTime);
     ball.update(frameTime);
  
-    // handle input controls
-    //handleInputAndMomentum();   
-
     // check edge bounds
-    wrapScreenEdge();
+    //wrapScreenEdge();
 }
 
 //=============================================================================

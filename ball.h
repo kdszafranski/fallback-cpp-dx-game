@@ -16,7 +16,7 @@ namespace ballNS
     const int HEIGHT = 16;                  // image height
     const int X = GAME_WIDTH / 2 - WIDTH / 2;   // location on screen
     const int Y = GAME_HEIGHT / 2 - HEIGHT / 2;
-    const float SPEED = 600;                // 100 pixels per second
+    const float SPEED = 490;                // 100 pixels per second
     const float MASS = 300.0f;              // mass
     const int   TEXTURE_COLS = 1;           // texture has 8 columns
     const int   BALL_START_FRAME = 0;      // ball starts at frame 0
