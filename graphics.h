@@ -25,6 +25,7 @@
 #define LP_SPRITE   LPD3DXSPRITE
 #define LP_3DDEVICE LPDIRECT3DDEVICE9
 #define LP_3D       LPDIRECT3D9
+#define VECTOR2     D3DXVECTOR2
 
 // Color defines
 // ARGB numbers range from 0 through 255
@@ -155,7 +156,27 @@ public:
     // Reset the graphics device.
     HRESULT reset();
 
-    // get functions
+    ////////////////////////////////////////////////////////////////////////////////
+    // DirectX Vector wrappers
+    ////////////////////////////////////////////////////////////////////////////////
+        
+    // Return length of vector v.
+    static float    Vector2Length(const VECTOR2* v) { return D3DXVec2Length(v); }
+
+    // Return Dot product of vectors v1 and v2.
+    static float    Vector2Dot(const VECTOR2* v1, const VECTOR2* v2) { return D3DXVec2Dot(v1, v2); }
+
+    // Normalize vector v.
+    static void     Vector2Normalize(VECTOR2* v) { D3DXVec2Normalize(v, v); }
+
+    // Transform vector v with matrix m.
+    static VECTOR2* Vector2Transform(VECTOR2* v, D3DXMATRIX* m) { return D3DXVec2TransformCoord(v, v, m); }
+
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // Getter functions
+    ////////////////////////////////////////////////////////////////////////////////
+    
     // Return direct3d.
     LP_3D get3D()               { return direct3d; }
 
