@@ -50,30 +50,32 @@ void Breakout::initSprites() {
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing nebula image"));
     }
 
+    // ship texture and entity init
     if (!shipTexture.initialize(graphics, SHIP_PATH)) {
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ship texture"));
     }
-
     if (!ship.initialize(this, shipNS::WIDTH, shipNS::HEIGHT, shipNS::TEXTURE_COLS, &shipTexture))
-        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ship1"));
+        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ship entity"));
 
     ship.setFrames(shipNS::SHIP1_START_FRAME, shipNS::SHIP1_END_FRAME);
-    ship.setVelocity(VECTOR2(0, 0)); // VECTOR2(X, Y)
 
     // start center, near the bottom
-    ship.setX(GAME_WIDTH / 2);
+    ship.setX(GAME_WIDTH / 2 - ship.getCenter()->x);
     ship.setY(GAME_HEIGHT - 82);
+    ship.setVelocity(VECTOR2(111, 0)); // start standing still
 
-    // ship texture
-    //if (!ballTexture.initialize(graphics, SHIP_PATH))
-    //{
-    //    throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ship texture"));
-    //}
-    //// ship has multiple frames, start with upper-left frame
-    //if (!ship.initialize(graphics, shipNS::WIDTH, shipNS::HEIGHT, shipNS::TEXTURE_COLS, &ballTexture))
-    //{
-    //    throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ship image"));
-    //}
+
+    // ball texture and entity init
+    if (!ballTexture.initialize(graphics, BALL_PATH))
+    {
+        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ball texture"));
+    }
+    if (!ball.initialize(this, ballNS::WIDTH, ballNS::HEIGHT, ballNS::TEXTURE_COLS, &ballTexture))
+    {
+        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ball entity"));
+    }
+
+    ball.setVelocity(VECTOR2(ballNS::SPEED, ballNS::SPEED)); // move!
 
 }
 
@@ -87,9 +89,10 @@ void Breakout::update()
 
     // update position of all game objects
     ship.update(frameTime);
+    ball.update(frameTime);
  
     // handle input controls
-    handleInputAndMomentum();   
+    //handleInputAndMomentum();   
 
     // check edge bounds
     wrapScreenEdge();
@@ -178,11 +181,6 @@ void Breakout::render()
 void Breakout::CheckForExit() {
     // ESC key
     if (input->isKeyDown(ESC_KEY)) {
-        PostQuitMessage(0);
-    }
-
-    // typed exit? or pressed B button
-    if (input->getTextIn() == "exit" || input->getGamepadB(0)) {
         PostQuitMessage(0);
     }
 }

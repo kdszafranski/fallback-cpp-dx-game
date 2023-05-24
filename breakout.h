@@ -13,6 +13,7 @@
 #include "textureManager.h"
 #include "image.h"
 #include "ship.h"
+#include "ball.h"
 
 //=============================================================================
 // Create game class
@@ -25,8 +26,8 @@ private:
     TextureManager ballTexture;
     TextureManager shipTexture;
     Image backgroundImage;
-    Entity ship;
-    Entity ball;
+    Ship ship;
+    Ball ball;
 
 public:
     // Constructor
