@@ -31,7 +31,7 @@
 //=============================================================================
 
 // graphic files
-const char NEBULA_PATH[] = "pictures\\nebula-bg-game.png";
+const char BG_PATH[] = "pictures\\breakout-bg.jpg";
 const char PLANET_PATH[] = "pictures\\planet.png";
 const char SHIP_PATH[] = "pictures\\ship.png";
 

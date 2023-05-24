@@ -42,7 +42,7 @@ void Breakout::initialize(HWND hwnd)
 //=============================================================================
 void Breakout::initSprites() {
     // nebula texture
-    if (!nebulaTexture.initialize(graphics, NEBULA_PATH))
+    if (!nebulaTexture.initialize(graphics, BG_PATH))
     {
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing nebula texture"));
     }
