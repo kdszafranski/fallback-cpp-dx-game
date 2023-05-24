@@ -12,8 +12,6 @@
 //=============================================================================
 Breakout::Breakout()
 {
-    velocityX = 0;
-    velocityY = 0;
 }
 
 //=============================================================================
@@ -52,25 +50,30 @@ void Breakout::initSprites() {
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing nebula image"));
     }
 
-    // ship texture
-    if (!shipTex.initialize(graphics, SHIP_PATH))
-    {
+    if (!shipTexture.initialize(graphics, SHIP_PATH)) {
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ship texture"));
     }
-    // ship has multiple frames, start with upper-left frame
-    if (!ship.initialize(graphics, shipNS::WIDTH, shipNS::HEIGHT, shipNS::TEXTURE_COLS, &shipTex))
-    {
-        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ship image"));
-    }
+
+    if (!ship.initialize(this, shipNS::WIDTH, shipNS::HEIGHT, shipNS::TEXTURE_COLS, &shipTexture))
+        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ship1"));
+
+    ship.setFrames(shipNS::SHIP1_START_FRAME, shipNS::SHIP1_END_FRAME);
+    ship.setVelocity(VECTOR2(0, 0)); // VECTOR2(X, Y)
 
     // start center, near the bottom
     ship.setX(GAME_WIDTH / 2);
     ship.setY(GAME_HEIGHT - 82);
-    
-    // animate
-    //ship.setFrames(SHIP_START_FRAME, SHIP_END_FRAME);
-    //ship.setCurrentFrame(SHIP_START_FRAME);
-    //ship.setFrameDelay(SHIP_ANIM_DELAY);
+
+    // ship texture
+    //if (!ballTexture.initialize(graphics, SHIP_PATH))
+    //{
+    //    throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ship texture"));
+    //}
+    //// ship has multiple frames, start with upper-left frame
+    //if (!ship.initialize(graphics, shipNS::WIDTH, shipNS::HEIGHT, shipNS::TEXTURE_COLS, &ballTexture))
+    //{
+    //    throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ship image"));
+    //}
 
 }
 
@@ -158,8 +161,11 @@ void Breakout::render()
 {
     try {
         graphics->spriteBegin();
+
         backgroundImage.draw();
         ship.draw();
+        ball.draw();
+        
         graphics->spriteEnd();
     }
     catch (...) {
@@ -188,8 +194,8 @@ void Breakout::CheckForExit() {
 void Breakout::releaseAll()
 {
     backgroundTexture.onLostDevice();
-    planetTexture.onLostDevice();
-    shipTex.onLostDevice();
+    ballTexture.onLostDevice();
+    shipTexture.onLostDevice();
     
     Game::releaseAll();
     return;
@@ -202,8 +208,7 @@ void Breakout::releaseAll()
 void Breakout::resetAll()
 {
     backgroundTexture.onResetDevice();
-    planetTexture.onResetDevice();
-    shipTex.onResetDevice();
+    shipTexture.onResetDevice();
 
     Game::resetAll();
     return;

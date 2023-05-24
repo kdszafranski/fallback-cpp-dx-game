@@ -32,7 +32,7 @@
 
 // graphic files
 const char BG_PATH[] = "pictures\\breakout-bg.jpg";
-const char PLANET_PATH[] = "pictures\\planet.png";
+const char BALL_PATH[] = "pictures\\ball.png";
 const char SHIP_PATH[] = "pictures\\ship.png";
 
 

@@ -22,15 +22,11 @@ class Breakout : public Game
 private:
     // variables
     TextureManager backgroundTexture;
-    TextureManager planetTexture;
-    TextureManager shipTex;
+    TextureManager ballTexture;
+    TextureManager shipTexture;
     Image backgroundImage;
-    Image ship;
-    float velocityX;
-    float velocityY;
-
-    float radians = 0;
-    float thetaDeg = 0;
+    Entity ship;
+    Entity ball;
 
 public:
     // Constructor
