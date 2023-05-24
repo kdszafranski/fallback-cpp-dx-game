@@ -58,14 +58,14 @@ void Breakout::initSprites() {
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ship texture"));
     }
     // ship has multiple frames, start with upper-left frame
-    if (!ship.initialize(graphics, SHIP_WIDTH, SHIP_HEIGHT, SHIP_COLS, &shipTex))
+    if (!ship.initialize(graphics, shipNS::WIDTH, shipNS::HEIGHT, shipNS::TEXTURE_COLS, &shipTex))
     {
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ship image"));
     }
 
     // start center, near the bottom
     ship.setX(GAME_WIDTH / 2);
-    ship.setY(GAME_HEIGHT - 96);
+    ship.setY(GAME_HEIGHT - 82);
     
     // animate
     //ship.setFrames(SHIP_START_FRAME, SHIP_END_FRAME);
@@ -98,25 +98,24 @@ void Breakout::update()
 void Breakout::handleInputAndMomentum() {
     // move right
     if (input->isKeyDown(SHIP_RIGHT_KEY)) {
-        ship.flipHorizontal(false);
-        velocityX += frameTime * SHIP_SPEED;        
+        ship.setX(ship.getX() + frameTime * shipNS::SPEED);
+        //velocityX += frameTime * shipNS::SPEED;
     }
+        
     // move left
     if (input->isKeyDown(SHIP_LEFT_KEY)) {
-        ship.flipHorizontal(true);
-        velocityX -= frameTime * SHIP_SPEED;
+        ship.setX(ship.getX() - frameTime * shipNS::SPEED);
+        //velocityX -= frameTime * shipNS::SPEED;
     }
 
     // keep our velocity within limits
-    if (velocityX > MAX_VELOCITY)
-        velocityX = MAX_VELOCITY; // hold on there, ranger
-    
-    if (velocityX < -MAX_VELOCITY)
-        velocityX = -MAX_VELOCITY;
+    //if (velocityX > MAX_VELOCITY)
+    //    velocityX = MAX_VELOCITY; // hold on there, ranger
+    //
+    //if (velocityX < -MAX_VELOCITY)
+    //    velocityX = -MAX_VELOCITY;
 
     // keep moving
-    ship.setX(ship.getX() + frameTime * velocityX);
-    ship.setY(ship.getY() + frameTime * velocityY);
 }
 
 void Breakout::wrapScreenEdge() {

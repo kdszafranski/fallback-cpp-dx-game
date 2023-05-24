@@ -50,19 +50,6 @@ const float MIN_FRAME_RATE = 10.0f;             // the minimum frame rate
 const float MIN_FRAME_TIME = 1.0f/FRAME_RATE;   // minimum desired time for 1 frame
 const float MAX_FRAME_TIME = 1.0f/MIN_FRAME_RATE; // maximum time used in calculations
 
-// ship art has multiple frames
-const UINT SHIP_WIDTH = 32;
-const UINT SHIP_HEIGHT = 32;
-const UINT SHIP_COLS = 2;
-const UINT SHIP_START_FRAME = 0;
-const UINT SHIP_END_FRAME = 3;
-const float SHIP_ANIM_DELAY = 0.4f;
-const float SHIP_ROTATION_RATE = 25.0f;
-const float SHIP_SCALE = 1.0f;
-const float SHIP_SCALE_RATE = 0.2f;
-const float SHIP_SPEED = 150;
-const float MAX_VELOCITY = 200;
-
 
 // key mappings
 // In this game simple constants are used for key mappings. If variables were used

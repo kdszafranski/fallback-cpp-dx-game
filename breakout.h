@@ -12,6 +12,7 @@
 #include "game.h"
 #include "textureManager.h"
 #include "image.h"
+#include "ship.h"
 
 //=============================================================================
 // Create game class
