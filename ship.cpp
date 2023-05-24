@@ -23,7 +23,6 @@ Ship::Ship() : Entity()
     endFrame     = shipNS::SHIP1_END_FRAME;     // last frame of ship animation
     currentFrame = startFrame;
     radius = shipNS::WIDTH/2.0;
-    shieldOn = false;
     mass = shipNS::MASS;
     collisionType = entityNS::CIRCLE;
 }
@@ -35,12 +34,6 @@ Ship::Ship() : Entity()
 bool Ship::initialize(Game *gamePtr, int width, int height, int ncols,
     TextureManager *textureM)
 {
-    shield.initialize(gamePtr->getGraphics(), width, height, ncols, textureM);
-    shield.setFrames(shipNS::SHIELD_START_FRAME, shipNS::SHIELD_END_FRAME);
-    shield.setCurrentFrame(shipNS::SHIELD_START_FRAME);
-    shield.setColorFilter(graphicsNS::OLIVE);
-    shield.setFrameDelay(shipNS::SHIELD_ANIMATION_DELAY);
-    shield.setLoop(false);                  // do not loop animation
     return(Entity::initialize(gamePtr, width, height, ncols, textureM));
 }
 
@@ -50,9 +43,6 @@ bool Ship::initialize(Game *gamePtr, int width, int height, int ncols,
 void Ship::draw()
 {
     Image::draw();              // draw ship
-    if(shieldOn)
-        // draw shield using colorFilter 50% alpha
-        shield.draw(spriteData, graphicsNS::ALPHA50 & colorFilter);
 }
 
 //=============================================================================
@@ -86,15 +76,6 @@ void Ship::update(float frameTime)
         spriteData.y = 0;                           // position at top screen edge
         velocity.y = -velocity.y;                   // reverse Y direction
     }
-    if(shieldOn)
-    {
-        shield.update(frameTime);
-        if(shield.getAnimationComplete())
-        {
-            shieldOn = false;
-            shield.setAnimationComplete(false);
-        }
-    }
 }
 
 //=============================================================================
@@ -102,6 +83,6 @@ void Ship::update(float frameTime)
 //=============================================================================
 void Ship::damage(WEAPON weapon)
 {
-    shieldOn = true;
+
 }
 

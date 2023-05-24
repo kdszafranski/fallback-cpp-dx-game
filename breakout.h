@@ -1,10 +1,12 @@
+// Chapter 6 project by Kris Szafranski
+// ====================================
+// Builds on engine code provded by
 // Programming 2D Games
 // Copyright (c) 2011 by: 
 // Charles Kelly
-// Chapter 4 spacewar.h v1.0
 
-#ifndef _SPACEWAR_H             // prevent multiple definitions if this 
-#define _SPACEWAR_H             // ..file is included in more than one place
+#ifndef _BREAKOUT_H_             // prevent multiple definitions if this 
+#define _BREAKOUT_H_             // ..file is included in more than one place
 #define WIN32_LEAN_AND_MEAN
 
 #include "game.h"

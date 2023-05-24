@@ -34,8 +34,7 @@ namespace shipNS
 class Ship : public Entity
 {
 private:
-    bool    shieldOn;
-    Image   shield;
+
 public:
     // constructor
     Ship();

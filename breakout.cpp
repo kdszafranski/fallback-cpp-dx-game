@@ -1,9 +1,9 @@
+// Chapter 6 project by Kris Szafranski
+// ====================================
+// Builds on engine code provded by
 // Programming 2D Games
 // Copyright (c) 2011 by: 
 // Charles Kelly
-// Game Engine Part 1
-// Chapter 4 spacewar.cpp v1.0
-// Spacewar is the class we create.
 
 #include "breakout.h"
 
@@ -41,12 +41,12 @@ void Breakout::initialize(HWND hwnd)
 // Initializes all the game sprites from textures
 //=============================================================================
 void Breakout::initSprites() {
-    // nebula texture
+    // background texture
     if (!backgroundTexture.initialize(graphics, BG_PATH))
     {
-        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing nebula texture"));
+        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing background texture"));
     }
-    // nebula
+    // background
     if (!backgroundImage.initialize(graphics, 0, 0, 0, &backgroundTexture))
     {
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing nebula image"));
@@ -62,14 +62,15 @@ void Breakout::initSprites() {
     {
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ship image"));
     }
-    // start above and left of planet
-    ship.setX(GAME_WIDTH / 4);
-    ship.setY(GAME_HEIGHT / 4);
+
+    // start center, near the bottom
+    ship.setX(GAME_WIDTH / 2);
+    ship.setY(GAME_HEIGHT - 96);
+    
     // animate
-    ship.setFrames(SHIP_START_FRAME, SHIP_END_FRAME);
-    ship.setCurrentFrame(SHIP_START_FRAME);
-    ship.setFrameDelay(SHIP_ANIM_DELAY);
-    //ship.setDegrees(45.0f);
+    //ship.setFrames(SHIP_START_FRAME, SHIP_END_FRAME);
+    //ship.setCurrentFrame(SHIP_START_FRAME);
+    //ship.setFrameDelay(SHIP_ANIM_DELAY);
 
 }
 
@@ -105,14 +106,6 @@ void Breakout::handleInputAndMomentum() {
         ship.flipHorizontal(true);
         velocityX -= frameTime * SHIP_SPEED;
     }
-    // move up
-    if (input->isKeyDown(SHIP_DOWN_KEY)) {
-        velocityY += frameTime * SHIP_SPEED;
-    }
-    // move down
-    if (input->isKeyDown(SHIP_UP_KEY)) {
-        velocityY -= frameTime * SHIP_SPEED;
-    }
 
     // keep our velocity within limits
     if (velocityX > MAX_VELOCITY)
@@ -120,12 +113,6 @@ void Breakout::handleInputAndMomentum() {
     
     if (velocityX < -MAX_VELOCITY)
         velocityX = -MAX_VELOCITY;
-    // limit Y velocity
-    if (velocityY > MAX_VELOCITY)
-        velocityY = MAX_VELOCITY;
-    
-    if (velocityY < -MAX_VELOCITY)
-        velocityY = -MAX_VELOCITY;
 
     // keep moving
     ship.setX(ship.getX() + frameTime * velocityX);
