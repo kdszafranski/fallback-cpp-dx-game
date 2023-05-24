@@ -42,29 +42,15 @@ void Breakout::initialize(HWND hwnd)
 //=============================================================================
 void Breakout::initSprites() {
     // nebula texture
-    if (!nebulaTexture.initialize(graphics, BG_PATH))
+    if (!backgroundTexture.initialize(graphics, BG_PATH))
     {
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing nebula texture"));
     }
     // nebula
-    if (!nebula.initialize(graphics, 0, 0, 0, &nebulaTexture))
+    if (!backgroundImage.initialize(graphics, 0, 0, 0, &backgroundTexture))
     {
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing nebula image"));
     }
-
-    // planet texture
-    if (!planetTexture.initialize(graphics, PLANET_PATH))
-    {
-        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing planet texture"));
-    }
-    // planet
-    if (!planet.initialize(graphics, 0, 0, 0, &planetTexture))
-    {
-        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing planet image"));
-    }
-    // center planet, uses * 0.5 instead of / 2... performance likely?
-    planet.setX(GAME_WIDTH * 0.5f - planet.getWidth() * 0.5f);
-    planet.setY(GAME_HEIGHT * 0.5f - planet.getHeight() * 0.5f);
 
     // ship texture
     if (!shipTex.initialize(graphics, SHIP_PATH))
@@ -100,26 +86,9 @@ void Breakout::update()
  
     // handle input controls
     handleInputAndMomentum();   
-    //doCircle();
 
     // check edge bounds
     wrapScreenEdge();
-}
-
-void Breakout::doCircle()
-{
-    // circle challenge
-    // move in circle around planet
-    /*
-    Set x to (RADIUS*Sin(ANGLE))
-    Set y to (RADIUS*Cos(ANGLE))
-    */
-    //float speed = 
-
-    // speed here is the radius of the circle
-    radians += 0.03f;
-    ship.setX(GAME_WIDTH / 2 - SHIP_WIDTH / 2 + cos(radians) * SHIP_SPEED);
-    ship.setY(GAME_HEIGHT / 2 - SHIP_HEIGHT / 2 + sin(radians) * SHIP_SPEED);
 }
 
 //=============================================================================
@@ -203,8 +172,7 @@ void Breakout::render()
 {
     try {
         graphics->spriteBegin();
-        nebula.draw();
-        planet.draw();
+        backgroundImage.draw();
         ship.draw();
         graphics->spriteEnd();
     }
@@ -233,7 +201,7 @@ void Breakout::CheckForExit() {
 //=============================================================================
 void Breakout::releaseAll()
 {
-    nebulaTexture.onLostDevice();
+    backgroundTexture.onLostDevice();
     planetTexture.onLostDevice();
     shipTex.onLostDevice();
     
@@ -247,7 +215,7 @@ void Breakout::releaseAll()
 //=============================================================================
 void Breakout::resetAll()
 {
-    nebulaTexture.onResetDevice();
+    backgroundTexture.onResetDevice();
     planetTexture.onResetDevice();
     shipTex.onResetDevice();
 

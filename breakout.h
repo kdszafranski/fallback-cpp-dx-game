@@ -18,11 +18,10 @@ class Breakout : public Game
 {
 private:
     // variables
-    TextureManager nebulaTexture;
+    TextureManager backgroundTexture;
     TextureManager planetTexture;
     TextureManager shipTex;
-    Image nebula;
-    Image planet;
+    Image backgroundImage;
     Image ship;
     float velocityX;
     float velocityY;
