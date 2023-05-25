@@ -158,15 +158,10 @@ void Breakout::collisions()
     if (ball.collidesWith(ship, collisionVector))
     {
         // bounce off planet
-        ball.bounce(collisionVector, ship);
+        //ball.bounce(collisionVector, ship);
+        ball.setVelocity(VECTOR2(ball.getVelocity().x, -ball.getVelocity().y));
         //ship1.damage(PLANET);
     }
-    //if (ship.collidesWith(ball, collisionVector))
-    //{
-    //    // bounce off planet
-    //    ball.bounce(collisionVector, ship);
-    //    //ship1.damage(PLANET);
-    //}
 
 }
 

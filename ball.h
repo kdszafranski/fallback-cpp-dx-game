@@ -17,7 +17,7 @@ namespace ballNS
     const int X = 10;   // location on screen
     const int Y = 10;
     const float SPEED = 300;                // 100 pixels per second
-    const float MASS = 10.0f;              // mass
+    const float MASS = 0;// 10.0f;              // mass
     const int   TEXTURE_COLS = 1;           // texture has 8 columns
     const int   BALL_START_FRAME = 0;      // ball starts at frame 0
     const int   BALL_END_FRAME = 0;        // ball animation 

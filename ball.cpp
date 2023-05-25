@@ -29,8 +29,7 @@ Ball::Ball() : Entity()
     currentFrame = startFrame;
     radius = ballNS::WIDTH / 2.0;
     mass = ballNS::MASS;
-    //collisionType = entityNS::BOX;
-    setCurrentFrame(startFrame);
+    collisionType = entityNS::BOX;
 }
 
 //=============================================================================

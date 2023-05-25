@@ -17,7 +17,7 @@ namespace shipNS
     const int X = 0;   // location on screen
     const int Y = 0;
     const float SPEED = 310;                // 100 pixels per second
-    const float MASS = 1.0e14f;              // mass
+    const float MASS = 0;// 1.0e14f;              // mass
     const int   TEXTURE_COLS = 1;           // texture has 8 columns
     const int   SHIP_START_FRAME = 0;      // ship1 starts at frame 0
     const int   SHIP_END_FRAME = 0;        // ship1 animation frames 0,1,2,3
