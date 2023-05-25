@@ -10,9 +10,9 @@ namespace ballNS
 {
     const int WIDTH = 16;                   // image width
     const int HEIGHT = 16;                  // image height
-    const int X = 10;   // location on screen
-    const int Y = 10;
-    const float SPEED = 300;                // 100 pixels per second
+    const int X = 0;   // starting location on screen
+    const int Y = 0;
+    const float SPEED = 250;                // 100 pixels per second
     const float MASS = 0;// 10.0f;              // mass
     const int   TEXTURE_COLS = 1;           // texture has 8 columns
     const int   BALL_START_FRAME = 0;      // ball starts at frame 0

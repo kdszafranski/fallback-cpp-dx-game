@@ -72,7 +72,7 @@ void Breakout::initShip()
 
     // start center, near the bottom
     ship.setX(GAME_WIDTH / 2 - shipNS::WIDTH / 2);
-    ship.setY(GAME_HEIGHT - 150); 
+    ship.setY(GAME_HEIGHT - 84); 
     ship.setVelocity(VECTOR2(0, 0)); // start standing still
 }
 
@@ -89,6 +89,8 @@ void Breakout::initBall()
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ball entity"));
     }
 
+    ball.setX(120);
+    ball.setY(250);
     ball.setVelocity(VECTOR2(ballNS::SPEED, ballNS::SPEED)); // move!
 }
 
@@ -106,8 +108,8 @@ void Breakout::initBlocks()
     }
 
     //block.setScale(2);
-    block.setX(155);
-    block.setY(4);
+    block.setX(276);
+    block.setY(100);
     block.setVelocity(VECTOR2(0, 0)); // we don't  move
 }
 
