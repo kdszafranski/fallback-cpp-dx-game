@@ -155,14 +155,19 @@ void Breakout::update()
  
 }
 
+//=============================================================================
+// Sets the ball at the staring position
+//=============================================================================
 void Breakout::restartBall()
 {
-    ball.setX(120);
-    ball.setY(250);
+    ball.setX(80);
+    ball.setY(200);
     ball.setVelocity(VECTOR2(ballNS::SPEED, ballNS::SPEED)); // move!
 }
 
-// TODO move to ship class
+//=============================================================================
+// allows the ship to wrap around from left to right and vice versa
+//=============================================================================
 void Breakout::wrapScreenEdge() {
     // left/right bounds wrapping
     if (ship.getX() > GAME_WIDTH) {
@@ -182,8 +187,6 @@ void Breakout::wrapScreenEdge() {
     }
 }
 
-
-
 //=============================================================================
 // Artificial Intelligence
 //=============================================================================
@@ -196,6 +199,7 @@ void Breakout::ai()
 void Breakout::collisions()
 {
     VECTOR2 collisionVector;
+
     // if collision between ball and ship
     if (ball.collidesWith(ship, collisionVector)) {
         ball.bounce(collisionVector, ship.getSpriteData());
@@ -246,6 +250,9 @@ void Breakout::render()
 }
 
 
+//=============================================================================
+// ESC key quits the game
+//=============================================================================
 void Breakout::CheckForExit() {
     // ESC key
     if (input->isKeyDown(ESC_KEY)) {
