@@ -1,22 +1,24 @@
 # My C++ Breakout
 
+My first game in C++/DirectX!
+
 ![My Breakout](pictures/screenshot.png)
 
 ## About 
 
-Challenge: Given the engine so far, make a game, any game. Keep it simple.
+Book: [Programming 2D Games by Charles Kelly](http://www.programming2dgames.com//)
+
+Chapter 6 Challenge: Given the engine so far, make a game, any game. Keep it simple.
 
 I chose to make a simple form of Breakout.
 
-Features:
+**Features:**
 
 * game loop (initialization, input, render)
 * collision detection
 * simple game logic - ball resets if missed, blocks disappear when hit
 
 Time: about 10 hours
-
-Book: [Programming 2D Games by Charles Kelly](http://www.programming2dgames.com//)
 
 
 ## Learnings
