@@ -155,10 +155,6 @@ bool Entity::collideBox(Entity &ent, VECTOR2 &collisionVector)
     if (!active || !ent.getActive())
         return false;
 
-
-    float what = getCenterX();
-    float when = getCenterY();
-
     // Check for collision using Axis Aligned Bounding Box.
     if( (getCenterX() + edge.right*getScale() >= ent.getCenterX() + ent.getEdge().left*ent.getScale()) && 
         (getCenterX() + edge.left*getScale() <= ent.getCenterX() + ent.getEdge().right*ent.getScale()) &&

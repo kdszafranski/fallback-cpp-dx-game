@@ -154,13 +154,11 @@ void Breakout::ai()
 void Breakout::collisions()
 {
     VECTOR2 collisionVector;
-    // if collision between ship and planet
-    if (ball.collidesWith(ship, collisionVector))
-    {
-        // bounce off planet
-        //ball.bounce(collisionVector, ship);
-        ball.setVelocity(VECTOR2(ball.getVelocity().x, -ball.getVelocity().y));
-        //ship1.damage(PLANET);
+    // if collision between ball and ship
+    if (ball.collidesWith(ship, collisionVector)) {
+        //just bounce the ball back naturally by reversing y direction
+        // will dot product help?
+        ball.setVelocity( VECTOR2(ball.getVelocity().x, -ball.getVelocity().y) );
     }
 
 }
