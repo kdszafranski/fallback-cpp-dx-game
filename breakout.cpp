@@ -98,9 +98,9 @@ void Breakout::initBall()
 // create staring block layout
 void Breakout::initBlocks()
 {
-    float startX = 198;
+    float startX = 82;
     float startY = 100;
-    int cols = 6;
+    int cols = 10;
 
     if (!blockTexture.initialize(graphics, BLOCK_PATH))
     {
@@ -121,15 +121,17 @@ void Breakout::initBlocks()
 
             newBlock.setX(x);
             newBlock.setY(y);
-            newBlock.setVelocity(VECTOR2(0, 0)); // we don't  move
+            newBlock.setVelocity(VECTOR2(0, 0)); 
 
+            // add to vector
             blocks.push_back(newBlock);
             
+            // move to the right
             x += blockNS::WIDTH;
         }
 
+        // set new row downward
         y += blockNS::HEIGHT;
-
     }
 
 }
@@ -144,11 +146,6 @@ void Breakout::update()
 
     // update position of all game objects
     ship.update(frameTime);
-
-    for (int i = 0; i < blocks.size(); i++) {
-        blocks[i].update(frameTime);
-    }
-    
     ball.update(frameTime);
  
     // check edge bounds
@@ -223,6 +220,7 @@ void Breakout::render()
         backgroundImage.draw();
         ship.draw();
         
+        // render all blocks
         for (int i = 0; i < blocks.size(); i++) {
             blocks[i].draw();
         }
