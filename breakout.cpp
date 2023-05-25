@@ -127,6 +127,7 @@ void Breakout::update()
     //wrapScreenEdge();
 }
 
+// TODO move to ship class
 void Breakout::wrapScreenEdge() {
     // left/right bounds wrapping
     if (ship.getX() > GAME_WIDTH) {
@@ -168,6 +169,7 @@ void Breakout::collisions()
     }
     // collision ball with block
     if (ball.collidesWith(block, collisionVector)) {
+
         ball.setVelocity( VECTOR2(ball.getVelocity().x, -ball.getVelocity().y) );
     }
 

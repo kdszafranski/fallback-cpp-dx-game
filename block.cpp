@@ -46,7 +46,7 @@ bool Block::initialize(Game* gamePtr, int width, int height, int ncols,
 //=============================================================================
 void Block::draw()
 {
-    Image::draw();              // draw ball
+    Image::draw();
 }
 
 //=============================================================================
@@ -56,8 +56,8 @@ void Block::draw()
 //=============================================================================
 void Block::update(float frameTime)
 {
-    Entity::update(frameTime);
     // blocks don't move
+    Entity::update(frameTime);
 }
 
 //=============================================================================

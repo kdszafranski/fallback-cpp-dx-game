@@ -59,6 +59,7 @@ void Ship::draw()
 //=============================================================================
 void Ship::update(float frameTime)
 {
+    // move right
     if (input->isKeyDown(SHIP_RIGHT_KEY)) {
         spriteData.x += frameTime * shipNS::SPEED;
     }

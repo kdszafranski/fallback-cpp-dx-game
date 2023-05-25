@@ -61,11 +61,12 @@ void Ball::draw()
 void Ball::update(float frameTime)
 {
     Entity::update(frameTime);
-    //spriteData.angle += frameTime * ballNS::ROTATION_RATE;  // rotate the ship
+    
     spriteData.x += frameTime * velocity.x;         // move ship along X 
     spriteData.y += frameTime * velocity.y;         // move ship along Y
 
     // Bounce off walls
+    // NOT done with actual collisions, this is done strictly from screen position
     if (spriteData.x > GAME_WIDTH - ballNS::WIDTH)    // if hit right screen edge
     {
         spriteData.x = GAME_WIDTH - ballNS::WIDTH;    // position at right screen edge
