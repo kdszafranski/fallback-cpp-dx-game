@@ -56,17 +56,19 @@ void Ball::draw()
 //=============================================================================
 // Ball bounces off a BOX collider entity
 //=============================================================================
-void Ball::bounce(VECTOR2& collisionVector, SpriteData sData)
+void Ball::bounce(VECTOR2& collisionVector, SpriteData otherSpriteData)
 {
     const float myX = getX();
     const float myY = getY();
-    const float boxWidth = (sData.x + sData.width);
-    const float boxHeight = (sData.y + sData.height);
+    // total right-edge x position of other entity
+    const float boxWidth = (otherSpriteData.x + otherSpriteData.width);
+    // total bottom y position of other entity
+    const float boxHeight = (otherSpriteData.y + otherSpriteData.height);
 
     // above or below
     if (
-        (getX() > sData.x && getY() < sData.y) || // above
-        (getX() > sData.x && getY() + spriteData.y > boxHeight) // below
+        (myX > otherSpriteData.x && myY < otherSpriteData.y) || // above
+        (myX > otherSpriteData.x && myY + spriteData.y > boxHeight) // below
         )
     {
         velocity.y = -velocity.y;
@@ -74,8 +76,8 @@ void Ball::bounce(VECTOR2& collisionVector, SpriteData sData)
 
     // left or right
     if (
-        (getX() < sData.x && getY() > sData.y) ||     // left
-        (getX() > boxWidth && getY() > sData.y)  // right
+        (myX < otherSpriteData.x && myY > otherSpriteData.y) ||     // left
+        (myX > boxWidth && myY > otherSpriteData.y)  // right
         )
     {
         velocity.x = -velocity.x;
