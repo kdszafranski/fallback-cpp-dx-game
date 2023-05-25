@@ -109,11 +109,8 @@ void Ball::update(float frameTime)
         spriteData.x = 0;                           // position at left screen edge
         velocity.x = -velocity.x;                   // reverse X direction
     }
-    if (spriteData.y > GAME_HEIGHT - ballNS::HEIGHT)  // if hit bottom screen edge
-    {
-        spriteData.y = GAME_HEIGHT - ballNS::HEIGHT;  // position at bottom screen edge
-        velocity.y = -velocity.y;                   // reverse Y direction
-    } else if (spriteData.y < 0)                    // else if hit top screen edge
+    
+    if (spriteData.y < 0)                    // else if hit top screen edge
     {
         spriteData.y = 0;                           // position at top screen edge
         velocity.y = -velocity.y;                   // reverse Y direction

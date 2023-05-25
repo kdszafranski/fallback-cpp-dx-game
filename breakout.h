@@ -46,13 +46,18 @@ public:
 
     // Initialize the game
     void initialize(HWND hwnd);
+
+    // Game Loop stuff
     void update();      // must override pure virtual from Game
     void ai();          // "
     void collisions();  // "
     void render();      // "
     void releaseAll();
     void resetAll();
+    
+    // gameplay methods
     void removeBlock(int index);
+    void restartBall();
 
     // Keep things tidy
     void initSprites();

@@ -89,9 +89,7 @@ void Breakout::initBall()
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ball entity"));
     }
 
-    ball.setX(120);
-    ball.setY(250);
-    ball.setVelocity(VECTOR2(ballNS::SPEED, ballNS::SPEED)); // move!
+    restartBall();
 }
 
 // block texture and entity
@@ -148,9 +146,20 @@ void Breakout::update()
     // update position of all game objects
     ship.update(frameTime);
     ball.update(frameTime);
+
+    // check if the ball went off below ship
+    if (ball.getY() > GAME_HEIGHT - ballNS::HEIGHT)  // if hit bottom screen edge
+    {
+        restartBall();
+    }
  
-    // check edge bounds
-    //wrapScreenEdge();
+}
+
+void Breakout::restartBall()
+{
+    ball.setX(120);
+    ball.setY(250);
+    ball.setVelocity(VECTOR2(ballNS::SPEED, ballNS::SPEED)); // move!
 }
 
 // TODO move to ship class
