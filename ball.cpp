@@ -34,6 +34,7 @@ Ball::Ball() : Entity()
     mass = ballNS::MASS;
 }
 
+
 //=============================================================================
 // Initialize the Ball.
 // Post: returns true if successful, false if failed

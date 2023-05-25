@@ -14,6 +14,7 @@
 #include "image.h"
 #include "ship.h"
 #include "ball.h"
+#include "block.h"
 
 //=============================================================================
 // Create game class
@@ -25,9 +26,12 @@ private:
     TextureManager backgroundTexture;
     TextureManager ballTexture;
     TextureManager shipTexture;
+    TextureManager blockTexture;
     Image backgroundImage;
     Ship ship;
     Ball ball;
+    Block block;
+
 
 public:
     // Constructor
@@ -38,17 +42,23 @@ public:
 
     // Initialize the game
     void initialize(HWND hwnd);
-    void initSprites(); // helper fn
     void update();      // must override pure virtual from Game
-    void doCircle();
-    void CheckForExit(); // helper to handle exit inputs
-    void wrapScreenEdge(); // checks screen bounds
     void ai();          // "
     void collisions();  // "
     void render();      // "
     void releaseAll();
     void resetAll();
-    void handleInputAndMomentum();
+
+    // Keep things tidy
+    void initSprites();
+    void initShip();
+    void initBall();
+    void initBlocks();
+
+    void CheckForExit(); // helper to handle exit inputs
+
+    void doCircle();
+    void wrapScreenEdge(); // checks screen bounds
 };
 
 #endif

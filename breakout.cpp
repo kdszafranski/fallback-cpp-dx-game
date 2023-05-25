@@ -50,7 +50,18 @@ void Breakout::initSprites() {
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing nebula image"));
     }
 
-    // ship texture and entity init
+    // create our game object and graphics
+    initShip();
+    // set up the blocks
+    initBlocks();
+    // on the ball!
+    initBall();
+
+}
+
+// ship texture and entity init
+void Breakout::initShip()
+{
     if (!shipTexture.initialize(graphics, SHIP_PATH)) {
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ship texture"));
     }
@@ -61,11 +72,14 @@ void Breakout::initSprites() {
 
     // start center, near the bottom
     ship.setX(GAME_WIDTH / 2 - shipNS::WIDTH / 2);
-    ship.setY(GAME_HEIGHT - 82);
+    ship.setY(GAME_HEIGHT - 82); 
     ship.setVelocity(VECTOR2(0, 0)); // start standing still
+}
 
 
-    // ball texture and entity init
+// ball texture and entity init
+void Breakout::initBall() 
+{
     if (!ballTexture.initialize(graphics, BALL_PATH))
     {
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ball texture"));
@@ -76,7 +90,24 @@ void Breakout::initSprites() {
     }
 
     ball.setVelocity(VECTOR2(ballNS::SPEED, ballNS::SPEED)); // move!
+}
 
+// block texture and entity
+// create staring block layout
+void Breakout::initBlocks()
+{
+    if (!blockTexture.initialize(graphics, BLOCK_PATH))
+    {
+        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing block texture"));
+    }
+    if (!block.initialize(this, blockNS::WIDTH, blockNS::HEIGHT, blockNS::TEXTURE_COLS, &blockTexture))
+    {
+        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing block entity"));
+    }
+
+    block.setX(274);
+    block.setY(176);
+    block.setVelocity(VECTOR2(0, 0)); // we don't  move
 }
 
 //=============================================================================
@@ -89,36 +120,11 @@ void Breakout::update()
 
     // update position of all game objects
     ship.update(frameTime);
+    block.update(frameTime);
     ball.update(frameTime);
  
     // check edge bounds
     //wrapScreenEdge();
-}
-
-//=============================================================================
-// Handle input, flipping the sprite and velocity/momentum
-//=============================================================================
-void Breakout::handleInputAndMomentum() {
-    // move right
-    if (input->isKeyDown(SHIP_RIGHT_KEY)) {
-        ship.setX(ship.getX() + frameTime * shipNS::SPEED);
-        //velocityX += frameTime * shipNS::SPEED;
-    }
-        
-    // move left
-    if (input->isKeyDown(SHIP_LEFT_KEY)) {
-        ship.setX(ship.getX() - frameTime * shipNS::SPEED);
-        //velocityX -= frameTime * shipNS::SPEED;
-    }
-
-    // keep our velocity within limits
-    //if (velocityX > MAX_VELOCITY)
-    //    velocityX = MAX_VELOCITY; // hold on there, ranger
-    //
-    //if (velocityX < -MAX_VELOCITY)
-    //    velocityX = -MAX_VELOCITY;
-
-    // keep moving
 }
 
 void Breakout::wrapScreenEdge() {
@@ -160,6 +166,10 @@ void Breakout::collisions()
         // will dot product help?
         ball.setVelocity( VECTOR2(ball.getVelocity().x, -ball.getVelocity().y) );
     }
+    // collision ball with block
+    if (ball.collidesWith(block, collisionVector)) {
+        ball.setVelocity( VECTOR2(ball.getVelocity().x, -ball.getVelocity().y) );
+    }
 
 }
 
@@ -173,6 +183,7 @@ void Breakout::render()
 
         backgroundImage.draw();
         ship.draw();
+        block.draw();
         ball.draw();
         
         graphics->spriteEnd();
@@ -200,6 +211,7 @@ void Breakout::releaseAll()
     backgroundTexture.onLostDevice();
     ballTexture.onLostDevice();
     shipTexture.onLostDevice();
+    blockTexture.onLostDevice();
     
     Game::releaseAll();
     return;
@@ -213,6 +225,8 @@ void Breakout::resetAll()
 {
     backgroundTexture.onResetDevice();
     shipTexture.onResetDevice();
+    ballTexture.onResetDevice();
+    blockTexture.onResetDevice();
 
     Game::resetAll();
     return;

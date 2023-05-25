@@ -1,7 +1,3 @@
-// Programming 2D Games
-// Copyright (c) 2011 by: 
-// Charles Kelly
-// Chapter 6 ship.h v1.0
 
 #ifndef _BALL_H_                 // Prevent multiple definitions if this 
 #define _BALL_H_                 // file is included in more than one place

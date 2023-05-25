@@ -34,6 +34,7 @@
 const char BG_PATH[] = "pictures\\breakout-bg.jpg";
 const char BALL_PATH[] = "pictures\\ball.png";
 const char SHIP_PATH[] = "pictures\\ship.png";
+const char BLOCK_PATH[] = "pictures\\big-block.png";
 
 
 // window
