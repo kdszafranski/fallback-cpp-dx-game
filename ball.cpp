@@ -32,6 +32,8 @@ Ball::Ball() : Entity()
     
     radius = ballNS::WIDTH / 2.0;
     mass = ballNS::MASS;
+
+    collisionType = entityNS::BOX;
 }
 
 

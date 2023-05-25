@@ -168,8 +168,7 @@ void Breakout::collisions()
     if (ball.collidesWith(ship, collisionVector)) {
         //just bounce the ball back naturally by reversing y direction
         // will dot product help?
-        //ball.setVelocity( VECTOR2(ball.getVelocity().x, -ball.getVelocity().y) );
-        
+        //ball.setVelocity( VECTOR2(ball.getVelocity().x, -ball.getVelocity().y) );  
         ball.bounce(collisionVector, ship.getSpriteData());
     }
     // collision ball with block
