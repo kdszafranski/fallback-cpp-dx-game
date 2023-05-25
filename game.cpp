@@ -1,8 +1,9 @@
+// Chapter 6 project by Kris Szafranski
+// ====================================
+// Builds on engine code provded by
 // Programming 2D Games
 // Copyright (c) 2011 by: 
 // Charles Kelly
-// Chapter 4 game.cpp v1.1
-// Last modified Mar-9-2015
 
 #include "game.h"
 

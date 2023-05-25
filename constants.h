@@ -1,8 +1,9 @@
+// Chapter 6 project by Kris Szafranski
+// ====================================
+// Builds on engine code provded by
 // Programming 2D Games
 // Copyright (c) 2011 by: 
 // Charles Kelly
-// Chapter 4 constants.h v1.1
-// Last modification: Mar-9-2015
 
 
 #ifndef _CONSTANTS_H            // Prevent multiple definitions if this 

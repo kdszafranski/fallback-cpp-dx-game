@@ -1,3 +1,10 @@
+// Chapter 6 project by Kris Szafranski
+// ====================================
+// Builds on engine code provded by
+// Programming 2D Games
+// Copyright (c) 2011 by: 
+// Charles Kelly
+
 #ifndef _TEXTURE_MANAGER_H
 #define _TEXTURE_MANAGER_H
 

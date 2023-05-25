@@ -1,7 +1,9 @@
+// Chapter 6 project by Kris Szafranski
+// ====================================
+// Builds on engine code provded by
 // Programming 2D Games
 // Copyright (c) 2011 by: 
 // Charles Kelly
-// Chapter 6 ship.cpp v1.0
 
 #include "ship.h"
 

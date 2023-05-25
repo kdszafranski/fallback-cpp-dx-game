@@ -1,7 +1,9 @@
+// Chapter 6 project by Kris Szafranski
+// ====================================
+// Builds on engine code provded by
 // Programming 2D Games
-// Copyright (c) 2011 by:
+// Copyright (c) 2011 by: 
 // Charles Kelly
-// Space War winmain.cpp v1.1
 
 #define _CRTDBG_MAP_ALLOC       // for detecting memory leaks
 #define WIN32_LEAN_AND_MEAN
