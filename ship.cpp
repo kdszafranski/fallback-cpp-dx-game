@@ -16,15 +16,25 @@ Ship::Ship() : Entity()
     spriteData.y = shipNS::Y;
     spriteData.rect.bottom = shipNS::HEIGHT;    // rectangle to select parts of an image
     spriteData.rect.right = shipNS::WIDTH;
+
+    // set bounding box for BOX colliders
+    edge.top = -shipNS::HEIGHT / 2;    // -16
+    edge.bottom = shipNS::HEIGHT / 2;    // 16
+    edge.right = shipNS::WIDTH / 2;      // 64
+    edge.left = -shipNS::WIDTH / 2;      // -16
+
+
     velocity.x = 0;                             // velocity X
     velocity.y = 0;                             // velocity Y
     frameDelay = shipNS::SHIP_ANIMATION_DELAY;
-    startFrame = shipNS::SHIP1_START_FRAME;     // first frame of ship animation
-    endFrame     = shipNS::SHIP1_END_FRAME;     // last frame of ship animation
+    startFrame = shipNS::SHIP_START_FRAME;     // first frame of ship animation
+    endFrame     = shipNS::SHIP_END_FRAME;     // last frame of ship animation
     currentFrame = startFrame;
     radius = shipNS::WIDTH/2.0;
     mass = shipNS::MASS;
-    collisionType = entityNS::CIRCLE;
+    collisionType = entityNS::BOX;
+    setCurrentFrame(startFrame);
+    active = true;
 }
 
 //=============================================================================

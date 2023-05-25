@@ -95,6 +95,8 @@ bool Entity::collidesWith(Entity &ent, VECTOR2 &collisionVector)
     // If both entities are BOX collision
     if (collisionType == entityNS::BOX && ent.getCollisionType() == entityNS::BOX)
         return collideBox(ent, collisionVector);
+
+
     // All other combinations use separating axis test
     // If neither entity uses CIRCLE collision
     if (collisionType != entityNS::CIRCLE && ent.getCollisionType() != entityNS::CIRCLE)
@@ -103,6 +105,7 @@ bool Entity::collidesWith(Entity &ent, VECTOR2 &collisionVector)
         if (collisionType == entityNS::CIRCLE)  // if this entity uses CIRCLE collision
         {
             // Check for collision from other box with our circle
+            // ball = this, ent = ship
             bool collide = ent.collideRotatedBoxCircle(*this, collisionVector); 
             // Put the collision vector in the proper direction
             collisionVector *= -1;              // reverse collision vector
@@ -151,6 +154,10 @@ bool Entity::collideBox(Entity &ent, VECTOR2 &collisionVector)
     // if either entity is not active then no collision may occcur
     if (!active || !ent.getActive())
         return false;
+
+
+    float what = getCenterX();
+    float when = getCenterY();
 
     // Check for collision using Axis Aligned Bounding Box.
     if( (getCenterX() + edge.right*getScale() >= ent.getCenterX() + ent.getEdge().left*ent.getScale()) && 
@@ -255,7 +262,7 @@ bool Entity::projectionsOverlap(Entity &ent)
 bool Entity::collideRotatedBoxCircle(Entity &ent, VECTOR2 &collisionVector)
 {
     float min01, min03, max01, max03, center01, center03;
-
+    // ent = ball
     computeRotatedBox();                    // prepare rotated box
 
     // project circle center onto edge01

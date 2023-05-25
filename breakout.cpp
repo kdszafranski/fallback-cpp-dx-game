@@ -57,7 +57,7 @@ void Breakout::initSprites() {
     if (!ship.initialize(this, shipNS::WIDTH, shipNS::HEIGHT, shipNS::TEXTURE_COLS, &shipTexture))
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ship entity"));
 
-    ship.setFrames(shipNS::SHIP1_START_FRAME, shipNS::SHIP1_END_FRAME);
+    ship.setFrames(shipNS::SHIP_START_FRAME, shipNS::SHIP_END_FRAME);
 
     // start center, near the bottom
     ship.setX(GAME_WIDTH / 2 - shipNS::WIDTH / 2);
@@ -152,7 +152,23 @@ void Breakout::ai()
 // Handle collisions
 //=============================================================================
 void Breakout::collisions()
-{}
+{
+    VECTOR2 collisionVector;
+    // if collision between ship and planet
+    if (ball.collidesWith(ship, collisionVector))
+    {
+        // bounce off planet
+        ball.bounce(collisionVector, ship);
+        //ship1.damage(PLANET);
+    }
+    //if (ship.collidesWith(ball, collisionVector))
+    //{
+    //    // bounce off planet
+    //    ball.bounce(collisionVector, ship);
+    //    //ship1.damage(PLANET);
+    //}
+
+}
 
 //=============================================================================
 // Render game items

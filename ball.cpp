@@ -14,8 +14,13 @@ Ball::Ball() : Entity()
     spriteData.height = ballNS::HEIGHT;
     spriteData.x = ballNS::X;                   // location on screen
     spriteData.y = ballNS::Y;
-    spriteData.rect.bottom = ballNS::HEIGHT;    // rectangle to select parts of an image
-    spriteData.rect.right = ballNS::WIDTH;
+
+    // set bounding box for BOX collider
+    edge.top = -ballNS::HEIGHT / 2;    // -8
+    edge.bottom = ballNS::HEIGHT / 2;    // 8
+    edge.right = ballNS::WIDTH / 2;      // 8
+    edge.left = -ballNS::WIDTH / 2;      // -8
+
     velocity.x = 0;                             // velocity X
     velocity.y = 0;                             // velocity Y
     frameDelay = 1;
@@ -24,7 +29,8 @@ Ball::Ball() : Entity()
     currentFrame = startFrame;
     radius = ballNS::WIDTH / 2.0;
     mass = ballNS::MASS;
-    collisionType = entityNS::CIRCLE;
+    //collisionType = entityNS::BOX;
+    setCurrentFrame(startFrame);
 }
 
 //=============================================================================
