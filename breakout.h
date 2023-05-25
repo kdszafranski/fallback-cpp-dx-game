@@ -52,6 +52,7 @@ public:
     void render();      // "
     void releaseAll();
     void resetAll();
+    void removeBlock(int index);
 
     // Keep things tidy
     void initSprites();

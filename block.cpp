@@ -65,6 +65,5 @@ void Block::update(float frameTime)
 //=============================================================================
 void Block::damage(WEAPON weapon)
 {
-
 }
 
