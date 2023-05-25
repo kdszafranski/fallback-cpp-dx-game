@@ -1,6 +1,6 @@
 # My C++ Breakout
 
-![My Breakout](./pictures/udemy-boost-screenie.png)
+![My Breakout](pictures/udemy-boost-screenie.png)
 
 ## About 
 
