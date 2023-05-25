@@ -59,7 +59,9 @@ void Breakout::initSprites() {
 
 }
 
-// ship texture and entity init
+//=============================================================================
+// Ship texture and entity init
+//=============================================================================
 void Breakout::initShip()
 {
     if (!shipTexture.initialize(graphics, SHIP_PATH)) {
@@ -77,7 +79,9 @@ void Breakout::initShip()
 }
 
 
-// ball texture and entity init
+//=============================================================================
+// Sets the ball at the staring position
+//=============================================================================
 void Breakout::initBall() 
 {
     if (!ballTexture.initialize(graphics, BALL_PATH))
@@ -92,8 +96,9 @@ void Breakout::initBall()
     restartBall();
 }
 
-// block texture and entity
-// create staring block layout
+//=============================================================================
+// Create starting blocks
+//=============================================================================
 void Breakout::initBlocks()
 {
     const float START_X = 82;
@@ -160,7 +165,7 @@ void Breakout::update()
 //=============================================================================
 void Breakout::restartBall()
 {
-    ball.setX(80);
+    ball.setX(20);
     ball.setY(200);
     ball.setVelocity(VECTOR2(ballNS::SPEED, ballNS::SPEED)); // move!
 }
