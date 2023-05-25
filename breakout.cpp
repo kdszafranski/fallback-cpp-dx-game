@@ -12,6 +12,7 @@
 //=============================================================================
 Breakout::Breakout()
 {
+    isPaused = false;
 }
 
 //=============================================================================
@@ -148,14 +149,16 @@ void Breakout::update()
     // check if we want to exit
     CheckForExit();
 
-    // update position of all game objects
-    ship.update(frameTime);
-    ball.update(frameTime);
+    if (!isPaused) {
+        // update position of all game objects
+        ship.update(frameTime);
+        ball.update(frameTime);
 
-    // check if the ball went off below ship
-    if (ball.getY() > GAME_HEIGHT - ballNS::HEIGHT)  // if hit bottom screen edge
-    {
-        restartBall();
+        // check if the ball went off below ship
+        if (ball.getY() > GAME_HEIGHT - ballNS::HEIGHT)  // if hit bottom screen edge
+        {
+            restartBall();
+        }
     }
  
 }
@@ -205,16 +208,19 @@ void Breakout::collisions()
 {
     VECTOR2 collisionVector;
 
-    // if collision between ball and ship
-    if (ball.collidesWith(ship, collisionVector)) {
-        ball.bounce(collisionVector, ship.getSpriteData());
-    }
+    if (!isPaused) {
 
-    // collision ball with block
-    for (int i = 0; i < blocks.size(); i++) {
-        if (ball.collidesWith(blocks[i], collisionVector)) {
-            ball.bounce(collisionVector, blocks[i].getSpriteData());            
-            removeBlock(i);
+        // if collision between ball and ship
+        if (ball.collidesWith(ship, collisionVector)) {
+            ball.bounce(collisionVector, ship.getSpriteData());
+        }
+
+        // collision ball with block
+        for (int i = 0; i < blocks.size(); i++) {
+            if (ball.collidesWith(blocks[i], collisionVector)) {
+                ball.bounce(collisionVector, blocks[i].getSpriteData());            
+                removeBlock(i);
+            }
         }
     }
 
@@ -259,9 +265,14 @@ void Breakout::render()
 // ESC key quits the game
 //=============================================================================
 void Breakout::CheckForExit() {
-    // ESC key
+    // ESC key quits
     if (input->isKeyDown(ESC_KEY)) {
         PostQuitMessage(0);
+    }
+    
+    // SPACE pauses
+    if (input->isKeyDown(SPACE_KEY)) {
+        isPaused = !isPaused;
     }
 }
 

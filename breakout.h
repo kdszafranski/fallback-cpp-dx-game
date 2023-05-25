@@ -36,6 +36,9 @@ private:
     Ball ball;
     Block block;
 
+    // pausing
+    bool isPaused;
+
 
 public:
     // Constructor

@@ -63,6 +63,7 @@ const UCHAR SHIP_LEFT_KEY = VK_LEFT;     // left arrow
 const UCHAR SHIP_RIGHT_KEY = VK_RIGHT;    // right arrow
 const UCHAR SHIP_UP_KEY = VK_UP;       // up arrow
 const UCHAR SHIP_DOWN_KEY = VK_DOWN;     // down arrow
+const UCHAR SPACE_KEY = VK_SPACE;     // down arrow
 
 // weapon types
 enum WEAPON { TORPEDO, SHIP, PLANET };
