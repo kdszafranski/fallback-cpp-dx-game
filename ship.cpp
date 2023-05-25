@@ -18,11 +18,11 @@ Ship::Ship() : Entity()
     spriteData.rect.right = shipNS::WIDTH;
 
     // set bounding box for BOX colliders
+    collisionType = entityNS::BOX;
     edge.top = -shipNS::HEIGHT / 2;    // -16
-    edge.bottom = shipNS::HEIGHT / 2;    // 16
-    edge.right = shipNS::WIDTH / 2;      // 64
-    edge.left = -shipNS::WIDTH / 2;      // -16
-
+    edge.right = shipNS::WIDTH / 2;    // 64
+    edge.bottom = shipNS::HEIGHT / 2;  // 16
+    edge.left = -shipNS::WIDTH / 2;    // -64
 
     velocity.x = 0;                             // velocity X
     velocity.y = 0;                             // velocity Y
@@ -32,9 +32,6 @@ Ship::Ship() : Entity()
     currentFrame = startFrame;
     radius = shipNS::WIDTH/2.0;
     mass = shipNS::MASS;
-    collisionType = entityNS::BOX;
-    setCurrentFrame(startFrame);
-    active = true;
 }
 
 //=============================================================================

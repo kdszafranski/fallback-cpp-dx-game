@@ -10,26 +10,28 @@
 //=============================================================================
 Ball::Ball() : Entity()
 {
-    spriteData.width = ballNS::WIDTH;           // size of Ball1
+    spriteData.width = ballNS::WIDTH;           // size of Ball
     spriteData.height = ballNS::HEIGHT;
     spriteData.x = ballNS::X;                   // location on screen
     spriteData.y = ballNS::Y;
 
     // set bounding box for BOX collider
-    edge.top = -ballNS::HEIGHT / 2;    // -8
-    edge.bottom = ballNS::HEIGHT / 2;    // 8
-    edge.right = ballNS::WIDTH / 2;      // 8
-    edge.left = -ballNS::WIDTH / 2;      // -8
+    collisionType = entityNS::BOX;      // override's Image default to CIRCLE
+    edge.top = -ballNS::HEIGHT / 2;     // -8
+    edge.right = ballNS::WIDTH / 2;     // 8
+    edge.bottom = ballNS::HEIGHT / 2;   // 8
+    edge.left = -ballNS::WIDTH / 2;     // -8
 
     velocity.x = 0;                             // velocity X
     velocity.y = 0;                             // velocity Y
     frameDelay = 1;
+
     startFrame = ballNS::BALL_START_FRAME;     // first frame of ship animation
     endFrame = ballNS::BALL_END_FRAME;     // last frame of ship animation
     currentFrame = startFrame;
+    
     radius = ballNS::WIDTH / 2.0;
     mass = ballNS::MASS;
-    collisionType = entityNS::BOX;
 }
 
 //=============================================================================
