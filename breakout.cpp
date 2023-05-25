@@ -105,6 +105,7 @@ void Breakout::initBlocks()
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing block entity"));
     }
 
+    //block.setScale(2);
     block.setX(274);
     block.setY(176);
     block.setVelocity(VECTOR2(0, 0)); // we don't  move
@@ -166,11 +167,12 @@ void Breakout::collisions()
         //just bounce the ball back naturally by reversing y direction
         // will dot product help?
         ball.setVelocity( VECTOR2(ball.getVelocity().x, -ball.getVelocity().y) );
+        //ball.bounce(collisionVector, ship);
     }
     // collision ball with block
     if (ball.collidesWith(block, collisionVector)) {
-
-        ball.setVelocity( VECTOR2(ball.getVelocity().x, -ball.getVelocity().y) );
+        ball.bounce(collisionVector, block);
+        //ball.setVelocity( VECTOR2(ball.getVelocity().x, -ball.getVelocity().y) );
     }
 
 }

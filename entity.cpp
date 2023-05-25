@@ -400,24 +400,39 @@ void Entity::damage(int weapon)
 //=============================================================================
 void Entity::bounce(VECTOR2 &collisionVector, Entity &ent)
 {
+    // assuming BOX colliders...
+    // if it's above the block, reverse y
+    // if it's below, reverse y
+    // if it's left, reverse x
+    // if it's right, 
+    // getX() + spriteData.width < ent.getX() && 
+
+    //if ( 
+    //    getY() + spriteData.height < ent.getY() ||
+    //    getY() > ent.getY() + ent.spriteData.height
+    //   )
+    //{
+    //    velocity.y = -velocity.y;
+    //}
+
     VECTOR2 Vdiff = ent.getVelocity() - velocity;
     VECTOR2 cUV = collisionVector;              // collision unit vector
     Graphics::Vector2Normalize(&cUV);
     float cUVdotVdiff = Graphics::Vector2Dot(&cUV, &Vdiff);
-    float massRatio = 2.0f;
-    if (getMass() != 0)
-        massRatio *= (ent.getMass() / (getMass() + ent.getMass()));
+    //float massRatio = 2.0f;
+    //if (getMass() != 0)
+    //    massRatio *= (ent.getMass() / (getMass() + ent.getMass()));
 
     // If entities are already moving apart then bounce must
     // have been previously called and they are still colliding.
     // Move entities apart along collisionVector
     if(cUVdotVdiff > 0)
     {
-        setX(getX() - cUV.x * massRatio);
-        setY(getY() - cUV.y * massRatio);
+        setX(getX() - cUV.x);
+        setY(getY() - cUV.y);
     }
     else 
-        deltaV += ((massRatio * cUVdotVdiff) * cUV);
+        deltaV += (cUVdotVdiff * cUV);
 }
 
 //=============================================================================
