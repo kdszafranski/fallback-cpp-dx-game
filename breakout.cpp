@@ -98,20 +98,21 @@ void Breakout::initBall()
 // create staring block layout
 void Breakout::initBlocks()
 {
-    float startX = 82;
-    float startY = 100;
-    int cols = 10;
+    const float START_X = 82;
+    const float START_Y = 100;
+    const int COLS = 10;
 
+    // load our texture, reuse it for all block Entities
     if (!blockTexture.initialize(graphics, BLOCK_PATH))
     {
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing block texture"));
     }
 
-    int y = startY;
+    int y = START_Y;
     for (int i = 0; i < 2; i++) {
 
-        int x = startX;
-        for (int j = 0; j < cols; j++) {
+        int x = START_X;
+        for (int j = 0; j < COLS; j++) {
             Block newBlock;
 
             if (!newBlock.initialize(this, blockNS::WIDTH, blockNS::HEIGHT, blockNS::TEXTURE_COLS, &blockTexture))
