@@ -98,19 +98,40 @@ void Breakout::initBall()
 // create staring block layout
 void Breakout::initBlocks()
 {
+    float startX = 198;
+    float startY = 100;
+    int cols = 6;
+
     if (!blockTexture.initialize(graphics, BLOCK_PATH))
     {
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing block texture"));
     }
-    if (!block.initialize(this, blockNS::WIDTH, blockNS::HEIGHT, blockNS::TEXTURE_COLS, &blockTexture))
-    {
-        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing block entity"));
+
+    int y = startY;
+    for (int i = 0; i < 2; i++) {
+
+        int x = startX;
+        for (int j = 0; j < cols; j++) {
+            Block newBlock;
+
+            if (!newBlock.initialize(this, blockNS::WIDTH, blockNS::HEIGHT, blockNS::TEXTURE_COLS, &blockTexture))
+            {
+                throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing block entity"));
+            }
+
+            newBlock.setX(x);
+            newBlock.setY(y);
+            newBlock.setVelocity(VECTOR2(0, 0)); // we don't  move
+
+            blocks.push_back(newBlock);
+            
+            x += blockNS::WIDTH;
+        }
+
+        y += blockNS::HEIGHT;
+
     }
 
-    //block.setScale(2);
-    block.setX(276);
-    block.setY(100);
-    block.setVelocity(VECTOR2(0, 0)); // we don't  move
 }
 
 //=============================================================================
@@ -123,7 +144,11 @@ void Breakout::update()
 
     // update position of all game objects
     ship.update(frameTime);
-    block.update(frameTime);
+
+    for (int i = 0; i < blocks.size(); i++) {
+        blocks[i].update(frameTime);
+    }
+    
     ball.update(frameTime);
  
     // check edge bounds
@@ -172,9 +197,10 @@ void Breakout::collisions()
         ball.bounce(collisionVector, ship.getSpriteData());
     }
     // collision ball with block
-    if (ball.collidesWith(block, collisionVector)) {
-        ball.bounce(collisionVector, block.getSpriteData());
-        
+    for (int i = 0; i < blocks.size(); i++) {
+        if (ball.collidesWith(blocks[i], collisionVector)) {
+            ball.bounce(collisionVector, blocks[i].getSpriteData());
+        }
     }
 
 }
@@ -189,7 +215,11 @@ void Breakout::render()
 
         backgroundImage.draw();
         ship.draw();
-        block.draw();
+        
+        for (int i = 0; i < blocks.size(); i++) {
+            blocks[i].draw();
+        }
+
         ball.draw();
         
         graphics->spriteEnd();

@@ -9,6 +9,8 @@
 #define _BREAKOUT_H_             // ..file is included in more than one place
 #define WIN32_LEAN_AND_MEAN
 
+//#include <stdlib.h>
+#include <vector>
 #include "game.h"
 #include "textureManager.h"
 #include "image.h"
@@ -23,6 +25,8 @@ class Breakout : public Game
 {
 private:
     // variables
+    std::vector<Block> blocks;
+
     TextureManager backgroundTexture;
     TextureManager ballTexture;
     TextureManager shipTexture;
