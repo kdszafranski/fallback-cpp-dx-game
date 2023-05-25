@@ -87,6 +87,8 @@ public:
     // Return number of current frame.
     virtual int   getCurrentFrame() { return currentFrame; }
 
+    virtual SpriteData getSpriteData() { return spriteData; }
+
     // Return RECT structure of Image.
     virtual RECT  getSpriteDataRect() { return spriteData.rect; }
 

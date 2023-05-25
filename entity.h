@@ -174,7 +174,7 @@ class Entity : public Image
     virtual void damage(int weapon);
 
     // Entity bounces after collision with other Entity
-    void bounce(VECTOR2 &collisionVector, Entity &ent);
+    virtual void bounce(VECTOR2 &collisionVector, Entity &ent);
 
     // Adds the gravitational force to the velocity vector of this entity
     void gravityForce(Entity *other, float frameTime);

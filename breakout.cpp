@@ -72,7 +72,7 @@ void Breakout::initShip()
 
     // start center, near the bottom
     ship.setX(GAME_WIDTH / 2 - shipNS::WIDTH / 2);
-    ship.setY(GAME_HEIGHT - 82); 
+    ship.setY(GAME_HEIGHT - 150); 
     ship.setVelocity(VECTOR2(0, 0)); // start standing still
 }
 
@@ -106,8 +106,8 @@ void Breakout::initBlocks()
     }
 
     //block.setScale(2);
-    block.setX(274);
-    block.setY(176);
+    block.setX(155);
+    block.setY(4);
     block.setVelocity(VECTOR2(0, 0)); // we don't  move
 }
 
@@ -166,13 +166,14 @@ void Breakout::collisions()
     if (ball.collidesWith(ship, collisionVector)) {
         //just bounce the ball back naturally by reversing y direction
         // will dot product help?
-        ball.setVelocity( VECTOR2(ball.getVelocity().x, -ball.getVelocity().y) );
-        //ball.bounce(collisionVector, ship);
+        //ball.setVelocity( VECTOR2(ball.getVelocity().x, -ball.getVelocity().y) );
+        
+        ball.bounce(collisionVector, ship.getSpriteData());
     }
     // collision ball with block
     if (ball.collidesWith(block, collisionVector)) {
-        ball.bounce(collisionVector, block);
-        //ball.setVelocity( VECTOR2(ball.getVelocity().x, -ball.getVelocity().y) );
+        ball.bounce(collisionVector, block.getSpriteData());
+        
     }
 
 }

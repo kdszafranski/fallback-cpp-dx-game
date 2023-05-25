@@ -54,6 +54,35 @@ void Ball::draw()
 }
 
 //=============================================================================
+// Ball bounces off a BOX collider entity
+//=============================================================================
+void Ball::bounce(VECTOR2& collisionVector, SpriteData sData)
+{
+    const float myX = getX();
+    const float myY = getY();
+    const float boxWidth = (sData.x + sData.width);
+    const float boxHeight = (sData.y + sData.height);
+
+    // above or below
+    if (
+        (getX() > sData.x && getY() < sData.y) || // above
+        (getX() > sData.x && getY() + spriteData.y > boxHeight) // below
+        )
+    {
+        velocity.y = -velocity.y;
+    }
+
+    // left or right
+    if (
+        (getX() < sData.x && getY() > sData.y) ||     // left
+        (getX() > boxWidth && getY() > sData.y)  // right
+        )
+    {
+        velocity.x = -velocity.x;
+    }
+}
+
+//=============================================================================
 // update
 // typically called once per frame
 // frameTime is used to regulate the speed of movement and animation

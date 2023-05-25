@@ -28,6 +28,9 @@ public:
     // constructor
     Ball();
 
+    // override
+    void bounce(VECTOR2 &collisionVector, SpriteData sData);
+     
     // inherited member functions
     virtual void draw();
     virtual bool initialize(Game* gamePtr, int width, int height, int ncols,
