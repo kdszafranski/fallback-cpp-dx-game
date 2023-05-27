@@ -128,6 +128,9 @@ void Breakout::initBlocks()
             newBlock.setY(y);
             newBlock.setVelocity(VECTOR2(0, 0)); 
 
+            // set random color
+            newBlock.setColor(D3DCOLOR_ARGB(255, (rand() % 254) + 1, 255, 255));
+
             // add to vector
             blocks.push_back(newBlock);
             

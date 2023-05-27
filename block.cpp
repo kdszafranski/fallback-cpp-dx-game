@@ -35,6 +35,7 @@ Block::Block() : Entity()
     radius = blockNS::WIDTH / 2.0;
     mass = blockNS::MASS;
     collisionType = entityNS::BOX;
+    color = graphicsNS::WHITE;
 }
 
 //=============================================================================
@@ -52,7 +53,8 @@ bool Block::initialize(Game* gamePtr, int width, int height, int ncols,
 //=============================================================================
 void Block::draw()
 {
-    Image::draw();
+    // tint this block with its color filter
+    Image::draw(color);
 }
 
 //=============================================================================

@@ -23,6 +23,7 @@ namespace blockNS
 class Block : public Entity
 {
 private:
+    COLOR_ARGB color;
 
 public:
     // constructor
@@ -34,6 +35,10 @@ public:
         TextureManager* textureM);
     void update(float frameTime);
     void damage(WEAPON);
+
+    // inline getters/setters
+    void setColor(COLOR_ARGB c) { color = c; };
+    COLOR_ARGB getColor() { return color; };
 };
 #endif
 
