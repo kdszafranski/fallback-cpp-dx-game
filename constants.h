@@ -52,6 +52,19 @@ const float MIN_FRAME_RATE = 10.0f;             // the minimum frame rate
 const float MIN_FRAME_TIME = 1.0f/FRAME_RATE;   // minimum desired time for 1 frame
 const float MAX_FRAME_TIME = 1.0f/MIN_FRAME_RATE; // maximum time used in calculations
 
+// audio files required by audio.cpp
+// WAVE_BANK must be location of .xwb file.
+const char WAVE_BANK[] = "audio\\WaveBank.xwb";
+// SOUND_BANK must be location of .xsb file.
+const char SOUND_BANK[] = "audio\\SoundBank.xsb";
+
+// audio cues
+const char ZAP[] = "zap";
+const char CLICK[] = "click";
+const char CLUNK[] = "clunk";
+const char POP[] = "pop";
+const char HIT[] = "hit";
+
 
 // key mappings
 // In this game simple constants are used for key mappings. If variables were used

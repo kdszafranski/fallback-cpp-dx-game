@@ -95,6 +95,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="audio.cpp" />
     <ClCompile Include="ball.cpp" />
     <ClCompile Include="block.cpp" />
     <ClCompile Include="entity.cpp" />
@@ -108,6 +109,7 @@
     <ClCompile Include="winmain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="audio.h" />
     <ClInclude Include="ball.h" />
     <ClInclude Include="block.h" />
     <ClInclude Include="constants.h" />
