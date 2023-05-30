@@ -86,6 +86,8 @@ void Ball::bounce(VECTOR2& collisionVector, SpriteData otherSpriteData)
     {
         velocity.x = -velocity.x;
     }
+
+    audio->playCue(CLUNK);
 }
 
 //=============================================================================
@@ -106,10 +108,12 @@ void Ball::update(float frameTime)
     {
         spriteData.x = GAME_WIDTH - ballNS::WIDTH;    // position at right screen edge
         velocity.x = -velocity.x;                   // reverse X direction
+        audio->playCue(CLICK);
     } else if (spriteData.x < 0)                    // else if hit left screen edge
     {
         spriteData.x = 0;                           // position at left screen edge
         velocity.x = -velocity.x;                   // reverse X direction
+        audio->playCue(CLICK);
     }
     
     if (spriteData.y < 0)                    // else if hit top screen edge

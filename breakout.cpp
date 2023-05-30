@@ -234,6 +234,7 @@ void Breakout::collisions()
 //=============================================================================
 void Breakout::removeBlock(int index)
 {
+    audio->playCue(POP);
     blocks.erase(blocks.begin() + index);
 }
 
