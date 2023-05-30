@@ -112,6 +112,22 @@ void Game::initialize(HWND hw)
     // initialize input, do not capture mouse
     input->initialize(hwnd, false);             // throws GameError
 
+    // Audio set up
+    audio = new Audio();
+    if (*WAVE_BANK != '\0' && *SOUND_BANK != '\0') {
+        if (FAILED(hr = audio->initialize())) {
+            if (FAILED(hr = HRESULT_FROM_WIN32(ERROR_FILE_NOT_FOUND))) {
+                throw(GameError(gameErrorNS::FATAL_ERROR,
+                    "Failed to initialize sound system:" \
+                    "media file not found."));
+            } else {
+                throw(GameError(gameErrorNS::FATAL_ERROR,
+                    "Failed to init sound system."));
+            }
+        }
+    }
+
+
     // attempt to set up high resolution timer
     if(QueryPerformanceFrequency(&timerFreq) == false)
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing high resolution timer"));
@@ -211,6 +227,9 @@ void Game::run(HWND hwnd)
         input->vibrateControllers(frameTime); // handle controller vibration
     }
     renderGame();                   // draw all game items
+
+    audio->run();                   // perform periodic?? sound engine tasks.. like what?
+
     input->readControllers();       // read state of controllers
 
 
@@ -238,7 +257,10 @@ void Game::resetAll()
 void Game::deleteAll()
 {
     releaseAll();               // call onLostDevice() for every graphics item
+    
     SAFE_DELETE(graphics);
     SAFE_DELETE(input);
+    SAFE_DELETE(audio);
+
     initialized = false;
 }

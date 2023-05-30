@@ -13,6 +13,7 @@
 #include <Mmsystem.h>
 #include "graphics.h"
 #include "input.h"
+#include "audio.h"
 #include "constants.h"
 #include "gameError.h"
 
@@ -22,6 +23,8 @@ protected:
     // common game properties
     Graphics *graphics;         // pointer to Graphics
     Input   *input;             // pointer to Input
+    Audio* audio;               // pointer to Audio
+
     HWND    hwnd;               // window handle
     HRESULT hr;                 // standard return type
     LARGE_INTEGER timeStart;    // Performance Counter start value
@@ -73,6 +76,8 @@ public:
 
     // Return pointer to Input.
     Input* getInput()       {return input;}
+
+    Audio* getAudio() { return audio; }
 
     // Exit the game
     void exitGame()         {PostMessage(hwnd, WM_DESTROY, 0, 0);}
