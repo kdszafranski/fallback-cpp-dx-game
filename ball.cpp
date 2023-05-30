@@ -120,6 +120,7 @@ void Ball::update(float frameTime)
     {
         spriteData.y = 0;                           // position at top screen edge
         velocity.y = -velocity.y;                   // reverse Y direction
+        audio->playCue(CLICK);
     }
 }
 
