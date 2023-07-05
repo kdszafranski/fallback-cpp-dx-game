@@ -90,6 +90,13 @@ void Ball::bounce(VECTOR2& collisionVector, SpriteData otherSpriteData)
     audio->playCue(CLUNK); 
 }
 
+/// <summary>
+/// Allows basic left, normal, right aiming based on where the ball hits
+/// Still uses constant 250 y velocity
+/// </summary>
+/// <param name="collisionVector"></param>
+/// <param name="collisionPosition"></param>
+/// <param name="otherSpriteData"></param>
 void Ball::bounceOffShip(VECTOR2& collisionVector, VECTOR2& collisionPosition, SpriteData otherSpriteData)
 {
     // determine WHERE along the ship we hit
