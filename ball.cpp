@@ -87,7 +87,15 @@ void Ball::bounce(VECTOR2& collisionVector, SpriteData otherSpriteData)
         velocity.x = -velocity.x;
     }
 
+    audio->playCue(CLUNK); 
+}
+
+void Ball::bounceOffShip(VECTOR2& collisionVector, SpriteData otherSpriteData)
+{
+    // determine WHERE along the ship we hit
+
     audio->playCue(CLUNK);
+
 }
 
 //=============================================================================

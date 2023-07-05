@@ -27,10 +27,12 @@ class Breakout : public Game
 private:
     // variables
     std::vector<Block> blocks;
+    std::string logText;
     int score;
 
     // Game objects
     TextDX *dxFont;
+    TextDX *dxLogFont;
 
     TextureManager backgroundTexture;
     TextureManager ballTexture;
@@ -62,6 +64,7 @@ public:
     void collisions();  // "
     void render();      // "
     void renderScore();
+    void renderLog();
     void releaseAll();
     void resetAll();
     
@@ -74,6 +77,8 @@ public:
     void initShip();
     void initBall();
     void initBlocks();
+
+    void setLog(std::string message);
 
     void CheckForExit(); // helper to handle exit inputs
 
