@@ -17,6 +17,7 @@
 #include "ship.h"
 #include "ball.h"
 #include "block.h"
+#include "textDX.h"
 
 //=============================================================================
 // Create game class
@@ -26,6 +27,10 @@ class Breakout : public Game
 private:
     // variables
     std::vector<Block> blocks;
+    int score;
+
+    // Game objects
+    TextDX *dxFont;
 
     TextureManager backgroundTexture;
     TextureManager ballTexture;
@@ -49,12 +54,14 @@ public:
 
     // Initialize the game
     void initialize(HWND hwnd);
+    void ResetGame();
 
     // Game Loop stuff
     void update();      // must override pure virtual from Game
     void ai();          // "
     void collisions();  // "
     void render();      // "
+    void renderScore();
     void releaseAll();
     void resetAll();
     
@@ -70,7 +77,6 @@ public:
 
     void CheckForExit(); // helper to handle exit inputs
 
-    void doCircle();
     void wrapScreenEdge(); // checks screen bounds
 };
 

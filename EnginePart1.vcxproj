@@ -105,6 +105,7 @@
     <ClCompile Include="input.cpp" />
     <ClCompile Include="ship.cpp" />
     <ClCompile Include="breakout.cpp" />
+    <ClCompile Include="textDX.cpp" />
     <ClCompile Include="textureManager.cpp" />
     <ClCompile Include="winmain.cpp" />
   </ItemGroup>
@@ -120,6 +121,7 @@
     <ClInclude Include="input.h" />
     <ClInclude Include="ship.h" />
     <ClInclude Include="breakout.h" />
+    <ClInclude Include="textDX.h" />
     <ClInclude Include="textureManager.h" />
   </ItemGroup>
   <ItemGroup>

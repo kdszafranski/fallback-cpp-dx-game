@@ -26,6 +26,9 @@
 #define LP_3DDEVICE LPDIRECT3DDEVICE9
 #define LP_3D       LPDIRECT3D9
 #define VECTOR2     D3DXVECTOR2
+#define LP_VERTEXBUFFER LPDIRECT3DVERTEXBUFFER9
+#define LP_DXFONT   LPD3DXFONT
+#define LP_VERTEXBUFFER LPDIRECT3DVERTEXBUFFER9
 
 // Color defines
 // ARGB numbers range from 0 through 255
@@ -59,6 +62,7 @@ namespace graphicsNS
     const COLOR_ARGB CYAN = D3DCOLOR_ARGB(255, 0, 255, 255);
     const COLOR_ARGB LIME = D3DCOLOR_ARGB(255, 0, 255, 0);
     const COLOR_ARGB BLUE = D3DCOLOR_ARGB(255, 0, 0, 255);
+    const COLOR_ARGB BLACK50 = D3DCOLOR_ARGB(128, 0, 0, 0);
     const COLOR_ARGB BLACK = D3DCOLOR_ARGB(255, 0, 0, 0);
     const COLOR_ARGB FILTER = D3DCOLOR_ARGB(0, 0, 0, 0);          // use to specify drawing with colorFilter
     const COLOR_ARGB ALPHA25 = D3DCOLOR_ARGB(64, 255, 255, 255);  // AND with color to get 25% alpha
