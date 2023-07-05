@@ -54,6 +54,7 @@ public:
 
     // Initialize the game
     void initialize(HWND hwnd);
+    void ResetGame();
 
     // Game Loop stuff
     void update();      // must override pure virtual from Game

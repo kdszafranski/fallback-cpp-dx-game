@@ -13,8 +13,8 @@
 Breakout::Breakout()
 {
     isPaused = false;
-    score = 0;
     dxFont = new TextDX();
+    ResetGame();
 }
 
 //=============================================================================
@@ -24,6 +24,14 @@ Breakout::~Breakout()
 {
     releaseAll();           // call onLostDevice() for every graphics item
     SAFE_DELETE(dxFont);
+}
+
+/// <summary>
+/// Resets score and board
+/// </summary>
+void Breakout::ResetGame()
+{
+    score = 0;
 }
 
 //=============================================================================
@@ -36,7 +44,7 @@ void Breakout::initialize(HWND hwnd)
 
     initSprites();
 
-    // 48 pixel high Arial
+    // Init DirectX font with 48px high Arial
     if (dxFont->initialize(graphics, 48, true, false, "Arial") == false)
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing DirectX font"));
 
@@ -179,8 +187,8 @@ void Breakout::update()
 //=============================================================================
 void Breakout::restartBall()
 {
-    ball.setX(20);
-    ball.setY(200);
+    ball.setX(220);
+    ball.setY(300);
     ball.setVelocity(VECTOR2(ballNS::SPEED, ballNS::SPEED)); // move!
 }
 
@@ -304,6 +312,7 @@ void Breakout::releaseAll()
     ballTexture.onLostDevice();
     shipTexture.onLostDevice();
     blockTexture.onLostDevice();
+    dxFont->onLostDevice();
     
     Game::releaseAll();
     return;
@@ -319,6 +328,7 @@ void Breakout::resetAll()
     shipTexture.onResetDevice();
     ballTexture.onResetDevice();
     blockTexture.onResetDevice();
+    dxFont->onResetDevice();
 
     Game::resetAll();
     return;
