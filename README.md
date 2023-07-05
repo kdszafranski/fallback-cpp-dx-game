@@ -37,3 +37,10 @@ I'll note that the content is quite old (circa 2012) so I had to convert the cod
 I'm proud of working through 2 blocking type bugs which stopped me in my tracks. But I kept at it and worked passed them. 
 
 I could easily take this further but need to move on.
+
+## Additions
+
+I went back a few times to add the following:
+
+- Audio/SFX
+- Score
