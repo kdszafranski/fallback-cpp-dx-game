@@ -240,6 +240,8 @@ void Breakout::collisions()
 
         // if collision between ball and ship
         if (ball.collidesWith(ship, collisionVector)) {
+            setLog("collision Vector " + std::to_string(collisionVector.x));
+
             ball.bounce(collisionVector, ship.getSpriteData());
             //ball.bounceOffShip(collisionVector, ship.getSpriteData());
         }
