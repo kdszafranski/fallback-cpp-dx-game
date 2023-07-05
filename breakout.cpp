@@ -31,6 +31,8 @@ void Breakout::initialize(HWND hwnd)
 {
     Game::initialize(hwnd); // throws GameError
 
+    score = 0;
+
     initSprites();
 
     return;
@@ -224,6 +226,8 @@ void Breakout::collisions()
             if (ball.collidesWith(blocks[i], collisionVector)) {
                 ball.bounce(collisionVector, blocks[i].getSpriteData());            
                 removeBlock(i);
+                // update score
+                score += 5;
             }
         }
     }

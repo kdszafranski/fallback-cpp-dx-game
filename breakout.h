@@ -26,6 +26,7 @@ class Breakout : public Game
 private:
     // variables
     std::vector<Block> blocks;
+    int score;
 
     TextureManager backgroundTexture;
     TextureManager ballTexture;
