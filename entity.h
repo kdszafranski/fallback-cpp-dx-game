@@ -20,6 +20,9 @@ namespace entityNS
     const float GRAVITY = 6.67428e-11f;         // gravitational constant
 }
 
+/// <summary>
+/// Entity is a sprite with velocity and collisions
+/// </summary>
 class Entity : public Image
 {
     // Entity properties

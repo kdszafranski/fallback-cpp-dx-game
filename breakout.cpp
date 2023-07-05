@@ -160,6 +160,7 @@ void Breakout::update()
         // check if the ball went off below ship
         if (ball.getY() > GAME_HEIGHT - ballNS::HEIGHT)  // if hit bottom screen edge
         {
+            audio->playCue(ZAP);
             restartBall();
         }
     }
