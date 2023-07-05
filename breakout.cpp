@@ -13,6 +13,8 @@
 Breakout::Breakout()
 {
     isPaused = false;
+    score = 0;
+    dxFont = new TextDX();
 }
 
 //=============================================================================
@@ -21,6 +23,7 @@ Breakout::Breakout()
 Breakout::~Breakout()
 {
     releaseAll();           // call onLostDevice() for every graphics item
+    SAFE_DELETE(dxFont);
 }
 
 //=============================================================================
@@ -31,9 +34,11 @@ void Breakout::initialize(HWND hwnd)
 {
     Game::initialize(hwnd); // throws GameError
 
-    score = 0;
-
     initSprites();
+
+    // 48 pixel high Arial
+    if (dxFont->initialize(graphics, 48, true, false, "Arial") == false)
+        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing DirectX font"));
 
     return;
 }
@@ -260,6 +265,10 @@ void Breakout::render()
         }
 
         ball.draw();
+
+        // UI
+        dxFont->setFontColor(graphicsNS::WHITE);
+        dxFont->print("Score: " + std::to_string(score), 10, 10);
         
         graphics->spriteEnd();
     }

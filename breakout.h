@@ -17,6 +17,7 @@
 #include "ship.h"
 #include "ball.h"
 #include "block.h"
+#include "textDX.h"
 
 //=============================================================================
 // Create game class
@@ -27,6 +28,9 @@ private:
     // variables
     std::vector<Block> blocks;
     int score;
+
+    // Game objects
+    TextDX *dxFont;
 
     TextureManager backgroundTexture;
     TextureManager ballTexture;
