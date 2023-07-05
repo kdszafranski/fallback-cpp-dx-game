@@ -61,6 +61,7 @@ public:
     void ai();          // "
     void collisions();  // "
     void render();      // "
+    void renderScore();
     void releaseAll();
     void resetAll();
     
@@ -76,7 +77,6 @@ public:
 
     void CheckForExit(); // helper to handle exit inputs
 
-    void doCircle();
     void wrapScreenEdge(); // checks screen bounds
 };
 

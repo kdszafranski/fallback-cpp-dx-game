@@ -275,8 +275,7 @@ void Breakout::render()
         ball.draw();
 
         // UI
-        dxFont->setFontColor(graphicsNS::WHITE);
-        dxFont->print("Score: " + std::to_string(score), 10, 10);
+        renderScore();
         
         graphics->spriteEnd();
     }
@@ -284,6 +283,17 @@ void Breakout::render()
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error in Graphics::render"));
     }
 
+}
+
+void Breakout::renderScore() 
+{
+    // shadow
+    dxFont->setFontColor(graphicsNS::BLACK50);
+    dxFont->print("Score: " + std::to_string(score), 9, 9); 
+
+    // main font
+    dxFont->setFontColor(graphicsNS::WHITE);
+    dxFont->print("Score: " + std::to_string(score), 7, 7);
 }
 
 
