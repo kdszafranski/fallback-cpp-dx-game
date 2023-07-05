@@ -116,6 +116,7 @@ void Ball::bounceOffShip(VECTOR2& collisionVector, VECTOR2& collisionPosition, S
     } else if(collisionPosition.x > middleX && collisionPosition.x < rightX) {
         // middle, just reflect
         velocity.y = -velocity.y;
+        velocity.x *= .5; // aims upish, reducing the x angle by half
     } else {
         // right third, aim right
         velocity.y = -velocity.y;
