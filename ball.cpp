@@ -113,7 +113,6 @@ void Ball::bounceOffShip(VECTOR2& collisionVector, VECTOR2& collisionPosition, S
         // left-hand side, aim left
         velocity.y = -velocity.y;
         velocity.x = -250;
-        //velocity.x = 
     } else if(collisionPosition.x > middleX && collisionPosition.x < rightX) {
         // middle, just reflect
         velocity.y = -velocity.y;
@@ -127,24 +126,6 @@ void Ball::bounceOffShip(VECTOR2& collisionVector, VECTOR2& collisionPosition, S
     const float boxWidth = (otherSpriteData.x + otherSpriteData.width);
     // total bottom y position of other entity
     const float boxHeight = (otherSpriteData.y + otherSpriteData.height);
-
-    // above or below
-    //if (
-    //    (myX > otherSpriteData.x && myY < otherSpriteData.y) || // above
-    //    (myX > otherSpriteData.x && myY + spriteData.y > boxHeight) // below
-    //    )
-    //{
-    //    velocity.y = -velocity.y;
-    //}
-
-    // left or right
-    //if (
-    //    (myX < otherSpriteData.x && myY > otherSpriteData.y) ||     // left
-    //    (myX > boxWidth && myY > otherSpriteData.y)  // right
-    //    )
-    //{
-    //    velocity.x = -velocity.x;
-    //}
 
     audio->playCue(CLUNK);
 
