@@ -105,7 +105,7 @@ void Ball::bounceOffShip(VECTOR2& collisionVector, VECTOR2& collisionPosition, S
     const float middleX = otherSpriteData.width / 3; // middle third of ship
     const float rightX = middleX * 2; // right-hand third of ship
 
-    // get ship-relative position
+    // get ship-relative position from ship's origin (x = 0)
     collisionPosition.x = myX - otherSpriteData.x;
     collisionPosition.y = myY - otherSpriteData.y;
 
@@ -114,22 +114,16 @@ void Ball::bounceOffShip(VECTOR2& collisionVector, VECTOR2& collisionPosition, S
         velocity.y = -velocity.y;
         velocity.x = -250;
     } else if(collisionPosition.x > middleX && collisionPosition.x < rightX) {
-        // middle, just reflect
+        // middle, just reflect upish
         velocity.y = -velocity.y;
-        velocity.x *= .5; // aims upish, reducing the x angle by half
+        velocity.x *= 0.5; // reducing the x angle by half
     } else {
         // right third, aim right
         velocity.y = -velocity.y;
         velocity.x = 250;
     }
 
-    // total right-edge x position of other entity
-    const float boxWidth = (otherSpriteData.x + otherSpriteData.width);
-    // total bottom y position of other entity
-    const float boxHeight = (otherSpriteData.y + otherSpriteData.height);
-
     audio->playCue(CLUNK);
-
 }
 
 //=============================================================================
