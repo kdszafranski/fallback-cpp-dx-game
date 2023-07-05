@@ -90,9 +90,54 @@ void Ball::bounce(VECTOR2& collisionVector, SpriteData otherSpriteData)
     audio->playCue(CLUNK); 
 }
 
-void Ball::bounceOffShip(VECTOR2& collisionVector, SpriteData otherSpriteData)
+void Ball::bounceOffShip(VECTOR2& collisionVector, VECTOR2& collisionPosition, SpriteData otherSpriteData)
 {
     // determine WHERE along the ship we hit
+    const float myX = getX();
+    const float myY = getY();
+    const float middleX = otherSpriteData.width / 3; // middle third of ship
+    const float rightX = middleX * 2; // right-hand third of ship
+
+    // get ship-relative position
+    collisionPosition.x = myX - otherSpriteData.x;
+    collisionPosition.y = myY - otherSpriteData.y;
+
+    if (collisionPosition.x < middleX) {
+        // left-hand side, aim left
+        velocity.y = -velocity.y;
+        velocity.x = -250;
+        //velocity.x = 
+    } else if(collisionPosition.x > middleX && collisionPosition.x < rightX) {
+        // middle, just reflect
+        velocity.y = -velocity.y;
+    } else {
+        // right third, aim right
+        velocity.y = -velocity.y;
+        velocity.x = 250;
+    }
+
+    // total right-edge x position of other entity
+    const float boxWidth = (otherSpriteData.x + otherSpriteData.width);
+    // total bottom y position of other entity
+    const float boxHeight = (otherSpriteData.y + otherSpriteData.height);
+
+    // above or below
+    //if (
+    //    (myX > otherSpriteData.x && myY < otherSpriteData.y) || // above
+    //    (myX > otherSpriteData.x && myY + spriteData.y > boxHeight) // below
+    //    )
+    //{
+    //    velocity.y = -velocity.y;
+    //}
+
+    // left or right
+    //if (
+    //    (myX < otherSpriteData.x && myY > otherSpriteData.y) ||     // left
+    //    (myX > boxWidth && myY > otherSpriteData.y)  // right
+    //    )
+    //{
+    //    velocity.x = -velocity.x;
+    //}
 
     audio->playCue(CLUNK);
 

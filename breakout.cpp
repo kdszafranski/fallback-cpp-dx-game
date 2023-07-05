@@ -234,16 +234,17 @@ void Breakout::ai()
 //=============================================================================
 void Breakout::collisions()
 {
-    VECTOR2 collisionVector;
+    VECTOR2 collisionVector, collisionPosition;
 
     if (!isPaused) {
 
         // if collision between ball and ship
         if (ball.collidesWith(ship, collisionVector)) {
-            setLog("collision Vector " + std::to_string(collisionVector.x));
 
-            ball.bounce(collisionVector, ship.getSpriteData());
-            //ball.bounceOffShip(collisionVector, ship.getSpriteData());
+            //ball.bounce(collisionVector, ship.getSpriteData());
+            ball.bounceOffShip(collisionVector, collisionPosition, ship.getSpriteData());
+
+            setLog("collisionPos: " + std::to_string(collisionPosition.x) + " , " + std::to_string(collisionPosition.y));
         }
 
         // collision ball with block
@@ -319,7 +320,7 @@ void Breakout::renderLog()
     }
 }
 
-void Breakout::setLog(const std::string message)
+void Breakout::setLog(const std::string &message)
 {
     logText = message;
 }

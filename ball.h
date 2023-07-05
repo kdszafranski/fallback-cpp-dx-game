@@ -30,7 +30,7 @@ public:
 
     // override
     void bounce(VECTOR2 &collisionVector, SpriteData sData);
-    void bounceOffShip(VECTOR2& collisionVector, SpriteData sData);
+    void bounceOffShip(VECTOR2& collisionVector, VECTOR2& collisionPosition, SpriteData sData);
      
     // inherited member functions
     virtual void draw();

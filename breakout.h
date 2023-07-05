@@ -78,7 +78,7 @@ public:
     void initBall();
     void initBlocks();
 
-    void setLog(std::string message);
+    void setLog(const std::string &message);
 
     void CheckForExit(); // helper to handle exit inputs
 
