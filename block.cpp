@@ -1,6 +1,6 @@
 // Chapter 6 project by Kris Szafranski
 // ====================================
-// Builds on engine code provded by
+// Builds on engine code provided by
 // Programming 2D Games
 // Copyright (c) 2011 by: 
 // Charles Kelly

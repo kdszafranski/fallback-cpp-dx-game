@@ -44,3 +44,5 @@ I went back a few times to add the following:
 
 - Audio/SFX
 - Score
+- Added Block types which have varying health and associated colors with their remaining health
+- Console class and log display
