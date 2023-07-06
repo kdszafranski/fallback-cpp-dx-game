@@ -185,3 +185,16 @@ inline void Image::setRect()
 	// bottom edge + 1
 	spriteData.rect.bottom = spriteData.rect.top + spriteData.height;
 }
+
+/// <summary>
+/// Returns a string representation of this object (to log)
+/// </summary>
+/// <returns></returns>
+std::string Image::toString()
+{
+	std::string str = "";
+
+	str = "Image => Size: " + std::to_string(getWidth()) + " x " + std::to_string(getHeight());		    
+
+	return str;
+}

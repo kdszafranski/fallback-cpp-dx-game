@@ -178,6 +178,8 @@ public:
 
     // Update the animation. frameTime is used to regulate the speed.
     virtual void update(float frameTime);
+
+    virtual std::string toString();
 };
 
 

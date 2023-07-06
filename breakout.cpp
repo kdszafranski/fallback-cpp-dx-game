@@ -197,7 +197,7 @@ void Breakout::restartBall()
     ball.setY(300);
     ball.setVelocity(VECTOR2(ballNS::SPEED, ballNS::SPEED)); // move!
 
-    console->setLogText("Resetting ball");
+    //console->setLogText("Resetting ball");
 }
 
 //=============================================================================
@@ -241,7 +241,8 @@ void Breakout::collisions()
         if (ball.collidesWith(ship, collisionVector)) {
             ball.bounceOffShip(collisionVector, collisionPosition, ship.getSpriteData());
             
-            console->setLogText("collisionPos: " + std::to_string(collisionPosition.x) + " , " + std::to_string(collisionPosition.y));
+            console->setLogText(ship.toString());
+            //console->setLogText("collisionPos: " + std::to_string(collisionPosition.x) + " , " + std::to_string(collisionPosition.y));
         }
 
         // collision ball with block
