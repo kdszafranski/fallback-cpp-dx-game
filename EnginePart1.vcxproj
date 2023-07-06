@@ -98,6 +98,7 @@
     <ClCompile Include="audio.cpp" />
     <ClCompile Include="ball.cpp" />
     <ClCompile Include="block.cpp" />
+    <ClCompile Include="console.cpp" />
     <ClCompile Include="entity.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="graphics.cpp" />
@@ -113,6 +114,7 @@
     <ClInclude Include="audio.h" />
     <ClInclude Include="ball.h" />
     <ClInclude Include="block.h" />
+    <ClInclude Include="console.h" />
     <ClInclude Include="constants.h" />
     <ClInclude Include="entity.h" />
     <ClInclude Include="game.h" />

@@ -18,6 +18,7 @@
 #include "ball.h"
 #include "block.h"
 #include "textDX.h"
+#include "console.h"
 
 //=============================================================================
 // Create game class
@@ -27,12 +28,12 @@ class Breakout : public Game
 private:
     // variables
     std::vector<Block> blocks;
-    std::string logText;
+    //std::string logText;
     int score;
 
     // Game objects
-    TextDX *dxFont;
-    TextDX *dxLogFont;
+    TextDX *dxScoreFont;
+    Console *console;
 
     TextureManager backgroundTexture;
     TextureManager ballTexture;
@@ -77,8 +78,6 @@ public:
     void initShip();
     void initBall();
     void initBlocks();
-
-    void setLog(const std::string &message);
 
     void CheckForExit(); // helper to handle exit inputs
 

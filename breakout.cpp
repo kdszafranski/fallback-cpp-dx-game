@@ -13,8 +13,8 @@
 Breakout::Breakout()
 {
     isPaused = false;
-    dxFont = new TextDX();
-    dxLogFont = new TextDX();
+    dxScoreFont = new TextDX();
+    console = new Console();
     ResetGame();
 }
 
@@ -24,8 +24,8 @@ Breakout::Breakout()
 Breakout::~Breakout()
 {
     releaseAll();           // call onLostDevice() for every graphics item
-    SAFE_DELETE(dxFont);
-    SAFE_DELETE(dxLogFont);
+    SAFE_DELETE(dxScoreFont);
+    SAFE_DELETE(console);
 }
 
 /// <summary>
@@ -34,7 +34,7 @@ Breakout::~Breakout()
 void Breakout::ResetGame()
 {
     score = 0;
-    logText = "";
+    console->resetLog();
 }
 
 //=============================================================================
@@ -48,12 +48,11 @@ void Breakout::initialize(HWND hwnd)
     initSprites();
 
     // Init DirectX font with 48px high Arial
-    if (dxFont->initialize(graphics, 48, true, false, "Arial") == false)
+    if (dxScoreFont->initialize(graphics, 48, true, false, "Arial") == false)
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing DirectX font"));
-    
-    // Init DirectX font with 48px high Arial
-    if (dxLogFont->initialize(graphics, 16, true, false, "Arial") == false)
-        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing DirectX font"));
+   
+    // init the console log
+    console->initialize(graphics);
 
     return;
 }
@@ -198,7 +197,7 @@ void Breakout::restartBall()
     ball.setY(300);
     ball.setVelocity(VECTOR2(ballNS::SPEED, ballNS::SPEED)); // move!
 
-    setLog("Resetting ball");
+    console->setLogText("Resetting ball");
 }
 
 //=============================================================================
@@ -242,7 +241,7 @@ void Breakout::collisions()
         if (ball.collidesWith(ship, collisionVector)) {
             ball.bounceOffShip(collisionVector, collisionPosition, ship.getSpriteData());
             
-            setLog("collisionPos: " + std::to_string(collisionPosition.x) + " , " + std::to_string(collisionPosition.y));
+            console->setLogText("collisionPos: " + std::to_string(collisionPosition.x) + " , " + std::to_string(collisionPosition.y));
         }
 
         // collision ball with block
@@ -287,7 +286,7 @@ void Breakout::render()
 
         // UI
         renderScore();
-        renderLog();
+        console->renderLog();
         
         graphics->spriteEnd();
     }
@@ -300,29 +299,13 @@ void Breakout::render()
 void Breakout::renderScore() 
 {
     // shadow
-    dxFont->setFontColor(graphicsNS::BLACK50);
-    dxFont->print("Score: " + std::to_string(score), 9, 9); 
+    dxScoreFont->setFontColor(graphicsNS::BLACK50);
+    dxScoreFont->print("Score: " + std::to_string(score), 9, 9); 
 
     // main font
-    dxFont->setFontColor(graphicsNS::WHITE);
-    dxFont->print("Score: " + std::to_string(score), 7, 7);
+    dxScoreFont->setFontColor(graphicsNS::WHITE);
+    dxScoreFont->print("Score: " + std::to_string(score), 7, 7);
 }
-
-void Breakout::renderLog() 
-{
-    // 
-    if (logText.length() > 0) {
-        // draw the text
-        dxLogFont->setFontColor(graphicsNS::WHITE);
-        dxLogFont->print(logText, 6, GAME_HEIGHT - 20);
-    }
-}
-
-void Breakout::setLog(const std::string &message)
-{
-    logText = message;
-}
-
 
 //=============================================================================
 // ESC key quits the game
@@ -349,8 +332,8 @@ void Breakout::releaseAll()
     ballTexture.onLostDevice();
     shipTexture.onLostDevice();
     blockTexture.onLostDevice();
-    dxFont->onLostDevice();
-    dxLogFont->onLostDevice();
+    dxScoreFont->onLostDevice();
+    console->onLostDevice();
     
     Game::releaseAll();
     return;
@@ -366,8 +349,8 @@ void Breakout::resetAll()
     shipTexture.onResetDevice();
     ballTexture.onResetDevice();
     blockTexture.onResetDevice();
-    dxFont->onResetDevice();
-    dxLogFont->onResetDevice();
+    dxScoreFont->onResetDevice();
+    console->onResetDevice();
 
     Game::resetAll();
     return;
