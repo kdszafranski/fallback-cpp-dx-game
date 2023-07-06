@@ -30,6 +30,11 @@ void Console::initialize(Graphics *graphics)
 
 }
 
+void Console::setLogText(int number)
+{
+	logText = std::to_string(number);
+}
+
 void Console::setLogText(const std::string &message)
 {
 	logText = message;

@@ -138,7 +138,9 @@ void Breakout::initBlocks()
 
         int x = START_X;
         for (int j = 0; j < COLS; j++) {
-            Block newBlock(WEAK);
+
+            BLOCK t = BLOCK(rand() % 4);
+            Block newBlock(STRONG);
 
             if (!newBlock.initialize(this, blockNS::WIDTH, blockNS::HEIGHT, blockNS::TEXTURE_COLS, &blockTexture))
             {
@@ -149,8 +151,26 @@ void Breakout::initBlocks()
             newBlock.setY(y);
             newBlock.setVelocity(VECTOR2(0, 0)); 
 
-            // set random color
-            newBlock.setColor(D3DCOLOR_ARGB(255, (rand() % 254) + 1, 255, 255));
+            // set color based on type of block
+            // newBlock.setColor(D3DCOLOR_ARGB(255, (rand() % 254) + 1, 255, 255));
+            switch (newBlock.getBlockType()) {
+                case WEAK:
+                    newBlock.setColor(graphicsNS::GREEN);
+                    break;
+                case STRONG:
+                    newBlock.setColor(graphicsNS::ORANGE);
+                    break;
+                case HARD:
+                    newBlock.setColor(graphicsNS::RED);
+                    break;
+                case METAL:
+                    newBlock.setColor(graphicsNS::GRAY);
+                    break;
+                case INVINCIBLE:
+                    newBlock.setColor(graphicsNS::YELLOW);
+                    break;
+            }
+
 
             // add to vector
             blocks.push_back(newBlock);
@@ -247,23 +267,27 @@ void Breakout::collisions()
 
         // collision ball with block
         for (int i = 0; i < blocks.size(); i++) {
-            Block block = blocks[i];
+            Block block = blocks.at(i);
 
-            if (ball.collidesWith(block, collisionVector)) {
-                ball.bounce(collisionVector, block.getSpriteData());
+            if (ball.collidesWith(blocks.at(i), collisionVector)) {
+                ball.bounce(collisionVector, blocks.at(i).getSpriteData());
 
                 // reduce health
-                block.damage(BALL);
+                if (blocks.at(i).getBlockType() != INVINCIBLE) {
+                    blocks.at(i).damage(BALL);
+                    console->setLogText(blocks.at(i).getHealth());
 
-                // check if ball is dead
-                if (block.getHealth() <= 0) {
-                    removeBlock(i);
+                    // check if ball is dead
+                    if (blocks.at(i).getHealth() <= 0) {
+                        // update score
+                        score += blocks.at(i).getPointValue();
 
-                    // update score
-                    score += block.getPointValue();
+                        removeBlock(i);
+                    }
                 }
-            }
-        }
+
+            } // end collision if
+        } // end loop
     }
 
 }

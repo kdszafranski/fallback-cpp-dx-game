@@ -10,9 +10,10 @@
 //=============================================================================
 // default constructor
 //=============================================================================
-Block::Block(BLOCK type = WEAK) : Entity()
+Block::Block(BLOCK type) : Entity()
 {
     // set values based on given type
+    blockType = type;
     health = type + 1;
     pointValue = health * 5;
 

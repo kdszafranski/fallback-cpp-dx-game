@@ -22,6 +22,7 @@ public:
 	// reset text
 	void resetLog();
 	// sets the next log output message
+	void setLogText(int number);
 	void setLogText(const std::string &message);
 	// set and immediately display
 	void renderLog(const std::string &message);

@@ -38,6 +38,7 @@ public:
     void damage(WEAPON);
 
     // inline getters/setters
+    BLOCK getBlockType() { return blockType;  }
     void setColor(COLOR_ARGB c) { color = c; };
     COLOR_ARGB getColor() { return color; };
 };
