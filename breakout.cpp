@@ -140,7 +140,7 @@ void Breakout::initBlocks()
         for (int j = 0; j < COLS; j++) {
 
             BLOCK t = BLOCK(rand() % 4);
-            Block newBlock(STRONG);
+            Block newBlock(t);
 
             if (!newBlock.initialize(this, blockNS::WIDTH, blockNS::HEIGHT, blockNS::TEXTURE_COLS, &blockTexture))
             {
@@ -265,19 +265,24 @@ void Breakout::collisions()
         // collision ball with block
         for (int i = 0; i < blocks.size(); i++) {
             // must use .at() to properly access the actual block object
-            Block block = blocks.at(i);
+            // .at() returns a "reference".. hence a pointer is needed to capture it properly
+            Block* const block = &blocks.at(i);
 
+            // collidesWith needs an Entity*
             if (ball.collidesWith(blocks.at(i), collisionVector)) {
-                ball.bounce(collisionVector, blocks.at(i).getSpriteData());
+                ball.bounce(collisionVector, block->getSpriteData());
 
-                // reduce health
-                if (blocks.at(i).getBlockType() != INVINCIBLE) {
-                    blocks.at(i).damage(BALL);
+                // reduce health if possible
+                if (block->getBlockType() != INVINCIBLE) {
+                    // damage
+                    block->damage(BALL);
+
+                    console->setLogText("Health: " + std::to_string(block->getHealth()));
 
                     // check if ball is dead
-                    if (blocks.at(i).getHealth() <= 0) {
+                    if (block->getHealth() <= 0) {
                         // update score
-                        score += blocks.at(i).getPointValue();
+                        score += block->getPointValue();
 
                         removeBlock(i);
                     }
