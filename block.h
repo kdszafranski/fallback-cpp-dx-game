@@ -41,6 +41,7 @@ public:
     BLOCK getBlockType() { return blockType;  }
     void setColor(COLOR_ARGB c) { color = c; };
     COLOR_ARGB getColor() { return color; };
+    void setBlockColorByType();
 };
 #endif
 

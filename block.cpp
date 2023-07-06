@@ -42,25 +42,8 @@ Block::Block(BLOCK type) : Entity()
     collisionType = entityNS::BOX;
 
     // set color based on type of block
-    switch (blockType) {
-    case WEAK:
-        color = graphicsNS::GREEN;
-        break;
-    case STRONG:
-        color = graphicsNS::ORANGE;
-        break;
-    case HARD:
-        color = graphicsNS::RED;
-        break;
-    case METAL:
-        color = graphicsNS::GRAY;
-        break;
-    case INVINCIBLE:
-        color = graphicsNS::YELLOW;
-        break;
-    }
+    setBlockColorByType();
 
-    //color = graphicsNS::WHITE;
 }
 
 //=============================================================================
@@ -100,6 +83,32 @@ void Block::damage(WEAPON weapon)
 {
     if (weapon == BALL) {
         health = health - 1;
+        if (health > 0) {
+            // shift my type down
+            blockType = static_cast<BLOCK>(blockType - 1);
+            setBlockColorByType(); // update my color
+        }
     }
+}
+
+void Block::setBlockColorByType()
+{
+    switch (blockType) {
+        case WEAK:
+            color = graphicsNS::GREEN;
+            break;
+        case STRONG:
+            color = graphicsNS::ORANGE;
+            break;
+        case HARD:
+            color = graphicsNS::RED;
+            break;
+        case METAL:
+            color = graphicsNS::GRAY;
+            break;
+        case INVINCIBLE:
+            color = graphicsNS::YELLOW;
+            break;
+        }
 }
 
