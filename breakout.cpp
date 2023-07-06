@@ -152,27 +152,6 @@ void Breakout::initBlocks()
             newBlock.setY(y);
             newBlock.setVelocity(VECTOR2(0, 0)); 
 
-            // set color based on type of block
-            // newBlock.setColor(D3DCOLOR_ARGB(255, (rand() % 254) + 1, 255, 255));
-            switch (newBlock.getBlockType()) {
-                case WEAK:
-                    newBlock.setColor(graphicsNS::GREEN);
-                    break;
-                case STRONG:
-                    newBlock.setColor(graphicsNS::ORANGE);
-                    break;
-                case HARD:
-                    newBlock.setColor(graphicsNS::RED);
-                    break;
-                case METAL:
-                    newBlock.setColor(graphicsNS::GRAY);
-                    break;
-                case INVINCIBLE:
-                    newBlock.setColor(graphicsNS::YELLOW);
-                    break;
-            }
-
-
             // add to vector
             blocks.push_back(newBlock);
             

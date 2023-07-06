@@ -40,7 +40,27 @@ Block::Block(BLOCK type) : Entity()
     radius = blockNS::WIDTH / 2.0;
     mass = blockNS::MASS;
     collisionType = entityNS::BOX;
-    color = graphicsNS::WHITE;
+
+    // set color based on type of block
+    switch (blockType) {
+    case WEAK:
+        color = graphicsNS::GREEN;
+        break;
+    case STRONG:
+        color = graphicsNS::ORANGE;
+        break;
+    case HARD:
+        color = graphicsNS::RED;
+        break;
+    case METAL:
+        color = graphicsNS::GRAY;
+        break;
+    case INVINCIBLE:
+        color = graphicsNS::YELLOW;
+        break;
+    }
+
+    //color = graphicsNS::WHITE;
 }
 
 //=============================================================================
