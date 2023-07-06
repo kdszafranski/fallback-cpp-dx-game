@@ -41,7 +41,8 @@ class Entity : public Image
     VECTOR2 velocity;       // velocity
     VECTOR2 deltaV;         // added to velocity during next call to update()
     float   mass;           // Mass of entity
-    float   health;         // health 0 to 100
+    short   health;         // health 0 to 100
+    short   pointValue;     // points earned from this
     float   rr;             // Radius squared variable
     float   force;          // Force of gravity
     float   gravity;        // gravitational constant of the game universe
@@ -120,6 +121,8 @@ class Entity : public Image
 
     // Return health;
     virtual float getHealth()         const {return health;}
+    // Return points
+    virtual float getPointValue()         const {return pointValue;}
 
     // Return collision type (NONE, CIRCLE, BOX, ROTATED_BOX)
     virtual entityNS::COLLISION_TYPE getCollisionType() {return collisionType;}

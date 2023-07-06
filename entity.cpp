@@ -25,7 +25,8 @@ Entity::Entity() : Image()
     active = true;                  // the entity is active
     rotatedBoxReady = false;
     collisionType = entityNS::CIRCLE;
-    health = 100;
+    health = 0;
+    pointValue = 0;
     gravity = entityNS::GRAVITY;
 }
 

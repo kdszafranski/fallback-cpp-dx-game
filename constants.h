@@ -80,5 +80,7 @@ const UCHAR SPACE_KEY = VK_SPACE;     // down arrow
 
 // weapon types
 enum WEAPON { TORPEDO, SHIP, PLANET, BALL };
+// block types
+enum BLOCK { WEAK, STRONG, HARD, METAL, INVINCIBLE };
 
 #endif

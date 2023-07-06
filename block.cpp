@@ -10,9 +10,11 @@
 //=============================================================================
 // default constructor
 //=============================================================================
-Block::Block() : Entity()
+Block::Block(BLOCK type = WEAK) : Entity()
 {
-    health = 2;
+    // set values based on given type
+    health = type + 1;
+    pointValue = health * 5;
 
     spriteData.width = blockNS::WIDTH;           // size of Ball
     spriteData.height = blockNS::HEIGHT;

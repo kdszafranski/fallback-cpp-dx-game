@@ -138,7 +138,7 @@ void Breakout::initBlocks()
 
         int x = START_X;
         for (int j = 0; j < COLS; j++) {
-            Block newBlock;
+            Block newBlock(WEAK);
 
             if (!newBlock.initialize(this, blockNS::WIDTH, blockNS::HEIGHT, blockNS::TEXTURE_COLS, &blockTexture))
             {
@@ -247,18 +247,20 @@ void Breakout::collisions()
 
         // collision ball with block
         for (int i = 0; i < blocks.size(); i++) {
-            if (ball.collidesWith(blocks[i], collisionVector)) {
-                ball.bounce(collisionVector, blocks[i].getSpriteData());
+            Block block = blocks[i];
+
+            if (ball.collidesWith(block, collisionVector)) {
+                ball.bounce(collisionVector, block.getSpriteData());
 
                 // reduce health
-                blocks[i].damage(BALL);
+                block.damage(BALL);
 
                 // check if ball is dead
-                if (blocks[i].getHealth() <= 0) {
+                if (block.getHealth() <= 0) {
                     removeBlock(i);
 
                     // update score
-                    score += 5;
+                    score += block.getPointValue();
                 }
             }
         }

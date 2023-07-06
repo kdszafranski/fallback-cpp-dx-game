@@ -24,10 +24,11 @@ class Block : public Entity
 {
 private:
     COLOR_ARGB color;
+    BLOCK blockType;
 
 public:
-    // constructor
-    Block();
+    // constructors
+    Block(BLOCK type = WEAK);
 
     // inherited member functions
     virtual void draw();
