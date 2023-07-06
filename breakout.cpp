@@ -139,7 +139,8 @@ void Breakout::initBlocks()
         int x = START_X;
         for (int j = 0; j < COLS; j++) {
 
-            BLOCK t = BLOCK(rand() % 4);
+            // rand() is exclusive 
+            BLOCK const t = BLOCK(rand() % 5);
             Block newBlock(t);
 
             if (!newBlock.initialize(this, blockNS::WIDTH, blockNS::HEIGHT, blockNS::TEXTURE_COLS, &blockTexture))
