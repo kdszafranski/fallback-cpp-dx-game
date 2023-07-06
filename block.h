@@ -26,6 +26,10 @@ private:
     COLOR_ARGB color;
     BLOCK blockType;
 
+    bool isAnimating = false;
+    float originalScale;
+    float animScale;
+
 public:
     // constructors
     Block(BLOCK type = WEAK);
@@ -42,6 +46,9 @@ public:
     void setColor(COLOR_ARGB c) { color = c; };
     COLOR_ARGB getColor() { return color; };
     void setBlockColorByType();
+
+    // animations
+    void bounceScale(float initialScale, float endScale);
 };
 #endif
 

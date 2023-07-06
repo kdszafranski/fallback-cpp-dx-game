@@ -41,6 +41,10 @@ Block::Block(BLOCK type) : Entity()
     mass = blockNS::MASS;
     collisionType = entityNS::BOX;
 
+    isAnimating = false;
+    originalScale = 1.0f;
+    animScale = 1.0f;
+
     // set color based on type of block
     setBlockColorByType();
 
@@ -72,8 +76,27 @@ void Block::draw()
 //=============================================================================
 void Block::update(float frameTime)
 {
-    // blocks don't move
-    Entity::update(frameTime);
+    if (isAnimating) {
+        // scale
+        float scale = getScale();
+        if (scale > animScale && scale < originalScale) {
+            // go down
+            setScale(getScale() - 0.025f);
+        } else {
+            if (scale > originalScale) {
+                // done
+                setScale(originalScale);
+                isAnimating = false;
+            } else {
+                // going up
+                animScale = originalScale; // need to keep going up
+                setScale(getScale() + 0.025f);
+            }
+        }
+    } else {
+        // blocks don't move
+        Entity::update(frameTime);
+    }
 }
 
 //=============================================================================
@@ -87,6 +110,8 @@ void Block::damage(WEAPON weapon)
             // shift my type down
             blockType = static_cast<BLOCK>(blockType - 1);
             setBlockColorByType(); // update my color
+
+            bounceScale(1.0f, 0.5f);
         }
     }
 }
@@ -110,5 +135,12 @@ void Block::setBlockColorByType()
             color = graphicsNS::YELLOW;
             break;
         }
+}
+
+void Block::bounceScale(float initialScale, float endScale)
+{
+    isAnimating = true;
+    setScale(0.999f);
+    animScale = endScale;
 }
 
