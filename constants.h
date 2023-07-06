@@ -79,6 +79,6 @@ const UCHAR SHIP_DOWN_KEY = VK_DOWN;     // down arrow
 const UCHAR SPACE_KEY = VK_SPACE;     // down arrow
 
 // weapon types
-enum WEAPON { TORPEDO, SHIP, PLANET };
+enum WEAPON { TORPEDO, SHIP, PLANET, BALL };
 
 #endif

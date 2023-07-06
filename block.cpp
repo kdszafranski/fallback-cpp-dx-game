@@ -12,6 +12,8 @@
 //=============================================================================
 Block::Block() : Entity()
 {
+    health = 2;
+
     spriteData.width = blockNS::WIDTH;           // size of Ball
     spriteData.height = blockNS::HEIGHT;
     spriteData.x = blockNS::X;                   // location on screen
@@ -73,5 +75,8 @@ void Block::update(float frameTime)
 //=============================================================================
 void Block::damage(WEAPON weapon)
 {
+    if (weapon == BALL) {
+        health = health - 1;
+    }
 }
 

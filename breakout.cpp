@@ -248,10 +248,18 @@ void Breakout::collisions()
         // collision ball with block
         for (int i = 0; i < blocks.size(); i++) {
             if (ball.collidesWith(blocks[i], collisionVector)) {
-                ball.bounce(collisionVector, blocks[i].getSpriteData());            
-                removeBlock(i);
-                // update score
-                score += 5;
+                ball.bounce(collisionVector, blocks[i].getSpriteData());
+
+                // reduce health
+                blocks[i].damage(BALL);
+
+                // check if ball is dead
+                if (blocks[i].getHealth() <= 0) {
+                    removeBlock(i);
+
+                    // update score
+                    score += 5;
+                }
             }
         }
     }

@@ -165,6 +165,6 @@ void Ball::update(float frameTime)
 //=============================================================================
 void Ball::damage(WEAPON weapon)
 {
-
 }
+
 
