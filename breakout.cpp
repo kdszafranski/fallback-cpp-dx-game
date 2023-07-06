@@ -216,8 +216,6 @@ void Breakout::restartBall()
     ball.setX(220);
     ball.setY(300);
     ball.setVelocity(VECTOR2(ballNS::SPEED, ballNS::SPEED)); // move!
-
-    //console->setLogText("Resetting ball");
 }
 
 //=============================================================================
@@ -262,11 +260,11 @@ void Breakout::collisions()
             ball.bounceOffShip(collisionVector, collisionPosition, ship.getSpriteData());
             
             console->setLogText(ship.toString());
-            //console->setLogText("collisionPos: " + std::to_string(collisionPosition.x) + " , " + std::to_string(collisionPosition.y));
         }
 
         // collision ball with block
         for (int i = 0; i < blocks.size(); i++) {
+            // must use .at() to properly access the actual block object
             Block block = blocks.at(i);
 
             if (ball.collidesWith(blocks.at(i), collisionVector)) {
@@ -275,7 +273,6 @@ void Breakout::collisions()
                 // reduce health
                 if (blocks.at(i).getBlockType() != INVINCIBLE) {
                     blocks.at(i).damage(BALL);
-                    console->setLogText(blocks.at(i).getHealth());
 
                     // check if ball is dead
                     if (blocks.at(i).getHealth() <= 0) {
