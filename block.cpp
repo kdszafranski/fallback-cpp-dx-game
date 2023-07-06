@@ -78,10 +78,10 @@ void Block::update(float frameTime)
 {
     if (isAnimating) {
         // scale
-        float scale = getScale();
+        float const scale = getScale();
         if (scale > animScale && scale < originalScale) {
             // go down
-            setScale(getScale() - 0.025f);
+             setScale(getScale() - 0.025f);
         } else {
             if (scale > originalScale) {
                 // done
@@ -111,7 +111,8 @@ void Block::damage(WEAPON weapon)
             blockType = static_cast<BLOCK>(blockType - 1);
             setBlockColorByType(); // update my color
 
-            bounceScale(1.0f, 0.5f);
+            // animate the block
+            bounceScale(1.0f, 0.75f);
         }
     }
 }
@@ -140,7 +141,8 @@ void Block::setBlockColorByType()
 void Block::bounceScale(float initialScale, float endScale)
 {
     isAnimating = true;
-    setScale(0.999f);
     animScale = endScale;
+    // needs to be less than originalScale
+    setScale(0.999f);
 }
 
