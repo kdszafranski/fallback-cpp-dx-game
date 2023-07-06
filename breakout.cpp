@@ -139,7 +139,7 @@ void Breakout::initBlocks()
         int x = START_X;
         for (int j = 0; j < COLS; j++) {
 
-            // rand() is exclusive 
+            // rand() with % is 0-n exclusive 
             BLOCK const t = static_cast<BLOCK>((rand() % 5));
             Block newBlock(t);
 
