@@ -124,7 +124,7 @@ void Breakout::initBlocks()
 {
     const float START_X = 82;
     const float START_Y = 100;
-    const int COLS = 10;
+    const int COLS = 6;
 
     // load our texture, reuse it for all block Entities
     if (!blockTexture.initialize(graphics, BLOCK_PATH))
@@ -134,7 +134,7 @@ void Breakout::initBlocks()
 
     srand((unsigned)time(0));
     int y = START_Y;
-    for (int i = 0; i < 2; i++) {
+    for (int i = 0; i < 4; i++) {
 
         int x = START_X;
         for (int j = 0; j < COLS; j++) {
@@ -180,7 +180,10 @@ void Breakout::update()
 
         // blocks
         for (int i = 0; i < blocks.size(); i++) {
-            blocks.at(i).update(frameTime);
+            // only update blocks that need it
+            if (blocks.at(i).getIsAnimating()) {
+                blocks.at(i).update(frameTime);
+            }
         }
 
         // check if the ball went off below ship

@@ -69,25 +69,29 @@ void Ball::bounce(VECTOR2& collisionVector, SpriteData otherSpriteData)
     // total bottom y position of other entity
     const float boxHeight = (otherSpriteData.y + otherSpriteData.height);
 
-    // above or below
+    const D3DXVECTOR2* myCenter = getCenter();
+
+    // above or fully below
     if (
-        (myX > otherSpriteData.x && myY < otherSpriteData.y) || // above
-        (myX > otherSpriteData.x && myY + spriteData.y > boxHeight) // below
+        (myCenter->x > otherSpriteData.x && myCenter->y <= otherSpriteData.y) || // above
+        (myCenter->x > otherSpriteData.x && myY + spriteData.height >= boxHeight) // fully below
         )
     {
         velocity.y = -velocity.y;
+        audio->playCue(CLUNK);  
+        return;
     }
 
     // left or right
     if (
         (myX < otherSpriteData.x && myY > otherSpriteData.y) ||     // left
-        (myX > boxWidth && myY > otherSpriteData.y)  // right
+        (myX > otherSpriteData.x && myY > otherSpriteData.y)  // right
         )
     {
         velocity.x = -velocity.x;
+        audio->playCue(CLUNK); 
     }
 
-    audio->playCue(CLUNK); 
 }
 
 /// <summary>
@@ -135,8 +139,8 @@ void Ball::update(float frameTime)
 {
     Entity::update(frameTime);
     
-    spriteData.x += frameTime * velocity.x;         // move ship along X 
-    spriteData.y += frameTime * velocity.y;         // move ship along Y
+    spriteData.x += frameTime * velocity.x;         // move along X 
+    spriteData.y += frameTime * velocity.y;         // move along Y
 
     // Bounce off walls
     // NOT done with actual collisions, this is done strictly from screen position
