@@ -12,13 +12,14 @@ class Button : public Image
 private:
 
 	TextureManager buttonTexture;
+	COLOR_ARGB defaultColor;
+	COLOR_ARGB mouseOverColor;
 	Input *input;
 
 
 public:
 
 	Button();
-	~Button();
 
 	virtual bool initialize(Game* gamePtr, int width, int height, int ncols,
 		TextureManager* textureM);

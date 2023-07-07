@@ -118,7 +118,7 @@ void Breakout::initButtons()
     }
 
     newGameButton.setX(400 - newGameButton.getSpriteData().width / 2);
-    newGameButton.setY(500);
+    newGameButton.setY(400);
 }
 
 //=============================================================================
@@ -211,6 +211,10 @@ void Breakout::update()
 {
     // check if we want to exit
     CheckForExit();
+
+    if (currentScreen == TITLE) {
+        newGameButton.update(frameTime);
+    }
 
     if (!isPaused && currentScreen == GAME) {
         // update position of all game objects
@@ -390,11 +394,11 @@ void Breakout::CheckForExit() {
     }
 
     // handle inputs on Title Screen only
-    if (currentScreen == TITLE) {
-        if (input->getMouseLButton()) {
-            startNewGame();
-        }
-    }
+    //if (currentScreen == TITLE) {
+    //    if (input->getMouseLButton()) {
+    //        startNewGame();
+    //    }
+    //}
     
     if (currentScreen == GAME) {
         // SPACE pauses
