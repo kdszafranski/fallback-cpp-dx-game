@@ -62,10 +62,13 @@ void Breakout::startNewGame()
     // set proper bg frame
     backgroundImage.setX(- static_cast<int>(GAME_WIDTH));
 
-    initSprites();
-
-    ResetGame();
     currentScreen = GAME;
+
+    initSprites();
+    ResetGame();
+
+    // play!
+    restartBall();
 }
 
 //=============================================================================
@@ -78,9 +81,6 @@ void Breakout::initSprites() {
     initBlocks();
     // ball sprite
     initBall();
-
-    // play!
-    restartBall();
 }
 
 
@@ -390,7 +390,6 @@ void Breakout::CheckForExit() {
 void Breakout::releaseAll()
 {
     backgroundTexture.onLostDevice();
-    titleTexture.onLostDevice();
     ballTexture.onLostDevice();
     shipTexture.onLostDevice();
     blockTexture.onLostDevice();
@@ -408,7 +407,6 @@ void Breakout::releaseAll()
 void Breakout::resetAll()
 {
     backgroundTexture.onResetDevice();
-    titleTexture.onResetDevice();
     shipTexture.onResetDevice();
     ballTexture.onResetDevice();
     blockTexture.onResetDevice();
