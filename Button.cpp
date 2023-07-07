@@ -2,21 +2,36 @@
 
 Button::Button() : Image()
 {
-	defaultColor = graphicsNS::ALPHA75;
-	mouseOverColor = graphicsNS::WHITE;
+	defaultColor = buttonNS::DEFAULT_COLOR;
+	mouseOverColor = buttonNS::MOUSE_OVER_COLOR;
 
 	colorFilter = defaultColor;
 }
 
-bool Button::initialize(Game* gamePtr, int width, int height, int ncols,
+Button::~Button()
+{
+
+}
+
+bool Button::initialize(Game* game, int width, int height, int ncols,
     TextureManager* textureM)
 {
-    input = gamePtr->getInput();
+    input = game->getInput();
 
-    return(Image::initialize(gamePtr->getGraphics(), width, height, ncols, textureM));
+    return(Image::initialize(game->getGraphics(), width, height, ncols, textureM));
 }
 
 void Button::update(float frameTime)
+{
+    // nothing to do right now
+}
+
+void Button::draw()
+{
+    Image::draw(colorFilter);
+}
+
+bool Button::isMouseOver()
 {
     const float mouseX = input->getMouseX();
     const float mouseY = input->getMouseY();
@@ -26,17 +41,14 @@ void Button::update(float frameTime)
     if (
         (mouseX >= myX && mouseX < myX + getWidth()) &&
         (mouseY >= myY && mouseY < myY + getHeight())
-    )
+        )
     {
         // on mouseover
         colorFilter = mouseOverColor;
-    } else {
-        // mouse not over us
-        colorFilter = defaultColor;
+        return true;
     }
-}
-
-void Button::draw()
-{
-    Image::draw(colorFilter);
+    
+    // mouse not over us
+    colorFilter = defaultColor;
+    return false;
 }

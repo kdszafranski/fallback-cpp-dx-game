@@ -212,31 +212,50 @@ void Breakout::update()
     // check if we want to exit
     CheckForExit();
 
+    // handle inputs on Title Screen only
     if (currentScreen == TITLE) {
-        newGameButton.update(frameTime);
-    }
-
-    if (!isPaused && currentScreen == GAME) {
-        // update position of all game objects
-        ship.update(frameTime);
-        ball.update(frameTime);
-
-        // blocks
-        for (int i = 0; i < blocks.size(); i++) {
-            // only update blocks that need it
-            if (blocks.at(i).getIsAnimating()) {
-                blocks.at(i).update(frameTime);
+        if (newGameButton.isMouseOver()) {
+            // over, allow clicks
+            if (input->getMouseLButton()) {
+                startNewGame();
             }
         }
+    }
 
-        // check if the ball went off below ship
-        if (ball.getY() > GAME_HEIGHT - ballNS::HEIGHT)  // if hit bottom screen edge
-        {
-            audio->playCue(ZAP);
-            restartBall();
+    // handle Game updates and inputs
+    if (currentScreen == GAME) {
+        CheckPauseInput();
+
+        if (!isPaused) {
+            // update position of all game objects
+            ship.update(frameTime);
+            ball.update(frameTime);
+
+            // blocks
+            for (int i = 0; i < blocks.size(); i++) {
+                // only update blocks that need it
+                if (blocks.at(i).getIsAnimating()) {
+                    blocks.at(i).update(frameTime);
+                }
+            }
+
+            // check if the ball went off below ship
+            if (ball.getY() > GAME_HEIGHT - ballNS::HEIGHT) {
+                audio->playCue(ZAP);
+                restartBall();
+            }
+        } 
+    }
+}
+
+void Breakout::CheckPauseInput()
+{
+    if (currentScreen == GAME) {
+        // SPACE pauses
+        if (input->isKeyDown(SPACE_KEY)) {
+            isPaused = !isPaused;
         }
     }
- 
 }
 
 //=============================================================================
@@ -392,20 +411,6 @@ void Breakout::CheckForExit() {
     if (input->isKeyDown(ESC_KEY)) {
         PostQuitMessage(0);
     }
-
-    // handle inputs on Title Screen only
-    //if (currentScreen == TITLE) {
-    //    if (input->getMouseLButton()) {
-    //        startNewGame();
-    //    }
-    //}
-    
-    if (currentScreen == GAME) {
-        // SPACE pauses
-        if (input->isKeyDown(SPACE_KEY)) {
-            isPaused = !isPaused;
-        }
-    }
 }
 
 //=============================================================================
@@ -418,6 +423,7 @@ void Breakout::releaseAll()
     ballTexture.onLostDevice();
     shipTexture.onLostDevice();
     blockTexture.onLostDevice();
+    buttonTexture.onLostDevice();
     dxScoreFont.onLostDevice();
     console.onLostDevice();
     
@@ -435,6 +441,7 @@ void Breakout::resetAll()
     shipTexture.onResetDevice();
     ballTexture.onResetDevice();
     blockTexture.onResetDevice();
+    buttonTexture.onResetDevice();
     dxScoreFont.onResetDevice();
     console.onResetDevice();
 

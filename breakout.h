@@ -71,7 +71,6 @@ public:
     void collisions();  // "
     void render();      // "
     void renderScore();
-    void renderLog();
     void releaseAll();
     void resetAll();
     
@@ -88,7 +87,9 @@ public:
     void initBall();
     void initBlocks();
 
+    // user input handlers
     void CheckForExit(); // helper to handle exit inputs
+    void CheckPauseInput(); // helper to handle pause input
 
     void wrapScreenEdge(); // checks screen bounds
 };
