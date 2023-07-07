@@ -15,7 +15,6 @@ Breakout::Breakout()
 {
     isPaused = false;
     currentScreen = TITLE;
-    //ResetGame();
 }
 
 //=============================================================================
@@ -24,8 +23,6 @@ Breakout::Breakout()
 Breakout::~Breakout()
 {
     releaseAll();           // call onLostDevice() for every graphics item
-    //SAFE_DELETE(dxScoreFont);
-    //SAFE_DELETE(console);
 }
 
 /// <summary>
@@ -45,7 +42,6 @@ void Breakout::initialize(HWND hwnd)
 {
     Game::initialize(hwnd); // throws GameError
 
-    //initSprites();
     initBackgrounds();
 
     // Init DirectX font with 48px high Arial
@@ -63,6 +59,9 @@ void Breakout::initialize(HWND hwnd)
 /// </summary>
 void Breakout::startNewGame()
 {
+    // set proper bg frame
+    backgroundImage.setX(- static_cast<int>(GAME_WIDTH));
+
     initSprites();
 
     ResetGame();
@@ -73,41 +72,34 @@ void Breakout::startNewGame()
 // Initializes all the game sprites from textures
 //=============================================================================
 void Breakout::initSprites() {
-    initBackgrounds();
-
     // create our game object and graphics
     initShip();
     // set up the blocks
     initBlocks();
-    // on the ball!
+    // ball sprite
     initBall();
+
+    // play!
+    restartBall();
 }
 
+
+/// <summary>
+/// Load background image(s)
+/// </summary>
 void Breakout::initBackgrounds()
 {
     // background texture
-    //if (!backgroundTexture.initialize(graphics, BG_PATH))
-    //{
-    //    throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing background texture"));
-    //}
-    //// background
-    //if (!backgroundImage.initialize(graphics, 0, 0, 0, &backgroundTexture))
-    //{
-    //    throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing game bg image"));
-    //}
-    
-    // background texture
-    if (!titleTexture.initialize(graphics, TITLE_PATH))
+    if (!backgroundTexture.initialize(graphics, BG_PATH))
     {
-        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing title bg texture"));
-    }
-    // background
-    if (!backgroundImage.initialize(graphics, 0, 0, 0, &titleTexture))
-    {
-        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing title bg image"));
+        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing background texture"));
     }
 
-
+    // game bg image
+    if (!backgroundImage.initialize(graphics, 0, 0, BG_TEXTURE_COLS, &backgroundTexture))
+    {
+        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing game bg image"));
+    }
 }
 
 //=============================================================================
@@ -143,8 +135,6 @@ void Breakout::initBall()
     {
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ball entity"));
     }
-
-    restartBall();
 }
 
 //=============================================================================
