@@ -43,6 +43,7 @@ void Breakout::initialize(HWND hwnd)
     Game::initialize(hwnd); // throws GameError
 
     initBackgrounds();
+    initButtons();
 
     // Init DirectX font with 48px high Arial
     if (dxScoreFont.initialize(graphics, 48, true, false, "Arial") == false)
@@ -100,6 +101,24 @@ void Breakout::initBackgrounds()
     {
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing game bg image"));
     }
+}
+
+void Breakout::initButtons()
+{
+    // background texture
+    if (!buttonTexture.initialize(graphics, NG_BUTTON_PATH))
+    {
+        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing button texture"));
+    }
+
+    // game bg image
+    if (!newGameButton.initialize(this, 0, 0, 2, &buttonTexture))
+    {
+        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing button image"));
+    }
+
+    newGameButton.setX(400 - newGameButton.getSpriteData().width / 2);
+    newGameButton.setY(500);
 }
 
 //=============================================================================
@@ -323,6 +342,7 @@ void Breakout::render()
         switch (currentScreen) {
             case TITLE:
                 backgroundImage.draw();
+                newGameButton.draw();
                 break;
             case GAME:
                 backgroundImage.draw();
@@ -338,6 +358,7 @@ void Breakout::render()
                 // UI
                 renderScore();
                 console.renderLog();
+                break;
         }
         
         graphics->spriteEnd();

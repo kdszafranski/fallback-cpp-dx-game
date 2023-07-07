@@ -37,6 +37,7 @@ const char TITLE_PATH[] = "pictures\\title-screen-bg.jpg";
 const char BALL_PATH[] = "pictures\\ball.png";
 const char SHIP_PATH[] = "pictures\\ship.png";
 const char BLOCK_PATH[] = "pictures\\big-block.png";
+const char NG_BUTTON_PATH[] = "pictures\\start-button.png";
 
 
 // window

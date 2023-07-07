@@ -18,6 +18,7 @@
 #include "ball.h"
 #include "block.h"
 #include "textDX.h"
+#include "Button.h"
 #include "console.h"
 
 //=============================================================================
@@ -40,7 +41,11 @@ private:
     TextureManager ballTexture;
     TextureManager shipTexture;
     TextureManager blockTexture;
+    TextureManager buttonTexture;
     Image backgroundImage;
+    Button newGameButton;
+
+    // sprites
     Ship ship;
     Ball ball;
     Block block;
@@ -77,6 +82,7 @@ public:
     // Game state/flow
     void startNewGame();
     void initBackgrounds();
+    void initButtons();
     void initSprites();
     void initShip();
     void initBall();
