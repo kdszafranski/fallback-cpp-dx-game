@@ -6,8 +6,7 @@
 class Console
 {
 private:
-	//
-	TextDX *dxLogFont;
+	TextDX dxLogFont;
 	std::string logText;
 	
 public:

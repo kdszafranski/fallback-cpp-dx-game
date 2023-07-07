@@ -6,6 +6,7 @@
 // Charles Kelly
 
 #include "breakout.h"
+#include <time.h>
 
 //=============================================================================
 // Constructor
@@ -13,8 +14,6 @@
 Breakout::Breakout()
 {
     isPaused = false;
-    dxScoreFont = new TextDX();
-    console = new Console();
     ResetGame();
 }
 
@@ -24,8 +23,8 @@ Breakout::Breakout()
 Breakout::~Breakout()
 {
     releaseAll();           // call onLostDevice() for every graphics item
-    SAFE_DELETE(dxScoreFont);
-    SAFE_DELETE(console);
+    //SAFE_DELETE(dxScoreFont);
+    //SAFE_DELETE(console);
 }
 
 /// <summary>
@@ -34,7 +33,7 @@ Breakout::~Breakout()
 void Breakout::ResetGame()
 {
     score = 0;
-    console->resetLog();
+    console.resetLog();
 }
 
 //=============================================================================
@@ -48,11 +47,11 @@ void Breakout::initialize(HWND hwnd)
     initSprites();
 
     // Init DirectX font with 48px high Arial
-    if (dxScoreFont->initialize(graphics, 48, true, false, "Arial") == false)
+    if (dxScoreFont.initialize(graphics, 48, true, false, "Arial") == false)
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing DirectX font"));
    
     // init the console log
-    console->initialize(graphics);
+    console.initialize(graphics);
 
     return;
 }
@@ -133,6 +132,7 @@ void Breakout::initBlocks()
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing block texture"));
     }
 
+    srand((unsigned)time(0));
     int y = START_Y;
     for (int i = 0; i < 2; i++) {
 
@@ -140,7 +140,7 @@ void Breakout::initBlocks()
         for (int j = 0; j < COLS; j++) {
 
             // rand() with % is 0-n exclusive 
-            BLOCK const t = static_cast<BLOCK>((rand() % 5));
+            BLOCK t = static_cast<BLOCK>((rand() % 5));
             Block newBlock(t);
 
             if (!newBlock.initialize(this, blockNS::WIDTH, blockNS::HEIGHT, blockNS::TEXTURE_COLS, &blockTexture))
@@ -177,6 +177,11 @@ void Breakout::update()
         // update position of all game objects
         ship.update(frameTime);
         ball.update(frameTime);
+
+        // blocks
+        for (int i = 0; i < blocks.size(); i++) {
+            blocks.at(i).update(frameTime);
+        }
 
         // check if the ball went off below ship
         if (ball.getY() > GAME_HEIGHT - ballNS::HEIGHT)  // if hit bottom screen edge
@@ -239,7 +244,7 @@ void Breakout::collisions()
         if (ball.collidesWith(ship, collisionVector)) {
             ball.bounceOffShip(collisionVector, collisionPosition, ship.getSpriteData());
             
-            console->setLogText(ship.toString());
+            console.setLogText(ship.toString());
         }
 
         // collision ball with block
@@ -257,7 +262,7 @@ void Breakout::collisions()
                     // damage
                     block->damage(BALL);
 
-                    console->setLogText("Health: " + std::to_string(block->getHealth()));
+                    console.setLogText("Health: " + std::to_string(block->getHealth()));
 
                     // check if ball is dead
                     if (block->getHealth() <= 0) {
@@ -296,14 +301,14 @@ void Breakout::render()
         
         // render all blocks
         for (int i = 0; i < blocks.size(); i++) {
-            blocks[i].draw();
+            blocks.at(i).draw();
         }
 
         ball.draw();
 
         // UI
         renderScore();
-        console->renderLog();
+        console.renderLog();
         
         graphics->spriteEnd();
     }
@@ -316,12 +321,12 @@ void Breakout::render()
 void Breakout::renderScore() 
 {
     // shadow
-    dxScoreFont->setFontColor(graphicsNS::BLACK50);
-    dxScoreFont->print("Score: " + std::to_string(score), 9, 9); 
+    dxScoreFont.setFontColor(graphicsNS::BLACK50);
+    dxScoreFont.print("Score: " + std::to_string(score), 9, 9); 
 
     // main font
-    dxScoreFont->setFontColor(graphicsNS::WHITE);
-    dxScoreFont->print("Score: " + std::to_string(score), 7, 7);
+    dxScoreFont.setFontColor(graphicsNS::WHITE);
+    dxScoreFont.print("Score: " + std::to_string(score), 7, 7);
 }
 
 //=============================================================================
@@ -349,8 +354,8 @@ void Breakout::releaseAll()
     ballTexture.onLostDevice();
     shipTexture.onLostDevice();
     blockTexture.onLostDevice();
-    dxScoreFont->onLostDevice();
-    console->onLostDevice();
+    dxScoreFont.onLostDevice();
+    console.onLostDevice();
     
     Game::releaseAll();
     return;
@@ -366,8 +371,8 @@ void Breakout::resetAll()
     shipTexture.onResetDevice();
     ballTexture.onResetDevice();
     blockTexture.onResetDevice();
-    dxScoreFont->onResetDevice();
-    console->onResetDevice();
+    dxScoreFont.onResetDevice();
+    console.onResetDevice();
 
     Game::resetAll();
     return;

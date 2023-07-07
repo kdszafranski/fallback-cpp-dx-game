@@ -3,34 +3,33 @@
 
 Console::Console()
 {
-	dxLogFont = new TextDX();
 	logText = "";
 }
 
 Console::~Console()
 {
-	SAFE_DELETE(dxLogFont);
+	onLostDevice();
 }
 
 void Console::onLostDevice()
 {
-	dxLogFont->onLostDevice();
+	dxLogFont.onLostDevice();
 }
 
 void Console::onResetDevice()
 {
-	dxLogFont->onResetDevice();
+	dxLogFont.onResetDevice();
 }
 
 void Console::initialize(Graphics *graphics)
 {
 	// Init DirectX font with 48px high Arial
-	if (dxLogFont->initialize(graphics, 16, true, false, "Arial") == false)
+	if (dxLogFont.initialize(graphics, 16, true, false, "Arial") == false)
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing DirectX font"));
 
 }
 
-void Console::setLogText(int number)
+void Console::setLogText(const int number)
 {
 	logText = std::to_string(number);
 }
@@ -45,7 +44,7 @@ void Console::setLogText(const std::string &message)
 /// </summary>
 void Console::resetLog()
 {
-	setLogText("");
+	logText = "";
 }
 
 /// <summary>
@@ -66,7 +65,7 @@ void Console::renderLog()
 {
 	if (logText.length() > 0) {
 		// draw the text
-		dxLogFont->setFontColor(graphicsNS::WHITE);
-		dxLogFont->print(logText, 6, GAME_HEIGHT - 20);
+		dxLogFont.setFontColor(graphicsNS::WHITE);
+		dxLogFont.print(logText, 6, GAME_HEIGHT - 20);
 	}
 }
