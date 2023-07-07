@@ -88,6 +88,19 @@ void Ball::bounce(VECTOR2& collisionVector, SpriteData otherSpriteData)
         (myX > otherSpriteData.x && myY > otherSpriteData.y)  // right
         )
     {
+        // inside?
+        if (
+            (myX > otherSpriteData.x && myX < boxWidth - 1) &&
+            (myY < boxHeight && myY > otherSpriteData.y)
+            ) // stuck inside?
+        {
+            // put me below
+            setY(boxHeight + 1);
+            velocity.y = -velocity.y;
+            audio->playCue(CLUNK);
+            return;
+        }
+
         velocity.x = -velocity.x;
         audio->playCue(CLUNK); 
     }
