@@ -35,7 +35,9 @@ private:
     TextDX dxScoreFont;
     Console console;
 
+    // textures/sprites
     TextureManager backgroundTexture;
+    TextureManager titleTexture;
     TextureManager ballTexture;
     TextureManager shipTexture;
     TextureManager blockTexture;
@@ -73,7 +75,9 @@ public:
     void removeBlock(int index);
     void restartBall();
 
-    // Keep things tidy
+    // Game state/flow
+    void startNewGame();
+    void initBackgrounds();
     void initSprites();
     void initShip();
     void initBall();

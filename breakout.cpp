@@ -14,7 +14,8 @@
 Breakout::Breakout()
 {
     isPaused = false;
-    ResetGame();
+    currentScreen = TITLE;
+    //ResetGame();
 }
 
 //=============================================================================
@@ -44,7 +45,8 @@ void Breakout::initialize(HWND hwnd)
 {
     Game::initialize(hwnd); // throws GameError
 
-    initSprites();
+    //initSprites();
+    initBackgrounds();
 
     // Init DirectX font with 48px high Arial
     if (dxScoreFont.initialize(graphics, 48, true, false, "Arial") == false)
@@ -56,20 +58,22 @@ void Breakout::initialize(HWND hwnd)
     return;
 }
 
+/// <summary>
+/// Begins a new game from the Title Screen
+/// </summary>
+void Breakout::startNewGame()
+{
+    initSprites();
+
+    ResetGame();
+    currentScreen = GAME;
+}
+
 //=============================================================================
 // Initializes all the game sprites from textures
 //=============================================================================
 void Breakout::initSprites() {
-    // background texture
-    if (!backgroundTexture.initialize(graphics, BG_PATH))
-    {
-        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing background texture"));
-    }
-    // background
-    if (!backgroundImage.initialize(graphics, 0, 0, 0, &backgroundTexture))
-    {
-        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing nebula image"));
-    }
+    initBackgrounds();
 
     // create our game object and graphics
     initShip();
@@ -77,6 +81,32 @@ void Breakout::initSprites() {
     initBlocks();
     // on the ball!
     initBall();
+}
+
+void Breakout::initBackgrounds()
+{
+    // background texture
+    //if (!backgroundTexture.initialize(graphics, BG_PATH))
+    //{
+    //    throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing background texture"));
+    //}
+    //// background
+    //if (!backgroundImage.initialize(graphics, 0, 0, 0, &backgroundTexture))
+    //{
+    //    throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing game bg image"));
+    //}
+    
+    // background texture
+    if (!titleTexture.initialize(graphics, TITLE_PATH))
+    {
+        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing title bg texture"));
+    }
+    // background
+    if (!backgroundImage.initialize(graphics, 0, 0, 0, &titleTexture))
+    {
+        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing title bg image"));
+    }
+
 
 }
 
@@ -173,7 +203,7 @@ void Breakout::update()
     // check if we want to exit
     CheckForExit();
 
-    if (!isPaused) {
+    if (!isPaused && currentScreen == GAME) {
         // update position of all game objects
         ship.update(frameTime);
         ball.update(frameTime);
@@ -298,20 +328,27 @@ void Breakout::render()
 {
     try {
         graphics->spriteBegin();
-
-        backgroundImage.draw();
-        ship.draw();
         
-        // render all blocks
-        for (int i = 0; i < blocks.size(); i++) {
-            blocks.at(i).draw();
+        // screen/game state
+        switch (currentScreen) {
+            case TITLE:
+                backgroundImage.draw();
+                break;
+            case GAME:
+                backgroundImage.draw();
+                ship.draw();
+        
+                // render all blocks
+                for (int i = 0; i < blocks.size(); i++) {
+                    blocks.at(i).draw();
+                }
+
+                ball.draw();
+
+                // UI
+                renderScore();
+                console.renderLog();
         }
-
-        ball.draw();
-
-        // UI
-        renderScore();
-        console.renderLog();
         
         graphics->spriteEnd();
     }
@@ -336,14 +373,23 @@ void Breakout::renderScore()
 // ESC key quits the game
 //=============================================================================
 void Breakout::CheckForExit() {
-    // ESC key quits
+    // ESC key always quits
     if (input->isKeyDown(ESC_KEY)) {
         PostQuitMessage(0);
     }
+
+    // handle inputs on Title Screen only
+    if (currentScreen == TITLE) {
+        if (input->getMouseLButton()) {
+            startNewGame();
+        }
+    }
     
-    // SPACE pauses
-    if (input->isKeyDown(SPACE_KEY)) {
-        isPaused = !isPaused;
+    if (currentScreen == GAME) {
+        // SPACE pauses
+        if (input->isKeyDown(SPACE_KEY)) {
+            isPaused = !isPaused;
+        }
     }
 }
 
@@ -354,6 +400,7 @@ void Breakout::CheckForExit() {
 void Breakout::releaseAll()
 {
     backgroundTexture.onLostDevice();
+    titleTexture.onLostDevice();
     ballTexture.onLostDevice();
     shipTexture.onLostDevice();
     blockTexture.onLostDevice();
@@ -371,6 +418,7 @@ void Breakout::releaseAll()
 void Breakout::resetAll()
 {
     backgroundTexture.onResetDevice();
+    titleTexture.onResetDevice();
     shipTexture.onResetDevice();
     ballTexture.onResetDevice();
     blockTexture.onResetDevice();

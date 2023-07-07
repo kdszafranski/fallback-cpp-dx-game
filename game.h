@@ -25,6 +25,9 @@ protected:
     Input   *input;             // pointer to Input
     Audio* audio;               // pointer to Audio
 
+    // screens
+    SCREEN currentScreen;
+
     HWND    hwnd;               // window handle
     HRESULT hr;                 // standard return type
     LARGE_INTEGER timeStart;    // Performance Counter start value

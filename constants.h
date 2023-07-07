@@ -32,7 +32,8 @@
 //=============================================================================
 
 // graphic files
-const char BG_PATH[] = "pictures\\breakout-bg.jpg";
+const char BG_PATH[] = "pictures\\game-screen-bg.jpg";
+const char TITLE_PATH[] = "pictures\\title-screen-bg.jpg";
 const char BALL_PATH[] = "pictures\\ball.png";
 const char SHIP_PATH[] = "pictures\\ship.png";
 const char BLOCK_PATH[] = "pictures\\big-block.png";
@@ -40,7 +41,7 @@ const char BLOCK_PATH[] = "pictures\\big-block.png";
 
 // window
 const char CLASS_NAME[] = "Breakout";
-const char GAME_TITLE[] = "Breakout";
+const char GAME_TITLE[] = "FALLBACK";
 const bool FULLSCREEN = false;              // windowed or fullscreen
 const UINT GAME_WIDTH =  800;               // width of game in pixels
 const UINT GAME_HEIGHT = 600;               // height of game in pixels
@@ -82,5 +83,7 @@ const UCHAR SPACE_KEY = VK_SPACE;     // down arrow
 enum WEAPON { TORPEDO, SHIP, PLANET, BALL };
 // block types
 enum BLOCK { WEAK, STRONG, HARD, METAL, INVINCIBLE };
+// screen states
+enum SCREEN { TITLE, GAME, CREDITS };
 
 #endif
