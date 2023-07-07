@@ -119,7 +119,7 @@ void Ball::bounceOffShip(VECTOR2& collisionVector, VECTOR2& collisionPosition, S
     // determine WHERE along the ship we hit
     const float myX = getCenterX();
     const float myY = getY();
-    const float middleX = otherSpriteData.width / 3; // middle third of ship
+    const float middleX = otherSpriteData.width / 3.0f; // middle third of ship
     const float rightX = middleX * 2; // right-hand third of ship
 
     // get ship-relative position from ship's origin (x = 0)
