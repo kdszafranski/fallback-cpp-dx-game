@@ -6,6 +6,7 @@
 // Charles Kelly
 
 #include "breakout.h"
+#include <time.h>
 
 //=============================================================================
 // Constructor
@@ -133,6 +134,7 @@ void Breakout::initBlocks()
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing block texture"));
     }
 
+    srand((unsigned)time(0));
     int y = START_Y;
     for (int i = 0; i < 2; i++) {
 
@@ -140,7 +142,7 @@ void Breakout::initBlocks()
         for (int j = 0; j < COLS; j++) {
 
             // rand() with % is 0-n exclusive 
-            BLOCK const t = static_cast<BLOCK>((rand() % 5));
+            BLOCK t = static_cast<BLOCK>((rand() % 5));
             Block newBlock(t);
 
             if (!newBlock.initialize(this, blockNS::WIDTH, blockNS::HEIGHT, blockNS::TEXTURE_COLS, &blockTexture))
