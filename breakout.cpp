@@ -96,7 +96,7 @@ void Breakout::initBackgrounds()
     }
 
     // game bg image
-    if (!backgroundImage.initialize(graphics, 0, 0, BG_TEXTURE_COLS, &backgroundTexture))
+    if (!backgroundImage.initialize(graphics, 0, 0, 2, &backgroundTexture))
     {
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing game bg image"));
     }
