@@ -32,8 +32,8 @@ private:
     int score;
 
     // Game objects
-    TextDX *dxScoreFont;
-    Console *console;
+    TextDX dxScoreFont;
+    Console console;
 
     TextureManager backgroundTexture;
     TextureManager ballTexture;
