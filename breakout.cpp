@@ -14,7 +14,7 @@
 Breakout::Breakout()
 {
     isPaused = false;
-    ResetGame();
+    currentScreen = TITLE;
 }
 
 //=============================================================================
@@ -23,8 +23,6 @@ Breakout::Breakout()
 Breakout::~Breakout()
 {
     releaseAll();           // call onLostDevice() for every graphics item
-    //SAFE_DELETE(dxScoreFont);
-    //SAFE_DELETE(console);
 }
 
 /// <summary>
@@ -44,7 +42,8 @@ void Breakout::initialize(HWND hwnd)
 {
     Game::initialize(hwnd); // throws GameError
 
-    initSprites();
+    initBackgrounds();
+    initButtons();
 
     // Init DirectX font with 48px high Arial
     if (dxScoreFont.initialize(graphics, 48, true, false, "Arial") == false)
@@ -56,28 +55,70 @@ void Breakout::initialize(HWND hwnd)
     return;
 }
 
+/// <summary>
+/// Begins a new game from the Title Screen
+/// </summary>
+void Breakout::startNewGame()
+{
+    // set proper bg frame
+    backgroundImage.setX(- static_cast<int>(GAME_WIDTH));
+
+    currentScreen = GAME;
+
+    initSprites();
+    ResetGame();
+
+    // play!
+    restartBall();
+}
+
 //=============================================================================
 // Initializes all the game sprites from textures
 //=============================================================================
 void Breakout::initSprites() {
+    // create our game object and graphics
+    initShip();
+    // set up the blocks
+    initBlocks();
+    // ball sprite
+    initBall();
+}
+
+
+/// <summary>
+/// Load background image(s)
+/// </summary>
+void Breakout::initBackgrounds()
+{
     // background texture
     if (!backgroundTexture.initialize(graphics, BG_PATH))
     {
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing background texture"));
     }
-    // background
-    if (!backgroundImage.initialize(graphics, 0, 0, 0, &backgroundTexture))
+
+    // game bg image
+    if (!backgroundImage.initialize(graphics, 0, 0, 2, &backgroundTexture))
     {
-        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing nebula image"));
+        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing game bg image"));
+    }
+}
+
+void Breakout::initButtons()
+{
+    // background texture
+    if (!buttonTexture.initialize(graphics, NG_BUTTON_PATH))
+    {
+        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing button texture"));
     }
 
-    // create our game object and graphics
-    initShip();
-    // set up the blocks
-    initBlocks();
-    // on the ball!
-    initBall();
+    // game bg image
+    if (!newGameButton.initialize(this, 0, 0, 2, &buttonTexture))
+    {
+        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing button image"));
+    }
 
+    newGameButton.setX(400 - newGameButton.getSpriteData().width / 2);
+    newGameButton.setY(400);
 }
 
 //=============================================================================
@@ -113,8 +154,6 @@ void Breakout::initBall()
     {
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ball entity"));
     }
-
-    restartBall();
 }
 
 //=============================================================================
@@ -173,27 +212,50 @@ void Breakout::update()
     // check if we want to exit
     CheckForExit();
 
-    if (!isPaused) {
-        // update position of all game objects
-        ship.update(frameTime);
-        ball.update(frameTime);
-
-        // blocks
-        for (int i = 0; i < blocks.size(); i++) {
-            // only update blocks that need it
-            if (blocks.at(i).getIsAnimating()) {
-                blocks.at(i).update(frameTime);
+    // handle inputs on Title Screen only
+    if (currentScreen == TITLE) {
+        if (newGameButton.isMouseOver()) {
+            // over, allow clicks
+            if (input->getMouseLButton()) {
+                startNewGame();
             }
         }
+    }
 
-        // check if the ball went off below ship
-        if (ball.getY() > GAME_HEIGHT - ballNS::HEIGHT)  // if hit bottom screen edge
-        {
-            audio->playCue(ZAP);
-            restartBall();
+    // handle Game updates and inputs
+    if (currentScreen == GAME) {
+        CheckPauseInput();
+
+        if (!isPaused) {
+            // update position of all game objects
+            ship.update(frameTime);
+            ball.update(frameTime);
+
+            // blocks
+            for (int i = 0; i < blocks.size(); i++) {
+                // only update blocks that need it
+                if (blocks.at(i).getIsAnimating()) {
+                    blocks.at(i).update(frameTime);
+                }
+            }
+
+            // check if the ball went off below ship
+            if (ball.getY() > GAME_HEIGHT - ballNS::HEIGHT) {
+                audio->playCue(ZAP);
+                restartBall();
+            }
+        } 
+    }
+}
+
+void Breakout::CheckPauseInput()
+{
+    if (currentScreen == GAME) {
+        // SPACE pauses
+        if (input->isKeyDown(SPACE_KEY)) {
+            isPaused = !isPaused;
         }
     }
- 
 }
 
 //=============================================================================
@@ -298,20 +360,29 @@ void Breakout::render()
 {
     try {
         graphics->spriteBegin();
-
-        backgroundImage.draw();
-        ship.draw();
         
-        // render all blocks
-        for (int i = 0; i < blocks.size(); i++) {
-            blocks.at(i).draw();
+        // screen/game state
+        switch (currentScreen) {
+            case TITLE:
+                backgroundImage.draw();
+                newGameButton.draw();
+                break;
+            case GAME:
+                backgroundImage.draw();
+                ship.draw();
+        
+                // render all blocks
+                for (int i = 0; i < blocks.size(); i++) {
+                    blocks.at(i).draw();
+                }
+
+                ball.draw();
+
+                // UI
+                renderScore();
+                console.renderLog();
+                break;
         }
-
-        ball.draw();
-
-        // UI
-        renderScore();
-        console.renderLog();
         
         graphics->spriteEnd();
     }
@@ -336,14 +407,9 @@ void Breakout::renderScore()
 // ESC key quits the game
 //=============================================================================
 void Breakout::CheckForExit() {
-    // ESC key quits
+    // ESC key always quits
     if (input->isKeyDown(ESC_KEY)) {
         PostQuitMessage(0);
-    }
-    
-    // SPACE pauses
-    if (input->isKeyDown(SPACE_KEY)) {
-        isPaused = !isPaused;
     }
 }
 
@@ -357,6 +423,7 @@ void Breakout::releaseAll()
     ballTexture.onLostDevice();
     shipTexture.onLostDevice();
     blockTexture.onLostDevice();
+    buttonTexture.onLostDevice();
     dxScoreFont.onLostDevice();
     console.onLostDevice();
     
@@ -374,6 +441,7 @@ void Breakout::resetAll()
     shipTexture.onResetDevice();
     ballTexture.onResetDevice();
     blockTexture.onResetDevice();
+    buttonTexture.onResetDevice();
     dxScoreFont.onResetDevice();
     console.onResetDevice();
 

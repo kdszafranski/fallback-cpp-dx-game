@@ -18,6 +18,7 @@
 #include "ball.h"
 #include "block.h"
 #include "textDX.h"
+#include "Button.h"
 #include "console.h"
 
 //=============================================================================
@@ -35,11 +36,16 @@ private:
     TextDX dxScoreFont;
     Console console;
 
+    // textures/sprites
     TextureManager backgroundTexture;
     TextureManager ballTexture;
     TextureManager shipTexture;
     TextureManager blockTexture;
+    TextureManager buttonTexture;
     Image backgroundImage;
+    Button newGameButton;
+
+    // sprites
     Ship ship;
     Ball ball;
     Block block;
@@ -65,7 +71,6 @@ public:
     void collisions();  // "
     void render();      // "
     void renderScore();
-    void renderLog();
     void releaseAll();
     void resetAll();
     
@@ -73,13 +78,18 @@ public:
     void removeBlock(int index);
     void restartBall();
 
-    // Keep things tidy
+    // Game state/flow
+    void startNewGame();
+    void initBackgrounds();
+    void initButtons();
     void initSprites();
     void initShip();
     void initBall();
     void initBlocks();
 
+    // user input handlers
     void CheckForExit(); // helper to handle exit inputs
+    void CheckPauseInput(); // helper to handle pause input
 
     void wrapScreenEdge(); // checks screen bounds
 };

@@ -19,6 +19,7 @@ Game::Game()
     paused = false;             // game is not paused
     graphics = NULL;
     initialized = false;
+    currentScreen = TITLE;
 }
 
 //=============================================================================
@@ -221,10 +222,16 @@ void Game::run(HWND hwnd)
     // These functions must be provided in the class that inherits from Game.
     if (!paused)                    // if not paused
     {
-        update();                   // update all game items
-        ai();                       // artificial intelligence
-        collisions();               // handle collisions
-        input->vibrateControllers(frameTime); // handle controller vibration
+        switch (currentScreen) {
+        case TITLE:
+            update(); // allows for input
+            break;
+        case GAME:
+            update();                   // update all game items
+            ai();                       // artificial intelligence
+            collisions();               // handle collisions
+            input->vibrateControllers(frameTime); // handle controller vibration
+        }
     }
     renderGame();                   // draw all game items
 
