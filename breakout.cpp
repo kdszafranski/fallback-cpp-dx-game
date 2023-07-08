@@ -18,37 +18,36 @@ Breakout::Breakout()
     currentScreen = TITLE;
 
     level1.data = {
-    WEAK,   // 0
-    NONE,
-    WEAK,
-    NONE,
-    WEAK,
-    NONE,
-    WEAK,
-    NONE,
+    STRONG,   // 0
     STRONG,
+    STRONG,
+    STRONG,
+    STRONG,
+    STRONG,
+    STRONG,
+    STRONG,
+    STRONG,
+    // 9 row 2
+    NONE, 
+    WEAK,   
+    NONE,
+    WEAK,
+    NONE,
+    WEAK,
+    NONE,
+    WEAK,
+    NONE,
+    // 18 row 3
+    NONE,   
+    NONE,
+    NONE,   
+    NONE,
+    NONE,
+    NONE,
+    NONE,
+    NONE,
     NONE,	
-    STRONG, // 10
-    NONE,
-    STRONG,
-    NONE,
-    STRONG,
-    NONE,
-    STRONG,
-    NONE,
-    STRONG,
-    NONE,	
-    WEAK,   // 20
-    NONE,
-    WEAK,
-    NONE,
-    WEAK,
-    NONE,
-    WEAK,
-    NONE,
-    WEAK,
-    NONE,	// 30
-    METAL,
+    NONE,	// 27
     };
 }
 
@@ -210,21 +209,21 @@ void Breakout::initBlocks()
 
 void Breakout::loadLevel(int level)
 {
-    const float START_X = 82;
+    const float START_X = 114;
     const float START_Y = 100;
-    const int COLS = 10;
+    const int COLS = 9;
     const int ROWS = 3;
 
     int y = START_Y;
     for (int i = 0; i < ROWS; i++) {
 
         int x = START_X;
-        for (int j = 0; j <= COLS; j++) {
+        for (int j = 0; j < COLS; j++) {
 
-            if (level1.data.at(i + j) == NONE) {
+            if (level1.data.at(i*COLS + j) == NONE) {
                 // skip
             } else {
-                Block newBlock(level1.data.at(i + j));
+                Block newBlock(level1.data.at(i*COLS + j));
 
                 if (!newBlock.initialize(this, blockNS::WIDTH, blockNS::HEIGHT, blockNS::TEXTURE_COLS, &blockTexture))
                 {
