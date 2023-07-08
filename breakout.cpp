@@ -307,9 +307,11 @@ void Breakout::collisions()
 
         // if collision between ball and ship
         if (ball.collidesWith(ship, collisionVector)) {
-            ball.bounceOffShip(collisionVector, collisionPosition, ship.getSpriteData());
-            
+
+            ball.bounceOffShip(collisionVector, collisionPosition, ship.getSpriteData());            
             console.setLogText(ship.toString());
+
+            audio->playCue(CLICK);            
         }
 
         // collision ball with block
@@ -326,6 +328,7 @@ void Breakout::collisions()
                 if (block->getBlockType() != INVINCIBLE) {
                     // damage
                     block->damage(BALL);
+                    audio->playCue(CLUNK);
 
                     console.setLogText("Health: " + std::to_string(block->getHealth()));
 
@@ -333,9 +336,11 @@ void Breakout::collisions()
                     if (block->getHealth() <= 0) {
                         // update score
                         score += block->getPointValue();
-
                         removeBlock(i);
                     }
+                } else {
+                    // invincible!
+                    audio->playCue(CLICK);
                 }
 
             } // end collision if

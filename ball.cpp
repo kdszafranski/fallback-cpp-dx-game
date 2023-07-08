@@ -78,7 +78,6 @@ void Ball::bounce(VECTOR2& collisionVector, SpriteData otherSpriteData)
         )
     {
         velocity.y = -velocity.y;
-        audio->playCue(CLUNK);  
         return;
     }
 
@@ -97,12 +96,12 @@ void Ball::bounce(VECTOR2& collisionVector, SpriteData otherSpriteData)
             // put me below
             setY(boxHeight + 1);
             velocity.y = -velocity.y;
-            audio->playCue(CLUNK);
             return;
         }
 
+        // flip x
         velocity.x = -velocity.x;
-        audio->playCue(CLUNK); 
+        
     }
 
 }
@@ -140,7 +139,6 @@ void Ball::bounceOffShip(VECTOR2& collisionVector, VECTOR2& collisionPosition, S
         velocity.x = 250;
     }
 
-    audio->playCue(CLUNK);
 }
 
 //=============================================================================
