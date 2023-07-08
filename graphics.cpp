@@ -228,10 +228,10 @@ void Graphics::drawSprite(const SpriteData &spriteData, COLOR_ARGB color)
         return;
 
     // Find center of sprite
-    D3DXVECTOR2 spriteCenter=D3DXVECTOR2((float)(spriteData.width/2*spriteData.scale),
+    D3DXVECTOR2 spriteCenter = D3DXVECTOR2((float)(spriteData.width/2*spriteData.scale),
                                         (float)(spriteData.height/2*spriteData.scale));
     // Screen position of the sprite
-    D3DXVECTOR2 translate=D3DXVECTOR2((float)spriteData.x,(float)spriteData.y);
+    D3DXVECTOR2 translate = D3DXVECTOR2((float)spriteData.x,(float)spriteData.y);
     // Scaling X,Y
     D3DXVECTOR2 scaling(spriteData.scale,spriteData.scale);
     if (spriteData.flipHorizontal)  // if flip horizontal
@@ -256,7 +256,7 @@ void Graphics::drawSprite(const SpriteData &spriteData, COLOR_ARGB color)
     D3DXMATRIX matrix;
     D3DXMatrixTransformation2D(
         &matrix,                // the matrix
-        NULL,                   // keep origin at top left when scaling
+        &spriteCenter,                   // keep origin at top left when scaling
         0.0f,                   // no scaling rotation
         &scaling,               // scale amount
         &spriteCenter,          // rotation center
