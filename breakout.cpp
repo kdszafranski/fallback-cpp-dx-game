@@ -52,6 +52,11 @@ void Breakout::initialize(HWND hwnd)
     // init the console log
     console.initialize(graphics);
 
+    // for testing
+    if (skipTitleScreen) {
+        startNewGame();
+    }
+
     return;
 }
 
@@ -340,6 +345,7 @@ void Breakout::collisions()
                     }
                 } else {
                     // invincible!
+                    //block->bounce
                     audio->playCue(CLICK);
                 }
 

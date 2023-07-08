@@ -28,6 +28,9 @@ class Breakout : public Game
 {
 private:
     // variables
+    // testing
+    bool skipTitleScreen = true;
+
     std::vector<Block> blocks;
     //std::string logText;
     int score;

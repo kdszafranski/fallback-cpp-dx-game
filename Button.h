@@ -5,8 +5,8 @@
 #include "input.h"
 
 namespace buttonNS {
-	const COLOR_ARGB DEFAULT_COLOR = graphicsNS::ALPHA75;
-	const COLOR_ARGB MOUSE_OVER_COLOR = graphicsNS::WHITE;
+	const COLOR_ARGB DEFAULT_COLOR = D3DCOLOR_ARGB(255, 247, 163, 114);;
+	const COLOR_ARGB MOUSE_OVER_COLOR = D3DCOLOR_ARGB(255, 166, 222, 226);
 }
 
 /// <summary>
