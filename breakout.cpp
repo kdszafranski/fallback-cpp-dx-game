@@ -7,6 +7,7 @@
 
 #include "breakout.h"
 #include <time.h>
+#include "levels.h"
 
 //=============================================================================
 // Constructor
@@ -15,6 +16,40 @@ Breakout::Breakout()
 {
     isPaused = false;
     currentScreen = TITLE;
+
+    level1.data = {
+    WEAK,   // 0
+    NONE,
+    WEAK,
+    NONE,
+    WEAK,
+    NONE,
+    WEAK,
+    NONE,
+    STRONG,
+    NONE,	
+    STRONG, // 10
+    NONE,
+    STRONG,
+    NONE,
+    STRONG,
+    NONE,
+    STRONG,
+    NONE,
+    STRONG,
+    NONE,	
+    WEAK,   // 20
+    NONE,
+    WEAK,
+    NONE,
+    WEAK,
+    NONE,
+    WEAK,
+    NONE,
+    WEAK,
+    NONE,	// 30
+    METAL,
+    };
 }
 
 //=============================================================================
@@ -28,7 +63,7 @@ Breakout::~Breakout()
 /// <summary>
 /// Resets score and board
 /// </summary>
-void Breakout::ResetGame()
+void Breakout::resetGame()
 {
     score = 0;
     console.resetLog();
@@ -67,11 +102,11 @@ void Breakout::startNewGame()
 {
     // set proper bg frame
     backgroundImage.setX(- static_cast<int>(GAME_WIDTH));
-
     currentScreen = GAME;
 
     initSprites();
-    ResetGame();
+    loadLevel(1);
+    resetGame();
 
     // play!
     restartBall();
@@ -166,15 +201,59 @@ void Breakout::initBall()
 //=============================================================================
 void Breakout::initBlocks()
 {
-    const float START_X = 82;
-    const float START_Y = 100;
-    const int COLS = 10;
-
     // load our texture, reuse it for all block Entities
     if (!blockTexture.initialize(graphics, BLOCK_PATH))
     {
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing block texture"));
     }
+}
+
+void Breakout::loadLevel(int level)
+{
+    const float START_X = 82;
+    const float START_Y = 100;
+    const int COLS = 10;
+    const int ROWS = 3;
+
+    int y = START_Y;
+    for (int i = 0; i < ROWS; i++) {
+
+        int x = START_X;
+        for (int j = 0; j <= COLS; j++) {
+
+            if (level1.data.at(i + j) == NONE) {
+                // skip
+            } else {
+                Block newBlock(level1.data.at(i + j));
+
+                if (!newBlock.initialize(this, blockNS::WIDTH, blockNS::HEIGHT, blockNS::TEXTURE_COLS, &blockTexture))
+                {
+                    throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing block entity"));
+                }
+
+                newBlock.setX(x);
+                newBlock.setY(y);
+                newBlock.setVelocity(VECTOR2(0, 0));
+
+                // add to vector
+                blocks.push_back(newBlock);
+            }
+
+            // move to the right
+            x += blockNS::WIDTH;
+        }
+
+        // set new row downward
+        y += blockNS::HEIGHT;
+    }
+
+}
+
+void Breakout::loadRandomLevel()
+{
+    const float START_X = 82;
+    const float START_Y = 100;
+    const int COLS = 10;
 
     srand((unsigned)time(0));
     int y = START_Y;

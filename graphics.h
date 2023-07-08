@@ -46,11 +46,11 @@ namespace graphicsNS
     // A = Alpha channel (transparency where 255 is opaque)
     // R = Red, G = Green, B = Blue
     const COLOR_ARGB WHITE = D3DCOLOR_ARGB(255, 255, 255, 255);  // no filter
-    const COLOR_ARGB FB_WEAK = D3DCOLOR_ARGB(255, 71, 208, 34);
-    const COLOR_ARGB FB_STRONG = D3DCOLOR_ARGB(255, 255, 124, 75);
-    const COLOR_ARGB FB_HARD = D3DCOLOR_ARGB(255, 242, 14, 100);
-    const COLOR_ARGB FB_METAL = D3DCOLOR_ARGB(255, 22, 242, 250);
-    const COLOR_ARGB FB_INVINCIBLE = D3DCOLOR_ARGB(255, 187, 145, 252);
+    const COLOR_ARGB FB_WEAK = D3DCOLOR_ARGB(255, 71, 208, 34);     // green
+    const COLOR_ARGB FB_STRONG = D3DCOLOR_ARGB(255, 255, 124, 75);  // orange
+    const COLOR_ARGB FB_HARD = D3DCOLOR_ARGB(255, 242, 14, 100);    // red
+    const COLOR_ARGB FB_METAL = D3DCOLOR_ARGB(255, 22, 242, 250);   // blue
+    const COLOR_ARGB FB_INVINCIBLE = D3DCOLOR_ARGB(255, 187, 145, 252); // purple
 
     const COLOR_ARGB ORANGE = D3DCOLOR_ARGB(255, 255, 165, 0);
     const COLOR_ARGB BROWN = D3DCOLOR_ARGB(255, 139, 69, 19);

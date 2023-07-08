@@ -20,6 +20,7 @@
 #include "textDX.h"
 #include "Button.h"
 #include "console.h"
+#include "levels.h"
 
 //=============================================================================
 // Create game class
@@ -32,8 +33,8 @@ private:
     bool skipTitleScreen = true;
 
     std::vector<Block> blocks;
-    //std::string logText;
     int score;
+    Level level1;
 
     // Game objects
     TextDX dxScoreFont;
@@ -66,7 +67,7 @@ public:
 
     // Initialize the game
     void initialize(HWND hwnd);
-    void ResetGame();
+    void resetGame();
 
     // Game Loop stuff
     void update();      // must override pure virtual from Game
@@ -89,6 +90,10 @@ public:
     void initShip();
     void initBall();
     void initBlocks();
+
+    // levels
+    void loadLevel(int level);
+    void loadRandomLevel();
 
     // user input handlers
     void CheckForExit(); // helper to handle exit inputs

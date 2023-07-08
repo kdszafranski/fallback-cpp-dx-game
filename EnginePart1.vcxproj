@@ -107,6 +107,7 @@
     <ClCompile Include="input.cpp" />
     <ClCompile Include="ship.cpp" />
     <ClCompile Include="breakout.cpp" />
+    <ClCompile Include="levels.h" />
     <ClCompile Include="textDX.cpp" />
     <ClCompile Include="textureManager.cpp" />
     <ClCompile Include="winmain.cpp" />
