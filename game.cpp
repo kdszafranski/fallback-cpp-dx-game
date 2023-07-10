@@ -141,7 +141,7 @@ void Game::initialize(HWND hw)
 //=============================================================================
 // Render game items
 //=============================================================================
-void Game::render()
+void Game::renderGame()
 {
     //start rendering
     if (SUCCEEDED(graphics->beginScene()))
@@ -223,17 +223,17 @@ void Game::run(HWND hwnd)
     if (!paused)                    // if not paused
     {
         switch (currentScreen) {
-        case TITLE:
-            update(); // allows for input
-            break;
-        case GAME:
-            update();                   // update all game items
-            ai();                       // artificial intelligence
-            collisions();               // handle collisions
-            input->vibrateControllers(frameTime); // handle controller vibration
+            case TITLE:
+                update(); // allows for input
+                break;
+            case GAME:
+                update();                   // update all game items
+                ai();                       // artificial intelligence
+                collisions();               // handle collisions
+                input->vibrateControllers(frameTime); // handle controller vibration
         }
     }
-    render();                   // draw all game items
+    renderGame();                   // draw all game items
 
     audio->run();                   // perform periodic?? sound engine tasks.. like what?
 

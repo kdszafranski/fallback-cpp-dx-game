@@ -78,7 +78,7 @@ public:
     void ai();          // "
     void collisions();  // "
     void render();  // render game objects
-    void renderGame();
+    void renderGameScreen();
     void renderUI(); // display UI
     void releaseAll();
     void resetAll();

@@ -530,7 +530,7 @@ void Breakout::render()
                 newGameButton.draw();
                 break;
             case GAME:
-                renderGame();
+                renderGameScreen();
                 break;
         }
         
@@ -542,7 +542,7 @@ void Breakout::render()
 
 }
 
-void Breakout::renderGame()
+void Breakout::renderGameScreen()
 {
     backgroundImage.draw();
 
