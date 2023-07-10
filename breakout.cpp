@@ -7,6 +7,7 @@
 
 #include "breakout.h"
 #include <time.h>
+#include "levels.h"
 
 //=============================================================================
 // Constructor
@@ -15,6 +16,79 @@ Breakout::Breakout()
 {
     isPaused = false;
     currentScreen = TITLE;
+
+    Level level1, level2;
+
+    level1.data = {
+    STRONG,   // 0
+    STRONG,
+    STRONG,
+    STRONG,
+    STRONG,
+    STRONG,
+    STRONG,
+    STRONG,
+    STRONG,
+    // 9 row 2
+    HARD, 
+    WEAK,   
+    HARD,
+    WEAK,
+    HARD,
+    WEAK,
+    HARD,
+    WEAK,
+    HARD,
+    // 18 row 3
+    NONE,   
+    NONE,
+    NONE,   
+    NONE,
+    NONE,
+    NONE,
+    NONE,
+    NONE,
+    NONE,	
+    NONE,	// 27
+    };
+
+    level2.data = {
+    HARD,   // 0
+    HARD,
+    HARD,
+    METAL,
+    METAL,
+    METAL,
+    HARD,
+    HARD,
+    HARD,
+    // 9 row 2
+    NONE,   // 0 
+    METAL,
+    WEAK,
+    NONE,
+    STRONG,
+    NONE,
+    WEAK,
+    METAL,
+    NONE,
+    // 18 row 3
+    NONE,
+    NONE,
+    NONE,
+    STRONG,
+    NONE,
+    STRONG,
+    NONE,
+    NONE,
+    NONE,
+    NONE,	// 27
+    };
+
+    // store levels for easy loading
+    levels.push_back(level1);
+    levels.push_back(level2);
+
 }
 
 //=============================================================================
@@ -28,9 +102,10 @@ Breakout::~Breakout()
 /// <summary>
 /// Resets score and board
 /// </summary>
-void Breakout::ResetGame()
+void Breakout::resetGame()
 {
     score = 0;
+    currentLevel = 0;
     console.resetLog();
 }
 
@@ -67,11 +142,11 @@ void Breakout::startNewGame()
 {
     // set proper bg frame
     backgroundImage.setX(- static_cast<int>(GAME_WIDTH));
-
     currentScreen = GAME;
 
     initSprites();
-    ResetGame();
+    resetGame();
+    loadLevel(currentLevel); // level numbers are 0-based... :/
 
     // play!
     restartBall();
@@ -166,15 +241,59 @@ void Breakout::initBall()
 //=============================================================================
 void Breakout::initBlocks()
 {
-    const float START_X = 82;
-    const float START_Y = 100;
-    const int COLS = 10;
-
     // load our texture, reuse it for all block Entities
     if (!blockTexture.initialize(graphics, BLOCK_PATH))
     {
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing block texture"));
     }
+}
+
+void Breakout::loadLevel(int levelNumber)
+{
+    const float START_X = 114;
+    const float START_Y = 100;
+    const int COLS = 9;
+    const int ROWS = 3;
+
+    int y = START_Y;
+    for (int i = 0; i < ROWS; i++) {
+
+        int x = START_X;
+        for (int j = 0; j < COLS; j++) {
+
+            if (levels.at(levelNumber).data.at(i * COLS + j) == NONE) {
+                // skip
+            } else {
+                Block newBlock(levels.at(levelNumber).data.at(i * COLS + j));
+
+                if (!newBlock.initialize(this, blockNS::WIDTH, blockNS::HEIGHT, blockNS::TEXTURE_COLS, &blockTexture))
+                {
+                    throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing block entity"));
+                }
+
+                newBlock.setX(x);
+                newBlock.setY(y);
+                newBlock.setVelocity(VECTOR2(0, 0));
+
+                // add to vector
+                blocks.push_back(newBlock);
+            }
+
+            // move to the right
+            x += blockNS::WIDTH;
+        }
+
+        // set new row downward
+        y += blockNS::HEIGHT;
+    }
+
+}
+
+void Breakout::loadRandomLevel()
+{
+    const float START_X = 82;
+    const float START_Y = 100;
+    const int COLS = 10;
 
     srand((unsigned)time(0));
     int y = START_Y;
