@@ -53,6 +53,15 @@ const float FRAME_RATE  = 200.0f;               // the target frame rate (frames
 const float MIN_FRAME_RATE = 10.0f;             // the minimum frame rate
 const float MIN_FRAME_TIME = 1.0f/FRAME_RATE;   // minimum desired time for 1 frame
 const float MAX_FRAME_TIME = 1.0f/MIN_FRAME_RATE; // maximum time used in calculations
+const short MAX_BALLS = 3;
+
+// weapon types
+enum WEAPON { TORPEDO, SHIP, PLANET, BALL };
+// block types
+enum BLOCK { WEAK, STRONG, HARD, METAL, INVINCIBLE, NONE };
+// screen states
+enum SCREEN { TITLE, GAME, CREDITS };
+
 
 // audio files required by audio.cpp
 // WAVE_BANK must be location of .xwb file.
@@ -79,12 +88,5 @@ const UCHAR SHIP_RIGHT_KEY = VK_RIGHT;    // right arrow
 const UCHAR SHIP_UP_KEY = VK_UP;       // up arrow
 const UCHAR SHIP_DOWN_KEY = VK_DOWN;     // down arrow
 const UCHAR SPACE_KEY = VK_SPACE;     // down arrow
-
-// weapon types
-enum WEAPON { TORPEDO, SHIP, PLANET, BALL };
-// block types
-enum BLOCK { WEAK, STRONG, HARD, METAL, INVINCIBLE, NONE };
-// screen states
-enum SCREEN { TITLE, GAME, CREDITS };
 
 #endif

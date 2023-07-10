@@ -68,9 +68,6 @@ public:
     // Delete all reserved memory.
     virtual void deleteAll();
 
-    // Render game items.
-    virtual void renderGame();
-
     // Handle lost graphics device
     virtual void handleLostGraphicsDevice();
 

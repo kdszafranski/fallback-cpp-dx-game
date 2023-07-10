@@ -34,11 +34,14 @@ private:
 
     std::vector<Block> blocks;
     std::vector<Level> levels;
+    bool gameOver = false;
     int score;
+    int ballCount;
     int currentLevel;
 
     // Game objects
     TextDX dxScoreFont;
+    TextDX dxBallCount;
     Console console;
 
     // textures/sprites
@@ -74,10 +77,13 @@ public:
     void update();      // must override pure virtual from Game
     void ai();          // "
     void collisions();  // "
-    void render();      // "
-    void renderScore();
+    void render();  // render game objects
+    void renderGame();
+    void renderUI(); // display UI
     void releaseAll();
     void resetAll();
+    void loseBall();    // reduce ball count
+    bool isGameOver();  // check if we're out of balls
     
     // gameplay methods
     void removeBlock(int index);

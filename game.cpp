@@ -141,7 +141,7 @@ void Game::initialize(HWND hw)
 //=============================================================================
 // Render game items
 //=============================================================================
-void Game::renderGame()
+void Game::render()
 {
     //start rendering
     if (SUCCEEDED(graphics->beginScene()))
@@ -233,7 +233,7 @@ void Game::run(HWND hwnd)
             input->vibrateControllers(frameTime); // handle controller vibration
         }
     }
-    renderGame();                   // draw all game items
+    render();                   // draw all game items
 
     audio->run();                   // perform periodic?? sound engine tasks.. like what?
 

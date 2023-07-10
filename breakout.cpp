@@ -15,7 +15,9 @@
 Breakout::Breakout()
 {
     isPaused = false;
+    gameOver = false;
     currentScreen = TITLE;
+    ballCount = MAX_BALLS;
 
     Level level1, level2;
 
@@ -106,6 +108,7 @@ void Breakout::resetGame()
 {
     score = 0;
     currentLevel = 0;
+    gameOver = false;
     console.resetLog();
 }
 
@@ -122,7 +125,10 @@ void Breakout::initialize(HWND hwnd)
 
     // Init DirectX font with 48px high Arial
     if (dxScoreFont.initialize(graphics, 48, true, false, "Arial") == false)
-        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing DirectX font"));
+        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing score font"));
+    
+    if (dxBallCount.initialize(graphics, 24, true, false, "Arial") == false)
+        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ball count font"));
    
     // init the console log
     console.initialize(graphics);
@@ -143,6 +149,7 @@ void Breakout::startNewGame()
     // set proper bg frame
     backgroundImage.setX(- static_cast<int>(GAME_WIDTH));
     currentScreen = GAME;
+    gameOver = false;
 
     initSprites();
     resetGame();
@@ -351,25 +358,29 @@ void Breakout::update()
         CheckPauseInput();
 
         if (!isPaused) {
-            // update position of all game objects
-            ship.update(frameTime);
-            ball.update(frameTime);
+            if (!gameOver) {
+                // update position of all game objects
+                ship.update(frameTime);
+                ball.update(frameTime);
 
-            // blocks
-            for (int i = 0; i < blocks.size(); i++) {
-                // only update blocks that need it
-                if (blocks.at(i).getIsAnimating()) {
-                    blocks.at(i).update(frameTime);
+                // blocks
+                for (int i = 0; i < blocks.size(); i++) {
+                    // only update blocks that need it
+                    if (blocks.at(i).getIsAnimating()) {
+                        blocks.at(i).update(frameTime);
+                    }
                 }
-            }
 
-            // check if the ball went off below ship
-            if (ball.getY() > GAME_HEIGHT - ballNS::HEIGHT) {
-                audio->playCue(ZAP);
-                restartBall();
-            }
-        } 
-    }
+                // check if the ball went off below ship
+                if (ball.getY() > GAME_HEIGHT - ballNS::HEIGHT) {
+                    audio->playCue(ZAP);
+                    loseBall();
+                    restartBall();
+                }
+            } // game over
+        }  // paused
+    } // GAME screen
+
 }
 
 void Breakout::CheckPauseInput()
@@ -382,14 +393,35 @@ void Breakout::CheckPauseInput()
     }
 }
 
+bool Breakout::isGameOver()
+{
+    if (ballCount < 1) {
+        // game over
+        return true;
+    }
+
+    return false;
+}
+
+void Breakout::loseBall()
+{
+    ballCount--;
+}
+
 //=============================================================================
 // Sets the ball at the staring position
 //=============================================================================
 void Breakout::restartBall()
 {
-    ball.setX(220);
-    ball.setY(300);
-    ball.setVelocity(VECTOR2(ballNS::SPEED, ballNS::SPEED)); // move!
+    if (isGameOver()) {
+        // show screen
+        gameOver = true;
+        console.setLogText("GAME OVER!");
+    } else {
+        ball.setX(220);
+        ball.setY(300);
+        ball.setVelocity(VECTOR2(ballNS::SPEED, ballNS::SPEED)); // move!
+    }
 }
 
 //=============================================================================
@@ -498,19 +530,7 @@ void Breakout::render()
                 newGameButton.draw();
                 break;
             case GAME:
-                backgroundImage.draw();
-                ship.draw();
-        
-                // render all blocks
-                for (int i = 0; i < blocks.size(); i++) {
-                    blocks.at(i).draw();
-                }
-
-                ball.draw();
-
-                // UI
-                renderScore();
-                console.renderLog();
+                renderGame();
                 break;
         }
         
@@ -522,15 +542,36 @@ void Breakout::render()
 
 }
 
-void Breakout::renderScore() 
+void Breakout::renderGame()
 {
-    // shadow
+    backgroundImage.draw();
+
+    ship.draw();
+    ball.draw();
+
+    // render all blocks
+    for (int i = 0; i < blocks.size(); i++) {
+        blocks.at(i).draw();
+    }
+
+    // UI
+    renderUI();
+    console.renderLog();
+}
+
+void Breakout::renderUI() 
+{
+    // score shadow
     dxScoreFont.setFontColor(graphicsNS::BLACK50);
     dxScoreFont.print("Score: " + std::to_string(score), 9, 9); 
 
-    // main font
+    // score main font
     dxScoreFont.setFontColor(graphicsNS::WHITE);
     dxScoreFont.print("Score: " + std::to_string(score), 7, 7);
+
+    // ball count
+    dxBallCount.setFontColor(graphicsNS::FB_HARD);
+    dxBallCount.print(std::to_string(ballCount), 7, 40);
 }
 
 //=============================================================================
@@ -555,6 +596,7 @@ void Breakout::releaseAll()
     blockTexture.onLostDevice();
     buttonTexture.onLostDevice();
     dxScoreFont.onLostDevice();
+    dxBallCount.onLostDevice();
     console.onLostDevice();
     
     Game::releaseAll();
@@ -573,6 +615,7 @@ void Breakout::resetAll()
     blockTexture.onResetDevice();
     buttonTexture.onResetDevice();
     dxScoreFont.onResetDevice();
+    dxBallCount.onResetDevice();
     console.onResetDevice();
 
     Game::resetAll();
