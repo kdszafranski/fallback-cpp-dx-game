@@ -20,25 +20,25 @@ Breakout::Breakout()
     Level level1, level2;
 
     level1.data = {
-    STRONG,   // 0
-    STRONG,
-    STRONG,
-    STRONG,
-    STRONG,
-    STRONG,
-    STRONG,
-    STRONG,
-    STRONG,
+    INVINCIBLE,   // 0
+    INVINCIBLE,
+    INVINCIBLE,
+    INVINCIBLE,
+    INVINCIBLE,
+    INVINCIBLE,
+    INVINCIBLE,
+    INVINCIBLE,
+    INVINCIBLE,
     // 9 row 2
-    HARD, 
+    NONE, 
     WEAK,   
-    HARD,
+    NONE,
     WEAK,
-    HARD,
+    NONE,
     WEAK,
-    HARD,
+    NONE,
     WEAK,
-    HARD,
+    NONE,
     // 18 row 3
     NONE,   
     NONE,
@@ -563,13 +563,14 @@ void Breakout::checkGameOver()
     console.setLogText("Blocks remaining: " + std::to_string(blocks.size()));
 
     bool finished = false;
+    int invincible = 0;
     if (blocks.size() <= 0) {
         finished = true;
     } else {
         for (int i = 0; i < blocks.size(); i++) {
             // check each block, as soon as there is a normal block we can stop
             if (blocks.at(i).getBlockType() == INVINCIBLE) {
-                continue;
+                invincible++;
             } else {
                 return;
             }
@@ -577,7 +578,8 @@ void Breakout::checkGameOver()
 
     }
 
-    if (finished) {
+    // we're done here, next please!
+    if (finished || blocks.size() == invincible) {
         loadNextLevel();
     }
 }
