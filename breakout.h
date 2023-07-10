@@ -102,7 +102,11 @@ public:
     void initMessageSprites();
     void setTitleScreen();
     void setGameScreen();
+    // checks if there are blocks left
+    void checkGameOver();
 
+    // Advances the level
+    void loadNextLevel();
     // Loads given level
     void loadLevel(int level);
     // loads a randomly generated level

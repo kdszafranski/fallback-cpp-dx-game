@@ -255,7 +255,7 @@ void Breakout::initShip()
 
 
 //=============================================================================
-// Sets the ball at the staring position
+// Initialize ball texture/images
 //=============================================================================
 void Breakout::initBall() 
 {
@@ -270,7 +270,7 @@ void Breakout::initBall()
 }
 
 //=============================================================================
-// Create starting blocks
+// Initialize block texture/images
 //=============================================================================
 void Breakout::initBlocks()
 {
@@ -278,6 +278,15 @@ void Breakout::initBlocks()
     if (!blockTexture.initialize(graphics, BLOCK_PATH))
     {
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing block texture"));
+    }
+}
+
+void Breakout::loadNextLevel()
+{
+    currentLevel++;
+    if (currentLevel < levels.size()) {
+        loadLevel(currentLevel);
+        restartBall();
     }
 }
 
@@ -498,7 +507,7 @@ void Breakout::collisions()
         if (ball.collidesWith(ship, collisionVector)) {
 
             ball.bounceOffShip(collisionVector, collisionPosition, ship.getSpriteData());            
-            console.setLogText(ship.toString());
+            //console.setLogText(ship.toString());
 
             audio->playCue(CLICK);            
         }
@@ -519,8 +528,6 @@ void Breakout::collisions()
                     block->damage(BALL);
                     audio->playCue(CLUNK);
 
-                    console.setLogText("Health: " + std::to_string(block->getHealth()));
-
                     // check if ball is dead
                     if (block->getHealth() <= 0) {
                         // update score
@@ -534,7 +541,10 @@ void Breakout::collisions()
                 }
 
             } // end collision if
-        } // end loop
+        } // end blocks loop
+
+        // see if we got'em all
+        checkGameOver();
     }
 
 }
@@ -546,6 +556,30 @@ void Breakout::removeBlock(int index)
 {
     audio->playCue(POP);
     blocks.erase(blocks.begin() + index);
+}
+
+void Breakout::checkGameOver()
+{
+    console.setLogText("Blocks remaining: " + std::to_string(blocks.size()));
+
+    bool finished = false;
+    if (blocks.size() <= 0) {
+        finished = true;
+    } else {
+        for (int i = 0; i < blocks.size(); i++) {
+            // check each block, as soon as there is a normal block we can stop
+            if (blocks.at(i).getBlockType() == INVINCIBLE) {
+                continue;
+            } else {
+                return;
+            }
+        }
+
+    }
+
+    if (finished) {
+        loadNextLevel();
+    }
 }
 
 //=============================================================================
@@ -630,7 +664,7 @@ void Breakout::renderUI()
 
     // ball count
     dxBallCount.setFontColor(graphicsNS::FB_HARD);
-    dxBallCount.print(std::to_string(ballCount), 7, 40);
+    dxBallCount.print(std::to_string(ballCount), 7, 50);
 }
 
 //=============================================================================
