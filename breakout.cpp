@@ -380,6 +380,10 @@ void Breakout::update()
                 startNewGame();
             }
         }
+        // too lazy for the mouse
+        if (input->wasKeyPressed(ENTER_KEY)) {
+            startNewGame();
+        }
     }
 
     // handle Game updates and inputs
@@ -416,7 +420,7 @@ void Breakout::CheckPauseInput()
 {
     if (currentScreen == GAME) {
         // SPACE pauses
-        if (input->isKeyDown(SPACE_KEY)) {
+        if (input->wasKeyPressed(SPACE_KEY)) {
             isPaused = !isPaused;
         }
     }
