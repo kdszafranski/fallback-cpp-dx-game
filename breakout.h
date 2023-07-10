@@ -50,7 +50,9 @@ private:
     TextureManager shipTexture;
     TextureManager blockTexture;
     TextureManager buttonTexture;
+    TextureManager gameOverTexture;
     Image backgroundImage;
+    Image gameOverImage;
     Button newGameButton;
 
     // sprites
@@ -97,16 +99,22 @@ public:
     void initShip();
     void initBall();
     void initBlocks();
+    void initMessageSprites();
+    void setTitleScreen();
+    void setGameScreen();
 
-    // levels
+    // Loads given level
     void loadLevel(int level);
+    // loads a randomly generated level
     void loadRandomLevel();
 
-    // user input handlers
-    void CheckForExit(); // helper to handle exit inputs
-    void CheckPauseInput(); // helper to handle pause input
+    // helper to handle exit inputs
+    void CheckForExit(); 
+    // helper to handle pause input
+    void CheckPauseInput(); 
 
-    void wrapScreenEdge(); // checks screen bounds
+    // checks screen bounds
+    void wrapScreenEdge(); 
 };
 
 #endif

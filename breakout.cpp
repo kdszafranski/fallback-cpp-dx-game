@@ -14,10 +14,8 @@
 //=============================================================================
 Breakout::Breakout()
 {
-    isPaused = false;
-    gameOver = false;
-    currentScreen = TITLE;
-    ballCount = MAX_BALLS;
+    resetGame();
+    setTitleScreen();
 
     Level level1, level2;
 
@@ -101,16 +99,6 @@ Breakout::~Breakout()
     releaseAll();           // call onLostDevice() for every graphics item
 }
 
-/// <summary>
-/// Resets score and board
-/// </summary>
-void Breakout::resetGame()
-{
-    score = 0;
-    currentLevel = 0;
-    gameOver = false;
-    console.resetLog();
-}
 
 //=============================================================================
 // Initializes the game
@@ -141,28 +129,48 @@ void Breakout::initialize(HWND hwnd)
     return;
 }
 
+
 /// <summary>
 /// Begins a new game from the Title Screen
 /// </summary>
 void Breakout::startNewGame()
 {
-    // set proper bg frame
-    backgroundImage.setX(- static_cast<int>(GAME_WIDTH));
-    currentScreen = GAME;
-    gameOver = false;
+    // set proper bg screen state
+    setGameScreen();
 
+    // load game sprites
     initSprites();
+
+    // reset game variables
     resetGame();
-    loadLevel(currentLevel); // level numbers are 0-based... :/
+
+    // level numbers are 0-based... :/
+    loadLevel(currentLevel); 
 
     // play!
     restartBall();
+}
+
+/// <summary>
+/// Resets score and board
+/// </summary>
+void Breakout::resetGame()
+{
+    ballCount = MAX_BALLS;
+    gameOver = false;
+    isPaused = false;
+    score = 0;
+    currentLevel = 0;
+    console.resetLog();
 }
 
 //=============================================================================
 // Initializes all the game sprites from textures
 //=============================================================================
 void Breakout::initSprites() {
+    // misc graphics
+    initMessageSprites();
+    
     // create our game object and graphics
     initShip();
     // set up the blocks
@@ -206,6 +214,24 @@ void Breakout::initButtons()
 
     newGameButton.setX(400 - newGameButton.getSpriteData().width / 2);
     newGameButton.setY(400);
+}
+
+void Breakout::initMessageSprites()
+{
+    // background texture
+    if (!gameOverTexture.initialize(graphics, GAME_OVER_PATH))
+    {
+        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing message texture"));
+    }
+
+    // game bg image
+    if (!gameOverImage.initialize(graphics, 0, 0, 0, &gameOverTexture))
+    {
+        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing game over image"));
+    }
+
+    gameOverImage.setX(0);
+    gameOverImage.setY(GAME_HEIGHT / 2);
 }
 
 //=============================================================================
@@ -262,6 +288,9 @@ void Breakout::loadLevel(int levelNumber)
     const int COLS = 9;
     const int ROWS = 3;
 
+    blocks.clear();
+
+    // load up vector with blocks from the level data
     int y = START_Y;
     for (int i = 0; i < ROWS; i++) {
 
@@ -542,12 +571,38 @@ void Breakout::render()
 
 }
 
+/// <summary>
+/// Preps the move to the gameplay screen
+/// </summary>
+void Breakout::setGameScreen()
+{
+    // shift to next sprite frame for the game bg
+    backgroundImage.setX(-static_cast<int>(GAME_WIDTH));
+    currentScreen = GAME;
+}
+
+/// <summary>
+/// Preps to move to the Title Screen
+/// </summary>
+void Breakout::setTitleScreen()
+{
+    // clean up game
+    // set bg 
+    backgroundImage.setX(0);
+    currentScreen = TITLE;
+}
+
 void Breakout::renderGameScreen()
 {
     backgroundImage.draw();
 
-    ship.draw();
-    ball.draw();
+    if (gameOver) {
+        // show message
+        gameOverImage.draw();
+    } else {
+        ship.draw();
+        ball.draw();
+    }
 
     // render all blocks
     for (int i = 0; i < blocks.size(); i++) {
@@ -579,8 +634,14 @@ void Breakout::renderUI()
 //=============================================================================
 void Breakout::CheckForExit() {
     // ESC key always quits
-    if (input->isKeyDown(ESC_KEY)) {
-        PostQuitMessage(0);
+    if (input->wasKeyPressed(ESC_KEY)) {
+        switch(currentScreen) {
+        case TITLE:
+            PostQuitMessage(0);
+            break;
+        case GAME:
+            setTitleScreen();
+        }        
     }
 }
 

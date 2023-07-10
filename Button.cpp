@@ -31,6 +31,7 @@ void Button::draw()
     Image::draw(colorFilter);
 }
 
+
 bool Button::isMouseOver()
 {
     const float mouseX = input->getMouseX();

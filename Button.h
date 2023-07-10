@@ -33,7 +33,13 @@ public:
 	virtual void update(float frameTime);
 	virtual void draw();
 
-	// handlers
+	/// <summary>
+	/// Determines if the mouse position is currently inside this rect
+	/// </summary>
+	/// <returns>
+	/// true if inside
+	/// false if not inside
+	/// </returns>
 	bool isMouseOver();
 };
 
