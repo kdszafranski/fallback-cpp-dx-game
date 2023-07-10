@@ -17,6 +17,8 @@ Breakout::Breakout()
     isPaused = false;
     currentScreen = TITLE;
 
+    Level level1, level2;
+
     level1.data = {
     STRONG,   // 0
     STRONG,
@@ -28,15 +30,15 @@ Breakout::Breakout()
     STRONG,
     STRONG,
     // 9 row 2
-    NONE, 
+    HARD, 
     WEAK,   
-    NONE,
+    HARD,
     WEAK,
-    NONE,
+    HARD,
     WEAK,
-    NONE,
+    HARD,
     WEAK,
-    NONE,
+    HARD,
     // 18 row 3
     NONE,   
     NONE,
@@ -49,6 +51,44 @@ Breakout::Breakout()
     NONE,	
     NONE,	// 27
     };
+
+    level2.data = {
+    HARD,   // 0
+    HARD,
+    HARD,
+    METAL,
+    METAL,
+    METAL,
+    HARD,
+    HARD,
+    HARD,
+    // 9 row 2
+    NONE,   // 0 
+    METAL,
+    WEAK,
+    NONE,
+    STRONG,
+    NONE,
+    WEAK,
+    METAL,
+    NONE,
+    // 18 row 3
+    NONE,
+    NONE,
+    NONE,
+    STRONG,
+    NONE,
+    STRONG,
+    NONE,
+    NONE,
+    NONE,
+    NONE,	// 27
+    };
+
+    // store levels for easy loading
+    levels.push_back(level1);
+    levels.push_back(level2);
+
 }
 
 //=============================================================================
@@ -65,6 +105,7 @@ Breakout::~Breakout()
 void Breakout::resetGame()
 {
     score = 0;
+    currentLevel = 0;
     console.resetLog();
 }
 
@@ -104,8 +145,8 @@ void Breakout::startNewGame()
     currentScreen = GAME;
 
     initSprites();
-    loadLevel(1);
     resetGame();
+    loadLevel(currentLevel); // level numbers are 0-based... :/
 
     // play!
     restartBall();
@@ -207,7 +248,7 @@ void Breakout::initBlocks()
     }
 }
 
-void Breakout::loadLevel(int level)
+void Breakout::loadLevel(int levelNumber)
 {
     const float START_X = 114;
     const float START_Y = 100;
@@ -220,10 +261,10 @@ void Breakout::loadLevel(int level)
         int x = START_X;
         for (int j = 0; j < COLS; j++) {
 
-            if (level1.data.at(i*COLS + j) == NONE) {
+            if (levels.at(levelNumber).data.at(i * COLS + j) == NONE) {
                 // skip
             } else {
-                Block newBlock(level1.data.at(i*COLS + j));
+                Block newBlock(levels.at(levelNumber).data.at(i * COLS + j));
 
                 if (!newBlock.initialize(this, blockNS::WIDTH, blockNS::HEIGHT, blockNS::TEXTURE_COLS, &blockTexture))
                 {

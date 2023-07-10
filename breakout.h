@@ -30,11 +30,12 @@ class Breakout : public Game
 private:
     // variables
     // testing
-    bool skipTitleScreen = true;
+    bool skipTitleScreen = false;
 
     std::vector<Block> blocks;
+    std::vector<Level> levels;
     int score;
-    Level level1;
+    int currentLevel;
 
     // Game objects
     TextDX dxScoreFont;
