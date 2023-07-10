@@ -112,7 +112,7 @@ void Breakout::initialize(HWND hwnd)
     initButtons();
 
     // Init DirectX font with 48px high Arial
-    if (dxScoreFont.initialize(graphics, 48, true, false, "Arial") == false)
+    if (dxScoreFont.initialize(graphics, 36, true, false, "Arial") == false)
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing score font"));
     
     if (dxBallCount.initialize(graphics, 24, true, false, "Arial") == false)
