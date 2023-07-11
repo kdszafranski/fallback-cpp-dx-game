@@ -18,7 +18,7 @@
 #include "ball.h"
 #include "block.h"
 #include "textDX.h"
-#include "Button.h"
+#include "button.h"
 #include "console.h"
 #include "levels.h"
 

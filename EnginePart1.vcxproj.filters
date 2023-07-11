@@ -57,8 +57,11 @@
     <ClCompile Include="console.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Button.cpp">
+    <ClCompile Include="button.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="levels.h">
+      <Filter>Header Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -104,7 +107,7 @@
     <ClInclude Include="console.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Button.h">
+    <ClInclude Include="button.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
