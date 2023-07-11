@@ -1,11 +1,12 @@
-Notes
-
-TO DO
+IDEAS to take this further
 
 - fix collisions
 - add more animations
 - ball trail
+- juicier, particles
 - better sfx
 - add music
 - custom cursor
 - separate direction from speed
+- add event manager, implement event pattern
+- make level editor
