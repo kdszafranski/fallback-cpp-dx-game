@@ -25,7 +25,7 @@
 //=============================================================================
 // Create game class
 //=============================================================================
-class Breakout : public Game
+class Fallback : public Game
 {
 private:
     // variables
@@ -66,10 +66,10 @@ private:
 
 public:
     // Constructor
-    Breakout();
+    Fallback();
 
     // Destructor
-    virtual ~Breakout();
+    virtual ~Fallback();
 
     // Initialize the game
     void initialize(HWND hwnd);

@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectName>Breakout</ProjectName>
+    <ProjectName>Fallback</ProjectName>
     <ProjectGuid>{0259B800-2046-467E-94A2-D13B6F5210BC}</ProjectGuid>
     <RootNamespace>Destroyer</RootNamespace>
   </PropertyGroup>
@@ -106,7 +106,7 @@
     <ClCompile Include="image.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="ship.cpp" />
-    <ClCompile Include="breakout.cpp" />
+    <ClCompile Include="fallback.cpp" />
     <ClCompile Include="levels.h" />
     <ClCompile Include="textDX.cpp" />
     <ClCompile Include="textureManager.cpp" />
@@ -125,7 +125,7 @@
     <ClInclude Include="image.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="ship.h" />
-    <ClInclude Include="breakout.h" />
+    <ClInclude Include="fallback.h" />
     <ClInclude Include="textDX.h" />
     <ClInclude Include="textureManager.h" />
   </ItemGroup>

@@ -5,14 +5,14 @@
 // Copyright (c) 2011 by: 
 // Charles Kelly
 
-#include "breakout.h"
+#include "fallback.h"
 #include <time.h>
 #include "levels.h"
 
 //=============================================================================
 // Constructor
 //=============================================================================
-Breakout::Breakout()
+Fallback::Fallback()
 {
     resetGame();
     setTitleScreen();
@@ -94,7 +94,7 @@ Breakout::Breakout()
 //=============================================================================
 // Destructor
 //=============================================================================
-Breakout::~Breakout()
+Fallback::~Fallback()
 {
     releaseAll();           // call onLostDevice() for every graphics item
 }
@@ -104,7 +104,7 @@ Breakout::~Breakout()
 // Initializes the game
 // Throws GameError on error
 //=============================================================================
-void Breakout::initialize(HWND hwnd)
+void Fallback::initialize(HWND hwnd)
 {
     Game::initialize(hwnd); // throws GameError
 
@@ -133,7 +133,7 @@ void Breakout::initialize(HWND hwnd)
 /// <summary>
 /// Begins a new game from the Title Screen
 /// </summary>
-void Breakout::startNewGame()
+void Fallback::startNewGame()
 {
     // set proper bg screen state
     setGameScreen();
@@ -154,7 +154,7 @@ void Breakout::startNewGame()
 /// <summary>
 /// Resets score and board
 /// </summary>
-void Breakout::resetGame()
+void Fallback::resetGame()
 {
     ballCount = MAX_BALLS;
     gameOver = false;
@@ -167,7 +167,7 @@ void Breakout::resetGame()
 //=============================================================================
 // Initializes all the game sprites from textures
 //=============================================================================
-void Breakout::initSprites() {
+void Fallback::initSprites() {
     // misc graphics
     initMessageSprites();
     
@@ -183,7 +183,7 @@ void Breakout::initSprites() {
 /// <summary>
 /// Load background image(s)
 /// </summary>
-void Breakout::initBackgrounds()
+void Fallback::initBackgrounds()
 {
     // background texture
     if (!backgroundTexture.initialize(graphics, BG_PATH))
@@ -198,7 +198,7 @@ void Breakout::initBackgrounds()
     }
 }
 
-void Breakout::initButtons()
+void Fallback::initButtons()
 {
     // background texture
     if (!buttonTexture.initialize(graphics, NG_BUTTON_PATH))
@@ -216,7 +216,7 @@ void Breakout::initButtons()
     newGameButton.setY(400);
 }
 
-void Breakout::initMessageSprites()
+void Fallback::initMessageSprites()
 {
     // background texture
     if (!gameOverTexture.initialize(graphics, GAME_OVER_PATH))
@@ -237,7 +237,7 @@ void Breakout::initMessageSprites()
 //=============================================================================
 // Ship texture and entity init
 //=============================================================================
-void Breakout::initShip()
+void Fallback::initShip()
 {
     if (!shipTexture.initialize(graphics, SHIP_PATH)) {
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ship texture"));
@@ -257,7 +257,7 @@ void Breakout::initShip()
 //=============================================================================
 // Initialize ball texture/images
 //=============================================================================
-void Breakout::initBall() 
+void Fallback::initBall() 
 {
     if (!ballTexture.initialize(graphics, BALL_PATH))
     {
@@ -272,7 +272,7 @@ void Breakout::initBall()
 //=============================================================================
 // Initialize block texture/images
 //=============================================================================
-void Breakout::initBlocks()
+void Fallback::initBlocks()
 {
     // load our texture, reuse it for all block Entities
     if (!blockTexture.initialize(graphics, BLOCK_PATH))
@@ -281,7 +281,7 @@ void Breakout::initBlocks()
     }
 }
 
-void Breakout::loadNextLevel()
+void Fallback::loadNextLevel()
 {
     currentLevel++;
     if (currentLevel < levels.size()) {
@@ -290,7 +290,7 @@ void Breakout::loadNextLevel()
     }
 }
 
-void Breakout::loadLevel(int levelNumber)
+void Fallback::loadLevel(int levelNumber)
 {
     const float START_X = 114;
     const float START_Y = 100;
@@ -334,7 +334,7 @@ void Breakout::loadLevel(int levelNumber)
 
 }
 
-void Breakout::loadRandomLevel()
+void Fallback::loadRandomLevel()
 {
     const float START_X = 82;
     const float START_Y = 100;
@@ -376,7 +376,7 @@ void Breakout::loadRandomLevel()
 //=============================================================================
 // Update all game items
 //=============================================================================
-void Breakout::update()
+void Fallback::update()
 {
     // check if we want to exit
     CheckForExit();
@@ -425,7 +425,7 @@ void Breakout::update()
 
 }
 
-void Breakout::CheckPauseInput()
+void Fallback::CheckPauseInput()
 {
     if (currentScreen == GAME) {
         // SPACE pauses
@@ -435,7 +435,7 @@ void Breakout::CheckPauseInput()
     }
 }
 
-bool Breakout::isGameOver()
+bool Fallback::isGameOver()
 {
     if (ballCount < 1) {
         // game over
@@ -445,7 +445,7 @@ bool Breakout::isGameOver()
     return false;
 }
 
-void Breakout::loseBall()
+void Fallback::loseBall()
 {
     ballCount--;
 }
@@ -453,7 +453,7 @@ void Breakout::loseBall()
 //=============================================================================
 // Sets the ball at the staring position
 //=============================================================================
-void Breakout::restartBall()
+void Fallback::restartBall()
 {
     if (isGameOver()) {
         // show screen
@@ -469,7 +469,7 @@ void Breakout::restartBall()
 //=============================================================================
 // allows the ship to wrap around from left to right and vice versa
 //=============================================================================
-void Breakout::wrapScreenEdge() {
+void Fallback::wrapScreenEdge() {
     // left/right bounds wrapping
     if (ship.getX() > GAME_WIDTH) {
         // off the edge to the right
@@ -491,13 +491,13 @@ void Breakout::wrapScreenEdge() {
 //=============================================================================
 // Artificial Intelligence
 //=============================================================================
-void Breakout::ai()
+void Fallback::ai()
 {}
 
 //=============================================================================
 // Handle collisions
 //=============================================================================
-void Breakout::collisions()
+void Fallback::collisions()
 {
     VECTOR2 collisionVector, collisionPosition;
 
@@ -552,13 +552,13 @@ void Breakout::collisions()
 //=============================================================================
 // Remove block that was hit by the ball
 //=============================================================================
-void Breakout::removeBlock(int index)
+void Fallback::removeBlock(int index)
 {
     audio->playCue(POP);
     blocks.erase(blocks.begin() + index);
 }
 
-void Breakout::checkGameOver()
+void Fallback::checkGameOver()
 {
     console.setLogText("Blocks remaining: " + std::to_string(blocks.size()));
 
@@ -587,7 +587,7 @@ void Breakout::checkGameOver()
 //=============================================================================
 // Render game items
 //=============================================================================
-void Breakout::render()
+void Fallback::render()
 {
     try {
         graphics->spriteBegin();
@@ -614,7 +614,7 @@ void Breakout::render()
 /// <summary>
 /// Preps the move to the gameplay screen
 /// </summary>
-void Breakout::setGameScreen()
+void Fallback::setGameScreen()
 {
     // shift to next sprite frame for the game bg
     backgroundImage.setX(-static_cast<int>(GAME_WIDTH));
@@ -624,7 +624,7 @@ void Breakout::setGameScreen()
 /// <summary>
 /// Preps to move to the Title Screen
 /// </summary>
-void Breakout::setTitleScreen()
+void Fallback::setTitleScreen()
 {
     // clean up game
     // set bg 
@@ -632,7 +632,7 @@ void Breakout::setTitleScreen()
     currentScreen = TITLE;
 }
 
-void Breakout::renderGameScreen()
+void Fallback::renderGameScreen()
 {
     backgroundImage.draw();
 
@@ -654,7 +654,7 @@ void Breakout::renderGameScreen()
     console.renderLog();
 }
 
-void Breakout::renderUI() 
+void Fallback::renderUI() 
 {
     // score shadow
     dxScoreFont.setFontColor(graphicsNS::BLACK50);
@@ -672,7 +672,7 @@ void Breakout::renderUI()
 //=============================================================================
 // ESC key quits the game
 //=============================================================================
-void Breakout::CheckForExit() {
+void Fallback::CheckForExit() {
     // ESC key always quits
     if (input->wasKeyPressed(ESC_KEY)) {
         switch(currentScreen) {
@@ -689,7 +689,7 @@ void Breakout::CheckForExit() {
 // The graphics device was lost.
 // Release all reserved video memory so graphics device may be reset.
 //=============================================================================
-void Breakout::releaseAll()
+void Fallback::releaseAll()
 {
     backgroundTexture.onLostDevice();
     ballTexture.onLostDevice();
@@ -708,7 +708,7 @@ void Breakout::releaseAll()
 // The grahics device has been reset.
 // Recreate all surfaces.
 //=============================================================================
-void Breakout::resetAll()
+void Fallback::resetAll()
 {
     backgroundTexture.onResetDevice();
     shipTexture.onResetDevice();
