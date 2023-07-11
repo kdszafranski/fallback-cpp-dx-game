@@ -1,8 +1,8 @@
-# My C++ Breakout
+# My C++ Breakout (called Fallback)
 
 My first game in C++/DirectX!
 
-![My Breakout](pictures/screenshot.png)
+![Fallback Title](pictures/title-screenshot.png)
 
 ## About 
 
@@ -14,12 +14,11 @@ I chose to make a simple form of Breakout.
 
 **Features:**
 
-* game loop (initialization, input, render)
+* game loop (initialization, input, render, restart, level progression, score)
 * collision detection
-* simple game logic - ball resets if missed, blocks disappear when hit
+* game logic: ball resets if missed, blocks disappear when hit, levels can be restarted, game keeps score
 
-Time: about 10 hours
-
+![Fallback Gameplay](pictures/gameplay-screenshot.png)
 
 ## Learnings
 
@@ -43,6 +42,11 @@ I could easily take this further but need to move on.
 I went back a few times to add the following:
 
 - Audio/SFX
-- Score
+- Score tracking
 - Added Block types which have varying health and associated colors with their remaining health
 - Console class and log display
+- Level progressions
+- UI Buttons
+- Title screen, game over (state management)
+
+![Fallback Game Over](pictures/gameover-screenshot.png)
