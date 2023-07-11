@@ -1,10 +1,11 @@
-# My C++ Breakout (called Fallback)
+# Fallback
 
 My first game in C++/DirectX!
 
 ![Fallback Title](pictures/title-screenshot.png)
 
-## About 
+
+## About the Original Project
 
 Book: [Programming 2D Games by Charles Kelly](http://www.programming2dgames.com//)
 
@@ -12,17 +13,17 @@ Chapter 6 Challenge: Given the engine so far, make a game, any game. Keep it sim
 
 I chose to make a simple form of Breakout.
 
-**Features:**
+**Features**
 
-* game loop (initialization, input, render, restart, level progression, score)
+* game loop (initialization, input, render, restart)
 * collision detection
-* game logic: ball resets if missed, blocks disappear when hit, levels can be restarted, game keeps score
+* game logic: ball resets if missed, blocks disappear when hit
 
 ![Fallback Gameplay](pictures/gameplay-screenshot.png)
 
 ## Learnings
 
-I'll note that the content is quite old (circa 2012) so I had to convert the code in the book and examples a bit to get it working on Windows 10. The biggest challenge was getting all the DirectX9 parts needed set up in the includes and linker settings.
+I'll note that the content is quite old (from 2012) so I had to convert the code in the book and examples a bit to get it working on Windows 10. The biggest challenge was getting all the DirectX9 parts needed set up in the includes and linker settings.
 
 * Learned the basics of Win32 (and WinRT) apps are set up and initialized
 * Learned a ton about VS and how to work within it including the debugger
@@ -35,18 +36,21 @@ I'll note that the content is quite old (circa 2012) so I had to convert the cod
 
 I'm proud of working through 2 blocking type bugs which stopped me in my tracks. But I kept at it and worked passed them. 
 
-I could easily take this further but need to move on.
+---
 
-## Additions
+## Completion
 
-I went back a few times to add the following:
+I went back and updated this significantly beyond what the book covers into a complete little game. I'm very proud of implementing some of the things from other engines into this one. It was a blast!
 
+### Final Features
+
+- Title screen, game over (game state management), all with input controls/navigation to leave the game, start over, etc.
 - Audio/SFX
+- Animations/Tweening
+- Added Block types which have varying health and associated colors with their remaining health. Blocks work down to a basic type but score as their original type which is worth more points
 - Score tracking
-- Added Block types which have varying health and associated colors with their remaining health
-- Console class and log display
-- Level progressions
-- UI Buttons
-- Title screen, game over (state management)
+- `Console` class and `log` display, including a common `toString` method which converts relevant object into into a displayable string
+- Level progression and loading code
+- UI Buttons with rollover states
 
 ![Fallback Game Over](pictures/gameover-screenshot.png)
