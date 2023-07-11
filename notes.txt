@@ -1,0 +1,11 @@
+Notes
+
+TO DO
+
+- fix collisions
+- add more animations
+- ball trail
+- better sfx
+- add music
+- custom cursor
+- separate direction from speed
