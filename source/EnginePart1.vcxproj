@@ -136,6 +136,7 @@
     <Text Include="..\docs\notes.txt" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\.gitignore" />
     <None Include="..\docs\ClassDiagram1.cd" />
     <None Include="..\README.md" />
   </ItemGroup>
