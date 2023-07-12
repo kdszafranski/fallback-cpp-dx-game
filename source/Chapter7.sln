@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33530.505
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EnginePart1", "EnginePart1.vcxproj", "{0259B800-2046-467E-94A2-D13B6F5210BC}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Fallback", "EnginePart1.vcxproj", "{0259B800-2046-467E-94A2-D13B6F5210BC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,5 +18,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A4EB0336-7401-4C7E-B5BA-A230F716D502}
 	EndGlobalSection
 EndGlobal
