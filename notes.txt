@@ -1,12 +1,23 @@
 IDEAS to take this further
 
+Bugs
 - fix collisions
-- add more animations
+
+
+Graphics
 - ball trail
 - juicier, particles
+- custom cursor (resource)
+
+
+Technical
+- separate direction from speed
+- add event manager, implement Observer pattern: https://gameprogrammingpatterns.com/observer.html
+- make level editor
+- add more animations
+- consider memory/profiling
+
+
+Audio
 - better sfx
 - add music
-- custom cursor
-- separate direction from speed
-- add event manager, implement event pattern
-- make level editor
