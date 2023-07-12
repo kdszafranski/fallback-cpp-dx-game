@@ -2,7 +2,7 @@
 
 My first game in C++/DirectX!
 
-![Fallback Title](pictures/title-screenshot.png)
+![Fallback Title](source/pictures/title-screenshot.png)
 
 
 ## About the Original Project
@@ -19,7 +19,7 @@ I chose to make a simple form of Breakout.
 * collision detection
 * game logic: ball resets if missed, blocks disappear when hit
 
-![Fallback Gameplay](pictures/gameplay-screenshot.png)
+![Fallback Gameplay](source/pictures/gameplay-screenshot.png)
 
 ## Learnings
 
@@ -53,4 +53,4 @@ I went back and updated this significantly beyond what the book covers into a co
 - Level progression and loading code
 - UI Buttons with rollover states
 
-![Fallback Game Over](pictures/gameover-screenshot.png)
+![Fallback Game Over](source/pictures/gameover-screenshot.png)
