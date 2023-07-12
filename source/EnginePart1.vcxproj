@@ -125,7 +125,6 @@
     <ClInclude Include="entity.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="graphics.h" />
-    <ClInclude Include="notes.txt" />
     <ClInclude Include="image.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="ship.h" />
@@ -134,8 +133,11 @@
     <ClInclude Include="textureManager.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram1.cd" />
-    <None Include="README.md" />
+    <Text Include="..\docs\notes.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\docs\ClassDiagram1.cd" />
+    <None Include="..\README.md" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
