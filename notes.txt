@@ -10,12 +10,14 @@ Graphics
 - custom cursor (resource)
 
 
-Technical
+Technical Challenges
 - separate direction from speed
 - add event manager, implement Observer pattern: https://gameprogrammingpatterns.com/observer.html
 - make level editor
 - add more animations
 - consider memory/profiling
+- compile to web assem using Emscripten
+- convert to use SDL2
 
 
 Audio
