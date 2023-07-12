@@ -265,9 +265,9 @@ void Game::deleteAll()
 {
     releaseAll();               // call onLostDevice() for every graphics item
     
-    SAFE_DELETE(graphics);
-    SAFE_DELETE(input);
     SAFE_DELETE(audio);
+    SAFE_DELETE(input);
+    SAFE_DELETE(graphics);
 
     initialized = false;
 }
