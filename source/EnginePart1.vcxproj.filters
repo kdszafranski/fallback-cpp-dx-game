@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
     </Filter>
+    <Filter Include="Other Docs">
+      <UniqueIdentifier>{810afb0b-d82d-4761-8669-65efd0bf748c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="game.cpp">
@@ -110,12 +113,18 @@
     <ClInclude Include="button.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="notes.txt">
-      <Filter>Source Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram1.cd" />
-    <None Include="README.md" />
+    <Text Include="..\docs\notes.txt">
+      <Filter>Other Docs</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\docs\ClassDiagram1.cd">
+      <Filter>Other Docs</Filter>
+    </None>
+    <None Include="..\README.md">
+      <Filter>Other Docs</Filter>
+    </None>
   </ItemGroup>
 </Project>

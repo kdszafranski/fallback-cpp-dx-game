@@ -3,7 +3,7 @@
   <Class Name="Game" Collapsed="true">
     <Position X="0.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>CAAAAgUAQDABABAAABEBAAQgAAiBABgIIBAAAAgUICA=</HashCode>
+      <HashCode>CAAAAgUAQTABABAAABEBAAQhAAiBEBgIIBAgAAgUICA=</HashCode>
       <FileName>game.h</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -14,7 +14,7 @@
   <Class Name="Graphics">
     <Position X="5.25" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAgACgAEAIAkEIRAREEAAACACAAEBAQIAAECAAgAAAE=</HashCode>
+      <HashCode>gAgASgAEBIAkEIRARFEAAACACBQEBAQLIgECAAgAAAE=</HashCode>
       <FileName>graphics.h</FileName>
     </TypeIdentifier>
   </Class>
@@ -25,11 +25,11 @@
       <FileName>input.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Spacewar" Collapsed="true">
-    <Position X="0.5" Y="1.5" Width="1.5" />
+  <Class Name="Fallback">
+    <Position X="0.75" Y="2" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAACAQAABABAAAAEAAAAAAAAAAABIAAAAAAAUAAA=</HashCode>
-      <FileName>spacewar.h</FileName>
+      <HashCode>BEACgDQA0EQRARAEAAUJAqCBcAFAINBIhggQgEgULII=</HashCode>
+      <FileName>fallback.h</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Tahoma" Size="8.25" />

@@ -14,6 +14,7 @@
     <ProjectName>Fallback</ProjectName>
     <ProjectGuid>{0259B800-2046-467E-94A2-D13B6F5210BC}</ProjectGuid>
     <RootNamespace>Destroyer</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -53,10 +54,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>$(DXSDK_DIR)Include;$(IncludePath)</IncludePath>
     <LibraryPath>$(DXSDK_DIR)Lib\x64;$(LibraryPath)</LibraryPath>
+    <TargetName>$(ProjectName)$(PlatformName)</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>$(DXSDK_DIR)Include;$(IncludePath)</IncludePath>
     <LibraryPath>$(DXSDK_DIR)Lib\x64;$(LibraryPath)</LibraryPath>
+    <TargetName>$(ProjectName)$(PlatformName)</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -122,7 +125,6 @@
     <ClInclude Include="entity.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="graphics.h" />
-    <ClInclude Include="notes.txt" />
     <ClInclude Include="image.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="ship.h" />
@@ -131,8 +133,11 @@
     <ClInclude Include="textureManager.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram1.cd" />
-    <None Include="README.md" />
+    <Text Include="..\docs\notes.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\docs\ClassDiagram1.cd" />
+    <None Include="..\README.md" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
