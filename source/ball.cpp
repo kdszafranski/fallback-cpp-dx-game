@@ -110,13 +110,14 @@ void Ball::bounce(VECTOR2& collisionVector, SpriteData otherSpriteData)
         }
 
         // bottom
-        if (myY > boxHeight - 2)
+        if (myY > boxHeight - 1)
         {
             if (myCenter->x > boxWidth) { // -1?
                 // more right
                 flipX();
                 return;
             } else {
+                // more bottom
                 flipY();
                 return;
             }
