@@ -1,16 +1,15 @@
-IDEAS to take this further
+# IDEAS to take this further
 
-Bugs
+## Fix Bugs
 - fix collisions
 
+## Architecture
+- Winmain, winproc
+- convert to be like the GCC book
+- move large constructors to init methods
+- 
 
-Graphics
-- ball trail
-- juicier, particles
-- custom cursor (resource)
-
-
-Technical Challenges
+## Technical Challenges
 - separate direction from speed
 - add event manager, implement Observer pattern: https://gameprogrammingpatterns.com/observer.html
 - make level editor
@@ -19,7 +18,12 @@ Technical Challenges
 - compile to web assem using Emscripten
 - convert to use SDL2
 
+## Graphics
+- ball trail
+- juicier, particles
+- custom cursor (resource)
 
-Audio
+
+## Audio
 - better sfx
 - add music

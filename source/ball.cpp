@@ -58,7 +58,7 @@ void Ball::draw()
 }
 
 //=============================================================================
-// Ball bounces off a BOX collider entity
+// Ball bounces off a BOX collider entity (really just the Blocks, ship is handled separately)
 //=============================================================================
 void Ball::bounce(VECTOR2& collisionVector, SpriteData otherSpriteData)
 {
@@ -71,40 +71,64 @@ void Ball::bounce(VECTOR2& collisionVector, SpriteData otherSpriteData)
 
     const D3DXVECTOR2* myCenter = getCenter();
 
-    // above or fully below
-    if (
-        (myCenter->x > otherSpriteData.x && myCenter->y <= otherSpriteData.y) || // above
-        (myCenter->x > otherSpriteData.x && myY + spriteData.height >= boxHeight) // fully below
-        )
+    // left
+    // determine more above or more below
+    if (myX < otherSpriteData.x)
     {
-        velocity.y = -velocity.y;
-        return;
-    }
-
-    // left or right
-    if (
-        (myX < otherSpriteData.x && myY > otherSpriteData.y) ||     // left
-        (myX > otherSpriteData.x && myY > otherSpriteData.y)  // right
-        )
-    {
-        // inside?
-        if (
-            (myX > otherSpriteData.x && myX < boxWidth - 1) &&
-            (myY < boxHeight && myY > otherSpriteData.y)
-            ) // stuck inside?
+        // top left
+        if (myY <= otherSpriteData.y)
         {
-            // put me below
-            setY(boxHeight + 1);
-            velocity.y = -velocity.y;
+            // now, where specifically is the ball?
+            // more to the side than above
+            if (myCenter->y >= otherSpriteData.y) {
+                flipX();
+                return;
+            }
+
+            // more above
+            flipY();
             return;
         }
 
-        // flip x
-        velocity.x = -velocity.x;
+        // bottom left
+        if (myY >= boxHeight - 2) {
+            flipY();
+            return;
+        }
+
+        // just left
+        flipX();        
+    }
+
+    // right of top-left corner... needs more specifics
+    if(myX > otherSpriteData.x) {
         
+        // top
+        if (myY < otherSpriteData.y) {
+            flipY();
+            return;
+        }
+
+        // bottom
+        if (myY > boxHeight - 1)
+        {
+            if (myCenter->x > boxWidth) { // -1?
+                // more right
+                flipX();
+                return;
+            } else {
+                // more bottom
+                flipY();
+                return;
+            }
+        }
+
+        // just right
+        flipX();        
     }
 
 }
+
 
 /// <summary>
 /// Allows basic left, normal, right aiming based on where the ball hits

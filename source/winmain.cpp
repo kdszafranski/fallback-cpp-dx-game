@@ -19,6 +19,7 @@ bool CreateMainWindow(HWND &, HINSTANCE, int);
 LRESULT WINAPI WinProc(HWND, UINT, WPARAM, LPARAM); 
 
 // Game pointer
+// using a pointer.... this has the broadest scope so.. why?
 Fallback *game = NULL;
 HWND hwnd = NULL;
 

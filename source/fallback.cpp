@@ -284,10 +284,12 @@ void Fallback::initBlocks()
 void Fallback::loadNextLevel()
 {
     currentLevel++;
-    if (currentLevel < levels.size()) {
-        loadLevel(currentLevel);
-        restartBall();
+    if (currentLevel >= levels.size()) {
+        currentLevel = 0;
     }
+
+    loadLevel(currentLevel);
+    restartBall();
 }
 
 void Fallback::loadLevel(int levelNumber)
@@ -398,6 +400,7 @@ void Fallback::update()
     // handle Game updates and inputs
     if (currentScreen == GAME) {
         CheckPauseInput();
+        CheckCheatInput();
 
         if (!isPaused) {
             if (!gameOver) {
@@ -431,6 +434,16 @@ void Fallback::CheckPauseInput()
         // SPACE pauses
         if (input->wasKeyPressed(SPACE_KEY)) {
             isPaused = !isPaused;
+        }
+    }
+}
+
+void Fallback::CheckCheatInput()
+{
+    if (currentScreen == GAME) {
+        // next level
+        if (input->wasKeyPressed(NEXT_LEVEL_KEY)) {
+            loadNextLevel();
         }
     }
 }

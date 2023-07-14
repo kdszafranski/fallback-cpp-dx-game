@@ -115,7 +115,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\docs\notes.txt">
+    <Text Include="..\docs\notes.md">
       <Filter>Other Docs</Filter>
     </Text>
   </ItemGroup>
