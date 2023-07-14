@@ -7,7 +7,6 @@
 - [ ] Winmain, winproc
 - [ ] convert to be like the GCC book
 - [ ] move large constructors to init methods
-- [ ] 
 
 ## Technical Challenges
 - [ ] separate direction from speed
