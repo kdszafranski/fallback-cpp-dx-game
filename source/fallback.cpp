@@ -678,16 +678,21 @@ void Fallback::renderGameScreen()
         gameOverImage.draw();
     } else {
         ship.draw();
+
+        // render all ball shadows (< 5)
+        for (int i = recentBallPositions.size() - 1; i > -1; i--) {
+            shadowBallImage.setX(recentBallPositions.at(i).x);
+            shadowBallImage.setY(recentBallPositions.at(i).y);
+            float scale = i * 0.18;
+            if (i > 0) {
+                shadowBallImage.setScale(scale);
+            }
+            shadowBallImage.draw(graphicsNS::BLACK50); // ??
+        }
+
         ball.draw();
     }
 
-    // ball shadow
-    for (int i = 0; i < recentBallPositions.size(); ++i) {
-        shadowBallImage.setX(recentBallPositions.at(i).x);
-        shadowBallImage.setY(recentBallPositions.at(i).y);  
-        shadowBallImage.setScale(0.92);
-        shadowBallImage.draw(graphicsNS::BLACK50); // ??
-    }
 
     // render all blocks
     for (int i = 0; i < blocks.size(); i++) {
