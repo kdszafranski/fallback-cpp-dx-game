@@ -73,62 +73,74 @@ void Ball::bounce(VECTOR2& collisionVector, SpriteData otherSpriteData)
 
 
     // fully above or fully below
-    if (
-        (myX > otherSpriteData.x && myY <= otherSpriteData.y) || // above
-        (myX > otherSpriteData.x && myY + spriteData.height >= boxHeight) // fully below
-        )
-    {
-        velocity.y = -velocity.y;
-        return;
-    }
+    //if (
+    //    (myX > otherSpriteData.x && myY < otherSpriteData.y) || // above
+    //    (myX > otherSpriteData.x && myY > otherSpriteData.y) // below
+    //    )
+    //{
+    //    velocity.y = -velocity.y;
+    //    return;
+    //}
 
-    // corners
-
-    // top left
-    if (myX < otherSpriteData.x && myY <= otherSpriteData.y)
+    // left
+    // determine more above or more below
+    if (myX < otherSpriteData.x)
     {
-        // now, where specifically is the ball?
-        // more to the side than above
-           if (myCenter->y >= otherSpriteData.y) {
-            velocity.x = -velocity.x;
+        // top left
+        if (myY <= otherSpriteData.y)
+        {
+            // now, where specifically is the ball?
+            // more to the side than above
+            if (myCenter->y >= otherSpriteData.y) {
+                flipX();
+                return;
+            }
+
+            // more above
+            flipY();
             return;
         }
 
-        // more above
-        velocity.y = -velocity.y;
-        return;
+        // bottom left
+        if (myY >= boxHeight - 1) {
+            flipY();
+            return;
+        }
+
+        // just left
+        flipX();        
     }
 
-    // bottom left
-    if (myX < otherSpriteData.x && myY >= boxHeight) {
-        velocity.y = -velocity.y;
-        return;
-    }
+    if(myX > otherSpriteData.x) {
+        // right
+        
+        // top
+        if (myY < otherSpriteData.y) {
+            flipY();
+            return;
+        }
 
-    // left or right
-    if (
-        (myX < otherSpriteData.x && myY > otherSpriteData.y) ||     // left
-        (myX > otherSpriteData.x && myY > otherSpriteData.y)  // right
-        )
-    {
-        // inside?
-        //if (
-        //    (myX > otherSpriteData.x && myX < boxWidth - 1) &&
-        //    (myY < boxHeight && myY > otherSpriteData.y)
-        //    ) // stuck inside?
-        //{
-        //    // put me below
-        //    setY(boxHeight + 1);
-        //    velocity.y = -velocity.y;
-        //    return;
-        //}
 
-        // flip x
-        velocity.x = -velocity.x;
+        // bottom right 
+        if (myY > boxHeight)
+        {
+            if (myCenter->x > boxWidth) {
+                // more right
+                flipX();
+                return;
+            } else {
+                flipY();
+                return;
+            }
+        }
+
+        // just right
+        flipX();
         
     }
 
 }
+
 
 /// <summary>
 /// Allows basic left, normal, right aiming based on where the ball hits

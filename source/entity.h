@@ -134,6 +134,15 @@ class Entity : public Image
     // Set velocity.
     virtual void  setVelocity(VECTOR2 v)    {velocity = v;}
 
+    void flipX() {
+        velocity.x = -velocity.x;
+    }
+
+    void flipY()
+    {
+        velocity.y = -velocity.y;
+    }
+
     // Set delta velocity. Added to velocity in update().
     virtual void  setDeltaV(VECTOR2 dv)     {deltaV = dv;}
 
