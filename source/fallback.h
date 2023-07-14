@@ -116,6 +116,8 @@ public:
     void CheckForExit(); 
     // helper to handle pause input
     void CheckPauseInput(); 
+    // helper to handle cheat inputs
+    void CheckCheatInput();
 
     // checks screen bounds
     void wrapScreenEdge(); 

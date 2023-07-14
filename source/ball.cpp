@@ -71,17 +71,6 @@ void Ball::bounce(VECTOR2& collisionVector, SpriteData otherSpriteData)
 
     const D3DXVECTOR2* myCenter = getCenter();
 
-
-    // fully above or fully below
-    //if (
-    //    (myX > otherSpriteData.x && myY < otherSpriteData.y) || // above
-    //    (myX > otherSpriteData.x && myY > otherSpriteData.y) // below
-    //    )
-    //{
-    //    velocity.y = -velocity.y;
-    //    return;
-    //}
-
     // left
     // determine more above or more below
     if (myX < otherSpriteData.x)
@@ -102,7 +91,7 @@ void Ball::bounce(VECTOR2& collisionVector, SpriteData otherSpriteData)
         }
 
         // bottom left
-        if (myY >= boxHeight - 1) {
+        if (myY >= boxHeight - 2) {
             flipY();
             return;
         }
@@ -111,8 +100,8 @@ void Ball::bounce(VECTOR2& collisionVector, SpriteData otherSpriteData)
         flipX();        
     }
 
+    // right of top-left corner... needs more specifics
     if(myX > otherSpriteData.x) {
-        // right
         
         // top
         if (myY < otherSpriteData.y) {
@@ -120,11 +109,10 @@ void Ball::bounce(VECTOR2& collisionVector, SpriteData otherSpriteData)
             return;
         }
 
-
-        // bottom right 
-        if (myY > boxHeight)
+        // bottom
+        if (myY > boxHeight - 2)
         {
-            if (myCenter->x > boxWidth) {
+            if (myCenter->x > boxWidth) { // -1?
                 // more right
                 flipX();
                 return;
@@ -135,8 +123,7 @@ void Ball::bounce(VECTOR2& collisionVector, SpriteData otherSpriteData)
         }
 
         // just right
-        flipX();
-        
+        flipX();        
     }
 
 }
