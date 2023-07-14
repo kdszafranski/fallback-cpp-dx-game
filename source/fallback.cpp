@@ -268,13 +268,13 @@ void Fallback::initBall()
     {
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ball entity"));
     }
-
+    
+    // ball shadow image
     if (!shadowBallImage.initialize(graphics, 0, 0, 0, &ballTexture)) 
     {
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ball entity"));
     }
 
-    shadowBallImage.setColorFilter(graphicsNS::ALPHA50);
 }
 
 //=============================================================================
@@ -418,14 +418,15 @@ void Fallback::update()
                 timer += frameTime;
 
                 // every second
-                if (timer > 0.1f) {
-                    if (recentBallPositions.size() > 0) {
+                if (timer > BALLSHADOW_INTERVAL) {
+                    recentBallPositions.push_back(VECTOR2(ball.getX(), ball.getY()));
+
+                    if (recentBallPositions.size() > 5) {
                         // remove first
                         recentBallPositions.erase(recentBallPositions.begin());
-                        // push new position
-                        recentBallPositions.push_back(VECTOR2(ball.getX(), ball.getY()));
-                        timer = 0;
                     }
+
+                    timer = 0;                    
                 }
 
                 ball.update(frameTime);
@@ -683,8 +684,9 @@ void Fallback::renderGameScreen()
     // ball shadow
     for (int i = 0; i < recentBallPositions.size(); ++i) {
         shadowBallImage.setX(recentBallPositions.at(i).x);
-        shadowBallImage.setY(recentBallPositions.at(i).y);        
-        shadowBallImage.draw(); // ??
+        shadowBallImage.setY(recentBallPositions.at(i).y);  
+        shadowBallImage.setScale(0.92);
+        shadowBallImage.draw(graphicsNS::BLACK50); // ??
     }
 
     // render all blocks
