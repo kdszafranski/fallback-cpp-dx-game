@@ -156,6 +156,7 @@ void Fallback::startNewGame()
 /// </summary>
 void Fallback::resetGame()
 {
+    timer = 0;
     ballCount = MAX_BALLS;
     gameOver = false;
     isPaused = false;
@@ -267,6 +268,13 @@ void Fallback::initBall()
     {
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ball entity"));
     }
+
+    if (!shadowBallImage.initialize(graphics, 0, 0, 0, &ballTexture)) 
+    {
+        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ball entity"));
+    }
+
+    shadowBallImage.setColorFilter(graphicsNS::ALPHA50);
 }
 
 //=============================================================================
@@ -406,6 +414,20 @@ void Fallback::update()
             if (!gameOver) {
                 // update position of all game objects
                 ship.update(frameTime);
+
+                timer += frameTime;
+
+                // every second
+                if (timer > 0.1f) {
+                    if (recentBallPositions.size() > 0) {
+                        // remove first
+                        recentBallPositions.erase(recentBallPositions.begin());
+                        // push new position
+                        recentBallPositions.push_back(VECTOR2(ball.getX(), ball.getY()));
+                        timer = 0;
+                    }
+                }
+
                 ball.update(frameTime);
 
                 // blocks
@@ -476,6 +498,7 @@ void Fallback::restartBall()
         ball.setX(220);
         ball.setY(300);
         ball.setVelocity(VECTOR2(ballNS::SPEED, ballNS::SPEED)); // move!
+        recentBallPositions.push_back(VECTOR2(ball.getX(), ball.getY()));
     }
 }
 
@@ -655,6 +678,13 @@ void Fallback::renderGameScreen()
     } else {
         ship.draw();
         ball.draw();
+    }
+
+    // ball shadow
+    for (int i = 0; i < recentBallPositions.size(); ++i) {
+        shadowBallImage.setX(recentBallPositions.at(i).x);
+        shadowBallImage.setY(recentBallPositions.at(i).y);        
+        shadowBallImage.draw(); // ??
     }
 
     // render all blocks

@@ -54,6 +54,11 @@ private:
     Image backgroundImage;
     Image gameOverImage;
     Button newGameButton;
+    // ball shadow
+    //float ballShadowInterval;
+    float timer;
+    Image shadowBallImage;
+    std::vector<VECTOR2> recentBallPositions;
 
     // sprites
     Ship ship;
