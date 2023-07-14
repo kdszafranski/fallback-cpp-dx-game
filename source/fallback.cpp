@@ -499,6 +499,8 @@ void Fallback::restartBall()
         ball.setX(220);
         ball.setY(300);
         ball.setVelocity(VECTOR2(ballNS::SPEED, ballNS::SPEED)); // move!
+        
+        recentBallPositions.clear();
         recentBallPositions.push_back(VECTOR2(ball.getX(), ball.getY()));
     }
 }
@@ -679,13 +681,11 @@ void Fallback::renderGameScreen()
     } else {
         ship.draw();
 
-        // render all ball shadows (< 5)
         for (int i = recentBallPositions.size() - 1; i > -1; i--) {
             shadowBallImage.setX(recentBallPositions.at(i).x);
             shadowBallImage.setY(recentBallPositions.at(i).y);
-            float scale = i * 0.18;
-            if (i > 0) {
-                shadowBallImage.setScale(scale);
+            if (i > 0) { // leaves the last 2 the same size
+                shadowBallImage.setScale(i * 0.23);
             }
             shadowBallImage.draw(graphicsNS::BLACK50); // ??
         }
