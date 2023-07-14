@@ -133,7 +133,7 @@
     <ClInclude Include="textureManager.h" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\docs\notes.txt" />
+    <Text Include="..\docs\notes.md" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\.gitignore" />

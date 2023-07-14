@@ -58,7 +58,7 @@ void Ball::draw()
 }
 
 //=============================================================================
-// Ball bounces off a BOX collider entity
+// Ball bounces off a BOX collider entity (really just the Blocks, ship is handled separately)
 //=============================================================================
 void Ball::bounce(VECTOR2& collisionVector, SpriteData otherSpriteData)
 {
@@ -71,12 +71,36 @@ void Ball::bounce(VECTOR2& collisionVector, SpriteData otherSpriteData)
 
     const D3DXVECTOR2* myCenter = getCenter();
 
-    // above or fully below
+
+    // fully above or fully below
     if (
-        (myCenter->x > otherSpriteData.x && myCenter->y <= otherSpriteData.y) || // above
-        (myCenter->x > otherSpriteData.x && myY + spriteData.height >= boxHeight) // fully below
+        (myX > otherSpriteData.x && myY <= otherSpriteData.y) || // above
+        (myX > otherSpriteData.x && myY + spriteData.height >= boxHeight) // fully below
         )
     {
+        velocity.y = -velocity.y;
+        return;
+    }
+
+    // corners
+
+    // top left
+    if (myX < otherSpriteData.x && myY <= otherSpriteData.y)
+    {
+        // now, where specifically is the ball?
+        // more to the side than above
+           if (myCenter->y >= otherSpriteData.y) {
+            velocity.x = -velocity.x;
+            return;
+        }
+
+        // more above
+        velocity.y = -velocity.y;
+        return;
+    }
+
+    // bottom left
+    if (myX < otherSpriteData.x && myY >= boxHeight) {
         velocity.y = -velocity.y;
         return;
     }
@@ -88,16 +112,16 @@ void Ball::bounce(VECTOR2& collisionVector, SpriteData otherSpriteData)
         )
     {
         // inside?
-        if (
-            (myX > otherSpriteData.x && myX < boxWidth - 1) &&
-            (myY < boxHeight && myY > otherSpriteData.y)
-            ) // stuck inside?
-        {
-            // put me below
-            setY(boxHeight + 1);
-            velocity.y = -velocity.y;
-            return;
-        }
+        //if (
+        //    (myX > otherSpriteData.x && myX < boxWidth - 1) &&
+        //    (myY < boxHeight && myY > otherSpriteData.y)
+        //    ) // stuck inside?
+        //{
+        //    // put me below
+        //    setY(boxHeight + 1);
+        //    velocity.y = -velocity.y;
+        //    return;
+        //}
 
         // flip x
         velocity.x = -velocity.x;
