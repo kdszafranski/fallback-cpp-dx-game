@@ -8,6 +8,9 @@
 #include "fallback.h"
 #include <time.h>
 #include "levels.h"
+#include <fstream>
+#include <iostream>
+using namespace std;
 
 //=============================================================================
 // Constructor
@@ -145,10 +148,11 @@ void Fallback::startNewGame()
     resetGame();
 
     // level numbers are 0-based... :/
-    loadLevel(currentLevel); 
+    loadLevelFromFile();
+    //loadLevel(currentLevel); 
 
     // play!
-    restartBall();
+    //restartBall();
 }
 
 /// <summary>
@@ -381,6 +385,42 @@ void Fallback::loadRandomLevel()
         y += blockNS::HEIGHT;
     }
 
+}
+
+//=============================================================================
+// Loads a level from disk
+//=============================================================================
+bool Fallback::loadLevelFromFile()
+{
+    string text, str;
+    Level loadedLevel;
+
+    ifstream in("Level1.txt"); //open existing file
+
+    if (!in) return false; //check if file actual exists return otherwise
+    int line = 1;
+    while (getline(in, str))
+    {
+        if (line == 2) {
+            loadedLevel.levelName = str;
+        }
+        if (line > 2) {
+            // load the line as a Block
+            const char ch = str.at(0);
+            int blockInt = ch - '0';
+            const BLOCK t = static_cast<BLOCK>(blockInt);
+            Block newBlock(t);
+            loadedLevel.data.push_back(t);
+        }
+        
+        ++line;
+
+        if (in.eof()) break; //check if end of file is reached
+    }
+
+    in.close(); //close file
+
+    return true;
 }
 
 //=============================================================================
@@ -641,6 +681,7 @@ void Fallback::render()
             case TITLE:
                 backgroundImage.draw();
                 newGameButton.draw();
+                console.renderLog();
                 break;
             case GAME:
                 renderGameScreen();

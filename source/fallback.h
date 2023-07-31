@@ -117,6 +117,9 @@ public:
     // loads a randomly generated level
     void loadRandomLevel();
 
+    // level loading
+    bool loadLevelFromFile();
+
     // helper to handle exit inputs
     void CheckForExit(); 
     // helper to handle pause input

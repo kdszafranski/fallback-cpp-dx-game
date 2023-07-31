@@ -16,6 +16,9 @@
     <Filter Include="Other Docs">
       <UniqueIdentifier>{810afb0b-d82d-4761-8669-65efd0bf748c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Assets">
+      <UniqueIdentifier>{ae026da7-0ae7-44c9-abeb-973599330cba}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="game.cpp">
@@ -117,6 +120,9 @@
   <ItemGroup>
     <Text Include="..\docs\notes.md">
       <Filter>Other Docs</Filter>
+    </Text>
+    <Text Include="Level1.txt">
+      <Filter>Assets</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>
