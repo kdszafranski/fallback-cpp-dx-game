@@ -569,6 +569,11 @@ void Fallback::collisions()
 
                     // check if ball is dead
                     if (block->getHealth() <= 0) {
+                        // in fact, this woudl be neeed for any block death animations
+                        // this would need to know which block and when its done, while continuing to correctly update this (and other) blocks.
+                        // could have another list of soon-to-die blocks that also updates
+                        // 
+
                         // update score
                         score += block->getPointValue();
                         removeBlock(i);

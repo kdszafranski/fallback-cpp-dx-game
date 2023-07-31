@@ -28,9 +28,58 @@
   <Class Name="Fallback">
     <Position X="0.75" Y="2" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>BEACgDQA0EQRARAEAAUJAqCBcAFAINBIhggQgEgULII=</HashCode>
+      <HashCode>BEQCgDQA0EQRARAEAAUJAqCBdAFAINBIhggQgEgULII=</HashCode>
       <FileName>fallback.h</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="Entity">
+    <Position X="8.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>kYgIhMgBSCgBhAAAYgFgQAgBACYBBDBKOARAJEAESBo=</HashCode>
+      <FileName>entity.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Image" Collapsed="true">
+    <Position X="8.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>cAAQAYhAgDAELgEAACM+BIIACACpxBsCAACATmQGAgQ=</HashCode>
+      <FileName>image.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ship" Collapsed="true">
+    <Position X="11" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAMAAAAAAACAAAAAAAAAAAAEAAA=</HashCode>
+      <FileName>ship.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Button">
+    <Position X="13.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gEAAAAAAEAAAAAAAAAMAAAAAAAAAABAAAAAAgAEMAAA=</HashCode>
+      <FileName>button.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Block">
+    <Position X="11" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAkAAAAgIAAgAAAAAOAAAAAAAAAAgiAAACAgAAMEAA=</HashCode>
+      <FileName>block.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ball" Collapsed="true">
+    <Position X="11" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQAAAgAAAAAMAAAABAAAAAAAAAAAAAAAEAIA=</HashCode>
+      <FileName>ball.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="entityNS::COLLISION_TYPE">
+    <Position X="5" Y="8.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAJAAAAAAQAACAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>entity.h</FileName>
+    </TypeIdentifier>
+  </Enum>
   <Font Name="Tahoma" Size="8.25" />
 </ClassDiagram>
