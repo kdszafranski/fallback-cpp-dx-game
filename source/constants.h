@@ -62,7 +62,7 @@ enum WEAPON { TORPEDO, SHIP, PLANET, BALL };
 // block types
 enum BLOCK { WEAK, STRONG, HARD, METAL, INVINCIBLE, NONE };
 // screen states
-enum SCREEN { TITLE, GAME, CREDITS };
+enum SCREEN { TITLE, GAME, EDITOR, CREDITS };
 
 
 // audio files required by audio.cpp

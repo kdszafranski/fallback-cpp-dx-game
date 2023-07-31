@@ -109,8 +109,12 @@ public:
     void initMessageSprites();
     void setTitleScreen();
     void setGameScreen();
+    void setEditorScreen();
     // checks if there are blocks left
     void checkGameOver();
+
+    // Editor
+    void launchEditor();
 
     // level loading
     void loadLevels();  // loads all levels from disk

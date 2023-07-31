@@ -406,7 +406,7 @@ void Fallback::update()
         }
         if (editorButton.isMouseOver()) {
             if (input->getMouseLButton()) {
-                console.setLogText("launch editor");
+                launchEditor();
             }
         }
         if (creditsButton.isMouseOver()) {
@@ -664,6 +664,10 @@ void Fallback::render()
             case GAME:
                 renderGameScreen();
                 break;
+            case EDITOR:
+                backgroundImage.draw();
+                console.renderLog();
+                break;
         }
         
         graphics->spriteEnd();
@@ -684,6 +688,12 @@ void Fallback::setGameScreen()
     currentScreen = GAME;
 }
 
+void Fallback::setEditorScreen()
+{
+    backgroundImage.setX(-static_cast<int>(GAME_WIDTH));
+    currentScreen = EDITOR;
+}
+
 /// <summary>
 /// Preps to move to the Title Screen
 /// </summary>
@@ -693,6 +703,12 @@ void Fallback::setTitleScreen()
     // set bg 
     backgroundImage.setX(0);
     currentScreen = TITLE;
+}
+
+void Fallback::launchEditor()
+{
+    setEditorScreen();
+    console.setLogText("EDITOR MODE");
 }
 
 void Fallback::renderGameScreen()
