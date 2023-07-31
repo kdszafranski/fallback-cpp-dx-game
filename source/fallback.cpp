@@ -158,6 +158,16 @@ void Fallback::initButtons()
     editorButton.setX(400 - editorButton.getSpriteData().width / 2);
     editorButton.setY(432);
 
+    // credits
+    if (!creditsButton.initialize(this, 256, 64, 3, &buttonTexture))
+    {
+        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing button image"));
+    }
+
+    creditsButton.setCurrentFrame(1);
+    creditsButton.setX(400 - creditsButton.getSpriteData().width / 2);
+    creditsButton.setY(510);
+
 }
 
 void Fallback::initMessageSprites()
@@ -399,6 +409,12 @@ void Fallback::update()
                 console.setLogText("launch editor");
             }
         }
+        if (creditsButton.isMouseOver()) {
+            if (input->getMouseLButton()) {
+                console.setLogText("launch credits");
+            }
+        }
+
         // too lazy for the mouse
         if (input->wasKeyPressed(ENTER_KEY)) {
             startNewGame();
@@ -642,6 +658,7 @@ void Fallback::render()
                 backgroundImage.draw();
                 newGameButton.draw();
                 editorButton.draw();
+                creditsButton.draw();
                 console.renderLog();
                 break;
             case GAME:
