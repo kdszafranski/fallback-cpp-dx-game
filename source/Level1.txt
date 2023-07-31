@@ -29,4 +29,3 @@ COUNT ZERO
 5
 5
 5	
-5

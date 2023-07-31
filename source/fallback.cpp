@@ -41,6 +41,7 @@ void Fallback::initialize(HWND hwnd)
     initBackgrounds();
     initButtons();
 
+    // load all levels from files on disk
     loadLevels();
 
     // Init DirectX font with 48px high Arial
@@ -103,7 +104,6 @@ void Fallback::resetGame()
 void Fallback::initSprites() {
     // misc graphics
     initMessageSprites();
-    
     // create our game object and graphics
     initShip();
     // set up the blocks
@@ -224,6 +224,7 @@ void Fallback::initBlocks()
 void Fallback::loadLevels() {
     loadLevelFromFile(1);
     loadLevelFromFile(2);
+    loadLevelFromFile(3);
 }
 
 void Fallback::loadNextLevel()

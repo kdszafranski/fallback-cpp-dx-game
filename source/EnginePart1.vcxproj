@@ -136,6 +136,7 @@
     <Text Include="..\docs\notes.md" />
     <Text Include="Level1.txt" />
     <Text Include="Level2.txt" />
+    <Text Include="Level3.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\.gitignore" />
