@@ -133,20 +133,31 @@ void Fallback::initBackgrounds()
 
 void Fallback::initButtons()
 {
-    // background texture
+    // buttons texture
     if (!buttonTexture.initialize(graphics, NG_BUTTON_PATH))
     {
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing button texture"));
     }
 
-    // game bg image
-    if (!newGameButton.initialize(this, 0, 0, 2, &buttonTexture))
+    // create buttons from above spritesheet/texture
+    if (!newGameButton.initialize(this, 256, 64, 3, &buttonTexture))
     {
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing button image"));
     }
 
+    newGameButton.setCurrentFrame(0);
     newGameButton.setX(400 - newGameButton.getSpriteData().width / 2);
-    newGameButton.setY(400);
+    newGameButton.setY(356);
+
+    if (!editorButton.initialize(this, 256, 64, 3, &buttonTexture))
+    {
+        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing button image"));
+    }
+
+    editorButton.setCurrentFrame(2);
+    editorButton.setX(400 - editorButton.getSpriteData().width / 2);
+    editorButton.setY(432);
+
 }
 
 void Fallback::initMessageSprites()
@@ -381,6 +392,11 @@ void Fallback::update()
             // over, allow clicks
             if (input->getMouseLButton()) {
                 startNewGame();
+            }
+        }
+        if (editorButton.isMouseOver()) {
+            if (input->getMouseLButton()) {
+                console.setLogText("launch editor");
             }
         }
         // too lazy for the mouse
@@ -625,6 +641,7 @@ void Fallback::render()
             case TITLE:
                 backgroundImage.draw();
                 newGameButton.draw();
+                editorButton.draw();
                 console.renderLog();
                 break;
             case GAME:

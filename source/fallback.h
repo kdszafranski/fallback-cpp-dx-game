@@ -54,6 +54,7 @@ private:
     Image backgroundImage;
     Image gameOverImage;
     Button newGameButton;
+    Button editorButton;
 
     // ball shadow
     float timer;
