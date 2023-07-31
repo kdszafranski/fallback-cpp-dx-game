@@ -124,6 +124,9 @@
     <Text Include="Level1.txt">
       <Filter>Assets</Filter>
     </Text>
+    <Text Include="Level2.txt">
+      <Filter>Assets</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\docs\ClassDiagram1.cd">

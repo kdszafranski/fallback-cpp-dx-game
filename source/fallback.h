@@ -110,15 +110,17 @@ public:
     // checks if there are blocks left
     void checkGameOver();
 
+    // level loading
+    void loadLevels();  // loads all levels from disk
     // Advances the level
     void loadNextLevel();
     // Loads given level
     void loadLevel(int level);
     // loads a randomly generated level
     void loadRandomLevel();
+    // loads the level from a file
+    bool loadLevelFromFile(int n);
 
-    // level loading
-    bool loadLevelFromFile();
 
     // helper to handle exit inputs
     void CheckForExit(); 

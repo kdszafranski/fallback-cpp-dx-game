@@ -19,79 +19,6 @@ Fallback::Fallback()
 {
     resetGame();
     setTitleScreen();
-
-    Level level1, level2;
-
-    level1.data = {
-    INVINCIBLE,   // 0
-    INVINCIBLE,
-    INVINCIBLE,
-    INVINCIBLE,
-    INVINCIBLE,
-    INVINCIBLE,
-    INVINCIBLE,
-    INVINCIBLE,
-    INVINCIBLE,
-    // 9 row 2
-    NONE, 
-    WEAK,   
-    NONE,
-    WEAK,
-    NONE,
-    WEAK,
-    NONE,
-    WEAK,
-    NONE,
-    // 18 row 3
-    NONE,   
-    NONE,
-    NONE,   
-    NONE,
-    NONE,
-    NONE,
-    NONE,
-    NONE,
-    NONE,	
-    NONE,	// 27
-    };
-
-    level2.data = {
-    HARD,   // 0
-    HARD,
-    HARD,
-    METAL,
-    METAL,
-    METAL,
-    HARD,
-    HARD,
-    HARD,
-    // 9 row 2
-    NONE,   // 0 
-    METAL,
-    WEAK,
-    NONE,
-    STRONG,
-    NONE,
-    WEAK,
-    METAL,
-    NONE,
-    // 18 row 3
-    NONE,
-    NONE,
-    NONE,
-    STRONG,
-    NONE,
-    STRONG,
-    NONE,
-    NONE,
-    NONE,
-    NONE,	// 27
-    };
-
-    // store levels for easy loading
-    levels.push_back(level1);
-    levels.push_back(level2);
-
 }
 
 //=============================================================================
@@ -113,6 +40,8 @@ void Fallback::initialize(HWND hwnd)
 
     initBackgrounds();
     initButtons();
+
+    loadLevels();
 
     // Init DirectX font with 48px high Arial
     if (dxScoreFont.initialize(graphics, 36, true, false, "Arial") == false)
@@ -148,11 +77,10 @@ void Fallback::startNewGame()
     resetGame();
 
     // level numbers are 0-based... :/
-    loadLevelFromFile();
-    //loadLevel(currentLevel); 
+    loadLevel(currentLevel); 
 
     // play!
-    //restartBall();
+    restartBall();
 }
 
 /// <summary>
@@ -293,6 +221,11 @@ void Fallback::initBlocks()
     }
 }
 
+void Fallback::loadLevels() {
+    loadLevelFromFile(1);
+    loadLevelFromFile(2);
+}
+
 void Fallback::loadNextLevel()
 {
     currentLevel++;
@@ -390,12 +323,16 @@ void Fallback::loadRandomLevel()
 //=============================================================================
 // Loads a level from disk
 //=============================================================================
-bool Fallback::loadLevelFromFile()
+bool Fallback::loadLevelFromFile(int n)
 {
-    string text, str;
+    string level, str, filename;
     Level loadedLevel;
 
-    ifstream in("Level1.txt"); //open existing file
+    level = n + '0';
+    filename = "Level" + level;
+    filename += ".txt";
+
+    ifstream in(filename); //open existing file
 
     if (!in) return false; //check if file actual exists return otherwise
     int line = 1;
@@ -407,7 +344,11 @@ bool Fallback::loadLevelFromFile()
         if (line > 2) {
             // load the line as a Block
             const char ch = str.at(0);
-            int blockInt = ch - '0';
+            // skip comment lines
+            if (ch == '/') {
+                continue;
+            }
+            int blockInt = ch - '0'; // this produces the ASCII value of the int we want
             const BLOCK t = static_cast<BLOCK>(blockInt);
             Block newBlock(t);
             loadedLevel.data.push_back(t);
@@ -419,6 +360,8 @@ bool Fallback::loadLevelFromFile()
     }
 
     in.close(); //close file
+
+    levels.push_back(loadedLevel);
 
     return true;
 }
