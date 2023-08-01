@@ -27,7 +27,7 @@ bool Editor::initialize(Game* pGame, TextureManager* textButtonTexM, TextureMana
     }
 
     saveButton.setText("SAVE LEVEL");
-    saveButton.setX(GAME_WIDTH / 2 - saveButton.getSpriteData().width);
+    saveButton.setX(GAME_WIDTH / 2 - saveButton.getSpriteData().width / 2);
     saveButton.setY(500);
     // set the font draw rect inside the button
     saveButton.calculateDrawRect();
