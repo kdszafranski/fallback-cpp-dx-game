@@ -72,6 +72,9 @@
     <ClCompile Include="textButton.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="editor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="constants.h">
@@ -122,6 +125,9 @@
     <ClInclude Include="textButton.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="editor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\docs\notes.md">
@@ -134,6 +140,9 @@
       <Filter>Assets</Filter>
     </Text>
     <Text Include="Level3.txt">
+      <Filter>Assets</Filter>
+    </Text>
+    <Text Include="Level0.txt">
       <Filter>Assets</Filter>
     </Text>
   </ItemGroup>

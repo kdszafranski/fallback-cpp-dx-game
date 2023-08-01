@@ -103,6 +103,7 @@
     <ClCompile Include="block.cpp" />
     <ClCompile Include="button.cpp" />
     <ClCompile Include="console.cpp" />
+    <ClCompile Include="editor.cpp" />
     <ClCompile Include="entity.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="graphics.cpp" />
@@ -123,6 +124,7 @@
     <ClInclude Include="button.h" />
     <ClInclude Include="console.h" />
     <ClInclude Include="constants.h" />
+    <ClInclude Include="editor.h" />
     <ClInclude Include="entity.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="graphics.h" />
@@ -139,6 +141,7 @@
     <Text Include="Level1.txt" />
     <Text Include="Level2.txt" />
     <Text Include="Level3.txt" />
+    <Text Include="Level0.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\.gitignore" />

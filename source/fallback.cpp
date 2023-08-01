@@ -10,6 +10,7 @@
 #include "levels.h"
 #include <fstream>
 #include <iostream>
+#include "editor.h"
 using namespace std;
 
 //=============================================================================
@@ -168,15 +169,7 @@ void Fallback::initButtons()
     creditsButton.setX(400 - creditsButton.getSpriteData().width / 2);
     creditsButton.setY(510);
 
-    // credits
-    if (!textButton.initialize(this, 200, 64, 0, &buttonTexture))
-    {
-        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing text button image"));
-    }
-
-    textButton.setText("MY BUTTON");
-    textButton.setX(10);
-    textButton.setY(10);
+    
 
 }
 
@@ -253,6 +246,7 @@ void Fallback::initBlocks()
 }
 
 void Fallback::loadLevels() {
+    loadLevelFromFile(0);
     loadLevelFromFile(1);
     loadLevelFromFile(2);
     loadLevelFromFile(3);
@@ -424,9 +418,6 @@ void Fallback::update()
                 console.setLogText("launch credits");
             }
         }
-        if (textButton.isMouseOver()) {
-            console.setLogText("over text button");
-        }
 
         // too lazy for the mouse
         if (input->wasKeyPressed(ENTER_KEY)) {
@@ -477,6 +468,10 @@ void Fallback::update()
             } // game over
         }  // paused
     } // GAME screen
+
+    if (currentLevel == EDITOR) {
+        editor.update();
+    }
 
 }
 
@@ -680,7 +675,7 @@ void Fallback::render()
                 break;
             case EDITOR:
                 backgroundImage.draw();
-                console.renderLog();
+                editor.draw();
                 break;
         }
         
@@ -721,8 +716,11 @@ void Fallback::setTitleScreen()
 
 void Fallback::launchEditor()
 {
-    setEditorScreen();
-    console.setLogText("EDITOR MODE");
+    // share our stuff
+    if (editor.initialize(this, &buttonTexture, &console)) {
+        setEditorScreen();
+    }
+    
 }
 
 void Fallback::renderGameScreen()

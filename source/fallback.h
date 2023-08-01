@@ -21,6 +21,7 @@
 #include "button.h"
 #include "textButton.h"
 #include "console.h"
+#include "editor.h"
 #include "levels.h"
 
 //=============================================================================
@@ -44,6 +45,7 @@ private:
     TextDX dxScoreFont;
     TextDX dxBallCount;
     Console console;
+    Editor editor;
 
     // textures/sprites
     TextureManager backgroundTexture;

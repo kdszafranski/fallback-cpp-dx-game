@@ -13,12 +13,28 @@ TextButton::~TextButton()
 bool TextButton::initialize(Game* game, int width, int height, int ncols,
     TextureManager* textureM)
 {
-    if (dxFont.initialize(game->getGraphics(), 24, true, false, "Arial") == false)
+    if (!dxFont.initialize(game->getGraphics(), 24, true, false, "Arial"))
+    {
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing button text font"));
+        return false;
+    }
 
     dxFont.setFontColor(graphicsNS::TEAL);
 
     return(Button::initialize(game, width, height, ncols, textureM));
+}
+
+/// <summary>
+/// Adjust our own drawing RECT to be within our containing Button 
+/// Must be called AFTER initialization
+/// </summary>
+void TextButton::calculateDrawRect()
+{
+    // using world coords... relative would be better, but... alas
+    drawRect.left = getX(); // upper left X
+    drawRect.top = getY();  // upper left Y
+    drawRect.right = drawRect.left + getWidth();  // lower right X
+    drawRect.bottom = drawRect.top + getHeight(); // lower right Y
 }
 
 void TextButton::update(float frameTime)
@@ -28,10 +44,8 @@ void TextButton::update(float frameTime)
 
 void TextButton::draw()
 {
-    //Image::draw(colorFilter);
-    // | is bitwise, each bit in the DWORD represents a formatting option
-    // clever and efficient
-    dxFont.print(text, spriteData.rect, DT_CENTER | DT_SINGLELINE | DT_VCENTER);
+    Image::draw(colorFilter);    
+    dxFont.print(text, drawRect, DT_CENTER | DT_SINGLELINE | DT_VCENTER);
 }
 
 bool TextButton::isMouseOver()
