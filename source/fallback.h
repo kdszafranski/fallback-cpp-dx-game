@@ -120,6 +120,7 @@ public:
 
     // Editor
     void launchEditor();
+    void exitEditor();
 
     // level loading
     void loadLevels();  // loads all levels from disk

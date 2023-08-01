@@ -717,6 +717,7 @@ void Fallback::launchEditor()
     if (!blockTexture.getTexture()) {
         initBlocks();
     }
+
     // share our stuff
     if (editor.initialize(this, &buttonTexture, &blockTexture, &console)) {
         setEditorScreen();
@@ -784,11 +785,19 @@ void Fallback::CheckForExit() {
             PostQuitMessage(0);
             break;
         case GAME:
-        case EDITOR:
             setTitleScreen();
+            break;
+        case EDITOR:
+            exitEditor();
             break;
         }
     }
+}
+
+void Fallback::exitEditor()
+{
+    // clean up
+    setTitleScreen();
 }
 
 //=============================================================================

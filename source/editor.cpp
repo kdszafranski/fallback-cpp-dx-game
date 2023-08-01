@@ -10,9 +10,6 @@ Editor::Editor()
 
 Editor::~Editor()
 {
-    //SAFE_DELETE(console);
-    //SAFE_DELETE(input);
-    // save button has dx font and image.. image texture is 
 }
 
 bool Editor::initialize(Game* pGame, TextureManager* textButtonTexM, TextureManager* bTexM, Console* pCons)
