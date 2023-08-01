@@ -787,7 +787,7 @@ void Fallback::CheckForExit() {
         case EDITOR:
             setTitleScreen();
             break;
-        }        
+        }
     }
 }
 

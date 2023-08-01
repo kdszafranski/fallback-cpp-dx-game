@@ -13,6 +13,7 @@ private:
 public:
 	BlockButton(BLOCK type = WEAK);
 	~BlockButton();
+	BLOCK getBLockType() { return blockType; }
 
 	virtual void draw();
 	void setBlockColorByType();

@@ -1,4 +1,7 @@
 #include "editor.h"
+#include <fstream>
+#include <iostream>
+using namespace std;
 
 Editor::Editor()
 {
@@ -40,7 +43,8 @@ void Editor::update()
 {
     if (saveButton.isMouseOver()) {
         if (input->getMouseLButton()) {
-            console->setLogText("clicked button");
+            console->setLogText("saving file...");
+            saveEditorLevelToFile();
         }
     }
 
@@ -75,9 +79,7 @@ void Editor::loadEditorLevel(Level level)
 {
     const float START_X = 114;
     const float START_Y = 100;
-    const int COLS = 9;
-    const int ROWS = 3;
-
+    
     blocks.clear();
 
     // load up vector with blocks from the level data
@@ -107,4 +109,27 @@ void Editor::loadEditorLevel(Level level)
         // set new row downward
         y += blockNS::HEIGHT;
     }
+}
+
+/// <summary>
+/// Writes out blocks vector to file, line by line, to match Level file format
+/// </summary>
+void Editor::saveEditorLevelToFile()
+{
+    // write this shit to disk
+    ofstream out("EditorLevelSave.txt"); //open existing file
+    if (out.is_open()) {
+        //
+        out << "2255\n";
+        out << "EDITOR SAVE\n";
+
+        for (int i = 0; i < blocks.size(); i++) {
+            out << blocks.at(i).getBLockType() << "\n";
+            if (i == COLS || i == COLS*2) {
+                out << "// new row \n";
+            }
+        }
+    }
+
+    out.close();
 }

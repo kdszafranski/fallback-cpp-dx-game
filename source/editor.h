@@ -15,6 +15,8 @@ private:
 	Input* input;		// shared with Fallback
 	TextureManager* blockTexture;
 	Console* console;	// shared with Fallback
+	const int COLS = 9;
+	const int ROWS = 3;
 
 	TextButton saveButton;
 
@@ -26,5 +28,6 @@ public:
 	void update();
 	void draw();
 	void loadEditorLevel(Level level);
+	void saveEditorLevelToFile();
 };
 
