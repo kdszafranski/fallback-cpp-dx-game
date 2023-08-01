@@ -169,12 +169,12 @@ void Fallback::initButtons()
     creditsButton.setY(510);
 
     // credits
-    if (!textButton.initialize(this, 256, 64, 3, &buttonTexture))
+    if (!textButton.initialize(this, 200, 64, 0, &buttonTexture))
     {
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing text button image"));
     }
 
-    textButton.setText("My Button");
+    textButton.setText("MY BUTTON");
     textButton.setX(10);
     textButton.setY(10);
 
@@ -423,6 +423,9 @@ void Fallback::update()
             if (input->getMouseLButton()) {
                 console.setLogText("launch credits");
             }
+        }
+        if (textButton.isMouseOver()) {
+            console.setLogText("over text button");
         }
 
         // too lazy for the mouse

@@ -19,5 +19,8 @@ public:
 
 	void setText(std::string newText) { text = newText; }
 	std::string getText() { return text; }
+
+	// override base
+	bool isMouseOver();
 };
 
