@@ -22,7 +22,7 @@
 #include "textButton.h"
 #include "console.h"
 #include "editor.h"
-#include "levels.h"
+#include "level.h"
 
 //=============================================================================
 // Create game class

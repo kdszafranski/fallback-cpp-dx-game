@@ -111,7 +111,7 @@
     <ClCompile Include="input.cpp" />
     <ClCompile Include="ship.cpp" />
     <ClCompile Include="fallback.cpp" />
-    <ClCompile Include="levels.h" />
+    <ClCompile Include="level.h" />
     <ClCompile Include="textButton.cpp" />
     <ClCompile Include="textDX.cpp" />
     <ClCompile Include="textureManager.cpp" />

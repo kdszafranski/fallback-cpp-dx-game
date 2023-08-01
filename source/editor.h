@@ -2,12 +2,14 @@
 #include "constants.h"
 #include "textButton.h"
 #include "console.h"
+#include "block.h"
+#include "level.h"
 #include <vector>
 
 class Editor
 {
 private:
-	std::vector<BLOCK> blocks;
+	std::vector<Block>* blocks;
 	Graphics* graphics;	// shared with Fallback
 	Input* input;		// shared with Fallback
 	TextButton saveButton;
@@ -21,16 +23,6 @@ public:
 
 	void update();
 	void draw();
-	void loadEditorLevel();
-
-	//void onLostDevice()
-	//{
-	//	saveButton.onLostDevice();
-	//}
-
-	//void onResetDevice()
-	//{
-	//	saveButton.onResetDevice();
-	//}
+	void loadEditorLevel(Level level);
 };
 

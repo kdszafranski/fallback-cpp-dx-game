@@ -7,7 +7,7 @@
 
 #include "fallback.h"
 #include <time.h>
-#include "levels.h"
+#include "level.h"
 #include <fstream>
 #include <iostream>
 #include "editor.h"
@@ -717,6 +717,7 @@ void Fallback::launchEditor()
     // share our stuff
     if (editor.initialize(this, &buttonTexture, &console)) {
         setEditorScreen();
+        editor.loadEditorLevel(levels[0]);
     }
     
 }
