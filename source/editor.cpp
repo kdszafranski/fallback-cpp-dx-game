@@ -2,6 +2,7 @@
 
 Editor::Editor()
 {
+    test = 0;
 }
 
 Editor::~Editor()
@@ -36,10 +37,10 @@ bool Editor::initialize(Game* pGame, TextureManager* textureM, Console* pCons)
 
 void Editor::update()
 {
-    if (input->wasKeyPressed(SPACE_KEY)) {
-            console->setLogText("clicked to save");
-        }
     if (saveButton.isMouseOver()) {
+        if (input->getMouseLButton()) {
+            console->setLogText("clicked button");
+        }
     }
 }
 
@@ -51,5 +52,8 @@ void Editor::draw()
 
 void Editor::loadEditorLevel()
 {
+    if (input->getMouseX()) {
+        // do a thing
 
+    }
 }

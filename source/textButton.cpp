@@ -44,7 +44,7 @@ void TextButton::update(float frameTime)
 
 void TextButton::draw()
 {
-    Image::draw(colorFilter);    
+    //Image::draw(colorFilter);    
     dxFont.print(text, drawRect, DT_CENTER | DT_SINGLELINE | DT_VCENTER);
 }
 

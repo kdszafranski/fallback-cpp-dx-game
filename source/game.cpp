@@ -231,6 +231,10 @@ void Game::run(HWND hwnd)
                 ai();                       // artificial intelligence
                 collisions();               // handle collisions
                 input->vibrateControllers(frameTime); // handle controller vibration
+                break;
+            case EDITOR:
+                update();
+                break;
         }
     }
     renderGame();                   // draw all game items

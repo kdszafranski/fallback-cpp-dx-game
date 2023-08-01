@@ -20,6 +20,7 @@ Fallback::Fallback()
 {
     resetGame();
     setTitleScreen();
+    //editor = Editor();
 }
 
 //=============================================================================
@@ -95,7 +96,7 @@ void Fallback::resetGame()
     gameOver = false;
     isPaused = false;
     score = 0;
-    currentLevel = 0;
+    currentLevel = 1;
     console.resetLog();
 }
 
@@ -168,9 +169,6 @@ void Fallback::initButtons()
     creditsButton.setCurrentFrame(1);
     creditsButton.setX(400 - creditsButton.getSpriteData().width / 2);
     creditsButton.setY(510);
-
-    
-
 }
 
 void Fallback::initMessageSprites()
@@ -469,7 +467,7 @@ void Fallback::update()
         }  // paused
     } // GAME screen
 
-    if (currentLevel == EDITOR) {
+    if (currentScreen == EDITOR) {
         editor.update();
     }
 
@@ -782,7 +780,9 @@ void Fallback::CheckForExit() {
             PostQuitMessage(0);
             break;
         case GAME:
+        case EDITOR:
             setTitleScreen();
+            break;
         }        
     }
 }

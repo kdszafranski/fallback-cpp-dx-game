@@ -12,6 +12,7 @@ private:
 	Input* input;		// shared with Fallback
 	TextButton saveButton;
 	Console* console;	// shared with Fallback
+	int test;
 
 public:
 	Editor();
