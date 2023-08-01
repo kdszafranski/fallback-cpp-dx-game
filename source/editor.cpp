@@ -5,6 +5,7 @@ using namespace std;
 
 Editor::Editor()
 {
+    dirty = false;
 }
 
 Editor::~Editor()
@@ -45,6 +46,7 @@ void Editor::update()
         if (input->getMouseLButton()) {
             console->setLogText("saving file...");
             saveEditorLevelToFile();
+            dirty = false;
         }
     }
 
@@ -53,9 +55,12 @@ void Editor::update()
         if (blocks.at(i).isMouseOver()) {
             if (input->getMouseLButton()) {
                 blocks.at(i).changeBlockType();
+                dirty = true;
             }
         }
     }
+
+    console->setLogText(dirty ? "unsaved changes" : "up to date");
 
 }
 

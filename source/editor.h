@@ -15,6 +15,7 @@ private:
 	Input* input;		// shared with Fallback
 	TextureManager* blockTexture;
 	Console* console;	// shared with Fallback
+	bool dirty;
 	const int COLS = 9;
 	const int ROWS = 3;
 
