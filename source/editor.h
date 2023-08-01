@@ -11,6 +11,7 @@ class Editor
 {
 private:
 	std::vector<BlockButton> blocks;
+	BLOCK currentType;
 	Game* game;
 	Input* input;		// shared with Fallback
 	TextureManager* blockTexture;
@@ -19,7 +20,10 @@ private:
 	const int COLS = 9;
 	const int ROWS = 3;
 
+	// UI
 	TextButton saveButton;
+	TextButton weakButton;
+	TextButton strongButton;
 
 public:
 	Editor();

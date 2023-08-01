@@ -6,6 +6,7 @@ using namespace std;
 Editor::Editor()
 {
     dirty = false;
+    currentType = WEAK;
 }
 
 Editor::~Editor()
@@ -30,6 +31,30 @@ bool Editor::initialize(Game* pGame, TextureManager* textButtonTexM, TextureMana
     saveButton.setY(500);
     // set the font draw rect inside the button
     saveButton.calculateDrawRect();
+    
+    // text button
+    if (!weakButton.initialize(game, 200, 64, 0, textButtonTexM))
+    {
+        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing text button image"));
+        return false;
+    }
+
+    weakButton.setText("WEAK BLOCK");
+    weakButton.setX(100);
+    weakButton.setY(400);
+    weakButton.calculateDrawRect();
+
+    // text button
+    if (!strongButton.initialize(game, 200, 64, 0, textButtonTexM))
+    {
+        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing text button image"));
+        return false;
+    }
+
+    strongButton.setText("STRONG BLOCK");
+    strongButton.setX(weakButton.getX() + strongButton.getWidth() + 10);
+    strongButton.setY(400);
+    strongButton.calculateDrawRect();
 
     console = pCons;
     console->setLogText("EDITOR MODE");
@@ -46,12 +71,22 @@ void Editor::update()
             dirty = false;
         }
     }
+    if (weakButton.isMouseOver()) {
+        if (input->getMouseLButton()) {
+            currentType = WEAK;
+        }
+    }
+    if (strongButton.isMouseOver()) {
+        if (input->getMouseLButton()) {
+            currentType = STRONG;
+        }
+    }
 
     // seems bizarre that it works within update()
     for (int i = 0; i < blocks.size(); i++) {
         if (blocks.at(i).isMouseOver()) {
             if (input->getMouseLButton()) {
-                blocks.at(i).changeBlockType();
+                blocks.at(i).changeBlockType(currentType);
                 dirty = true;
             }
         }
@@ -64,6 +99,8 @@ void Editor::update()
 void Editor::draw()
 {
     saveButton.draw();
+    weakButton.draw();
+    strongButton.draw();
     
     // draw each button
     for (int i = 0; i < blocks.size(); i++) {

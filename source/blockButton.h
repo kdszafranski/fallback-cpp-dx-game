@@ -9,7 +9,6 @@ private:
 	COLOR_ARGB color;
 	BLOCK blockType;
 
-
 public:
 	BlockButton(BLOCK type = WEAK);
 	~BlockButton();
@@ -17,6 +16,6 @@ public:
 
 	virtual void draw();
 	void setBlockColorByType();
-	void changeBlockType();
+	void changeBlockType(BLOCK type);
 };
 

@@ -45,8 +45,8 @@ void BlockButton::setBlockColorByType()
     defaultColor = color;
 }
 
-void BlockButton::changeBlockType()
+void BlockButton::changeBlockType(BLOCK type)
 {
-    blockType = WEAK;
+    blockType = type;
     setBlockColorByType();
 }
