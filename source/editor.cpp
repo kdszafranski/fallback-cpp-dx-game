@@ -89,6 +89,11 @@ void Editor::update()
                 blocks.at(i).changeBlockType(currentType);
                 dirty = true;
             }
+            if (input->getMouseRButton()) {
+                // right click resets
+                blocks.at(i).changeBlockType(NONE);
+                dirty = true;
+            }
         }
     }
 
