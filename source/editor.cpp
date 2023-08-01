@@ -5,7 +5,7 @@ Editor::Editor()
 }
 
 Editor::~Editor()
-{ 
+{
     //SAFE_DELETE(console);
     //SAFE_DELETE(input);
     // save button has dx font and image.. image texture is 
@@ -25,7 +25,7 @@ bool Editor::initialize(Game* pGame, TextureManager* textButtonTexM, TextureMana
     }
 
     saveButton.setText("SAVE LEVEL");
-    saveButton.setX(GAME_WIDTH/2 - saveButton.getSpriteData().width);
+    saveButton.setX(GAME_WIDTH / 2 - saveButton.getSpriteData().width);
     saveButton.setY(500);
     // set the font draw rect inside the button
     saveButton.calculateDrawRect();
@@ -43,6 +43,16 @@ void Editor::update()
             console->setLogText("clicked button");
         }
     }
+
+    // seems bizarre that it works within update()
+    for (int i = 0; i < blocks.size(); i++) {
+        if (blocks.at(i).isMouseOver()) {
+            if (input->getMouseLButton()) {
+                blocks.at(i).changeBlockType();
+            }
+        }
+    }
+
 }
 
 void Editor::draw()
@@ -77,22 +87,18 @@ void Editor::loadEditorLevel(Level level)
         int x = START_X;
         for (int j = 0; j < COLS; j++) {
 
-            if (level.data.at(i * COLS + j) == NONE) {
-                // skip
-            } else {
-                BlockButton newBlock(level.data.at(i * COLS + j));
+            BlockButton newBlock(level.data.at(i * COLS + j));
 
-                if (!newBlock.initialize(game, blockNS::WIDTH, blockNS::HEIGHT, blockNS::TEXTURE_COLS, blockTexture))
-                {
-                    throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing block entity"));
-                }
-
-                newBlock.setX(x);
-                newBlock.setY(y);
-
-                // add to vector
-                blocks.push_back(newBlock);
+            if (!newBlock.initialize(game, blockNS::WIDTH, blockNS::HEIGHT, blockNS::TEXTURE_COLS, blockTexture))
+            {
+                throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing block entity"));
             }
+
+            newBlock.setX(x);
+            newBlock.setY(y);
+
+            // add to vector
+            blocks.push_back(newBlock);
 
             // move to the right
             x += blockNS::WIDTH;

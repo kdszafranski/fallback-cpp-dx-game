@@ -3,6 +3,10 @@
 BlockButton::BlockButton(BLOCK type)
 {
     blockType = type;
+    // override colors
+    mouseOverColor = graphicsNS::BROWN;
+    setBlockColorByType();
+
 }
 
 BlockButton::~BlockButton()
@@ -12,7 +16,7 @@ BlockButton::~BlockButton()
 
 void BlockButton::draw()
 {
-    Image::draw(graphicsNS::WHITE);
+    Button::draw();
 }
 
 void BlockButton::setBlockColorByType()
@@ -33,5 +37,16 @@ void BlockButton::setBlockColorByType()
     case INVINCIBLE:
         color = graphicsNS::FB_INVINCIBLE;
         break;
+    case NONE:
+        color = graphicsNS::FB_EDITOR_NONE;
+        break;
     }
+
+    defaultColor = color;
+}
+
+void BlockButton::changeBlockType()
+{
+    blockType = WEAK;
+    setBlockColorByType();
 }

@@ -16,5 +16,6 @@ public:
 
 	virtual void draw();
 	void setBlockColorByType();
+	void changeBlockType();
 };
 

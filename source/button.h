@@ -31,6 +31,7 @@ public:
 		TextureManager* textureM);
 
 	virtual void update(float frameTime);
+	virtual void draw(COLOR_ARGB otherColor);
 	virtual void draw();
 
 	/// <summary>
