@@ -2,22 +2,23 @@
 
 Editor::Editor()
 {
-    test = 0;
 }
 
 Editor::~Editor()
-{
+{ 
     //SAFE_DELETE(console);
     //SAFE_DELETE(input);
     // save button has dx font and image.. image texture is 
 }
 
-bool Editor::initialize(Game* pGame, TextureManager* textureM, Console* pCons)
+bool Editor::initialize(Game* pGame, TextureManager* textButtonTexM, TextureManager* bTexM, Console* pCons)
 {
     input = pGame->getInput();
+    game = pGame;
+    blockTexture = bTexM;
 
     // text button
-    if (!saveButton.initialize(pGame, 200, 64, 0, textureM))
+    if (!saveButton.initialize(game, 200, 64, 0, textButtonTexM))
     {
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing text button image"));
         return false;
@@ -48,9 +49,9 @@ void Editor::draw()
 {
     saveButton.draw();
     
-    // d
-    for (int i = 0; i < blocks->size(); i++) {
-        blocks->at(i).draw();
+    // draw each button
+    for (int i = 0; i < blocks.size(); i++) {
+        blocks.at(i).draw();
     }
 
     console->renderLog();
@@ -67,38 +68,37 @@ void Editor::loadEditorLevel(Level level)
     const int COLS = 9;
     const int ROWS = 3;
 
-    //blocks.clear();
+    blocks.clear();
 
-    //// load up vector with blocks from the level data
-    //int y = START_Y;
-    //for (int i = 0; i < ROWS; i++) {
+    // load up vector with blocks from the level data
+    int y = START_Y;
+    for (int i = 0; i < ROWS; i++) {
 
-    //    int x = START_X;
-    //    for (int j = 0; j < COLS; j++) {
+        int x = START_X;
+        for (int j = 0; j < COLS; j++) {
 
-    //        if (levels.at(levelNumber).data.at(i * COLS + j) == NONE) {
-    //            // skip
-    //        } else {
-    //            Block newBlock(levels.at(levelNumber).data.at(i * COLS + j));
+            if (level.data.at(i * COLS + j) == NONE) {
+                // skip
+            } else {
+                BlockButton newBlock(level.data.at(i * COLS + j));
 
-    //            if (!newBlock.initialize(this, blockNS::WIDTH, blockNS::HEIGHT, blockNS::TEXTURE_COLS, &blockTexture))
-    //            {
-    //                throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing block entity"));
-    //            }
+                if (!newBlock.initialize(game, blockNS::WIDTH, blockNS::HEIGHT, blockNS::TEXTURE_COLS, blockTexture))
+                {
+                    throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing block entity"));
+                }
 
-    //            newBlock.setX(x);
-    //            newBlock.setY(y);
-    //            newBlock.setVelocity(VECTOR2(0, 0));
+                newBlock.setX(x);
+                newBlock.setY(y);
 
-    //            // add to vector
-    //            blocks.push_back(newBlock);
-    //        }
+                // add to vector
+                blocks.push_back(newBlock);
+            }
 
-    //        // move to the right
-    //        x += blockNS::WIDTH;
-    //    }
+            // move to the right
+            x += blockNS::WIDTH;
+        }
 
-    //    // set new row downward
-    //    y += blockNS::HEIGHT;
-    //}
+        // set new row downward
+        y += blockNS::HEIGHT;
+    }
 }

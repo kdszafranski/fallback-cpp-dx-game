@@ -101,6 +101,7 @@
     <ClCompile Include="audio.cpp" />
     <ClCompile Include="ball.cpp" />
     <ClCompile Include="block.cpp" />
+    <ClCompile Include="blockButton.cpp" />
     <ClCompile Include="button.cpp" />
     <ClCompile Include="console.cpp" />
     <ClCompile Include="editor.cpp" />
@@ -121,6 +122,7 @@
     <ClInclude Include="audio.h" />
     <ClInclude Include="ball.h" />
     <ClInclude Include="block.h" />
+    <ClInclude Include="blockButton.h" />
     <ClInclude Include="button.h" />
     <ClInclude Include="console.h" />
     <ClInclude Include="constants.h" />

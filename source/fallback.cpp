@@ -714,10 +714,13 @@ void Fallback::setTitleScreen()
 
 void Fallback::launchEditor()
 {
+    if (!blockTexture.getTexture()) {
+        initBlocks();
+    }
     // share our stuff
-    if (editor.initialize(this, &buttonTexture, &console)) {
+    if (editor.initialize(this, &buttonTexture, &blockTexture, &console)) {
         setEditorScreen();
-        editor.loadEditorLevel(levels[0]);
+        editor.loadEditorLevel(levels.at(0));
     }
     
 }

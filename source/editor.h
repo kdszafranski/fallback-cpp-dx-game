@@ -2,24 +2,26 @@
 #include "constants.h"
 #include "textButton.h"
 #include "console.h"
-#include "block.h"
+//#include "block.h"
+#include "blockButton.h"
 #include "level.h"
 #include <vector>
 
 class Editor
 {
 private:
-	std::vector<Block>* blocks;
-	Graphics* graphics;	// shared with Fallback
+	std::vector<BlockButton> blocks;
+	Game* game;
 	Input* input;		// shared with Fallback
-	TextButton saveButton;
+	TextureManager* blockTexture;
 	Console* console;	// shared with Fallback
-	int test;
+
+	TextButton saveButton;
 
 public:
 	Editor();
 	~Editor();
-	bool initialize(Game* pGame, TextureManager* textureM, Console* pCons);
+	bool initialize(Game* pGame, TextureManager* textButtonTexM, TextureManager* bTexM, Console* pCons);
 
 	void update();
 	void draw();
