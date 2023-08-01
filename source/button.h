@@ -18,9 +18,9 @@ private:
 	// colors
 	COLOR_ARGB defaultColor;
 	COLOR_ARGB mouseOverColor;
-
-	TextureManager buttonTexture;
 	Input *input;
+
+protected:
 
 public:
 

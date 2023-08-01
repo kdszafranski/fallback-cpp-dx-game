@@ -41,9 +41,6 @@ void Fallback::initialize(HWND hwnd)
     initBackgrounds();
     initButtons();
 
-    // load all levels from files on disk
-    loadLevels();
-
     // Init DirectX font with 48px high Arial
     if (dxScoreFont.initialize(graphics, 36, true, false, "Arial") == false)
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing score font"));
@@ -53,6 +50,9 @@ void Fallback::initialize(HWND hwnd)
    
     // init the console log
     console.initialize(graphics);
+    
+    // load all levels from files on disk
+    loadLevels();
 
     // for testing
     if (skipTitleScreen) {
@@ -167,6 +167,16 @@ void Fallback::initButtons()
     creditsButton.setCurrentFrame(1);
     creditsButton.setX(400 - creditsButton.getSpriteData().width / 2);
     creditsButton.setY(510);
+
+    // credits
+    if (!textButton.initialize(this, 256, 64, 3, &buttonTexture))
+    {
+        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing text button image"));
+    }
+
+    textButton.setText("My Button");
+    textButton.setX(10);
+    textButton.setY(10);
 
 }
 
@@ -659,6 +669,7 @@ void Fallback::render()
                 newGameButton.draw();
                 editorButton.draw();
                 creditsButton.draw();
+                textButton.draw();
                 console.renderLog();
                 break;
             case GAME:
@@ -691,7 +702,7 @@ void Fallback::setGameScreen()
 void Fallback::setEditorScreen()
 {
     backgroundImage.setX(-static_cast<int>(GAME_WIDTH));
-    currentScreen = EDITOR;
+    currentScreen = EDITOR; 
 }
 
 /// <summary>

@@ -111,6 +111,7 @@
     <ClCompile Include="ship.cpp" />
     <ClCompile Include="fallback.cpp" />
     <ClCompile Include="levels.h" />
+    <ClCompile Include="textButton.cpp" />
     <ClCompile Include="textDX.cpp" />
     <ClCompile Include="textureManager.cpp" />
     <ClCompile Include="winmain.cpp" />
@@ -129,6 +130,7 @@
     <ClInclude Include="input.h" />
     <ClInclude Include="ship.h" />
     <ClInclude Include="fallback.h" />
+    <ClInclude Include="textButton.h" />
     <ClInclude Include="textDX.h" />
     <ClInclude Include="textureManager.h" />
   </ItemGroup>

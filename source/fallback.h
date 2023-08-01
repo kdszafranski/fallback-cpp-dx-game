@@ -19,6 +19,7 @@
 #include "block.h"
 #include "textDX.h"
 #include "button.h"
+#include "textButton.h"
 #include "console.h"
 #include "levels.h"
 
@@ -56,6 +57,8 @@ private:
     Button newGameButton;
     Button editorButton;
     Button creditsButton;
+    TextButton textButton;
+
 
     // ball shadow
     float timer;
