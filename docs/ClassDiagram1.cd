@@ -25,61 +25,93 @@
       <FileName>input.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Fallback">
-    <Position X="0.75" Y="2" Width="1.5" />
+  <Class Name="Fallback" Collapsed="true">
+    <Position X="0.5" Y="1.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>BEQCgDQA0EQRARAEAAUJAqCBdAFAINBIhggQgEgULII=</HashCode>
+      <HashCode>BEQKgDQC0ERRARAEAAUpBqCBfAFAINBIhggUgEgULII=</HashCode>
       <FileName>fallback.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Entity">
-    <Position X="8.75" Y="3.25" Width="1.5" />
+    <Position X="7.25" Y="1.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
     <TypeIdentifier>
       <HashCode>kYgIhMgBSCgBhAAAYgFgQAgBACYBBDBKOARAJEAESBo=</HashCode>
       <FileName>entity.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Image" Collapsed="true">
-    <Position X="8.75" Y="2" Width="1.5" />
+    <Position X="8.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>cAAQAYhAgDAELgEAACM+BIIACACpxBsCAACATmQGAgQ=</HashCode>
       <FileName>image.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Ship" Collapsed="true">
-    <Position X="11" Y="5.25" Width="1.5" />
+    <Position X="8.5" Y="6" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAgAAAAAMAAAAAAACAAAAAAAAAAAAEAAA=</HashCode>
       <FileName>ship.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Button">
-    <Position X="13.25" Y="3.25" Width="1.5" />
+    <Position X="11" Y="1.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>gEAAAAAAEAAAAAAAAAMAAAAAAAAAABAAAAAAgAEMAAA=</HashCode>
+      <HashCode>gEAAAAAAEAAAAAAAAAMAAAAAAAAAABAAAAAAAAEMAAA=</HashCode>
       <FileName>button.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Block">
-    <Position X="11" Y="6.25" Width="1.5" />
+  <Class Name="Block" Collapsed="true">
+    <Position X="8.5" Y="5.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAkAAAAgIAAgAAAAAOAAAAAAAAAAgiAAACAgAAMEAA=</HashCode>
       <FileName>block.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Ball" Collapsed="true">
-    <Position X="11" Y="4.25" Width="1.5" />
+    <Position X="8.5" Y="4.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAQAAAgAAAAAMAAAABAAAAAAAAAAAAAAAEAIA=</HashCode>
       <FileName>ball.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Enum Name="entityNS::COLLISION_TYPE">
-    <Position X="5" Y="8.25" Width="1.5" />
+  <Class Name="BlockButton">
+    <Position X="11" Y="5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAJAAAAAAQAACAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>entity.h</FileName>
+      <HashCode>AAAgAAAAAAAAAAgAAAaAgAAAAAAAAACAAAAAAAAAAAE=</HashCode>
+      <FileName>blockButton.h</FileName>
     </TypeIdentifier>
-  </Enum>
+  </Class>
+  <Class Name="TextButton">
+    <Position X="12.75" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gCAAAAAACAAAAAAAABMACACAAAAAAEAIAAAAAAAEgAA=</HashCode>
+      <FileName>textButton.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Editor" Collapsed="true">
+    <Position X="3" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAgASAgAAAQAMAQAAAAAAIABBYAABAAAAEBAA=</HashCode>
+      <FileName>editor.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Console" Collapsed="true">
+    <Position X="3" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAEAAAAAAAAIEAAAAAAAAgAAAAEAAAAACAEEA=</HashCode>
+      <FileName>console.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Audio" Collapsed="true">
+    <Position X="3" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>KgAAAgIAAAAAAAAAAAEAAEEAAAAQAAAAAAAIAgAAAQA=</HashCode>
+      <FileName>audio.h</FileName>
+    </TypeIdentifier>
+  </Class>
   <Font Name="Tahoma" Size="8.25" />
 </ClassDiagram>

@@ -41,6 +41,6 @@ public:
 	/// true if inside
 	/// false if not inside
 	/// </returns>
-	bool isMouseOver();
+	virtual bool isMouseOver();
 };
 

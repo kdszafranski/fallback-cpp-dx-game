@@ -25,6 +25,7 @@ void Button::update(float frameTime)
 {
     // nothing to do right now
 }
+
 void Button::draw(COLOR_ARGB otherColor) {
     Image::draw(otherColor);
 }

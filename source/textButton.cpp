@@ -2,7 +2,9 @@
 
 TextButton::TextButton()
 {
-    text = "Test";
+    text = "Button";
+    defaultColor = graphicsNS::TEAL;
+    mouseOverColor = graphicsNS::WHITE;
 }
 
 TextButton::~TextButton()
@@ -19,7 +21,7 @@ bool TextButton::initialize(Game* game, int width, int height, int ncols,
         return false;
     }
 
-    dxFont.setFontColor(graphicsNS::TEAL);
+    dxFont.setFontColor(defaultColor);
 
     return(Button::initialize(game, width, height, ncols, textureM));
 }
@@ -52,10 +54,10 @@ bool TextButton::isMouseOver()
 {
     if (Button::isMouseOver()) {
         // do our own thing
-        dxFont.setFontColor(graphicsNS::WHITE);
+        dxFont.setFontColor(mouseOverColor);
         return true;
     } else {
-        dxFont.setFontColor(graphicsNS::TEAL);
+        dxFont.setFontColor(defaultColor);
         return false;
     }
 
