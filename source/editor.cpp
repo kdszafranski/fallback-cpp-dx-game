@@ -53,6 +53,39 @@ bool Editor::initialize(Game* pGame, TextureManager* textButtonTexM, TextureMana
     strongButton.setY(400);
     strongButton.changeBlockType(STRONG);
 
+    // regular button
+    if (!hardButton.initialize(game, 64, 64, 0, blockTexM))
+    {
+        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing blockbutton image"));
+        return false;
+    }
+
+    hardButton.setX(strongButton.getX() + hardButton.getWidth() + 10);
+    hardButton.setY(400);
+    hardButton.changeBlockType(HARD);
+
+    // regular button
+    if (!metalButton.initialize(game, 64, 64, 0, blockTexM))
+    {
+        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing blockbutton image"));
+        return false;
+    }
+
+    metalButton.setX(hardButton.getX() + metalButton.getWidth() + 10);
+    metalButton.setY(400);
+    metalButton.changeBlockType(METAL);
+
+    // regular button
+    if (!invincibleButton.initialize(game, 64, 64, 0, blockTexM))
+    {
+        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing blockbutton image"));
+        return false;
+    }
+
+    invincibleButton.setX(metalButton.getX() + invincibleButton.getWidth() + 10);
+    invincibleButton.setY(400);
+    invincibleButton.changeBlockType(INVINCIBLE);
+
     // set up console
     console = pCons;
     console->setLogText("EDITOR MODE");
@@ -79,6 +112,21 @@ void Editor::update()
             currentType = STRONG;
         }
     }
+    if (hardButton.isMouseOver()) {
+        if (input->getMouseLButton()) {
+            currentType = HARD;
+        }
+    }
+    if (metalButton.isMouseOver()) {
+        if (input->getMouseLButton()) {
+            currentType = METAL;
+        }
+    }
+    if (invincibleButton.isMouseOver()) {
+        if (input->getMouseLButton()) {
+            currentType = INVINCIBLE;
+        }
+    }
 
     // seems bizarre that it works within update()
     for (int i = 0; i < blocks.size(); i++) {
@@ -101,11 +149,15 @@ void Editor::update()
 
 void Editor::draw()
 {
+    // draw UI buttons
     saveButton.draw();
     weakButton.draw();
     strongButton.draw();
+    hardButton.draw();
+    metalButton.draw();
+    invincibleButton.draw();
     
-    // draw each button
+    // draw each level block button
     for (int i = 0; i < blocks.size(); i++) {
         blocks.at(i).draw();
     }

@@ -20,10 +20,13 @@ private:
 	const int COLS = 9;
 	const int ROWS = 3;
 
-	// UI
+	// UI Buttons
 	TextButton saveButton;
 	BlockButton weakButton;
 	BlockButton strongButton;
+	BlockButton hardButton;
+	BlockButton metalButton;
+	BlockButton invincibleButton;
 
 public:
 	Editor();
