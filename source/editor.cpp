@@ -13,11 +13,11 @@ Editor::~Editor()
 {
 }
 
-bool Editor::initialize(Game* pGame, TextureManager* textButtonTexM, TextureManager* bTexM, Console* pCons)
+bool Editor::initialize(Game* pGame, TextureManager* textButtonTexM, TextureManager* blockTexM, Console* pCons)
 {
     input = pGame->getInput();
     game = pGame;
-    blockTexture = bTexM;
+    blockTexture = blockTexM;
 
     // text button
     if (!saveButton.initialize(game, 200, 64, 0, textButtonTexM))
@@ -32,30 +32,28 @@ bool Editor::initialize(Game* pGame, TextureManager* textButtonTexM, TextureMana
     // set the font draw rect inside the button
     saveButton.calculateDrawRect();
     
-    // text button
-    if (!weakButton.initialize(game, 200, 64, 0, textButtonTexM))
+    // regular button
+    if (!weakButton.initialize(game, 64, 64, 0, blockTexM))
     {
-        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing text button image"));
+        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing blockbutton image"));
         return false;
     }
 
-    weakButton.setText("WEAK BLOCK");
     weakButton.setX(100);
     weakButton.setY(400);
-    weakButton.calculateDrawRect();
 
-    // text button
-    if (!strongButton.initialize(game, 200, 64, 0, textButtonTexM))
+    // regular button
+    if (!strongButton.initialize(game, 64, 64, 0, blockTexM))
     {
-        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing text button image"));
+        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing blockbutton image"));
         return false;
     }
 
-    strongButton.setText("STRONG BLOCK");
     strongButton.setX(weakButton.getX() + strongButton.getWidth() + 10);
     strongButton.setY(400);
-    strongButton.calculateDrawRect();
+    strongButton.changeBlockType(STRONG);
 
+    // set up console
     console = pCons;
     console->setLogText("EDITOR MODE");
 

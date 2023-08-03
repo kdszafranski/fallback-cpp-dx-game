@@ -720,6 +720,7 @@ void Fallback::launchEditor()
 
     // share our stuff
     if (editor.initialize(this, &buttonTexture, &blockTexture, &console)) {
+
         setEditorScreen();
         editor.loadEditorLevel(levels.at(0));
     }

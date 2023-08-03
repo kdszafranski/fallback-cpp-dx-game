@@ -22,8 +22,8 @@ private:
 
 	// UI
 	TextButton saveButton;
-	TextButton weakButton;
-	TextButton strongButton;
+	BlockButton weakButton;
+	BlockButton strongButton;
 
 public:
 	Editor();
