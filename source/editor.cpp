@@ -64,6 +64,14 @@ bool Editor::initialize(Game* pGame, TextureManager* textButtonTexM, TextureMana
     invincibleButton.setPosition(metalButton.getX() + buttonSpacing, buttonY);
     invincibleButton.changeBlockType(INVINCIBLE);
 
+    // build Button Brush list for convenience in update/draw
+    setCurrentButtonBrush(&weakButton);
+    selectorButtonList.push_back(&weakButton);
+    selectorButtonList.push_back(&strongButton);
+    selectorButtonList.push_back(&hardButton);
+    selectorButtonList.push_back(&metalButton);
+    selectorButtonList.push_back(&invincibleButton);
+
     // Save Button
     if (!saveButton.initialize(game, 200, 64, 0, textButtonTexM))
     {
@@ -75,19 +83,30 @@ bool Editor::initialize(Game* pGame, TextureManager* textButtonTexM, TextureMana
     // set the font draw rect inside the button
     saveButton.calculateDrawRect();
 
-    // build UI list
-    setCurrentButtonBrush(&weakButton);
-    selectorButtonList.push_back(&weakButton);
-    selectorButtonList.push_back(&strongButton);
-    selectorButtonList.push_back(&hardButton);
-    selectorButtonList.push_back(&metalButton);
-    selectorButtonList.push_back(&invincibleButton);
+    if (!level0Button.initialize(game, 200, 64, 0, textButtonTexM)) {
+        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing text button image"));
+        return false;
+    }
+    level0Button.setText("Load Level 0");
+    level0Button.setPosition(12, 12);
+    level0Button.calculateDrawRect();
 
     // set up console
     console = pCons;
     console->setLogText("EDITOR MODE");
 
     return true;
+}
+
+/// <summary>
+/// Loads up level 0 and starts editor UI
+/// </summary>
+void Editor::start()
+{
+    dirty = false;
+    currentType = WEAK;
+    currentLevel = 0;
+    loadCurrentEditorLevel();
 }
 
 void Editor::setCurrentButtonBrush(BlockButton* btn) {
@@ -106,6 +125,14 @@ void Editor::setCurrentButtonBrush(BlockButton* btn) {
 
 void Editor::update()
 {
+    if (level0Button.isMouseOver()) {
+        if (input->getMouseLButton()) {
+            console->setLogText("loading file 0");
+            currentLevel = 0;
+            loadCurrentEditorLevel();
+        }
+    }
+
     if (saveButton.isMouseOver()) {
         if (input->getMouseLButton()) {
             console->setLogText("saving file...");
@@ -146,6 +173,7 @@ void Editor::update()
 
 void Editor::draw()
 {
+    level0Button.draw();
     saveButton.draw();
     
     // draw brush selector buttons
@@ -165,11 +193,27 @@ void Editor::draw()
 /// Converts Level raw BLOCK enum data into BlockButtons
 /// </summary>
 /// <param name="level"></param>
-void Editor::loadEditorLevel(Level level)
+void Editor::loadCurrentEditorLevel()
+{
+    Level loadedLevel;
+    FileHandler handler;
+
+    if (handler.loadLevelFromFile(loadedLevel, currentLevel))
+    {
+        editLevel(loadedLevel);
+    }
+
+}
+
+/// <summary>
+/// Takes currently loaded level data and displays buttons for actual editing
+/// </summary>
+/// <param name="level"></param>
+void Editor::editLevel(Level level) 
 {
     constexpr int START_X = 114;
     constexpr int START_Y = 100;
-    
+
     blocks.clear();
 
     // load up vector with blocks from the level data

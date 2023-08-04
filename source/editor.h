@@ -39,10 +39,12 @@ public:
 	Editor();
 	~Editor();
 	bool initialize(Game* pGame, TextureManager* textButtonTexM, TextureManager* bTexM, Console* pCons);
+	void start();
 
 	void update();
 	void draw();
-	void loadEditorLevel(Level level);
+	void loadCurrentEditorLevel();
+	void editLevel(Level level);
 	void saveEditorLevelToFile();
 	void setCurrentButtonBrush(BlockButton* btn);
 };

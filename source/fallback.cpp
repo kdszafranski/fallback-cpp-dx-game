@@ -96,7 +96,7 @@ void Fallback::resetGame()
     gameOver = false;
     isPaused = false;
     score = 0;
-    currentLevel = 1; // level 1 is the first non-editor level
+    currentLevel = 0; // points into levels vector, 0 is the first level
     console.resetLog();
 }
 
@@ -239,7 +239,7 @@ void Fallback::initBlocks()
 
 void Fallback::loadLevelFiles() {
     levels.clear();
-    loadLevelFromFile(0);
+    loadLevelFromFile(0); // Editor default
     loadLevelFromFile(1);
     loadLevelFromFile(2);
     loadLevelFromFile(3);
@@ -700,11 +700,9 @@ void Fallback::launchEditor()
     // share our stuff
     editor = new Editor;
     if (editor->initialize(this, &buttonTexture, &blockTexture, &console)) {
-
         setEditorScreen();
-        // Level0 is the editor save file
-        loadLevelFromFile(0);
-        editor->loadEditorLevel(levels.at(0));
+        // let's go!
+        editor->start();
     }
     
 }
@@ -784,6 +782,7 @@ void Fallback::exitEditor()
     // clean up
     SAFE_DELETE(editor);
     console.setLogText("");
+    loadLevelFiles();
     setTitleScreen();
 }
 
