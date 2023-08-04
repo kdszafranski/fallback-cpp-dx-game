@@ -214,6 +214,7 @@ void Editor::saveEditorLevelToFile()
     GetSystemTime(&st);
     std::string timeStamp = std::to_string(st.wYear);
     timeStamp += "." + std::to_string(st.wMonth) + "." + std::to_string(st.wDay);
+    timeStamp += "-" + std::to_string(st.wHour) + ":" + std::to_string(st.wMinute) + ":" + std::to_string(st.wSecond);
     
 
     // write this shit to disk
