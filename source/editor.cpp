@@ -11,8 +11,7 @@ Editor::Editor()
 
 Editor::~Editor()
 {
-    //SAFE_DELETE(game);
-    //SAFE_DELETE(input);
+    // I feel like there should be stuff to do here
 }
 
 bool Editor::initialize(Game* pGame, TextureManager* textButtonTexM, TextureManager* blockTexM, Console* pCons)
@@ -74,11 +73,33 @@ bool Editor::initialize(Game* pGame, TextureManager* textButtonTexM, TextureMana
     // set the font draw rect inside the button
     saveButton.calculateDrawRect();
 
+    // build UI list
+    setCurrentButtonBrush(&weakButton);
+    selectorButtonList.push_back(&weakButton);
+    selectorButtonList.push_back(&strongButton);
+    selectorButtonList.push_back(&hardButton);
+    selectorButtonList.push_back(&metalButton);
+    selectorButtonList.push_back(&invincibleButton);
+
     // set up console
     console = pCons;
     console->setLogText("EDITOR MODE");
 
     return true;
+}
+
+void Editor::setCurrentButtonBrush(BlockButton* btn) {
+    // set new current brush
+    currentType = btn->getBlockType();
+    btn->setSelected(true);
+
+    // reset all other buttons
+    for (int i = 0; i < selectorButtonList.size(); i++) {
+        // does this work?
+        if (btn != selectorButtonList.at(i)) {
+            selectorButtonList.at(i)->setSelected(false);
+        }
+    }
 }
 
 void Editor::update()
@@ -90,33 +111,19 @@ void Editor::update()
             dirty = false;
         }
     }
-    if (weakButton.isMouseOver()) {
-        if (input->getMouseLButton()) {
-            currentType = WEAK;
-        }
-    }
-    if (strongButton.isMouseOver()) {
-        if (input->getMouseLButton()) {
-            currentType = STRONG;
-        }
-    }
-    if (hardButton.isMouseOver()) {
-        if (input->getMouseLButton()) {
-            currentType = HARD;
-        }
-    }
-    if (metalButton.isMouseOver()) {
-        if (input->getMouseLButton()) {
-            currentType = METAL;
-        }
-    }
-    if (invincibleButton.isMouseOver()) {
-        if (input->getMouseLButton()) {
-            currentType = INVINCIBLE;
+    
+    // deal with brush buttons
+    for (int i = 0; i < selectorButtonList.size(); i++) {
+        BlockButton* it = selectorButtonList.at(i);
+        if (it->isMouseOver()) {
+            if (input->getMouseLButton()) {
+                setCurrentButtonBrush(it); // there can be only one
+                break;
+            }   
         }
     }
 
-    // seems bizarre that it works within update()
+    // handle mouseover for all game blocks
     for (int i = 0; i < blocks.size(); i++) {
         if (blocks.at(i).isMouseOver()) {
             if (input->getMouseLButton()) {
@@ -137,13 +144,12 @@ void Editor::update()
 
 void Editor::draw()
 {
-    // draw UI buttons
     saveButton.draw();
-    weakButton.draw();
-    strongButton.draw();
-    hardButton.draw();
-    metalButton.draw();
-    invincibleButton.draw();
+    
+    // draw brush selector buttons
+    for (int i = 0; i < selectorButtonList.size(); i++) {
+        selectorButtonList.at(i)->draw();
+    }
     
     // draw each level block button
     for (int i = 0; i < blocks.size(); i++) {
@@ -213,7 +219,7 @@ void Editor::saveEditorLevelToFile()
         out << "EDITOR SAVE\n";
 
         for (int i = 0; i < blocks.size(); i++) {
-            out << blocks.at(i).getBLockType() << "\n";
+            out << blocks.at(i).getBlockType() << "\n";
             // 0-8 row 1
             // 9-17 row 2
             // 18-26 row 3

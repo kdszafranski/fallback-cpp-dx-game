@@ -10,15 +10,18 @@
 class Editor
 {
 private:
-	std::vector<BlockButton> blocks;
+	bool dirty;
+	const int COLS = 9;
+	const int ROWS = 3;
 	BLOCK currentType;
+	
+	std::vector<BlockButton> blocks;
+	std::vector<BlockButton*> selectorButtonList;
+	
 	Game* game;
 	Input* input;		// shared with Fallback
 	TextureManager* blockTexture;
 	Console* console;	// shared with Fallback
-	bool dirty;
-	const int COLS = 9;
-	const int ROWS = 3;
 
 	// UI Buttons
 	TextButton saveButton;
@@ -37,5 +40,6 @@ public:
 	void draw();
 	void loadEditorLevel(Level level);
 	void saveEditorLevelToFile();
+	void setCurrentButtonBrush(BlockButton* btn);
 };
 
