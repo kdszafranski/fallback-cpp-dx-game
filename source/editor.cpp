@@ -14,6 +14,9 @@ Editor::Editor()
 Editor::~Editor()
 {
     // I feel like there should be stuff to do here
+    for (int i = 0; i < levelTextButtonList.size(); i++) {
+        delete levelTextButtonList.at(i);
+    }
 }
 
 bool Editor::initialize(Game* pGame, TextureManager* textButtonTexM, TextureManager* blockTexM, Console* pCons)
@@ -56,21 +59,24 @@ bool Editor::initialize(Game* pGame, TextureManager* textButtonTexM, TextureMana
 
 
     // Build level loading buttons
+    // https://cplusplus.com/forum/beginner/70653/
     levelTextButtonList.clear();
-    //const int startX = 12;
-    //for (int i = 0; i < 4; i++) {
-    //    TextButton newButton;
-    //    if (!newButton.initialize(game, 150, 64, 0, textButtonTexM)) {
-    //        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing text button image"));
-    //        return false;
-    //    }
-    //    newButton.setText("Level " + i);
-    //    newButton.setIntValue(i);
-    //    newButton.setPosition(startX + 150 * i, 12);
-    //    newButton.calculateDrawRect();
+    const int levelButStart = 12;
+    for (int i = 0; i < 4; i++) {
+        // create a really new allocation each time
+        TextButton* newButton = new TextButton();
+        if (!(*newButton).initialize(game, 150, 64, 0, textButtonTexM)) {
+            throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing text button image"));
+            return false;
+        }
+        newButton->setText("Level " + std::to_string(i));
+        newButton->setFontSize(18);
+        newButton->setIntValue(i);
+        newButton->setPosition(levelButStart + 150 * i, 12);
+        newButton->calculateDrawRect();
 
-    //    levelTextButtonList.push_back(newButton);
-    //}
+        levelTextButtonList.push_back(newButton);
+    }
 
     // set up console
     console = pCons;
@@ -107,16 +113,16 @@ void Editor::setCurrentButtonBrush(BlockButton* btn) {
 void Editor::update()
 {
     // LEVEL LOADING buttons
-    for (int i = 0; i < levelTextButtonList.size(); i++) {
-        TextButton* it = &levelTextButtonList.at(i);
-        if (it->isMouseOver()) {
-            if (input->getMouseLButton()) {
-                console->setLogText("loading file " + i);
-                currentLevel = it->getIntValue();
-                loadCurrentEditorLevel();
-            }
-        }
-    }
+    //for (int i = 0; i < levelTextButtonList.size(); i++) {
+    //    TextButton* it = levelTextButtonList.at(i); // points to pointer
+    //    if (it->isMouseOver()) {
+    //        if (input->getMouseLButton()) {
+    //            console->setLogText("loading file " + std::to_string(i));
+    //            currentLevel = it->getIntValue();
+    //            loadCurrentEditorLevel();
+    //        }
+    //    }
+    //}
 
     // SAVE BUTTON
     if (saveButton.isMouseOver()) {
@@ -160,7 +166,7 @@ void Editor::update()
 void Editor::draw()
 {
     for(int i = 0; i < levelTextButtonList.size(); i++) {
-        levelTextButtonList.at(i).draw();
+        levelTextButtonList.at(i)->draw();
     }
 
     saveButton.draw();

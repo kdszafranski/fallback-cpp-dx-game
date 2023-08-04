@@ -7,6 +7,7 @@ class TextButton : public Button
 private:
 	std::string text;
 	int intValue;
+	int fontSize;
 	TextDX displayFont;
 	RECT drawRect; // calculated from my containing Button screen location
 
@@ -25,6 +26,8 @@ public:
 	int getIntValue() { return intValue; }
 	void setText(std::string newText) { text = newText; }
 	std::string getText() { return text; }
+	void setFontSize(int size) { fontSize = size; }
+	int getFontSize() { return fontSize; }
 
 	// override base
 	bool isMouseOver();

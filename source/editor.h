@@ -18,7 +18,7 @@ private:
 	
 	std::vector<BlockButton> blocks;
 	std::vector<BlockButton> selectorButtonList;
-	std::vector<TextButton> levelTextButtonList;
+	std::vector<TextButton*> levelTextButtonList;
 	
 	Game* game;
 	Input* input;		// shared with Fallback

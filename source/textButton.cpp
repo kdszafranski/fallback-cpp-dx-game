@@ -4,6 +4,7 @@ TextButton::TextButton()
 {
     intValue = 0;
     text = "Button";
+    fontSize = 24;
     defaultColor = graphicsNS::TEAL;
     mouseOverColor = graphicsNS::WHITE;
 }
@@ -16,7 +17,7 @@ TextButton::~TextButton()
 bool TextButton::initialize(Game* game, int width, int height, int ncols,
     TextureManager* textureM)
 {
-    if (!displayFont.initialize(game->getGraphics(), 24, true, false, "Arial"))
+    if (!displayFont.initialize(game->getGraphics(), fontSize, true, false, "Arial"))
     {
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing button text font"));
         return false;
