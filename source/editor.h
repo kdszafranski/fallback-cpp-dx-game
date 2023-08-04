@@ -17,8 +17,8 @@ private:
 	TextureManager* blockTexture;
 	Console* console;	// shared with Fallback
 	bool dirty;
-	const int COLS = 9;
-	const int ROWS = 3;
+	const USHORT COLS = 9;
+	const USHORT ROWS = 3;
 
 	// UI Buttons
 	TextButton saveButton;

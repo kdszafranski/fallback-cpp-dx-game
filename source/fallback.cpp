@@ -237,6 +237,7 @@ void Fallback::initBlocks()
 }
 
 void Fallback::loadLevels() {
+    levels.clear();
     loadLevelFromFile(0);
     loadLevelFromFile(1);
     loadLevelFromFile(2);
@@ -376,6 +377,15 @@ bool Fallback::loadLevelFromFile(int n)
 
     in.close(); //close file
 
+    // editor level
+    if (n == 0) {        
+        // replacing
+        if (levels.size() > 0) {
+            levels.at(0) = loadedLevel;
+            return true;
+        }
+    }
+
     levels.push_back(loadedLevel);
 
     return true;
@@ -459,7 +469,7 @@ void Fallback::update()
     } // GAME screen
 
     if (currentScreen == EDITOR) {
-        editor.update();
+        editor->update();
     }
 
 }
@@ -663,7 +673,7 @@ void Fallback::render()
                 break;
             case EDITOR:
                 backgroundImage.draw();
-                editor.draw();
+                editor->draw();
                 break;
         }
         
@@ -709,10 +719,13 @@ void Fallback::launchEditor()
     }
 
     // share our stuff
-    if (editor.initialize(this, &buttonTexture, &blockTexture, &console)) {
+    editor = new Editor;
+    if (editor->initialize(this, &buttonTexture, &blockTexture, &console)) {
 
         setEditorScreen();
-        editor.loadEditorLevel(levels.at(0));
+        // Level0 is the editor save file
+        loadLevelFromFile(0);
+        editor->loadEditorLevel(levels.at(0));
     }
     
 }
@@ -790,6 +803,7 @@ void Fallback::CheckForExit() {
 void Fallback::exitEditor()
 {
     // clean up
+    SAFE_DELETE(editor);
     setTitleScreen();
 }
 

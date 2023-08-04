@@ -45,7 +45,7 @@ private:
     TextDX dxScoreFont;
     TextDX dxBallCount;
     Console console;
-    Editor editor;
+    Editor* editor;
 
     // textures/sprites
     TextureManager backgroundTexture;

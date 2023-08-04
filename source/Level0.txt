@@ -1,32 +1,31 @@
-45
-EDITOR STARTING POINT
-// { WEAK, STRONG, HARD, METAL, INVINCIBLE, NONE };
+2023.8.4-15:27:28
+EDITOR SAVE
+5
+1
+5
+2
+5
+2
+5
+1
+5
+// new row 8
 5
 5
 5
+2
+2
+2
 5
 5
 5
+// new row 17
 5
+1
 5
+2
 5
-// 9 row 2
-5 
+2
 5
-5
-5
-5
-5
-5
-5
-5
-// 18 row 3
-5
-5
-5
-5
-5
-5
-5
-5
+1
 5

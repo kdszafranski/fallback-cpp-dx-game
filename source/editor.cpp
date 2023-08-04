@@ -11,6 +11,8 @@ Editor::Editor()
 
 Editor::~Editor()
 {
+    //SAFE_DELETE(game);
+    //SAFE_DELETE(input);
 }
 
 bool Editor::initialize(Game* pGame, TextureManager* textButtonTexM, TextureManager* blockTexM, Console* pCons)
@@ -203,7 +205,7 @@ void Editor::saveEditorLevelToFile()
     
 
     // write this shit to disk
-    ofstream out("EditorLevelSave.txt"); //open existing file
+    ofstream out("Level0.txt"); //open existing file
     if (out.is_open()) {
         //
         out << timeStamp;
@@ -212,8 +214,11 @@ void Editor::saveEditorLevelToFile()
 
         for (int i = 0; i < blocks.size(); i++) {
             out << blocks.at(i).getBLockType() << "\n";
-            if (i == COLS || i == COLS*2) {
-                out << "// new row \n";
+            // 0-8 row 1
+            // 9-17 row 2
+            // 18-26 row 3
+            if (i == COLS - 1 || i == COLS * 2 - 1) {
+                out << "// new row " << i << "\n";
             }
         }
     }
