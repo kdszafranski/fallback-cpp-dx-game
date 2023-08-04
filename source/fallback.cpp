@@ -257,10 +257,10 @@ void Fallback::loadNextLevel()
 
 void Fallback::loadLevel(int levelNumber)
 {
-    const USHORT START_X = 114;
-    const USHORT START_Y = 100;
-    const USHORT COLS = 9;
-    const USHORT ROWS = 3;
+    const int START_X = 114;
+    const int START_Y = 100;
+    const int COLS = 9;
+    const int ROWS = 3;
 
     blocks.clear();
 
@@ -300,9 +300,9 @@ void Fallback::loadLevel(int levelNumber)
 
 void Fallback::loadRandomLevel()
 {
-    constexpr USHORT START_X = 82;
-    constexpr USHORT START_Y = 100;
-    constexpr USHORT COLS = 10;
+    constexpr int START_X = 82;
+    constexpr int START_Y = 100;
+    constexpr int COLS = 10;
 
     srand((unsigned)time(0));
     int y = START_Y;

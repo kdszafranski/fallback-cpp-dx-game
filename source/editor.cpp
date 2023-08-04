@@ -17,8 +17,8 @@ Editor::~Editor()
 
 bool Editor::initialize(Game* pGame, TextureManager* textButtonTexM, TextureManager* blockTexM, Console* pCons)
 {
-    constexpr USHORT buttonSpacing = 106;
-    constexpr USHORT buttonY = 400;
+    constexpr int buttonSpacing = 106;
+    constexpr int buttonY = 400;
     input = pGame->getInput();
     game = pGame;
     blockTexture = blockTexM;
@@ -159,8 +159,8 @@ void Editor::draw()
 /// <param name="level"></param>
 void Editor::loadEditorLevel(Level level)
 {
-    constexpr USHORT START_X = 114;
-    constexpr USHORT START_Y = 100;
+    constexpr int START_X = 114;
+    constexpr int START_Y = 100;
     
     blocks.clear();
 
