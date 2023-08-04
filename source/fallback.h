@@ -23,6 +23,7 @@
 #include "console.h"
 #include "editor.h"
 #include "level.h"
+#include <memory>
 
 //=============================================================================
 // Create game class

@@ -15,9 +15,7 @@ Editor::~Editor()
 {
 	// I feel like there should be stuff to do here
 	// delete in reverse order??
-	for (int i = 0; i < levelTextButtonList.size(); i++) {
-		delete levelTextButtonList.at(i);
-	}
+	textButtonList.clear();
 }
 
 bool Editor::initialize(Game* pGame, TextureManager* textButtonTexM, TextureManager* blockTexM, Console* pCons)
@@ -61,22 +59,22 @@ bool Editor::initialize(Game* pGame, TextureManager* textButtonTexM, TextureMana
 
 	// Build level loading buttons
 	// https://cplusplus.com/forum/beginner/70653/
-	levelTextButtonList.clear();
+	//levelTextButtonList.clear();
 	const int levelButStart = 12;
 	for (int i = 0; i < 4; i++) {
 		// create a really new allocation each time, remem to delete in Deconstructor
-		TextButton* newButton = new TextButton();
-		if (!(*newButton).initialize(game, 150, 64, 0, textButtonTexM)) {
+		shared_ptr<TextButton> tb = std::make_shared<TextButton>();
+		if (!(*tb).initialize(game, 150, 64, 0, textButtonTexM)) {
 			throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing text button image"));
 			return false;
 		}
-		newButton->setText("Level " + std::to_string(i));
-		newButton->setFontSize(18);
-		newButton->setIntValue(i);
-		newButton->setPosition(levelButStart + 150 * i, 12);
-		newButton->calculateDrawRect();
+		tb->setText("Level " + std::to_string(i));
+		tb->setFontSize(18);
+		tb->setIntValue(i);
+		tb->setPosition(levelButStart + 150 * i, 12);
+		tb->calculateDrawRect();
 
-		levelTextButtonList.push_back(newButton);
+		textButtonList.push_back(tb);
 	}
 
 	// set up console
@@ -115,16 +113,16 @@ void Editor::update()
 {
 	// LEVEL LOADING buttons
 	// since the vector is just pointers, can use auto on the iterator (it)
-	for (auto it : levelTextButtonList) {
-		if (it->isMouseOver()) {
-			if (input->getMouseLButton()) {
-				console->setLogText("loading file " + std::to_string(it->getIntValue()));
-				currentLevel = it->getIntValue();
-				loadCurrentEditorLevel();
-				saveButton.setText("SAVE LEVEL " + to_string(currentLevel));
-			}
-		}
-	}
+	//for (auto it : levelTextButtonList) {
+	//	if (it->isMouseOver()) {
+	//		if (input->getMouseLButton()) {
+	//			console->setLogText("loading file " + std::to_string(it->getIntValue()));
+	//			currentLevel = it->getIntValue();
+	//			loadCurrentEditorLevel();
+	//			saveButton.setText("SAVE LEVEL " + to_string(currentLevel));
+	//		}
+	//	}
+	//}
 
 	// SAVE BUTTON
 	if (saveButton.isMouseOver()) {
@@ -169,8 +167,8 @@ void Editor::update()
 
 void Editor::draw()
 {
-	for (int i = 0; i < levelTextButtonList.size(); i++) {
-		levelTextButtonList.at(i)->draw();
+	for (auto it : textButtonList) {
+		it->draw();
 	}
 
 	saveButton.draw();

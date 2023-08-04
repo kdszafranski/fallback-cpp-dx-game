@@ -697,8 +697,8 @@ void Fallback::launchEditor()
         initBlocks();
     }
 
-    // share our stuff
     editor = new Editor;
+    // share our stuff
     if (editor->initialize(this, &buttonTexture, &blockTexture, &console)) {
         // let's go!
         editor->start();
@@ -781,7 +781,7 @@ void Fallback::CheckForExit() {
 void Fallback::exitEditor()
 {
     // clean up
-    SAFE_DELETE(editor);
+    //SAFE_DELETE(editor);
     console.setLogText("");
     loadLevelFiles();
     setTitleScreen();

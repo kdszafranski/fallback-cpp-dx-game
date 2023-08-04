@@ -6,7 +6,9 @@
 #include "blockButton.h"
 #include "level.h"
 #include <vector>
+#include <memory>
 
+typedef std::vector<std::shared_ptr<TextButton>> TextButtonList;
 class Editor
 {
 private:
@@ -18,7 +20,8 @@ private:
 	
 	std::vector<BlockButton> blocks;
 	std::vector<BlockButton> brushSelectorButtonList;
-	std::vector<TextButton*> levelTextButtonList;
+	TextButtonList textButtonList;
+	//std::vector<std::unique_ptr<object>> myPtrList;
 	
 	Game* game;
 	Input* input;		// shared with Fallback
