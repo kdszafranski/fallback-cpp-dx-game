@@ -113,16 +113,16 @@ void Editor::update()
 {
 	// LEVEL LOADING buttons
 	// since the vector is just pointers, can use auto on the iterator (it)
-	//for (auto it : levelTextButtonList) {
-	//	if (it->isMouseOver()) {
-	//		if (input->getMouseLButton()) {
-	//			console->setLogText("loading file " + std::to_string(it->getIntValue()));
-	//			currentLevel = it->getIntValue();
-	//			loadCurrentEditorLevel();
-	//			saveButton.setText("SAVE LEVEL " + to_string(currentLevel));
-	//		}
-	//	}
-	//}
+	for (auto it : textButtonList) {
+		if (it->isMouseOver()) {
+			if (input->getMouseLButton()) {
+				console->setLogText("loading file " + std::to_string(it->getIntValue()));
+				currentLevel = it->getIntValue();
+				loadCurrentEditorLevel();
+				saveButton.setText("SAVE LEVEL " + to_string(currentLevel));
+			}
+		}
+	}
 
 	// SAVE BUTTON
 	if (saveButton.isMouseOver()) {
