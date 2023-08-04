@@ -14,6 +14,7 @@ private:
 	const int COLS = 9;
 	const int ROWS = 3;
 	BLOCK currentType;
+	int currentLevel;
 	
 	std::vector<BlockButton> blocks;
 	std::vector<BlockButton*> selectorButtonList;
@@ -25,6 +26,9 @@ private:
 
 	// UI Buttons
 	TextButton saveButton;
+	TextButton level0Button;
+	TextButton level1Button;
+
 	BlockButton weakButton;
 	BlockButton strongButton;
 	BlockButton hardButton;

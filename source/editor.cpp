@@ -7,6 +7,7 @@ Editor::Editor()
 {
     dirty = false;
     currentType = WEAK;
+    currentLevel = 0;
 }
 
 Editor::~Editor()
@@ -68,7 +69,7 @@ bool Editor::initialize(Game* pGame, TextureManager* textButtonTexM, TextureMana
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing text button image"));
         return false;
     }
-    saveButton.setText("SAVE LEVEL");
+    saveButton.setText("SAVE LEVEL " + to_string(currentLevel));
     saveButton.setPosition(GAME_WIDTH / 2 - saveButton.getSpriteData().width / 2, 500);
     // set the font draw rect inside the button
     saveButton.calculateDrawRect();
@@ -203,15 +204,21 @@ void Editor::loadEditorLevel(Level level)
 /// </summary>
 void Editor::saveEditorLevelToFile()
 {
+    string level, filename;
     SYSTEMTIME st;
+    
+    // build timestamp
     GetSystemTime(&st);
     std::string timeStamp = std::to_string(st.wYear);
     timeStamp += "." + std::to_string(st.wMonth) + "." + std::to_string(st.wDay);
     timeStamp += "-" + std::to_string(st.wHour) + ":" + std::to_string(st.wMinute) + ":" + std::to_string(st.wSecond);
-    
 
-    // write this shit to disk
-    ofstream out("Level0.txt"); //open existing file
+    // write to the selected file on disk
+    level = currentLevel + '0';
+    filename = "Level" + level;
+    filename += ".txt";
+
+    ofstream out(filename); //open existing file
     if (out.is_open()) {
         //
         out << timeStamp;
