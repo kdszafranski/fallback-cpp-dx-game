@@ -9,6 +9,7 @@ Editor::Editor()
 	dirty = false;
 	currentType = WEAK;
 	currentLevel = 0;
+	initialized = false;
 }
 
 Editor::~Editor()
@@ -81,6 +82,8 @@ bool Editor::initialize(Game* pGame, TextureManager* textButtonTexM, TextureMana
 	console = pCons;
 	console->setLogText("EDITOR MODE");
 
+	initialized = true;
+
 	return true;
 }
 
@@ -92,6 +95,7 @@ void Editor::start()
 	dirty = false;
 	currentType = WEAK;
 	currentLevel = 0;
+		
 	loadCurrentEditorLevel();
 }
 

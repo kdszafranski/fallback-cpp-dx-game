@@ -11,6 +11,8 @@
 typedef std::vector<std::shared_ptr<TextButton>> TextButtonList;
 class Editor
 {
+public:
+	bool initialized;
 private:
 	bool dirty;
 	const int COLS = 9;
