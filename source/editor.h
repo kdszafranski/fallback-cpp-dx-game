@@ -17,7 +17,7 @@ private:
 	int currentLevel;
 	
 	std::vector<BlockButton> blocks;
-	std::vector<BlockButton> selectorButtonList;
+	std::vector<BlockButton> brushSelectorButtonList;
 	std::vector<TextButton*> levelTextButtonList;
 	
 	Game* game;
