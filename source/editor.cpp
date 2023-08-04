@@ -210,11 +210,18 @@ void Editor::loadEditorLevel(Level level)
 /// </summary>
 void Editor::saveEditorLevelToFile()
 {
+    SYSTEMTIME st;
+    GetSystemTime(&st);
+    std::string timeStamp = std::to_string(st.wYear);
+    timeStamp += "." + std::to_string(st.wMonth) + "." + std::to_string(st.wDay);
+    
+
     // write this shit to disk
     ofstream out("EditorLevelSave.txt"); //open existing file
     if (out.is_open()) {
         //
-        out << "2255\n";
+        out << timeStamp;
+        out << "\n";
         out << "EDITOR SAVE\n";
 
         for (int i = 0; i < blocks.size(); i++) {
