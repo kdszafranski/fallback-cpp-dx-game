@@ -18,8 +18,63 @@ bool Editor::initialize(Game* pGame, TextureManager* textButtonTexM, TextureMana
     input = pGame->getInput();
     game = pGame;
     blockTexture = blockTexM;
+    const unsigned short buttonSpacing = 106;
 
-    // text button
+    /// UI BUTTONS
+    if (!weakButton.initialize(game, 64, 64, 0, blockTexM))
+    {
+        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing blockbutton image"));
+        return false;
+    }
+
+    weakButton.setX(160);
+    weakButton.setY(400);
+
+    // regular button
+    if (!strongButton.initialize(game, 64, 64, 0, blockTexM))
+    {
+        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing blockbutton image"));
+        return false;
+    }
+
+    strongButton.setX(weakButton.getX() + buttonSpacing);
+    strongButton.setY(400);
+    strongButton.changeBlockType(STRONG);
+
+    // regular button
+    if (!hardButton.initialize(game, 64, 64, 0, blockTexM))
+    {
+        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing blockbutton image"));
+        return false;
+    }
+
+    hardButton.setX(GAME_WIDTH / 2 - hardButton.getWidth() / 2);;
+    hardButton.setY(400);
+    hardButton.changeBlockType(HARD);
+
+    // regular button
+    if (!metalButton.initialize(game, 64, 64, 0, blockTexM))
+    {
+        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing blockbutton image"));
+        return false;
+    }
+
+    metalButton.setX(hardButton.getX() + buttonSpacing);
+    metalButton.setY(400);
+    metalButton.changeBlockType(METAL);
+
+    // regular button
+    if (!invincibleButton.initialize(game, 64, 64, 0, blockTexM))
+    {
+        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing blockbutton image"));
+        return false;
+    }
+
+    invincibleButton.setX(metalButton.getX() + buttonSpacing);
+    invincibleButton.setY(400);
+    invincibleButton.changeBlockType(INVINCIBLE);
+
+    // Save Button
     if (!saveButton.initialize(game, 200, 64, 0, textButtonTexM))
     {
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing text button image"));
@@ -31,60 +86,6 @@ bool Editor::initialize(Game* pGame, TextureManager* textButtonTexM, TextureMana
     saveButton.setY(500);
     // set the font draw rect inside the button
     saveButton.calculateDrawRect();
-    
-    // regular button
-    if (!weakButton.initialize(game, 64, 64, 0, blockTexM))
-    {
-        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing blockbutton image"));
-        return false;
-    }
-
-    weakButton.setX(100);
-    weakButton.setY(400);
-
-    // regular button
-    if (!strongButton.initialize(game, 64, 64, 0, blockTexM))
-    {
-        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing blockbutton image"));
-        return false;
-    }
-
-    strongButton.setX(weakButton.getX() + strongButton.getWidth() + 10);
-    strongButton.setY(400);
-    strongButton.changeBlockType(STRONG);
-
-    // regular button
-    if (!hardButton.initialize(game, 64, 64, 0, blockTexM))
-    {
-        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing blockbutton image"));
-        return false;
-    }
-
-    hardButton.setX(strongButton.getX() + hardButton.getWidth() + 10);
-    hardButton.setY(400);
-    hardButton.changeBlockType(HARD);
-
-    // regular button
-    if (!metalButton.initialize(game, 64, 64, 0, blockTexM))
-    {
-        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing blockbutton image"));
-        return false;
-    }
-
-    metalButton.setX(hardButton.getX() + metalButton.getWidth() + 10);
-    metalButton.setY(400);
-    metalButton.changeBlockType(METAL);
-
-    // regular button
-    if (!invincibleButton.initialize(game, 64, 64, 0, blockTexM))
-    {
-        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing blockbutton image"));
-        return false;
-    }
-
-    invincibleButton.setX(metalButton.getX() + invincibleButton.getWidth() + 10);
-    invincibleButton.setY(400);
-    invincibleButton.changeBlockType(INVINCIBLE);
 
     // set up console
     console = pCons;
