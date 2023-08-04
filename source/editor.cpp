@@ -1,4 +1,5 @@
 #include "editor.h"
+#include "fileHandler.h"
 #include <fstream>
 #include <iostream>
 using namespace std;
@@ -204,37 +205,6 @@ void Editor::loadEditorLevel(Level level)
 /// </summary>
 void Editor::saveEditorLevelToFile()
 {
-    string level, filename;
-    SYSTEMTIME st;
-    
-    // build timestamp
-    GetSystemTime(&st);
-    std::string timeStamp = std::to_string(st.wYear);
-    timeStamp += "." + std::to_string(st.wMonth) + "." + std::to_string(st.wDay);
-    timeStamp += "-" + std::to_string(st.wHour) + ":" + std::to_string(st.wMinute) + ":" + std::to_string(st.wSecond);
-
-    // write to the selected file on disk
-    level = currentLevel + '0';
-    filename = "Level" + level;
-    filename += ".txt";
-
-    ofstream out(filename); //open existing file
-    if (out.is_open()) {
-        //
-        out << timeStamp;
-        out << "\n";
-        out << "EDITOR SAVE\n";
-
-        for (int i = 0; i < blocks.size(); i++) {
-            out << blocks.at(i).getBlockType() << "\n";
-            // 0-8 row 1
-            // 9-17 row 2
-            // 18-26 row 3
-            if (i == COLS - 1 || i == COLS * 2 - 1) {
-                out << "// new row " << i << "\n";
-            }
-        }
-    }
-
-    out.close();
+    FileHandler handler;
+    handler.saveLevelToDisk(blocks, COLS, currentLevel);
 }

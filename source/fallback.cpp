@@ -11,6 +11,7 @@
 #include <fstream>
 #include <iostream>
 #include "editor.h"
+#include "fileHandler.h"
 using namespace std;
 
 //=============================================================================
@@ -53,7 +54,7 @@ void Fallback::initialize(HWND hwnd)
     console.initialize(graphics);
     
     // load all levels from files on disk
-    loadLevels();
+    loadLevelFiles();
 
     // for testing
     if (skipTitleScreen) {
@@ -236,7 +237,7 @@ void Fallback::initBlocks()
     }
 }
 
-void Fallback::loadLevels() {
+void Fallback::loadLevelFiles() {
     levels.clear();
     loadLevelFromFile(0);
     loadLevelFromFile(1);
@@ -244,7 +245,7 @@ void Fallback::loadLevels() {
     loadLevelFromFile(3);
 }
 
-void Fallback::loadNextLevel()
+void Fallback::startNextLevel()
 {
     currentLevel++;
     if (currentLevel >= levels.size()) {
@@ -255,6 +256,10 @@ void Fallback::loadNextLevel()
     restartBall();
 }
 
+/// <summary>
+/// Loads a level from the list of prepared Levels
+/// </summary>
+/// <param name="levelNumber">number that matches level number</param>
 void Fallback::loadLevel(int levelNumber)
 {
     const int START_X = 114;
@@ -298,6 +303,9 @@ void Fallback::loadLevel(int levelNumber)
 
 }
 
+/// <summary>
+/// Generates a level of random blocks
+/// </summary>
 void Fallback::loadRandomLevel()
 {
     constexpr int START_X = 82;
@@ -341,52 +349,23 @@ void Fallback::loadRandomLevel()
 //=============================================================================
 bool Fallback::loadLevelFromFile(int n)
 {
-    string level, str, filename;
     Level loadedLevel;
+    FileHandler loader;
 
-    level = n + '0';
-    filename = "Level" + level;
-    filename += ".txt";
-
-    ifstream in(filename); //open existing file
-
-    if (!in) return false; //check if file actual exists return otherwise
-    int line = 1;
-    while (getline(in, str))
-    {
-        if (line == 2) {
-            loadedLevel.levelName = str;
-        }
-        if (line > 2) {
-            // load the line as a Block
-            const char ch = str.at(0);
-            // skip comment lines
-            if (ch == '/') {
-                continue;
+    if (loader.loadLevelFromFile(loadedLevel, n)) {
+        // editor level
+        if (n == 0) {        
+            // replacing
+            if (levels.size() > 0) {
+                levels.at(0) = loadedLevel;
+                return true;
             }
-            int blockInt = ch - '0'; // this produces the ASCII value of the int we want
-            const BLOCK t = static_cast<BLOCK>(blockInt);
-            Block newBlock(t);
-            loadedLevel.data.push_back(t);
         }
-        
-        ++line;
 
-        if (in.eof()) break; //check if end of file is reached
+        levels.push_back(loadedLevel);
+    } else {
+        return false;
     }
-
-    in.close(); //close file
-
-    // editor level
-    if (n == 0) {        
-        // replacing
-        if (levels.size() > 0) {
-            levels.at(0) = loadedLevel;
-            return true;
-        }
-    }
-
-    levels.push_back(loadedLevel);
 
     return true;
 }
@@ -489,7 +468,7 @@ void Fallback::CheckCheatInput()
     if (currentScreen == GAME) {
         // next level
         if (input->wasKeyPressed(NEXT_LEVEL_KEY)) {
-            loadNextLevel();
+            startNextLevel();
         }
     }
 }
@@ -646,7 +625,7 @@ void Fallback::checkGameOver()
 
     // we're done here, next please!
     if (finished || blocks.size() == invincible) {
-        loadNextLevel();
+        startNextLevel();
     }
 }
 
