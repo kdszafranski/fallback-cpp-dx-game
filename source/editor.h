@@ -37,5 +37,6 @@ public:
 	void draw();
 	void loadEditorLevel(Level level);
 	void saveEditorLevelToFile();
+	void setCurrentButtonBrush(BlockButton& btn);
 };
 

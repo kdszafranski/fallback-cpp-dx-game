@@ -81,6 +81,11 @@ bool Editor::initialize(Game* pGame, TextureManager* textButtonTexM, TextureMana
     return true;
 }
 
+void Editor::setCurrentButtonBrush(BlockButton &btn) {
+    currentType = btn.getBlockType();
+    btn.setSelected(true);
+}
+
 void Editor::update()
 {
     if (saveButton.isMouseOver()) {
@@ -92,27 +97,27 @@ void Editor::update()
     }
     if (weakButton.isMouseOver()) {
         if (input->getMouseLButton()) {
-            currentType = WEAK;
+            setCurrentButtonBrush(weakButton);
         }
     }
     if (strongButton.isMouseOver()) {
         if (input->getMouseLButton()) {
-            currentType = STRONG;
+            setCurrentButtonBrush(strongButton);
         }
     }
     if (hardButton.isMouseOver()) {
         if (input->getMouseLButton()) {
-            currentType = HARD;
+            setCurrentButtonBrush(hardButton);
         }
     }
     if (metalButton.isMouseOver()) {
         if (input->getMouseLButton()) {
-            currentType = METAL;
+            setCurrentButtonBrush(metalButton);
         }
     }
     if (invincibleButton.isMouseOver()) {
         if (input->getMouseLButton()) {
-            currentType = INVINCIBLE;
+            setCurrentButtonBrush(invincibleButton);
         }
     }
 
@@ -213,7 +218,7 @@ void Editor::saveEditorLevelToFile()
         out << "EDITOR SAVE\n";
 
         for (int i = 0; i < blocks.size(); i++) {
-            out << blocks.at(i).getBLockType() << "\n";
+            out << blocks.at(i).getBlockType() << "\n";
             // 0-8 row 1
             // 9-17 row 2
             // 18-26 row 3

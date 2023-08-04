@@ -1,7 +1,8 @@
 #include "blockButton.h"
 
-BlockButton::BlockButton(BLOCK type)
+BlockButton::BlockButton(BLOCK type, bool selected)
 {
+    isSelected = selected;
     blockType = type;
     // override colors
     mouseOverColor = graphicsNS::BROWN;
@@ -16,6 +17,11 @@ BlockButton::~BlockButton()
 
 void BlockButton::draw()
 {
+    if (isSelected) {
+        setScale(1.2);
+    } else {
+        setScale(1);
+    }
     Button::draw();
 }
 
