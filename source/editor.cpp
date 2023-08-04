@@ -201,7 +201,7 @@ void Editor::loadEditorLevel(Level level)
 }
 
 /// <summary>
-/// Writes out blocks vector to file, line by line, to match Level file format
+/// Save changes to file.
 /// </summary>
 void Editor::saveEditorLevelToFile()
 {

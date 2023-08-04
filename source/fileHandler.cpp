@@ -12,12 +12,7 @@ FileHandler::~FileHandler() {
 
 }
 
-/// <summary>
-/// loads given level number from disk
-/// </summary>
-/// <param name="lRef">Reference to Level from caller</param>
-/// <param name="levelNumber">number of level which coincides with filename</param>
-/// <returns>true on successful loading, false otherwise</returns>
+
 bool FileHandler::loadLevelFromFile(Level &lRef, int levelNumber) {
     string level, str, filename;
 
@@ -59,6 +54,7 @@ bool FileHandler::loadLevelFromFile(Level &lRef, int levelNumber) {
 
 }
 
+
 bool FileHandler::saveLevelToDisk(std::vector<BlockButton>& blocks, int cols, int levelNumber) {
     string level, filename;
     SYSTEMTIME st;
@@ -94,5 +90,5 @@ bool FileHandler::saveLevelToDisk(std::vector<BlockButton>& blocks, int cols, in
 
     out.close();
 
-    return false;
+    return true;
 }
