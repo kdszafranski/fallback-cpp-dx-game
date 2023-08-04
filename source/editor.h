@@ -17,7 +17,7 @@ private:
 	int currentLevel;
 	
 	std::vector<BlockButton> blocks;
-	std::vector<BlockButton*> selectorButtonList;
+	std::vector<BlockButton> selectorButtonList;
 	std::vector<TextButton> levelTextButtonList;
 	
 	Game* game;
@@ -29,12 +29,6 @@ private:
 	TextButton saveButton;
 	//TextButton level0Button;
 	//TextButton level1Button;
-
-	BlockButton weakButton;
-	BlockButton strongButton;
-	BlockButton hardButton;
-	BlockButton metalButton;
-	BlockButton invincibleButton;
 
 public:
 	Editor();

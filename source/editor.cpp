@@ -24,53 +24,24 @@ bool Editor::initialize(Game* pGame, TextureManager* textButtonTexM, TextureMana
     game = pGame;
     blockTexture = blockTexM;
 
-    /// UI BUTTONS
-    if (!weakButton.initialize(game, 64, 64, 0, blockTexM))
-    {
-        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing blockbutton image"));
-        return false;
-    }
-    weakButton.setPosition(160, buttonY);
+    // UI BUTTONS
+    int startX = 160;
+    for (int i = 0; i < 5; i++) {
+        BlockButton newButton;
+        if (!newButton.initialize(game, 64, 64, 0, blockTexM))
+        {
+            throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing blockbutton image"));
+            return false;
+        }
+        newButton.setPosition(startX, buttonY); 
+        newButton.changeBlockType(static_cast<BLOCK>(i));
+        startX += buttonSpacing;
 
-    if (!strongButton.initialize(game, 64, 64, 0, blockTexM))
-    {
-        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing blockbutton image"));
-        return false;
+        selectorButtonList.push_back(newButton);
     }
-    strongButton.setPosition(weakButton.getX() + buttonSpacing, buttonY);
-    strongButton.changeBlockType(STRONG);
 
-    if (!hardButton.initialize(game, 64, 64, 0, blockTexM))
-    {
-        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing blockbutton image"));
-        return false;
-    }
-    hardButton.setPosition(GAME_WIDTH / 2 - hardButton.getWidth() / 2, buttonY);
-    hardButton.changeBlockType(HARD);
-
-    if (!metalButton.initialize(game, 64, 64, 0, blockTexM))
-    {
-        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing blockbutton image"));
-        return false;
-    }
-    metalButton.setPosition(hardButton.getX() + buttonSpacing, buttonY);
-    metalButton.changeBlockType(METAL);
-
-    if (!invincibleButton.initialize(game, 64, 64, 0, blockTexM))
-    {
-        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing blockbutton image"));
-        return false;
-    }
-    invincibleButton.setPosition(metalButton.getX() + buttonSpacing, buttonY);
-    invincibleButton.changeBlockType(INVINCIBLE);
-
-    // build Button Brush list for convenience in update/draw
-    setCurrentButtonBrush(&weakButton);
-    selectorButtonList.push_back(&weakButton);
-    selectorButtonList.push_back(&strongButton);
-    selectorButtonList.push_back(&hardButton);
-    selectorButtonList.push_back(&metalButton);
-    selectorButtonList.push_back(&invincibleButton);
+    // set the current button
+    setCurrentButtonBrush(&selectorButtonList.at(0));
 
     // Save Button
     if (!saveButton.initialize(game, 200, 64, 0, textButtonTexM))
@@ -86,7 +57,7 @@ bool Editor::initialize(Game* pGame, TextureManager* textButtonTexM, TextureMana
 
     // Build level loading buttons
     levelTextButtonList.clear();
-    const int startX = 12;
+    //const int startX = 12;
     //for (int i = 0; i < 4; i++) {
     //    TextButton newButton;
     //    if (!newButton.initialize(game, 150, 64, 0, textButtonTexM)) {
@@ -127,8 +98,8 @@ void Editor::setCurrentButtonBrush(BlockButton* btn) {
     // reset all other buttons
     for (int i = 0; i < selectorButtonList.size(); i++) {
         // does this work?
-        if (btn != selectorButtonList.at(i)) {
-            selectorButtonList.at(i)->setSelected(false);
+        if (btn != &selectorButtonList.at(i)) {
+            selectorButtonList.at(i).setSelected(false);
         }
     }
 }
@@ -158,7 +129,7 @@ void Editor::update()
     
     // BRUSH buttons
     for (int i = 0; i < selectorButtonList.size(); i++) {
-        BlockButton* it = selectorButtonList.at(i);
+        BlockButton* it = &selectorButtonList.at(i); // is a pointer needed/best?
         if (it->isMouseOver()) {
             if (input->getMouseLButton()) {
                 setCurrentButtonBrush(it); // there can be only one
@@ -196,7 +167,7 @@ void Editor::draw()
     
     // draw brush selector buttons
     for (int i = 0; i < selectorButtonList.size(); i++) {
-        selectorButtonList.at(i)->draw();
+        selectorButtonList.at(i).draw();
     }
     
     // draw each level block button
