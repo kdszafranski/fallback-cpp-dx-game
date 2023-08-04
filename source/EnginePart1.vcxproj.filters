@@ -66,8 +66,20 @@
     <ClCompile Include="button.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="levels.h">
+    <ClCompile Include="level.h">
       <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="textButton.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="editor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="blockButton.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="fileHandler.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -116,6 +128,18 @@
     <ClInclude Include="button.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="textButton.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="editor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="blockButton.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="fileHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\docs\notes.md">
@@ -128,6 +152,9 @@
       <Filter>Assets</Filter>
     </Text>
     <Text Include="Level3.txt">
+      <Filter>Assets</Filter>
+    </Text>
+    <Text Include="Level0.txt">
       <Filter>Assets</Filter>
     </Text>
   </ItemGroup>

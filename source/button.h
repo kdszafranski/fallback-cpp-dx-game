@@ -5,7 +5,7 @@
 #include "input.h"
 
 namespace buttonNS {
-	const COLOR_ARGB DEFAULT_COLOR = D3DCOLOR_ARGB(255, 247, 163, 114);;
+	const COLOR_ARGB DEFAULT_COLOR = D3DCOLOR_ARGB(255, 247, 163, 114);
 	const COLOR_ARGB MOUSE_OVER_COLOR = D3DCOLOR_ARGB(255, 166, 222, 226);
 }
 
@@ -15,12 +15,12 @@ namespace buttonNS {
 class Button : public Image
 {
 private:
+	Input *input;
+
+protected:
 	// colors
 	COLOR_ARGB defaultColor;
 	COLOR_ARGB mouseOverColor;
-
-	TextureManager buttonTexture;
-	Input *input;
 
 public:
 
@@ -31,6 +31,7 @@ public:
 		TextureManager* textureM);
 
 	virtual void update(float frameTime);
+	virtual void draw(COLOR_ARGB otherColor);
 	virtual void draw();
 
 	/// <summary>
@@ -40,6 +41,6 @@ public:
 	/// true if inside
 	/// false if not inside
 	/// </returns>
-	bool isMouseOver();
+	virtual bool isMouseOver();
 };
 

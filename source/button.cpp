@@ -13,8 +13,7 @@ Button::~Button()
 
 }
 
-bool Button::initialize(Game* game, int width, int height, int ncols,
-    TextureManager* textureM)
+bool Button::initialize(Game* game, int width, int height, int ncols, TextureManager* textureM)
 {
     input = game->getInput();
 
@@ -24,6 +23,10 @@ bool Button::initialize(Game* game, int width, int height, int ncols,
 void Button::update(float frameTime)
 {
     // nothing to do right now
+}
+
+void Button::draw(COLOR_ARGB otherColor) {
+    Image::draw(otherColor);
 }
 
 void Button::draw()

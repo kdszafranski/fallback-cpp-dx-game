@@ -19,8 +19,11 @@
 #include "block.h"
 #include "textDX.h"
 #include "button.h"
+#include "textButton.h"
 #include "console.h"
-#include "levels.h"
+#include "editor.h"
+#include "level.h"
+#include <memory>
 
 //=============================================================================
 // Create game class
@@ -43,6 +46,7 @@ private:
     TextDX dxScoreFont;
     TextDX dxBallCount;
     Console console;
+    Editor* editor;
 
     // textures/sprites
     TextureManager backgroundTexture;
@@ -56,6 +60,8 @@ private:
     Button newGameButton;
     Button editorButton;
     Button creditsButton;
+    TextButton textButton;
+
 
     // ball shadow
     float timer;
@@ -109,13 +115,18 @@ public:
     void initMessageSprites();
     void setTitleScreen();
     void setGameScreen();
+    void setEditorScreen();
     // checks if there are blocks left
     void checkGameOver();
 
+    // Editor
+    void launchEditor();
+    void exitEditor();
+
     // level loading
-    void loadLevels();  // loads all levels from disk
+    void loadLevelFiles();  // loads all levels from disk
     // Advances the level
-    void loadNextLevel();
+    void startNextLevel();
     // Loads given level
     void loadLevel(int level);
     // loads a randomly generated level

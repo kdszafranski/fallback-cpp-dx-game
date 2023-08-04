@@ -101,16 +101,20 @@
     <ClCompile Include="audio.cpp" />
     <ClCompile Include="ball.cpp" />
     <ClCompile Include="block.cpp" />
+    <ClCompile Include="blockButton.cpp" />
     <ClCompile Include="button.cpp" />
     <ClCompile Include="console.cpp" />
+    <ClCompile Include="editor.cpp" />
     <ClCompile Include="entity.cpp" />
+    <ClCompile Include="fileHandler.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="graphics.cpp" />
     <ClCompile Include="image.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="ship.cpp" />
     <ClCompile Include="fallback.cpp" />
-    <ClCompile Include="levels.h" />
+    <ClCompile Include="level.h" />
+    <ClCompile Include="textButton.cpp" />
     <ClCompile Include="textDX.cpp" />
     <ClCompile Include="textureManager.cpp" />
     <ClCompile Include="winmain.cpp" />
@@ -119,16 +123,20 @@
     <ClInclude Include="audio.h" />
     <ClInclude Include="ball.h" />
     <ClInclude Include="block.h" />
+    <ClInclude Include="blockButton.h" />
     <ClInclude Include="button.h" />
     <ClInclude Include="console.h" />
     <ClInclude Include="constants.h" />
+    <ClInclude Include="editor.h" />
     <ClInclude Include="entity.h" />
+    <ClInclude Include="fileHandler.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="graphics.h" />
     <ClInclude Include="image.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="ship.h" />
     <ClInclude Include="fallback.h" />
+    <ClInclude Include="textButton.h" />
     <ClInclude Include="textDX.h" />
     <ClInclude Include="textureManager.h" />
   </ItemGroup>
@@ -137,6 +145,7 @@
     <Text Include="Level1.txt" />
     <Text Include="Level2.txt" />
     <Text Include="Level3.txt" />
+    <Text Include="Level0.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\.gitignore" />
