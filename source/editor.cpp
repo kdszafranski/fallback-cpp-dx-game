@@ -83,13 +83,23 @@ bool Editor::initialize(Game* pGame, TextureManager* textButtonTexM, TextureMana
     // set the font draw rect inside the button
     saveButton.calculateDrawRect();
 
-    if (!level0Button.initialize(game, 200, 64, 0, textButtonTexM)) {
-        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing text button image"));
-        return false;
-    }
-    level0Button.setText("Load Level 0");
-    level0Button.setPosition(12, 12);
-    level0Button.calculateDrawRect();
+
+    // Build level loading buttons
+    levelTextButtonList.clear();
+    const int startX = 12;
+    //for (int i = 0; i < 4; i++) {
+    //    TextButton newButton;
+    //    if (!newButton.initialize(game, 150, 64, 0, textButtonTexM)) {
+    //        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing text button image"));
+    //        return false;
+    //    }
+    //    newButton.setText("Level " + i);
+    //    newButton.setIntValue(i);
+    //    newButton.setPosition(startX + 150 * i, 12);
+    //    newButton.calculateDrawRect();
+
+    //    levelTextButtonList.push_back(newButton);
+    //}
 
     // set up console
     console = pCons;
@@ -125,14 +135,19 @@ void Editor::setCurrentButtonBrush(BlockButton* btn) {
 
 void Editor::update()
 {
-    if (level0Button.isMouseOver()) {
-        if (input->getMouseLButton()) {
-            console->setLogText("loading file 0");
-            currentLevel = 0;
-            loadCurrentEditorLevel();
+    // LEVEL LOADING buttons
+    for (int i = 0; i < levelTextButtonList.size(); i++) {
+        TextButton* it = &levelTextButtonList.at(i);
+        if (it->isMouseOver()) {
+            if (input->getMouseLButton()) {
+                console->setLogText("loading file " + i);
+                currentLevel = it->getIntValue();
+                loadCurrentEditorLevel();
+            }
         }
     }
 
+    // SAVE BUTTON
     if (saveButton.isMouseOver()) {
         if (input->getMouseLButton()) {
             console->setLogText("saving file...");
@@ -141,7 +156,7 @@ void Editor::update()
         }
     }
     
-    // deal with brush buttons
+    // BRUSH buttons
     for (int i = 0; i < selectorButtonList.size(); i++) {
         BlockButton* it = selectorButtonList.at(i);
         if (it->isMouseOver()) {
@@ -173,7 +188,10 @@ void Editor::update()
 
 void Editor::draw()
 {
-    level0Button.draw();
+    for(int i = 0; i < levelTextButtonList.size(); i++) {
+        levelTextButtonList.at(i).draw();
+    }
+
     saveButton.draw();
     
     // draw brush selector buttons

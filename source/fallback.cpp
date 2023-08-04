@@ -700,9 +700,10 @@ void Fallback::launchEditor()
     // share our stuff
     editor = new Editor;
     if (editor->initialize(this, &buttonTexture, &blockTexture, &console)) {
-        setEditorScreen();
         // let's go!
         editor->start();
+
+        setEditorScreen();
     }
     
 }
