@@ -95,7 +95,7 @@ void Fallback::resetGame()
     gameOver = false;
     isPaused = false;
     score = 0;
-    currentLevel = 0;
+    currentLevel = 1; // level 1 is the first non-editor level
     console.resetLog();
 }
 
