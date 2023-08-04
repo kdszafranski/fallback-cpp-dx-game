@@ -60,8 +60,7 @@ bool Editor::initialize(Game* pGame, TextureManager* textButtonTexM, TextureMana
 
 	// Build level loading buttons
 	// https://cplusplus.com/forum/beginner/70653/
-	//levelTextButtonList.clear();
-	const int levelButStart = 12;
+	const int levelButStart = 100;
 	for (int i = 0; i < 4; i++) {
 		// create a really new allocation each time, remem to delete in Deconstructor
 		shared_ptr<TextButton> tb = std::make_shared<TextButton>();
