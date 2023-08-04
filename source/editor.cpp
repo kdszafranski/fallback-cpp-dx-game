@@ -15,10 +15,11 @@ Editor::~Editor()
 
 bool Editor::initialize(Game* pGame, TextureManager* textButtonTexM, TextureManager* blockTexM, Console* pCons)
 {
+    constexpr USHORT buttonSpacing = 106;
+    constexpr USHORT buttonY = 400;
     input = pGame->getInput();
     game = pGame;
     blockTexture = blockTexM;
-    const unsigned short buttonSpacing = 106;
 
     /// UI BUTTONS
     if (!weakButton.initialize(game, 64, 64, 0, blockTexM))
@@ -26,52 +27,38 @@ bool Editor::initialize(Game* pGame, TextureManager* textButtonTexM, TextureMana
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing blockbutton image"));
         return false;
     }
+    weakButton.setPosition(160, buttonY);
 
-    weakButton.setX(160);
-    weakButton.setY(400);
-
-    // regular button
     if (!strongButton.initialize(game, 64, 64, 0, blockTexM))
     {
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing blockbutton image"));
         return false;
     }
-
-    strongButton.setX(weakButton.getX() + buttonSpacing);
-    strongButton.setY(400);
+    strongButton.setPosition(weakButton.getX() + buttonSpacing, buttonY);
     strongButton.changeBlockType(STRONG);
 
-    // regular button
     if (!hardButton.initialize(game, 64, 64, 0, blockTexM))
     {
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing blockbutton image"));
         return false;
     }
-
-    hardButton.setX(GAME_WIDTH / 2 - hardButton.getWidth() / 2);;
-    hardButton.setY(400);
+    hardButton.setPosition(GAME_WIDTH / 2 - hardButton.getWidth() / 2, buttonY);
     hardButton.changeBlockType(HARD);
 
-    // regular button
     if (!metalButton.initialize(game, 64, 64, 0, blockTexM))
     {
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing blockbutton image"));
         return false;
     }
-
-    metalButton.setX(hardButton.getX() + buttonSpacing);
-    metalButton.setY(400);
+    metalButton.setPosition(hardButton.getX() + buttonSpacing, buttonY);
     metalButton.changeBlockType(METAL);
 
-    // regular button
     if (!invincibleButton.initialize(game, 64, 64, 0, blockTexM))
     {
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing blockbutton image"));
         return false;
     }
-
-    invincibleButton.setX(metalButton.getX() + buttonSpacing);
-    invincibleButton.setY(400);
+    invincibleButton.setPosition(metalButton.getX() + buttonSpacing, buttonY);
     invincibleButton.changeBlockType(INVINCIBLE);
 
     // Save Button
@@ -80,10 +67,8 @@ bool Editor::initialize(Game* pGame, TextureManager* textButtonTexM, TextureMana
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing text button image"));
         return false;
     }
-
     saveButton.setText("SAVE LEVEL");
-    saveButton.setX(GAME_WIDTH / 2 - saveButton.getSpriteData().width / 2);
-    saveButton.setY(500);
+    saveButton.setPosition(GAME_WIDTH / 2 - saveButton.getSpriteData().width / 2, 500);
     // set the font draw rect inside the button
     saveButton.calculateDrawRect();
 
@@ -172,8 +157,8 @@ void Editor::draw()
 /// <param name="level"></param>
 void Editor::loadEditorLevel(Level level)
 {
-    const float START_X = 114;
-    const float START_Y = 100;
+    constexpr USHORT START_X = 114;
+    constexpr USHORT START_Y = 100;
     
     blocks.clear();
 
@@ -191,8 +176,7 @@ void Editor::loadEditorLevel(Level level)
                 throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing block entity"));
             }
 
-            newBlock.setX(x);
-            newBlock.setY(y);
+            newBlock.setPosition(x, y);
 
             // add to vector
             blocks.push_back(newBlock);

@@ -13,8 +13,7 @@ Button::~Button()
 
 }
 
-bool Button::initialize(Game* game, int width, int height, int ncols,
-    TextureManager* textureM)
+bool Button::initialize(Game* game, int width, int height, int ncols, TextureManager* textureM)
 {
     input = game->getInput();
 
