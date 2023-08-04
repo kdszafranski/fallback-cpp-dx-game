@@ -74,7 +74,7 @@ bool Editor::initialize(Game* pGame, TextureManager* textButtonTexM, TextureMana
 		tb->setPosition(levelButStart + 150 * i, 12);
 		tb->calculateDrawRect();
 
-		textButtonList.push_back(tb);
+		textButtonList.push_back(std::move(tb));
 	}
 
 	// set up console

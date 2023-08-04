@@ -21,7 +21,6 @@ private:
 	std::vector<BlockButton> blocks;
 	std::vector<BlockButton> brushSelectorButtonList;
 	TextButtonList textButtonList;
-	//std::vector<std::unique_ptr<object>> myPtrList;
 	
 	Game* game;
 	Input* input;		// shared with Fallback
