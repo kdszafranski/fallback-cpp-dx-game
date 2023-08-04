@@ -20,7 +20,6 @@ Fallback::Fallback()
 {
     resetGame();
     setTitleScreen();
-    //editor = Editor();
 }
 
 //=============================================================================
@@ -146,19 +145,15 @@ void Fallback::initButtons()
     {
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing button image"));
     }
-
     newGameButton.setCurrentFrame(0);
-    newGameButton.setX(400 - newGameButton.getSpriteData().width / 2);
-    newGameButton.setY(356);
+    newGameButton.setPosition(400 - newGameButton.getSpriteData().width / 2, 356);
 
     if (!editorButton.initialize(this, 256, 64, 3, &buttonTexture))
     {
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing button image"));
     }
-
     editorButton.setCurrentFrame(2);
-    editorButton.setX(400 - editorButton.getSpriteData().width / 2);
-    editorButton.setY(432);
+    editorButton.setPosition(400 - editorButton.getSpriteData().width / 2, 432);
 
     // credits
     if (!creditsButton.initialize(this, 256, 64, 3, &buttonTexture))
@@ -167,8 +162,7 @@ void Fallback::initButtons()
     }
 
     creditsButton.setCurrentFrame(1);
-    creditsButton.setX(400 - creditsButton.getSpriteData().width / 2);
-    creditsButton.setY(510);
+    creditsButton.setPosition(400 - creditsButton.getSpriteData().width / 2, 510);
 }
 
 void Fallback::initMessageSprites()
@@ -184,9 +178,8 @@ void Fallback::initMessageSprites()
     {
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing game over image"));
     }
+    gameOverImage.setPosition(0, GAME_HEIGHT / 2);
 
-    gameOverImage.setX(0);
-    gameOverImage.setY(GAME_HEIGHT / 2);
 }
 
 //=============================================================================
@@ -263,10 +256,10 @@ void Fallback::loadNextLevel()
 
 void Fallback::loadLevel(int levelNumber)
 {
-    const float START_X = 114;
-    const float START_Y = 100;
-    const int COLS = 9;
-    const int ROWS = 3;
+    const USHORT START_X = 114;
+    const USHORT START_Y = 100;
+    const USHORT COLS = 9;
+    const USHORT ROWS = 3;
 
     blocks.clear();
 
@@ -287,8 +280,7 @@ void Fallback::loadLevel(int levelNumber)
                     throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing block entity"));
                 }
 
-                newBlock.setX(x);
-                newBlock.setY(y);
+                newBlock.setPosition(x, y);
                 newBlock.setVelocity(VECTOR2(0, 0));
 
                 // add to vector
@@ -307,9 +299,9 @@ void Fallback::loadLevel(int levelNumber)
 
 void Fallback::loadRandomLevel()
 {
-    const float START_X = 82;
-    const float START_Y = 100;
-    const int COLS = 10;
+    constexpr USHORT START_X = 82;
+    constexpr USHORT START_Y = 100;
+    constexpr USHORT COLS = 10;
 
     srand((unsigned)time(0));
     int y = START_Y;
@@ -327,8 +319,7 @@ void Fallback::loadRandomLevel()
                 throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing block entity"));
             }
 
-            newBlock.setX(x);
-            newBlock.setY(y);
+            newBlock.setPosition(x, y);
             newBlock.setVelocity(VECTOR2(0, 0)); 
 
             // add to vector
@@ -518,8 +509,7 @@ void Fallback::restartBall()
         gameOver = true;
         console.setLogText("GAME OVER!");
     } else {
-        ball.setX(220);
-        ball.setY(300);
+        ball.setPosition(220, 300);
         ball.setVelocity(VECTOR2(ballNS::SPEED, ballNS::SPEED)); // move!
         
         recentBallPositions.clear();
@@ -738,8 +728,10 @@ void Fallback::renderGameScreen()
         ship.draw();
 
         for (int i = recentBallPositions.size() - 1; i > -1; i--) {
-            shadowBallImage.setX(recentBallPositions.at(i).x);
-            shadowBallImage.setY(recentBallPositions.at(i).y);
+            shadowBallImage.setPosition(
+                recentBallPositions.at(i).x,
+                recentBallPositions.at(i).y
+            );
             if (i > 0) { // leaves the last 2 the same size
                 shadowBallImage.setScale(i * 0.23);
             }
