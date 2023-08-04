@@ -6,9 +6,13 @@
 #include "blockButton.h"
 #include "level.h"
 #include <vector>
+#include <memory>
 
+typedef std::vector<std::shared_ptr<TextButton>> TextButtonList;
 class Editor
 {
+public:
+	bool initialized;
 private:
 	bool dirty;
 	const int COLS = 9;
@@ -17,7 +21,8 @@ private:
 	int currentLevel;
 	
 	std::vector<BlockButton> blocks;
-	std::vector<BlockButton*> selectorButtonList;
+	std::vector<BlockButton> brushSelectorButtonList;
+	TextButtonList textButtonList;
 	
 	Game* game;
 	Input* input;		// shared with Fallback
@@ -26,23 +31,19 @@ private:
 
 	// UI Buttons
 	TextButton saveButton;
-	TextButton level0Button;
-	TextButton level1Button;
-
-	BlockButton weakButton;
-	BlockButton strongButton;
-	BlockButton hardButton;
-	BlockButton metalButton;
-	BlockButton invincibleButton;
+	//TextButton level0Button;
+	//TextButton level1Button;
 
 public:
 	Editor();
 	~Editor();
 	bool initialize(Game* pGame, TextureManager* textButtonTexM, TextureManager* bTexM, Console* pCons);
+	void start();
 
 	void update();
 	void draw();
-	void loadEditorLevel(Level level);
+	void loadCurrentEditorLevel();
+	void editLevel(Level level);
 	void saveEditorLevelToFile();
 	void setCurrentButtonBrush(BlockButton* btn);
 };

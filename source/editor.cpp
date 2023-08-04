@@ -1,240 +1,255 @@
 #include "editor.h"
+#include "fileHandler.h"
 #include <fstream>
 #include <iostream>
 using namespace std;
 
 Editor::Editor()
 {
-    dirty = false;
-    currentType = WEAK;
-    currentLevel = 0;
+	dirty = false;
+	currentType = WEAK;
+	currentLevel = 0;
+	initialized = false;
 }
 
 Editor::~Editor()
 {
-    // I feel like there should be stuff to do here
+	// I feel like there should be stuff to do here
+	// delete in reverse order??
+	textButtonList.clear();
 }
 
 bool Editor::initialize(Game* pGame, TextureManager* textButtonTexM, TextureManager* blockTexM, Console* pCons)
 {
-    constexpr int buttonSpacing = 106;
-    constexpr int buttonY = 400;
-    input = pGame->getInput();
-    game = pGame;
-    blockTexture = blockTexM;
+	constexpr int buttonSpacing = 106;
+	constexpr int buttonY = 400;
+	input = pGame->getInput();
+	game = pGame;
+	blockTexture = blockTexM;
 
-    /// UI BUTTONS
-    if (!weakButton.initialize(game, 64, 64, 0, blockTexM))
-    {
-        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing blockbutton image"));
-        return false;
-    }
-    weakButton.setPosition(160, buttonY);
+	// UI BUTTONS
+	int startX = 160;
+	for (int i = 0; i < 5; i++) {
+		BlockButton newButton;
+		if (!newButton.initialize(game, 64, 64, 0, blockTexM))
+		{
+			throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing blockbutton image"));
+			return false;
+		}
+		newButton.setPosition(startX, buttonY);
+		newButton.changeBlockType(static_cast<BLOCK>(i));
+		startX += buttonSpacing;
 
-    if (!strongButton.initialize(game, 64, 64, 0, blockTexM))
-    {
-        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing blockbutton image"));
-        return false;
-    }
-    strongButton.setPosition(weakButton.getX() + buttonSpacing, buttonY);
-    strongButton.changeBlockType(STRONG);
+		brushSelectorButtonList.push_back(newButton);
+	}
 
-    if (!hardButton.initialize(game, 64, 64, 0, blockTexM))
-    {
-        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing blockbutton image"));
-        return false;
-    }
-    hardButton.setPosition(GAME_WIDTH / 2 - hardButton.getWidth() / 2, buttonY);
-    hardButton.changeBlockType(HARD);
+	// set the current button
+	setCurrentButtonBrush(&brushSelectorButtonList.at(0));
 
-    if (!metalButton.initialize(game, 64, 64, 0, blockTexM))
-    {
-        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing blockbutton image"));
-        return false;
-    }
-    metalButton.setPosition(hardButton.getX() + buttonSpacing, buttonY);
-    metalButton.changeBlockType(METAL);
+	// Save Button
+	if (!saveButton.initialize(game, 200, 64, 0, textButtonTexM))
+	{
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing text button image"));
+		return false;
+	}
+	saveButton.setText("SAVE LEVEL " + to_string(currentLevel));
+	saveButton.setPosition(GAME_WIDTH / 2 - saveButton.getSpriteData().width / 2, 500);
+	// set the font draw rect inside the button
+	saveButton.calculateDrawRect();
 
-    if (!invincibleButton.initialize(game, 64, 64, 0, blockTexM))
-    {
-        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing blockbutton image"));
-        return false;
-    }
-    invincibleButton.setPosition(metalButton.getX() + buttonSpacing, buttonY);
-    invincibleButton.changeBlockType(INVINCIBLE);
 
-    // Save Button
-    if (!saveButton.initialize(game, 200, 64, 0, textButtonTexM))
-    {
-        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing text button image"));
-        return false;
-    }
-    saveButton.setText("SAVE LEVEL " + to_string(currentLevel));
-    saveButton.setPosition(GAME_WIDTH / 2 - saveButton.getSpriteData().width / 2, 500);
-    // set the font draw rect inside the button
-    saveButton.calculateDrawRect();
+	// Build level loading buttons
+	// https://cplusplus.com/forum/beginner/70653/
+	//levelTextButtonList.clear();
+	const int levelButStart = 12;
+	for (int i = 0; i < 4; i++) {
+		// create a really new allocation each time, remem to delete in Deconstructor
+		shared_ptr<TextButton> tb = std::make_shared<TextButton>();
+		if (!(*tb).initialize(game, 150, 64, 0, textButtonTexM)) {
+			throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing text button image"));
+			return false;
+		}
+		tb->setText("Level " + std::to_string(i));
+		tb->setFontSize(18);
+		tb->setIntValue(i);
+		tb->setPosition(levelButStart + 150 * i, 12);
+		tb->calculateDrawRect();
 
-    // build UI list
-    setCurrentButtonBrush(&weakButton);
-    selectorButtonList.push_back(&weakButton);
-    selectorButtonList.push_back(&strongButton);
-    selectorButtonList.push_back(&hardButton);
-    selectorButtonList.push_back(&metalButton);
-    selectorButtonList.push_back(&invincibleButton);
+		textButtonList.push_back(std::move(tb));
+	}
 
-    // set up console
-    console = pCons;
-    console->setLogText("EDITOR MODE");
+	// set up console
+	console = pCons;
+	console->setLogText("EDITOR MODE");
 
-    return true;
+	initialized = true;
+
+	return true;
+}
+
+/// <summary>
+/// Loads up level 0 and starts editor UI
+/// </summary>
+void Editor::start()
+{
+	dirty = false;
+	currentType = WEAK;
+	currentLevel = 0;
+		
+	loadCurrentEditorLevel();
 }
 
 void Editor::setCurrentButtonBrush(BlockButton* btn) {
-    // set new current brush
-    currentType = btn->getBlockType();
-    btn->setSelected(true);
+	// set new current brush
+	currentType = btn->getBlockType();
+	btn->setSelected(true);
 
-    // reset all other buttons
-    for (int i = 0; i < selectorButtonList.size(); i++) {
-        // does this work?
-        if (btn != selectorButtonList.at(i)) {
-            selectorButtonList.at(i)->setSelected(false);
-        }
-    }
+	// reset all other buttons
+	for (int i = 0; i < brushSelectorButtonList.size(); i++) {
+		// does this work?
+		if (btn != &brushSelectorButtonList.at(i)) {
+			brushSelectorButtonList.at(i).setSelected(false);
+		}
+	}
 }
 
 void Editor::update()
 {
-    if (saveButton.isMouseOver()) {
-        if (input->getMouseLButton()) {
-            console->setLogText("saving file...");
-            saveEditorLevelToFile();
-            dirty = false;
-        }
-    }
-    
-    // deal with brush buttons
-    for (int i = 0; i < selectorButtonList.size(); i++) {
-        BlockButton* it = selectorButtonList.at(i);
-        if (it->isMouseOver()) {
-            if (input->getMouseLButton()) {
-                setCurrentButtonBrush(it); // there can be only one
-                break;
-            }   
-        }
-    }
+	// LEVEL LOADING buttons
+	// since the vector is just pointers, can use auto on the iterator (it)
+	for (auto it : textButtonList) {
+		if (it->isMouseOver()) {
+			if (input->getMouseLButton()) {
+				console->setLogText("loading file " + std::to_string(it->getIntValue()));
+				currentLevel = it->getIntValue();
+				loadCurrentEditorLevel();
+				saveButton.setText("SAVE LEVEL " + to_string(currentLevel));
+			}
+		}
+	}
 
-    // handle mouseover for all game blocks
-    for (int i = 0; i < blocks.size(); i++) {
-        if (blocks.at(i).isMouseOver()) {
-            if (input->getMouseLButton()) {
-                blocks.at(i).changeBlockType(currentType);
-                dirty = true;
-            }
-            if (input->getMouseRButton()) {
-                // right click resets
-                blocks.at(i).changeBlockType(NONE);
-                dirty = true;
-            }
-        }
-    }
+	// SAVE BUTTON
+	if (saveButton.isMouseOver()) {
+		if (input->getMouseLButton()) {
+			console->setLogText("saving file...");
+			saveEditorLevelToFile();
+			dirty = false;
+		}
+	}
 
-    console->setLogText(dirty ? "unsaved changes" : "up to date");
+	// BRUSH buttons
+	for (int i = 0; i < brushSelectorButtonList.size(); i++) {
+		BlockButton* it = &brushSelectorButtonList.at(i); // is a pointer needed/best?
+		if (it) {
+			if (it->isMouseOver()) {
+				if (input->getMouseLButton()) {
+					setCurrentButtonBrush(it); // there can be only one
+					break;
+				}
+			}
+		}
+	}
+
+	// handle mouseover for all game blocks
+	for (int i = 0; i < blocks.size(); i++) {
+		if (blocks.at(i).isMouseOver()) {
+			if (input->getMouseLButton()) {
+				blocks.at(i).changeBlockType(currentType);
+				dirty = true;
+			}
+			if (input->getMouseRButton()) {
+				// right click resets
+				blocks.at(i).changeBlockType(NONE);
+				dirty = true;
+			}
+		}
+	}
+
+	console->setLogText(dirty ? "unsaved changes" : "up to date");
 
 }
 
 void Editor::draw()
 {
-    saveButton.draw();
-    
-    // draw brush selector buttons
-    for (int i = 0; i < selectorButtonList.size(); i++) {
-        selectorButtonList.at(i)->draw();
-    }
-    
-    // draw each level block button
-    for (int i = 0; i < blocks.size(); i++) {
-        blocks.at(i).draw();
-    }
+	for (auto it : textButtonList) {
+		it->draw();
+	}
 
-    console->renderLog();
+	saveButton.draw();
+
+	// draw brush selector buttons
+	for (int i = 0; i < brushSelectorButtonList.size(); i++) {
+		brushSelectorButtonList.at(i).draw();
+	}
+
+	// draw each level block button
+	for (int i = 0; i < blocks.size(); i++) {
+		blocks.at(i).draw();
+	}
+
+	console->renderLog();
 }
 
 /// <summary>
 /// Converts Level raw BLOCK enum data into BlockButtons
 /// </summary>
 /// <param name="level"></param>
-void Editor::loadEditorLevel(Level level)
+void Editor::loadCurrentEditorLevel()
 {
-    constexpr int START_X = 114;
-    constexpr int START_Y = 100;
-    
-    blocks.clear();
+	Level loadedLevel;
+	FileHandler handler;
 
-    // load up vector with blocks from the level data
-    int y = START_Y;
-    for (int i = 0; i < ROWS; i++) {
+	if (handler.loadLevelFromFile(loadedLevel, currentLevel))
+	{
+		editLevel(loadedLevel);
+	}
 
-        int x = START_X;
-        for (int j = 0; j < COLS; j++) {
-
-            BlockButton newBlock(level.data.at(i * COLS + j));
-
-            if (!newBlock.initialize(game, blockNS::WIDTH, blockNS::HEIGHT, blockNS::TEXTURE_COLS, blockTexture))
-            {
-                throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing block entity"));
-            }
-
-            newBlock.setPosition(x, y);
-
-            // add to vector
-            blocks.push_back(newBlock);
-
-            // move to the right
-            x += blockNS::WIDTH;
-        }
-
-        // set new row downward
-        y += blockNS::HEIGHT;
-    }
 }
 
 /// <summary>
-/// Writes out blocks vector to file, line by line, to match Level file format
+/// Takes currently loaded level data and displays buttons for actual editing
+/// </summary>
+/// <param name="level"></param>
+void Editor::editLevel(Level level)
+{
+	constexpr int START_X = 114;
+	constexpr int START_Y = 100;
+
+	blocks.clear();
+
+	// load up vector with blocks from the level data
+	int y = START_Y;
+	for (int i = 0; i < ROWS; i++) {
+
+		int x = START_X;
+		for (int j = 0; j < COLS; j++) {
+
+			BlockButton newBlock(level.data.at(i * COLS + j));
+
+			if (!newBlock.initialize(game, blockNS::WIDTH, blockNS::HEIGHT, blockNS::TEXTURE_COLS, blockTexture))
+			{
+				throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing block entity"));
+			}
+
+			newBlock.setPosition(x, y);
+
+			// add to vector
+			blocks.push_back(newBlock);
+
+			// move to the right
+			x += blockNS::WIDTH;
+		}
+
+		// set new row downward
+		y += blockNS::HEIGHT;
+	}
+}
+
+/// <summary>
+/// Save changes to file.
 /// </summary>
 void Editor::saveEditorLevelToFile()
 {
-    string level, filename;
-    SYSTEMTIME st;
-    
-    // build timestamp
-    GetSystemTime(&st);
-    std::string timeStamp = std::to_string(st.wYear);
-    timeStamp += "." + std::to_string(st.wMonth) + "." + std::to_string(st.wDay);
-    timeStamp += "-" + std::to_string(st.wHour) + ":" + std::to_string(st.wMinute) + ":" + std::to_string(st.wSecond);
-
-    // write to the selected file on disk
-    level = currentLevel + '0';
-    filename = "Level" + level;
-    filename += ".txt";
-
-    ofstream out(filename); //open existing file
-    if (out.is_open()) {
-        //
-        out << timeStamp;
-        out << "\n";
-        out << "EDITOR SAVE\n";
-
-        for (int i = 0; i < blocks.size(); i++) {
-            out << blocks.at(i).getBlockType() << "\n";
-            // 0-8 row 1
-            // 9-17 row 2
-            // 18-26 row 3
-            if (i == COLS - 1 || i == COLS * 2 - 1) {
-                out << "// new row " << i << "\n";
-            }
-        }
-    }
-
-    out.close();
+	FileHandler handler;
+	handler.saveLevelToDisk(blocks, COLS, currentLevel);
 }

@@ -2,26 +2,28 @@
 
 TextButton::TextButton()
 {
+    intValue = 0;
     text = "Button";
+    fontSize = 24;
     defaultColor = graphicsNS::TEAL;
     mouseOverColor = graphicsNS::WHITE;
 }
 
 TextButton::~TextButton()
 {
-    dxFont.onResetDevice();
+    //displayFont.onResetDevice();
 }
 
 bool TextButton::initialize(Game* game, int width, int height, int ncols,
     TextureManager* textureM)
 {
-    if (!dxFont.initialize(game->getGraphics(), 24, true, false, "Arial"))
+    if (!displayFont.initialize(game->getGraphics(), fontSize, true, false, "Arial"))
     {
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing button text font"));
         return false;
     }
 
-    dxFont.setFontColor(defaultColor);
+    displayFont.setFontColor(defaultColor);
 
     return(Button::initialize(game, width, height, ncols, textureM));
 }
@@ -47,17 +49,17 @@ void TextButton::update(float frameTime)
 void TextButton::draw()
 {
     //Image::draw(colorFilter);    
-    dxFont.print(text, drawRect, DT_CENTER | DT_SINGLELINE | DT_VCENTER);
+    displayFont.print(text, drawRect, DT_CENTER | DT_SINGLELINE | DT_VCENTER);
 }
 
 bool TextButton::isMouseOver()
 {
     if (Button::isMouseOver()) {
         // do our own thing
-        dxFont.setFontColor(mouseOverColor);
+        displayFont.setFontColor(mouseOverColor);
         return true;
     } else {
-        dxFont.setFontColor(defaultColor);
+        displayFont.setFontColor(defaultColor);
         return false;
     }
 

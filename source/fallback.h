@@ -23,6 +23,7 @@
 #include "console.h"
 #include "editor.h"
 #include "level.h"
+#include <memory>
 
 //=============================================================================
 // Create game class
@@ -123,9 +124,9 @@ public:
     void exitEditor();
 
     // level loading
-    void loadLevels();  // loads all levels from disk
+    void loadLevelFiles();  // loads all levels from disk
     // Advances the level
-    void loadNextLevel();
+    void startNextLevel();
     // Loads given level
     void loadLevel(int level);
     // loads a randomly generated level
