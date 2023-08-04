@@ -95,7 +95,7 @@ void Fallback::resetGame()
     gameOver = false;
     isPaused = false;
     score = 0;
-    currentLevel = 1;
+    currentLevel = 0;
     console.resetLog();
 }
 
