@@ -804,6 +804,7 @@ void Fallback::exitEditor()
 {
     // clean up
     SAFE_DELETE(editor);
+    console.setLogText("");
     setTitleScreen();
 }
 
