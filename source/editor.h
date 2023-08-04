@@ -10,16 +10,18 @@
 class Editor
 {
 private:
+	bool dirty;
+	const int COLS = 9;
+	const int ROWS = 3;
+	BLOCK currentType;
+	
 	std::vector<BlockButton> blocks;
 	std::vector<BlockButton*> selectorButtonList;
-	BLOCK currentType;
+	
 	Game* game;
 	Input* input;		// shared with Fallback
 	TextureManager* blockTexture;
 	Console* console;	// shared with Fallback
-	bool dirty;
-	const int COLS = 9;
-	const int ROWS = 3;
 
 	// UI Buttons
 	TextButton saveButton;

@@ -11,8 +11,7 @@ Editor::Editor()
 
 Editor::~Editor()
 {
-    //SAFE_DELETE(game);
-    //SAFE_DELETE(input);
+    // I feel like there should be stuff to do here
 }
 
 bool Editor::initialize(Game* pGame, TextureManager* textButtonTexM, TextureManager* blockTexM, Console* pCons)
