@@ -74,6 +74,13 @@ bool Editor::initialize(Game* pGame, TextureManager* textButtonTexM, TextureMana
     // set the font draw rect inside the button
     saveButton.calculateDrawRect();
 
+    // build UI list
+    selectorButtonList.push_back(&weakButton);
+    selectorButtonList.push_back(&strongButton);
+    selectorButtonList.push_back(&hardButton);
+    selectorButtonList.push_back(&metalButton);
+    selectorButtonList.push_back(&invincibleButton);
+
     // set up console
     console = pCons;
     console->setLogText("EDITOR MODE");
@@ -81,9 +88,9 @@ bool Editor::initialize(Game* pGame, TextureManager* textButtonTexM, TextureMana
     return true;
 }
 
-void Editor::setCurrentButtonBrush(BlockButton &btn) {
-    currentType = btn.getBlockType();
-    btn.setSelected(true);
+void Editor::setCurrentButtonBrush(BlockButton* btn) {
+    currentType = btn->getBlockType();
+    btn->setSelected(true);
 }
 
 void Editor::update()
@@ -95,31 +102,36 @@ void Editor::update()
             dirty = false;
         }
     }
-    if (weakButton.isMouseOver()) {
-        if (input->getMouseLButton()) {
-            setCurrentButtonBrush(weakButton);
+    
+    // deal with brush buttons
+    for (int i = 0; i < selectorButtonList.size(); i++) {
+        BlockButton* it = selectorButtonList.at(i);
+        if (it->isMouseOver()) {
+            if (input->getMouseLButton()) {
+                setCurrentButtonBrush(it);
+            }
         }
     }
-    if (strongButton.isMouseOver()) {
-        if (input->getMouseLButton()) {
-            setCurrentButtonBrush(strongButton);
-        }
-    }
-    if (hardButton.isMouseOver()) {
-        if (input->getMouseLButton()) {
-            setCurrentButtonBrush(hardButton);
-        }
-    }
-    if (metalButton.isMouseOver()) {
-        if (input->getMouseLButton()) {
-            setCurrentButtonBrush(metalButton);
-        }
-    }
-    if (invincibleButton.isMouseOver()) {
-        if (input->getMouseLButton()) {
-            setCurrentButtonBrush(invincibleButton);
-        }
-    }
+    //if (strongButton.isMouseOver()) {
+    //    if (input->getMouseLButton()) {
+    //        setCurrentButtonBrush(strongButton);
+    //    }
+    //}
+    //if (hardButton.isMouseOver()) {
+    //    if (input->getMouseLButton()) {
+    //        setCurrentButtonBrush(hardButton);
+    //    }
+    //}
+    //if (metalButton.isMouseOver()) {
+    //    if (input->getMouseLButton()) {
+    //        setCurrentButtonBrush(metalButton);
+    //    }
+    //}
+    //if (invincibleButton.isMouseOver()) {
+    //    if (input->getMouseLButton()) {
+    //        setCurrentButtonBrush(invincibleButton);
+    //    }
+    //}
 
     // seems bizarre that it works within update()
     for (int i = 0; i < blocks.size(); i++) {

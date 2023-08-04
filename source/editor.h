@@ -11,6 +11,7 @@ class Editor
 {
 private:
 	std::vector<BlockButton> blocks;
+	std::vector<BlockButton*> selectorButtonList;
 	BLOCK currentType;
 	Game* game;
 	Input* input;		// shared with Fallback
@@ -37,6 +38,6 @@ public:
 	void draw();
 	void loadEditorLevel(Level level);
 	void saveEditorLevelToFile();
-	void setCurrentButtonBrush(BlockButton& btn);
+	void setCurrentButtonBrush(BlockButton* btn);
 };
 
