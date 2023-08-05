@@ -14,7 +14,7 @@
 ## Technical Challenges
 - [ ] separate direction from speed
 - [ ] add event manager, implement Observer pattern: https://gameprogrammingpatterns.com/observer.html
-- [ ] make level editor
+- [X] make level editor
 - [ ] add more animations
 - [ ] consider memory/profiling
 - [ ] compile to web assem using Emscripten

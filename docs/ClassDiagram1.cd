@@ -25,10 +25,10 @@
       <FileName>input.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Fallback" Collapsed="true">
+  <Class Name="Fallback">
     <Position X="0.5" Y="1.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>BEQKgDQC0ERRARAEAAUpBqCBfAFAINBIhggUgEgULII=</HashCode>
+      <HashCode>BEQKgDQA0ERRATAEAAUpBqCBfAFAINBIhggUgAgULII=</HashCode>
       <FileName>fallback.h</FileName>
     </TypeIdentifier>
   </Class>
@@ -46,7 +46,7 @@
   <Class Name="Image" Collapsed="true">
     <Position X="8.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>cAAQAYhAgDAELgEAACM+BIIACACpxBsCAACATmQGAgQ=</HashCode>
+      <HashCode>cAAQAYhAgDAELgEAACM+BIICCACpxBsCAACATmQGAgQ=</HashCode>
       <FileName>image.h</FileName>
     </TypeIdentifier>
   </Class>
@@ -64,7 +64,7 @@
       <FileName>button.h</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Block" Collapsed="true">
+  <Class Name="Block">
     <Position X="8.5" Y="5.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAkAAAAgIAAgAAAAAOAAAAAAAAAAgiAAACAgAAMEAA=</HashCode>
@@ -81,21 +81,21 @@
   <Class Name="BlockButton">
     <Position X="11" Y="5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAgAAAAAAAAAAgAAAaAgAAAAAAAAACAAAAAAAAAAAE=</HashCode>
+      <HashCode>AAAgAAAQAAAAAAAAAAaAgAAAAAAAgAiAAAAAAAAAAAE=</HashCode>
       <FileName>blockButton.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="TextButton">
     <Position X="12.75" Y="5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>gCAAAAAACAAAAAAAABMACACAAAAAAEAIAAAAAAAEgAA=</HashCode>
+      <HashCode>gQAEAAAACACAAAACABMADACAAABAAEAIAAAACAAEgAA=</HashCode>
       <FileName>textButton.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Editor" Collapsed="true">
     <Position X="3" Y="3" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAABAAgASAgAAAQAMAQAAAAAAIABBYAABAAAAEBAA=</HashCode>
+      <HashCode>AIAEABAAwBCAAAAgQAMAQAAAAAAIABB4BABAAAAERAA=</HashCode>
       <FileName>editor.h</FileName>
     </TypeIdentifier>
   </Class>
