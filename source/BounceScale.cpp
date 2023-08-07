@@ -6,24 +6,26 @@ BounceScale::BounceScale(Entity* target, float scale, float t)
 	endScale = scale;
 	target->setScale(0.999f);
 
-	rate = t / 60; // total time / 30 fps
+	rate = t / 30; // total time / 30 fps
 }
 
-void BounceScale::update(float ms) 
+void BounceScale::update(float ms)
 {
-	float const currentScale = entity->getScale();
-	if (currentScale > endScale && currentScale < originalScale) {
-		// go down
-		entity->setScale(currentScale - rate);
-	} else {
-		if (currentScale > originalScale) {
-			// done
-			entity->setScale(originalScale);
-			//mState = SUCCEEDED;
+	if (entity) {
+		float const currentScale = entity->getScale();
+		if (currentScale > endScale && currentScale < originalScale) {
+			// go down
+			entity->setScale(currentScale - rate);
 		} else {
-			// going up
-			endScale = originalScale; // need to keep going up
-			entity->setScale(currentScale + rate);
+			if (currentScale > originalScale) {
+				// done
+				entity->setScale(originalScale);
+				//mState = SUCCEEDED;
+			} else {
+				// going up
+				endScale = originalScale; // need to keep going up
+				entity->setScale(currentScale + rate);
+			}
 		}
 	}
 }

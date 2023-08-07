@@ -1,8 +1,6 @@
 #include "AnimationManager.h"
 
 
-
-
 AnimationManager::~AnimationManager()
 {
 	clearAllProcesses();
@@ -60,6 +58,26 @@ unsigned int AnimationManager::updateProcesses(float deltaMs)
 	} // end while
 
 	return ((successCount << 16 | faileCount));
+}
+
+void AnimationManager::abortAllProcesses(bool immediate)
+{
+	AnimationList::iterator it = mAnimationList.begin();
+
+	// go thru list and update all animation processes
+	while (it != mAnimationList.end()) {
+		AnimationList::iterator tempIt = it;
+		++it;
+
+		StrongAnimationPtr pProcess = *tempIt;
+		if (pProcess->isAlive())
+		{
+			if (immediate)
+			{
+				mAnimationList.erase(tempIt);
+			}
+		}
+	}
 }
 
 void AnimationManager::clearAllProcesses()

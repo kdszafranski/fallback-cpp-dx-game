@@ -19,7 +19,7 @@ public:
 	// interface
 	unsigned int updateProcesses(float deltaMs);  // updates all attached processes
 	WeakAnimationPtr attachProcess(StrongAnimationPtr anim);  // attaches a process to the process mgr
-	//void abortAllProcesses(bool immediate);
+	void abortAllProcesses(bool immediate);
 
 	// accessors
 	unsigned int getProcessCount(void) const { return mAnimationList.size(); }

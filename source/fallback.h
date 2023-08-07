@@ -48,7 +48,7 @@ private:
     TextDX dxBallCount;
     Console console;
     Editor* editor;
-    AnimationManager mAnimationManager;
+    AnimationManager m_AnimationManager;
 
     // textures/sprites
     TextureManager backgroundTexture;

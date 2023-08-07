@@ -1,8 +1,8 @@
 #include "AnimationBase.h"
 
 AnimationBase::AnimationBase(Entity* target, float t)
+	: entity(target)
 {
-	entity = target;
 	originalScale = entity->getScale();
 	originalPosition = { entity->getX(), entity->getY() };
 	time = t;
@@ -11,7 +11,8 @@ AnimationBase::AnimationBase(Entity* target, float t)
 
 AnimationBase::~AnimationBase()
 {
-	SAFE_DELETE(entity);
+	// i feel like this SHOULD be here but it causes issues
+	//SAFE_DELETE(entity);
 }
 
 void AnimationBase::update(float deltaTime)

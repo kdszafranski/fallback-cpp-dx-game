@@ -31,6 +31,10 @@ Fallback::Fallback()
 Fallback::~Fallback()
 {
 	releaseAll();           // call onLostDevice() for every graphics item
+
+	// remove all running animations
+	m_AnimationManager.abortAllProcesses(true);
+
 	SAFE_DELETE(editor);
 }
 
@@ -255,7 +259,7 @@ void Fallback::startNextLevel()
 		currentLevel = 0;
 	}
 
-	mAnimationManager.clearAllProcesses();
+	m_AnimationManager.clearAllProcesses();
 
 	loadLevel(currentLevel);
 	restartBall();
@@ -435,7 +439,7 @@ void Fallback::update(float frameTime)
 				ball.update(frameTime);
 				
 				// block animations
-				mAnimationManager.updateProcesses(frameTime);
+				m_AnimationManager.updateProcesses(frameTime);
 
 				// blocks
 				//for (int i = 0; i < blocks.size(); i++) {
@@ -574,7 +578,7 @@ void Fallback::collisions()
 				if (block->getBlockType() != INVINCIBLE) {
 					// damage
 					block->damage(BALL);
-
+					// soundfx
 					audio->playCue(CLUNK);
 					
 					// check if ball is dead
@@ -584,8 +588,8 @@ void Fallback::collisions()
 						removeBlock(i);
 					} else {
 						// fire off animation process
-						StrongAnimationPtr animBounce = std::make_shared<BounceScale>(&blocks.at(i), 0.5f, 1.0f);
-						mAnimationManager.attachProcess(animBounce);
+						StrongAnimationPtr animBounce = std::make_shared<BounceScale>(&blocks.at(i), 0.75f, 0.75f);
+						m_AnimationManager.attachProcess(animBounce);
 					}
 				} else {
 					// invincible!
