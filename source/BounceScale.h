@@ -1,14 +1,14 @@
 #pragma once
-#include "itween.h"
+#include "AnimationBase.h"
 
-class BounceScale : public ITween
+class BounceScale : public AnimationBase
 {
 private:
 	float endScale;
 	float rate;
 
 public:
-	BounceScale(Entity* ent, float scale, float time);
+	BounceScale(Entity* target, float scale, float time);
 	void update(float ms);
 
 };

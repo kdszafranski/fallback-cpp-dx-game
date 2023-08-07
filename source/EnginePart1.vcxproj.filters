@@ -81,10 +81,13 @@
     <ClCompile Include="fileHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="itween.cpp">
+    <ClCompile Include="BounceScale.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BounceScale.cpp">
+    <ClCompile Include="AnimationBase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimationManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -146,10 +149,13 @@
     <ClInclude Include="fileHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="itween.h">
+    <ClInclude Include="BounceScale.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BounceScale.h">
+    <ClInclude Include="AnimationBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

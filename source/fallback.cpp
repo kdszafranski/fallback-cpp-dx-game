@@ -375,7 +375,7 @@ bool Fallback::loadLevelFromFile(int n)
 //=============================================================================
 // Update all game items
 //=============================================================================
-void Fallback::update()
+void Fallback::update(float frameTime)
 {
 	// check if we want to exit
 	CheckForExit();
@@ -450,7 +450,7 @@ void Fallback::update()
 	} // GAME screen
 
 	if (currentScreen == EDITOR) {
-		editor->update();
+		editor->update(frameTime);
 	}
 
 }

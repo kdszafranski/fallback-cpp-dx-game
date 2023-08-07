@@ -89,7 +89,7 @@ public:
     // These functions MUST be written in any class that inherits from Game
 
     // Update game items.
-    virtual void update() = 0;
+    virtual void update(float frameTime) = 0;
 
     // Perform AI calculations.
     virtual void ai() = 0;

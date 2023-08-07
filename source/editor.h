@@ -40,7 +40,7 @@ public:
 	bool initialize(Game* pGame, TextureManager* textButtonTexM, TextureManager* bTexM, Console* pCons);
 	void start();
 
-	void update();
+	void update(float frameTime);
 	void draw();
 	void loadCurrentEditorLevel();
 	void editLevel(Level level);

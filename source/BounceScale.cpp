@@ -1,15 +1,11 @@
 #include "BounceScale.h"
 
-BounceScale::BounceScale(Entity* target, float scale, float time)
+BounceScale::BounceScale(Entity* target, float scale, float t) : AnimationBase(target, t)
 {
-	entity = std::make_shared<Entity>(target);
-	originalScale = entity->getScale();
-	originalPosition = { entity->getX(), entity->getY() };
-
 	endScale = scale;
-	time = time;
+	target->setScale(0.999f);
 
-	rate = time / 30; // total time / 30 fps
+	rate = t / 30; // total time / 30 fps
 }
 
 void BounceScale::update(float ms) 

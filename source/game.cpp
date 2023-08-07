@@ -224,16 +224,16 @@ void Game::run(HWND hwnd)
     {
         switch (currentScreen) {
             case TITLE:
-                update(); // allows for input
+                update(frameTime); // allows for input
                 break;
             case GAME:
-                update();                   // update all game items
+                update(frameTime);                   // update all game items
                 ai();                       // artificial intelligence
                 collisions();               // handle collisions
                 input->vibrateControllers(frameTime); // handle controller vibration
                 break;
             case EDITOR:
-                update();
+                update(frameTime);
                 break;
         }
     }

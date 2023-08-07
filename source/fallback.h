@@ -89,7 +89,7 @@ public:
     void resetGame();
 
     // Game Loop stuff
-    void update();      // must override pure virtual from Game
+    void update(float frameTime);      // must override pure virtual from Game
     void ai();          // "
     void collisions();  // "
     void render();  // render game objects
