@@ -142,7 +142,7 @@ void Block::bounceScale(float initialScale, float endScale)
 {
     isAnimating = true;
     animScale = endScale;
-    // needs to be less than originalScale
+    // needs to be less than originalScale to trigger
     setScale(0.999f);
 }
 

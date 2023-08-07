@@ -111,12 +111,14 @@
     <ClCompile Include="graphics.cpp" />
     <ClCompile Include="image.cpp" />
     <ClCompile Include="input.cpp" />
+    <ClCompile Include="BounceScale.cpp" />
     <ClCompile Include="ship.cpp" />
     <ClCompile Include="fallback.cpp" />
     <ClCompile Include="level.h" />
     <ClCompile Include="textButton.cpp" />
     <ClCompile Include="textDX.cpp" />
     <ClCompile Include="textureManager.cpp" />
+    <ClCompile Include="itween.cpp" />
     <ClCompile Include="winmain.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -134,11 +136,13 @@
     <ClInclude Include="graphics.h" />
     <ClInclude Include="image.h" />
     <ClInclude Include="input.h" />
+    <ClInclude Include="BounceScale.h" />
     <ClInclude Include="ship.h" />
     <ClInclude Include="fallback.h" />
     <ClInclude Include="textButton.h" />
     <ClInclude Include="textDX.h" />
     <ClInclude Include="textureManager.h" />
+    <ClInclude Include="itween.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\docs\notes.md" />

@@ -27,6 +27,12 @@
 #define SAFE_ON_RESET_DEVICE(ptr)   { if(ptr) { ptr->onResetDevice(); } }
 #define TRANSCOLOR  SETCOLOR_ARGB(255,255,0,255)  // transparent color (magenta)
 
+// Structs
+struct Vector2 {
+	float x;
+	float y;
+};
+
 //=============================================================================
 //                  Constants
 //=============================================================================
