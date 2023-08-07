@@ -18,10 +18,8 @@ public:
 		FAILED,				// failed to complete
 	};
 
-private:
-	State mState; // state of this animation
-
 protected:
+	State mState; // state of this animation
 	float time;		// time tween takes to run
 	float timer;	// timer counts up
 	float elapsedTime;

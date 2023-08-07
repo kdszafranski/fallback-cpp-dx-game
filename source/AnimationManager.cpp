@@ -12,7 +12,7 @@ WeakAnimationPtr AnimationManager::attachProcess(StrongAnimationPtr anim)
 	return WeakAnimationPtr(anim);
 }
 
-unsigned int AnimationManager::updateProcesses(unsigned long deltaMs)
+unsigned int AnimationManager::updateProcesses(float deltaMs)
 {
 	unsigned int successCount = 0;
 	unsigned int faileCount = 0;

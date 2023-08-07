@@ -6,6 +6,7 @@ AnimationBase::AnimationBase(Entity* target, float t)
 	originalScale = entity->getScale();
 	originalPosition = { entity->getX(), entity->getY() };
 	time = t;
+	mState = UNINITIATED;
 }
 
 AnimationBase::~AnimationBase()
@@ -15,11 +16,13 @@ AnimationBase::~AnimationBase()
 
 void AnimationBase::update(float deltaTime)
 {
-	elapsedTime += deltaTime;
-	if (elapsedTime < time) {
-		animate(deltaTime);
-	} else {
-		// assume it ended well
-		mState = SUCCEEDED;
+	if (isAlive()) {
+		elapsedTime += deltaTime;
+		if (elapsedTime < time) {
+			animate(deltaTime);
+		} else {
+			// assume it ended well
+			mState = SUCCEEDED;
+		}
 	}
 }

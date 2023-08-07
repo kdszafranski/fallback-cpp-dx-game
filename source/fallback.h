@@ -22,6 +22,7 @@
 #include "textButton.h"
 #include "console.h"
 #include "editor.h"
+#include "AnimationManager.h"
 #include "level.h"
 #include <memory>
 
@@ -47,6 +48,7 @@ private:
     TextDX dxBallCount;
     Console console;
     Editor* editor;
+    AnimationManager mAnimationManager;
 
     // textures/sprites
     TextureManager backgroundTexture;

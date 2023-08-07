@@ -5,7 +5,7 @@ BounceScale::BounceScale(Entity* target, float scale, float t) : AnimationBase(t
 	endScale = scale;
 	target->setScale(0.999f);
 
-	rate = t / 30; // total time / 30 fps
+	rate = t / 60; // total time / 30 fps
 }
 
 void BounceScale::update(float ms) 
@@ -18,6 +18,7 @@ void BounceScale::update(float ms)
 		if (currentScale > originalScale) {
 			// done
 			entity->setScale(originalScale);
+			//mState = SUCCEEDED;
 		} else {
 			// going up
 			endScale = originalScale; // need to keep going up
