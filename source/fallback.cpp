@@ -584,7 +584,7 @@ void Fallback::collisions()
 						removeBlock(i);
 					} else {
 						// fire off animation process
-						StrongAnimationPtr animBounce(new BounceScale(&blocks.at(i), 0.5f, 1.0f));
+						StrongAnimationPtr animBounce = std::make_shared<BounceScale>(&blocks.at(i), 0.5f, 1.0f);
 						mAnimationManager.attachProcess(animBounce);
 					}
 				} else {

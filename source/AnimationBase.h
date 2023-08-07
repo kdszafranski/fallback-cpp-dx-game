@@ -25,7 +25,7 @@ protected:
 	float elapsedTime;
 	float originalScale;
 	Vector2 originalPosition;
-	std::shared_ptr<Entity> entity; // object to act upon
+	Entity* entity; // object to act upon
 
 public:
 	// construction

@@ -1,6 +1,7 @@
 #pragma once
 #include "AnimationBase.h";
 #include <list>
+#include <iostream>
 
 typedef std::shared_ptr<AnimationBase> StrongAnimationPtr;
 typedef std::weak_ptr<AnimationBase> WeakAnimationPtr;

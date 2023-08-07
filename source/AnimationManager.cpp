@@ -1,6 +1,8 @@
 #include "AnimationManager.h"
 
 
+
+
 AnimationManager::~AnimationManager()
 {
 	clearAllProcesses();

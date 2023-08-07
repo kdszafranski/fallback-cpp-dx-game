@@ -2,7 +2,7 @@
 
 AnimationBase::AnimationBase(Entity* target, float t)
 {
-	entity = std::shared_ptr<Entity>(target);
+	entity = target;
 	originalScale = entity->getScale();
 	originalPosition = { entity->getX(), entity->getY() };
 	time = t;
@@ -11,7 +11,7 @@ AnimationBase::AnimationBase(Entity* target, float t)
 
 AnimationBase::~AnimationBase()
 {
-	
+	SAFE_DELETE(entity);
 }
 
 void AnimationBase::update(float deltaTime)
