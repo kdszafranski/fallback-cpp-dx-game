@@ -241,7 +241,6 @@ void Fallback::initBall()
 	{
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ball count icon"));
 	}
-	ballCountIcon.setScale(3);
 	ballCountIcon.setActive(false); // no collisions please
 	ballCountIcon.setCurrentFrame(0);
 	ballCountIcon.setPosition(736, 68);
@@ -517,8 +516,7 @@ void Fallback::loseBall()
 	ballCount--;
 
 	// bounce icon
-	//StrongAnimationPtr animPtr = std::make_shared<PunchScale>(&ballCountIcon, 1.6f, 1);
-	StrongAnimationPtr animPtr = std::make_shared<FadeTo>(&ballCountIcon, 1, 0);
+	StrongAnimationPtr animPtr = std::make_shared<PunchScale>(&ballCountIcon, 1.6f, 1);
 	m_AnimationManager.attachProcess(animPtr);
 }
 
