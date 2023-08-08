@@ -45,12 +45,13 @@ I went back and updated this significantly beyond what the book covers into a co
 ### Final Features
 
 - Title screen, game over (game state management), all with input controls/navigation to leave the game, start over, etc.
-- Audio/SFX
-- Animations/Tweening
+- Full Level Editor with intuitive GUI
+- Animations/Tweening managed through a dynamic `Process Manager` which allows attaching animation processes to any Entity
 - Added Block types which have varying health and associated colors with their remaining health. Blocks work down to a basic type but score as their original type which is worth more points
-- Score tracking
 - `Console` class and `log` display, including a common `toString` method which converts relevant object into into a displayable string
-- Level progression and loading code
-- UI Buttons with rollover states
+- Level progression and loading 
+- Audio/SFX using XACT resources
+- UI Buttons and DX Text Buttons with rollover states
 
-![Fallback Game Over](source/pictures/gameover-screenshot.png)
+
+![Fallback Level Editor](source/pictures/editor-screenshot.png)
