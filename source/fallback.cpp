@@ -792,12 +792,29 @@ void Fallback::renderUI()
 	scoreRect.top += 51;				// upper left Y
 	scoreRect.right = GAME_WIDTH;		// lower right X
 	scoreRect.bottom = scoreRect.top + 32;	// lower right Y
-	dxBallCount.setFontColor(graphicsNS::FB_HARD);
+	dxBallCount.setFontColor(getBallCountColor());
 	dxBallCount.print(std::to_string(ballCount), scoreRect, DT_LEFT | DT_SINGLELINE);
 
 	// ball count icon and x
 	ballCountIcon.draw();
 	ballCountXImage.draw();
+}
+
+COLOR_ARGB Fallback::getBallCountColor()
+{
+	switch (ballCount) {
+	case 1:
+		return graphicsNS::FB_HARD;
+		break;
+	case 2:
+		return graphicsNS::FB_STRONG;
+		break;
+	case 3:
+		return graphicsNS::FB_INVINCIBLE;
+		break;
+	}
+
+	return graphicsNS::WHITE;
 }
 
 //=============================================================================

@@ -107,6 +107,7 @@ public:
     // gameplay methods
     void removeBlock(int index);
     void restartBall();
+    COLOR_ARGB getBallCountColor();
 
     // Game state/flow
     void startNewGame();
