@@ -14,16 +14,3 @@ AnimationBase::~AnimationBase()
 	// i feel like this SHOULD be here but it causes issues
 	//SAFE_DELETE(entity);
 }
-
-void AnimationBase::update(float deltaTime)
-{
-	if (isAlive()) {
-		elapsedTime += deltaTime;
-		if (elapsedTime < time) {
-			animate(deltaTime);
-		} else {
-			// assume it ended well
-			mState = SUCCEEDED;
-		}
-	}
-}
