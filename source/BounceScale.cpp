@@ -20,7 +20,7 @@ void BounceScale::update(float ms)
 			if (currentScale > originalScale) {
 				// done
 				entity->setScale(originalScale);
-				//mState = SUCCEEDED;
+				mState = SUCCEEDED;
 			} else {
 				// going up
 				endScale = originalScale; // need to keep going up

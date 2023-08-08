@@ -557,10 +557,7 @@ void Fallback::collisions()
 
 		// if collision between ball and ship
 		if (ball.collidesWith(ship, collisionVector)) {
-
 			ball.bounceOffShip(collisionVector, collisionPosition, ship.getSpriteData());
-			//console.setLogText(ship.toString());
-
 			audio->playCue(CLICK);
 		}
 
