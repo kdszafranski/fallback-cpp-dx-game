@@ -266,7 +266,7 @@ void Fallback::startNextLevel()
 }
 
 /// <summary>
-/// Loads a level from the list of prepared Levels
+/// Creates the blocks in the vector from the list given level data which was previously loaded
 /// </summary>
 /// <param name="levelNumber">number that matches level number</param>
 void Fallback::loadLevel(int levelNumber)
@@ -277,6 +277,7 @@ void Fallback::loadLevel(int levelNumber)
 	const int ROWS = 3;
 
 	blocks.clear();
+	blocks.reserve(21); // 27 is max space needed
 
 	// load up vector with blocks from the level data
 	int y = START_Y;
@@ -309,7 +310,6 @@ void Fallback::loadLevel(int levelNumber)
 		// set new row downward
 		y += blockNS::HEIGHT;
 	}
-
 }
 
 /// <summary>
@@ -320,6 +320,9 @@ void Fallback::loadRandomLevel()
 	constexpr int START_X = 82;
 	constexpr int START_Y = 100;
 	constexpr int COLS = 10;
+
+	blocks.clear();
+	blocks.reserve(21);
 
 	srand((unsigned)time(0));
 	int y = START_Y;
@@ -350,7 +353,6 @@ void Fallback::loadRandomLevel()
 		// set new row downward
 		y += blockNS::HEIGHT;
 	}
-
 }
 
 //=============================================================================
@@ -438,16 +440,8 @@ void Fallback::update(float frameTime)
 
 				ball.update(frameTime);
 				
-				// block animations
+				// run animations
 				m_AnimationManager.updateProcesses(frameTime);
-
-				// blocks
-				//for (int i = 0; i < blocks.size(); i++) {
-				//	// only update blocks that need it
-				//	if (blocks.at(i).getIsAnimating()) {
-				//		blocks.at(i).update(frameTime);
-				//	}
-				//}
 
 				// check if the ball went off below ship
 				if (ball.getY() > GAME_HEIGHT - ballNS::HEIGHT) {
@@ -613,17 +607,15 @@ void Fallback::removeBlock(int index)
 
 void Fallback::checkGameOver()
 {
-	console.setLogText("Blocks remaining: " + std::to_string(blocks.size()));
-
-	bool finished = false;
-	int invincible = 0;
+	bool isFinished = false;
+	int invincibleCount = 0;
 	if (blocks.size() <= 0) {
-		finished = true;
+		isFinished = true;
 	} else {
 		for (int i = 0; i < blocks.size(); i++) {
 			// check each block, as soon as there is a normal block we can stop
 			if (blocks.at(i).getBlockType() == INVINCIBLE) {
-				invincible++;
+				invincibleCount++;
 			} else {
 				return;
 			}
@@ -632,7 +624,7 @@ void Fallback::checkGameOver()
 	}
 
 	// we're done here, next please!
-	if (finished || blocks.size() == invincible) {
+	if (isFinished || blocks.size() == invincibleCount) {
 		startNextLevel();
 	}
 }
@@ -694,6 +686,7 @@ void Fallback::setEditorScreen()
 void Fallback::setTitleScreen()
 {
 	// clean up game
+	blocks.clear();
 	// set bg 
 	backgroundImage.setX(0);
 	currentScreen = TITLE;
