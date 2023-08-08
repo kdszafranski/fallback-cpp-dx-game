@@ -59,6 +59,8 @@ private:
     TextureManager gameOverTexture;
     Image backgroundImage;
     Image gameOverImage;
+    Image ballCountIcon; // just the ship sprite
+    Image ballCountXImage;
     Button newGameButton;
     Button editorButton;
     Button creditsButton;

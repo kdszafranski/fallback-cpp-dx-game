@@ -54,7 +54,7 @@ void Fallback::initialize(HWND hwnd)
 	if (dxScoreFont.initialize(graphics, 62, true, false, "Agdasima") == false)
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing score font"));
 
-	if (dxBallCount.initialize(graphics, 36, true, false, "Agdasima") == false)
+	if (dxBallCount.initialize(graphics, 34, true, false, "Agdasima") == false)
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ball count font"));
 
 	// init the console log
@@ -188,6 +188,8 @@ void Fallback::initMessageSprites()
 	}
 	gameOverImage.setPosition(0, GAME_HEIGHT / 2);
 
+
+
 }
 
 //=============================================================================
@@ -215,7 +217,7 @@ void Fallback::initShip()
 //=============================================================================
 void Fallback::initBall()
 {
-	if (!ballTexture.initialize(graphics, BALL_PATH))
+	if (!ballTexture.initialize(graphics, ICONS_PATH))
 	{
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ball texture"));
 	}
@@ -223,13 +225,21 @@ void Fallback::initBall()
 	{
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ball entity"));
 	}
+	ball.setCurrentFrame(0);
 
 	// ball shadow image
-	if (!shadowBallImage.initialize(graphics, 0, 0, 0, &ballTexture))
+	if (!shadowBallImage.initialize(graphics, ballNS::WIDTH, ballNS::HEIGHT, ballNS::TEXTURE_COLS, &ballTexture))
 	{
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ball entity"));
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ball shadow image"));
 	}
-
+	shadowBallImage.setCurrentFrame(0);
+	
+	if (!ballCountIcon.initialize(graphics, ballNS::WIDTH, ballNS::HEIGHT, ballNS::TEXTURE_COLS, &ballTexture))
+	{
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ball count icon"));
+	}
+	ballCountIcon.setCurrentFrame(0);
+	ballCountIcon.setPosition(600, 50);
 }
 
 //=============================================================================
@@ -769,10 +779,13 @@ void Fallback::renderUI()
 	dxScoreFont.print(std::to_string(score), scoreRect, DT_RIGHT | DT_SINGLELINE | DT_VCENTER);
 
 	// ball count
-	scoreRect.top += 40;
-	scoreRect.bottom += 40;
+	scoreRect.top += 42;
+	scoreRect.bottom += 42;
 	dxBallCount.setFontColor(graphicsNS::FB_HARD);
 	dxBallCount.print(std::to_string(ballCount), scoreRect, DT_RIGHT | DT_SINGLELINE | DT_VCENTER);
+
+	// ball count icon and x
+	ballCountIcon.draw();
 }
 
 //=============================================================================

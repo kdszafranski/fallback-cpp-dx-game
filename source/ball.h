@@ -14,7 +14,7 @@ namespace ballNS
     const int Y = 0;
     const float SPEED = 190;                // 
     const float MASS = 0;// 10.0f;              // mass
-    const int   TEXTURE_COLS = 1;           // texture has 8 columns
+    const int   TEXTURE_COLS = 4;           // texture has 8 columns
     const int   BALL_START_FRAME = 0;      // ball starts at frame 0
     const int   BALL_END_FRAME = 0;        // ball animation 
 }
