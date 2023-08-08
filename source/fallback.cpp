@@ -5,6 +5,7 @@
 // Copyright (c) 2011 by: 
 // Charles Kelly
 
+using namespace std;
 #include "fallback.h"
 #include <time.h>
 #include "level.h"
@@ -12,8 +13,8 @@
 #include <iostream>
 #include "editor.h"
 #include "fileHandler.h"
+#include "PunchScale.h"
 #include "BounceScale.h"
-using namespace std;
 
 //=============================================================================
 // Constructor
@@ -235,10 +236,11 @@ void Fallback::initBall()
 	shadowBallImage.setCurrentFrame(0);
 	
 	// ball count icon image
-	if (!ballCountIcon.initialize(graphics, ballNS::WIDTH, ballNS::HEIGHT, ballNS::TEXTURE_COLS, &ballTexture))
+	if (!ballCountIcon.initialize(this, ballNS::WIDTH, ballNS::HEIGHT, ballNS::TEXTURE_COLS, &ballTexture))
 	{
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ball count icon"));
 	}
+	ballCountIcon.setActive(false); // no collisions please
 	ballCountIcon.setCurrentFrame(0);
 	ballCountIcon.setPosition(736, 68);
 	
@@ -511,6 +513,10 @@ bool Fallback::isGameOver()
 void Fallback::loseBall()
 {
 	ballCount--;
+
+	// bounce icon
+	StrongAnimationPtr animPtr = std::make_shared<PunchScale>(&ballCountIcon, 1.6f, 1);
+	m_AnimationManager.attachProcess(animPtr);
 }
 
 //=============================================================================
@@ -706,6 +712,8 @@ void Fallback::setTitleScreen()
 {
 	// clean up game
 	blocks.clear();
+	m_AnimationManager.clearAllProcesses();
+
 	// set bg 
 	backgroundImage.setX(0);
 	currentScreen = TITLE;

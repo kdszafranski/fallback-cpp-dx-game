@@ -256,7 +256,7 @@ void Graphics::drawSprite(const SpriteData &spriteData, COLOR_ARGB color)
     D3DXMATRIX matrix;
     D3DXMatrixTransformation2D(
         &matrix,                // the matrix
-        &spriteCenter,                   // keep origin at top left when scaling
+        &spriteCenter,          // keep origin at top left when scaling
         0.0f,                   // no scaling rotation
         &scaling,               // scale amount
         &spriteCenter,          // rotation center

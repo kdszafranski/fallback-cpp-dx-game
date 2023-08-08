@@ -40,15 +40,15 @@ unsigned int AnimationManager::updateProcesses(float deltaMs)
 			switch (current->getState())
 			{
 
-				case AnimationBase::SUCCEEDED:
-					// yay!
-					current->onSuccess();
-					++successCount;
-					break;
-				case AnimationBase::FAILED:
-					current->onFail();
-					++faileCount;
-					break;
+			case AnimationBase::SUCCEEDED:
+				// yay!
+				current->onSuccess();
+				++successCount;
+				break;
+			case AnimationBase::FAILED:
+				current->onFail();
+				++faileCount;
+				break;
 			} // end switch
 
 			// remove animation process
