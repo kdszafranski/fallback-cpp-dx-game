@@ -28,6 +28,7 @@ public:
 	std::string getText() { return text; }
 	void setFontSize(int size) { fontSize = size; }
 	int getFontSize() { return fontSize; }
+	void setFontColor(COLOR_ARGB color) { displayFont.setFontColor(color); }
 
 	// override base
 	bool isMouseOver();

@@ -174,6 +174,10 @@ void Editor::draw()
 		it->draw();
 	}
 
+	if (dirty) {
+		saveButton.setFontColor(graphicsNS::WHITE);
+	}
+
 	saveButton.draw();
 
 	// draw brush selector buttons
