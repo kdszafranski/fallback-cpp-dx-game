@@ -715,7 +715,7 @@ void Fallback::launchEditor()
 
 void Fallback::renderGameScreen()
 {
-	//backgroundImage.draw();
+	backgroundImage.draw();
 
 	if (gameOver) {
 		// show message
@@ -757,7 +757,7 @@ void Fallback::renderUI()
 	scoreRect.bottom = scoreRect.top + 48;	// lower right Y
 
 	// score shadow
-	dxScoreFont.setFontColor(graphicsNS::BLACK & graphicsNS::ALPHA50);
+	dxScoreFont.setFontColor(graphicsNS::GRAY & graphicsNS::ALPHA50);
 	dxScoreFont.print(std::to_string(score), scoreRect, DT_RIGHT | DT_SINGLELINE | DT_VCENTER);
 
 	// score main font, adjust rect position up and left
