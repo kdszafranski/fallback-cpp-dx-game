@@ -108,6 +108,7 @@
     <ClCompile Include="console.cpp" />
     <ClCompile Include="editor.cpp" />
     <ClCompile Include="entity.cpp" />
+    <ClCompile Include="FadeTo.cpp" />
     <ClCompile Include="fileHandler.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="graphics.cpp" />
@@ -135,6 +136,7 @@
     <ClInclude Include="constants.h" />
     <ClInclude Include="editor.h" />
     <ClInclude Include="entity.h" />
+    <ClInclude Include="FadeTo.h" />
     <ClInclude Include="fileHandler.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="graphics.h" />
