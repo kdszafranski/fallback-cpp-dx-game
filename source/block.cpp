@@ -112,7 +112,7 @@ void Block::damage(WEAPON weapon)
             setBlockColorByType(); // update my color
 
             // animate the block
-            bounceScale(1.0f, 0.75f);
+            //bounceScale(1.0f, 0.75f);
         }
     }
 }
@@ -142,7 +142,7 @@ void Block::bounceScale(float initialScale, float endScale)
 {
     isAnimating = true;
     animScale = endScale;
-    // needs to be less than originalScale
+    // needs to be less than originalScale to trigger
     setScale(0.999f);
 }
 

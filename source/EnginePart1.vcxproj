@@ -98,6 +98,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AnimationBase.cpp" />
+    <ClCompile Include="AnimationManager.cpp" />
     <ClCompile Include="audio.cpp" />
     <ClCompile Include="ball.cpp" />
     <ClCompile Include="block.cpp" />
@@ -111,6 +113,7 @@
     <ClCompile Include="graphics.cpp" />
     <ClCompile Include="image.cpp" />
     <ClCompile Include="input.cpp" />
+    <ClCompile Include="BounceScale.cpp" />
     <ClCompile Include="ship.cpp" />
     <ClCompile Include="fallback.cpp" />
     <ClCompile Include="level.h" />
@@ -120,6 +123,8 @@
     <ClCompile Include="winmain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AnimationBase.h" />
+    <ClInclude Include="AnimationManager.h" />
     <ClInclude Include="audio.h" />
     <ClInclude Include="ball.h" />
     <ClInclude Include="block.h" />
@@ -134,6 +139,7 @@
     <ClInclude Include="graphics.h" />
     <ClInclude Include="image.h" />
     <ClInclude Include="input.h" />
+    <ClInclude Include="BounceScale.h" />
     <ClInclude Include="ship.h" />
     <ClInclude Include="fallback.h" />
     <ClInclude Include="textButton.h" />

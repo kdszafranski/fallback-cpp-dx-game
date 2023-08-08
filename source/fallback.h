@@ -22,6 +22,7 @@
 #include "textButton.h"
 #include "console.h"
 #include "editor.h"
+#include "AnimationManager.h"
 #include "level.h"
 #include <memory>
 
@@ -47,6 +48,7 @@ private:
     TextDX dxBallCount;
     Console console;
     Editor* editor;
+    AnimationManager m_AnimationManager;
 
     // textures/sprites
     TextureManager backgroundTexture;
@@ -89,7 +91,7 @@ public:
     void resetGame();
 
     // Game Loop stuff
-    void update();      // must override pure virtual from Game
+    void update(float frameTime);      // must override pure virtual from Game
     void ai();          // "
     void collisions();  // "
     void render();  // render game objects

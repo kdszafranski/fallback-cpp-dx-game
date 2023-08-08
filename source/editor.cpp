@@ -112,7 +112,7 @@ void Editor::setCurrentButtonBrush(BlockButton* btn) {
 	}
 }
 
-void Editor::update()
+void Editor::update(float frameTime)
 {
 	// LEVEL LOADING buttons
 	// since the vector is just pointers, can use auto on the iterator (it)

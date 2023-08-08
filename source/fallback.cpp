@@ -12,6 +12,7 @@
 #include <iostream>
 #include "editor.h"
 #include "fileHandler.h"
+#include "BounceScale.h"
 using namespace std;
 
 //=============================================================================
@@ -30,6 +31,10 @@ Fallback::Fallback()
 Fallback::~Fallback()
 {
 	releaseAll();           // call onLostDevice() for every graphics item
+
+	// remove all running animations
+	m_AnimationManager.abortAllProcesses(true);
+
 	SAFE_DELETE(editor);
 }
 
@@ -254,6 +259,8 @@ void Fallback::startNextLevel()
 		currentLevel = 0;
 	}
 
+	m_AnimationManager.clearAllProcesses();
+
 	loadLevel(currentLevel);
 	restartBall();
 }
@@ -375,7 +382,7 @@ bool Fallback::loadLevelFromFile(int n)
 //=============================================================================
 // Update all game items
 //=============================================================================
-void Fallback::update()
+void Fallback::update(float frameTime)
 {
 	// check if we want to exit
 	CheckForExit();
@@ -430,14 +437,17 @@ void Fallback::update()
 				}
 
 				ball.update(frameTime);
+				
+				// block animations
+				m_AnimationManager.updateProcesses(frameTime);
 
 				// blocks
-				for (int i = 0; i < blocks.size(); i++) {
-					// only update blocks that need it
-					if (blocks.at(i).getIsAnimating()) {
-						blocks.at(i).update(frameTime);
-					}
-				}
+				//for (int i = 0; i < blocks.size(); i++) {
+				//	// only update blocks that need it
+				//	if (blocks.at(i).getIsAnimating()) {
+				//		blocks.at(i).update(frameTime);
+				//	}
+				//}
 
 				// check if the ball went off below ship
 				if (ball.getY() > GAME_HEIGHT - ballNS::HEIGHT) {
@@ -450,7 +460,7 @@ void Fallback::update()
 	} // GAME screen
 
 	if (currentScreen == EDITOR) {
-		editor->update();
+		editor->update(frameTime);
 	}
 
 }
@@ -547,10 +557,7 @@ void Fallback::collisions()
 
 		// if collision between ball and ship
 		if (ball.collidesWith(ship, collisionVector)) {
-
 			ball.bounceOffShip(collisionVector, collisionPosition, ship.getSpriteData());
-			//console.setLogText(ship.toString());
-
 			audio->playCue(CLICK);
 		}
 
@@ -568,22 +575,21 @@ void Fallback::collisions()
 				if (block->getBlockType() != INVINCIBLE) {
 					// damage
 					block->damage(BALL);
+					// soundfx
 					audio->playCue(CLUNK);
-
+					
 					// check if ball is dead
 					if (block->getHealth() <= 0) {
-						// in fact, this woudl be neeed for any block death animations
-						// this would need to know which block and when its done, while continuing to correctly update this (and other) blocks.
-						// could have another list of soon-to-die blocks that also updates
-						// 
-
 						// update score
 						score += block->getPointValue();
 						removeBlock(i);
+					} else {
+						// fire off animation process
+						StrongAnimationPtr animBounce = std::make_shared<BounceScale>(&blocks.at(i), 0.75f, 0.75f);
+						m_AnimationManager.attachProcess(animBounce);
 					}
 				} else {
 					// invincible!
-					//block->bounce
 					audio->playCue(CLICK);
 				}
 
@@ -699,10 +705,10 @@ void Fallback::launchEditor()
 		initBlocks();
 	}
 
-	//editor = new Editor;
 	// share our stuff
 	if (editor->initialized == false) {
 		if (editor->initialize(this, &buttonTexture, &blockTexture, &console)) {
+			// TODO handle error
 		}
 	}
 
