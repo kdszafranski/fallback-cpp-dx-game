@@ -12,4 +12,3 @@ public:
 	void update(float ms);
 
 };
-

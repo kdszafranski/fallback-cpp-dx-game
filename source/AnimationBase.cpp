@@ -1,7 +1,7 @@
 #include "AnimationBase.h"
 
 AnimationBase::AnimationBase(Entity* target, float t)
-	: entity(target)
+	: entity(target), elapsedTime(0), timer(0)
 {
 	originalScale = entity->getScale();
 	originalPosition = { entity->getX(), entity->getY() };

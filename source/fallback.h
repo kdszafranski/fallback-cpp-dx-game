@@ -59,6 +59,8 @@ private:
     TextureManager gameOverTexture;
     Image backgroundImage;
     Image gameOverImage;
+    Entity ballCountIcon; // just the ship sprite
+    Image ballCountXImage;
     Button newGameButton;
     Button editorButton;
     Button creditsButton;
@@ -105,6 +107,7 @@ public:
     // gameplay methods
     void removeBlock(int index);
     void restartBall();
+    COLOR_ARGB getBallCountColor();
 
     // Game state/flow
     void startNewGame();

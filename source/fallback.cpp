@@ -5,6 +5,7 @@
 // Copyright (c) 2011 by: 
 // Charles Kelly
 
+using namespace std;
 #include "fallback.h"
 #include <time.h>
 #include "level.h"
@@ -12,8 +13,9 @@
 #include <iostream>
 #include "editor.h"
 #include "fileHandler.h"
+#include "PunchScale.h"
 #include "BounceScale.h"
-using namespace std;
+#include "FadeTo.h"
 
 //=============================================================================
 // Constructor
@@ -50,11 +52,11 @@ void Fallback::initialize(HWND hwnd)
 	initBackgrounds();
 	initButtons();
 
-	// Init DirectX font with 48px high Arial
-	if (dxScoreFont.initialize(graphics, 36, true, false, "Arial") == false)
+	// Init DirectX font 
+	if (dxScoreFont.initialize(graphics, 62, true, false, "Agdasima") == false)
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing score font"));
 
-	if (dxBallCount.initialize(graphics, 24, true, false, "Arial") == false)
+	if (dxBallCount.initialize(graphics, 34, true, false, "Agdasima") == false)
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ball count font"));
 
 	// init the console log
@@ -102,7 +104,7 @@ void Fallback::resetGame()
 	ballCount = MAX_BALLS;
 	gameOver = false;
 	isPaused = false;
-	score = 0;
+	score = 590;
 	currentLevel = 0; // points into levels vector, 0 is the first level
 	console.resetLog();
 }
@@ -117,7 +119,7 @@ void Fallback::initSprites() {
 	initShip();
 	// set up the blocks
 	initBlocks();
-	// ball sprite
+	// ball sprites
 	initBall();
 }
 
@@ -188,6 +190,8 @@ void Fallback::initMessageSprites()
 	}
 	gameOverImage.setPosition(0, GAME_HEIGHT / 2);
 
+
+
 }
 
 //=============================================================================
@@ -215,7 +219,7 @@ void Fallback::initShip()
 //=============================================================================
 void Fallback::initBall()
 {
-	if (!ballTexture.initialize(graphics, BALL_PATH))
+	if (!ballTexture.initialize(graphics, ICONS_PATH))
 	{
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ball texture"));
 	}
@@ -223,13 +227,31 @@ void Fallback::initBall()
 	{
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ball entity"));
 	}
+	ball.setCurrentFrame(0);
 
 	// ball shadow image
-	if (!shadowBallImage.initialize(graphics, 0, 0, 0, &ballTexture))
+	if (!shadowBallImage.initialize(graphics, ballNS::WIDTH, ballNS::HEIGHT, ballNS::TEXTURE_COLS, &ballTexture))
 	{
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ball entity"));
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ball shadow image"));
 	}
-
+	shadowBallImage.setCurrentFrame(0);
+	
+	// ball count icon image
+	if (!ballCountIcon.initialize(this, ballNS::WIDTH, ballNS::HEIGHT, ballNS::TEXTURE_COLS, &ballTexture))
+	{
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ball count icon"));
+	}
+	ballCountIcon.setActive(false); // no collisions please
+	ballCountIcon.setCurrentFrame(0);
+	ballCountIcon.setPosition(736, 68);
+	
+	// ball count X icon
+	if (!ballCountXImage.initialize(graphics, ballNS::WIDTH, ballNS::HEIGHT, ballNS::TEXTURE_COLS, &ballTexture))
+	{
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ball count X icon"));
+	}
+	ballCountXImage.setCurrentFrame(1);
+	ballCountXImage.setPosition(ballCountIcon.getX() + ballCountIcon.getWidth() + 4, ballCountIcon.getY());
 }
 
 //=============================================================================
@@ -492,6 +514,10 @@ bool Fallback::isGameOver()
 void Fallback::loseBall()
 {
 	ballCount--;
+
+	// bounce icon
+	StrongAnimationPtr animPtr = std::make_shared<PunchScale>(&ballCountIcon, 1.6f, 1);
+	m_AnimationManager.attachProcess(animPtr);
 }
 
 //=============================================================================
@@ -687,6 +713,8 @@ void Fallback::setTitleScreen()
 {
 	// clean up game
 	blocks.clear();
+	m_AnimationManager.clearAllProcesses();
+
 	// set bg 
 	backgroundImage.setX(0);
 	currentScreen = TITLE;
@@ -750,17 +778,52 @@ void Fallback::renderGameScreen()
 
 void Fallback::renderUI()
 {
+	RECT scoreRect;
+	scoreRect.left = 654;	// upper left X
+	scoreRect.top = 10;		// upper left Y
+	scoreRect.right = GAME_WIDTH - 8; // lower right X
+	scoreRect.bottom = scoreRect.top + 48;	// lower right Y
+
 	// score shadow
-	dxScoreFont.setFontColor(graphicsNS::BLACK50);
-	dxScoreFont.print("Score: " + std::to_string(score), 9, 9);
+	dxScoreFont.setFontColor(graphicsNS::GRAY & graphicsNS::ALPHA50);
+	dxScoreFont.print(std::to_string(score), scoreRect, DT_RIGHT | DT_SINGLELINE | DT_VCENTER);
 
-	// score main font
+	// score main font, adjust rect position up and left
+	scoreRect.left = 649;	// upper left X
+	scoreRect.top = 7;		// upper left Y
+	scoreRect.right = GAME_WIDTH - 11;
+	scoreRect.bottom = scoreRect.top + 48;
 	dxScoreFont.setFontColor(graphicsNS::WHITE);
-	dxScoreFont.print("Score: " + std::to_string(score), 7, 7);
+	dxScoreFont.print(std::to_string(score), scoreRect, DT_RIGHT | DT_SINGLELINE | DT_VCENTER);
 
-	// ball count
-	dxBallCount.setFontColor(graphicsNS::FB_HARD);
-	dxBallCount.print(std::to_string(ballCount), 7, 50);
+	// ball count number
+	scoreRect.left = GAME_WIDTH - 24;	// upper left X
+	scoreRect.top += 51;				// upper left Y
+	scoreRect.right = GAME_WIDTH;		// lower right X
+	scoreRect.bottom = scoreRect.top + 32;	// lower right Y
+	dxBallCount.setFontColor(getBallCountColor());
+	dxBallCount.print(std::to_string(ballCount), scoreRect, DT_LEFT | DT_SINGLELINE);
+
+	// ball count icon and x
+	ballCountIcon.draw(ballCountIcon.getColorFilter());
+	ballCountXImage.draw();
+}
+
+COLOR_ARGB Fallback::getBallCountColor()
+{
+	switch (ballCount) {
+	case 1:
+		return graphicsNS::FB_HARD;
+		break;
+	case 2:
+		return graphicsNS::FB_STRONG;
+		break;
+	case 3:
+		return graphicsNS::FB_INVINCIBLE;
+		break;
+	}
+
+	return graphicsNS::WHITE;
 }
 
 //=============================================================================
