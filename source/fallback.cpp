@@ -54,7 +54,7 @@ void Fallback::initialize(HWND hwnd)
 	if (dxScoreFont.initialize(graphics, 62, true, false, "Agdasima") == false)
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing score font"));
 
-	if (dxBallCount.initialize(graphics, 24, true, false, "Arial") == false)
+	if (dxBallCount.initialize(graphics, 36, true, false, "Agdasima") == false)
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ball count font"));
 
 	// init the console log
@@ -769,8 +769,10 @@ void Fallback::renderUI()
 	dxScoreFont.print(std::to_string(score), scoreRect, DT_RIGHT | DT_SINGLELINE | DT_VCENTER);
 
 	// ball count
+	scoreRect.top += 40;
+	scoreRect.bottom += 40;
 	dxBallCount.setFontColor(graphicsNS::FB_HARD);
-	dxBallCount.print(std::to_string(ballCount), 7, 50);
+	dxBallCount.print(std::to_string(ballCount), scoreRect, DT_RIGHT | DT_SINGLELINE | DT_VCENTER);
 }
 
 //=============================================================================
