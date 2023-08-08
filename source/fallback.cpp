@@ -50,8 +50,8 @@ void Fallback::initialize(HWND hwnd)
 	initBackgrounds();
 	initButtons();
 
-	// Init DirectX font with 48px high Arial
-	if (dxScoreFont.initialize(graphics, 36, true, false, "Arial") == false)
+	// Init DirectX font 
+	if (dxScoreFont.initialize(graphics, 62, true, false, "Agdasima") == false)
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing score font"));
 
 	if (dxBallCount.initialize(graphics, 24, true, false, "Arial") == false)
@@ -102,7 +102,7 @@ void Fallback::resetGame()
 	ballCount = MAX_BALLS;
 	gameOver = false;
 	isPaused = false;
-	score = 0;
+	score = 590;
 	currentLevel = 0; // points into levels vector, 0 is the first level
 	console.resetLog();
 }
@@ -715,7 +715,7 @@ void Fallback::launchEditor()
 
 void Fallback::renderGameScreen()
 {
-	backgroundImage.draw();
+	//backgroundImage.draw();
 
 	if (gameOver) {
 		// show message
@@ -750,13 +750,23 @@ void Fallback::renderGameScreen()
 
 void Fallback::renderUI()
 {
-	// score shadow
-	dxScoreFont.setFontColor(graphicsNS::BLACK50);
-	dxScoreFont.print("Score: " + std::to_string(score), 9, 9);
+	RECT scoreRect;
+	scoreRect.left = 654;	// upper left X
+	scoreRect.top = 10;		// upper left Y
+	scoreRect.right = GAME_WIDTH - 8; // lower right X
+	scoreRect.bottom = scoreRect.top + 48;	// lower right Y
 
-	// score main font
+	// score shadow
+	dxScoreFont.setFontColor(graphicsNS::BLACK & graphicsNS::ALPHA50);
+	dxScoreFont.print(std::to_string(score), scoreRect, DT_RIGHT | DT_SINGLELINE | DT_VCENTER);
+
+	// score main font, adjust rect position up and left
+	scoreRect.left = 649;	// upper left X
+	scoreRect.top = 7;		// upper left Y
+	scoreRect.right = GAME_WIDTH - 11;
+	scoreRect.bottom = scoreRect.top + 48;
 	dxScoreFont.setFontColor(graphicsNS::WHITE);
-	dxScoreFont.print("Score: " + std::to_string(score), 7, 7);
+	dxScoreFont.print(std::to_string(score), scoreRect, DT_RIGHT | DT_SINGLELINE | DT_VCENTER);
 
 	// ball count
 	dxBallCount.setFontColor(graphicsNS::FB_HARD);
