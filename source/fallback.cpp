@@ -117,7 +117,7 @@ void Fallback::initSprites() {
 	initShip();
 	// set up the blocks
 	initBlocks();
-	// ball sprite
+	// ball sprites
 	initBall();
 }
 
@@ -234,12 +234,21 @@ void Fallback::initBall()
 	}
 	shadowBallImage.setCurrentFrame(0);
 	
+	// ball count icon image
 	if (!ballCountIcon.initialize(graphics, ballNS::WIDTH, ballNS::HEIGHT, ballNS::TEXTURE_COLS, &ballTexture))
 	{
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ball count icon"));
 	}
 	ballCountIcon.setCurrentFrame(0);
-	ballCountIcon.setPosition(600, 50);
+	ballCountIcon.setPosition(736, 68);
+	
+	// ball count X icon
+	if (!ballCountXImage.initialize(graphics, ballNS::WIDTH, ballNS::HEIGHT, ballNS::TEXTURE_COLS, &ballTexture))
+	{
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ball count X icon"));
+	}
+	ballCountXImage.setCurrentFrame(1);
+	ballCountXImage.setPosition(ballCountIcon.getX() + ballCountIcon.getWidth() + 4, ballCountIcon.getY());
 }
 
 //=============================================================================
@@ -778,14 +787,17 @@ void Fallback::renderUI()
 	dxScoreFont.setFontColor(graphicsNS::WHITE);
 	dxScoreFont.print(std::to_string(score), scoreRect, DT_RIGHT | DT_SINGLELINE | DT_VCENTER);
 
-	// ball count
-	scoreRect.top += 42;
-	scoreRect.bottom += 42;
+	// ball count number
+	scoreRect.left = GAME_WIDTH - 24;	// upper left X
+	scoreRect.top += 51;				// upper left Y
+	scoreRect.right = GAME_WIDTH;		// lower right X
+	scoreRect.bottom = scoreRect.top + 32;	// lower right Y
 	dxBallCount.setFontColor(graphicsNS::FB_HARD);
-	dxBallCount.print(std::to_string(ballCount), scoreRect, DT_RIGHT | DT_SINGLELINE | DT_VCENTER);
+	dxBallCount.print(std::to_string(ballCount), scoreRect, DT_LEFT | DT_SINGLELINE);
 
 	// ball count icon and x
 	ballCountIcon.draw();
+	ballCountXImage.draw();
 }
 
 //=============================================================================
