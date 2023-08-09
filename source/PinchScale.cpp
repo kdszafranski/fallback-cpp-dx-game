@@ -12,22 +12,33 @@ PinchScale::PinchScale(Image* target, float timeLimit, float scale)
 void PinchScale::update(float deltaTime)
 {
 	if (entity) {
-		if (timer < time) {
-			timer += deltaTime;
-			m_currentScale = 1.0f - clampHighLow(timer / time / 2);
+		if (!m_pinchComplete) {
 
-			if (m_currentScale < m_targetScale) {
-				m_currentScale = m_targetScale;
+			if (timer < m_halfTime) {
+				timer += deltaTime;
+				m_currentScale = 1.0f - clampHighLow(timer / m_halfTime);
+
+				if (m_currentScale <= m_targetScale) {
+					m_currentScale = m_targetScale;
+					m_pinchComplete = true;
+				}
+
+				entity->setScale(m_currentScale);
 			}
-
-			entity->setScale(m_currentScale);
 		} else {
-			mState = SUCCEEDED;
+			// initial pinch/shrink is complete
+			if (timer < time) {
+				timer += deltaTime;
+				m_currentScale = m_targetScale + clampHighLow(timer / m_halfTime);
 
-			//entity->setScale(currentScale + deltaTime / time);
-			//if (entity->getScale() > originalScale) {
-			//	entity->setScale(originalScale);
-			//}
+				if (m_currentScale >= originalScale) {
+					m_currentScale = originalScale;
+					mState = SUCCEEDED;
+				}
+
+				entity->setScale(m_currentScale);
+			}
+			entity->setScale(m_currentScale);
 		}
 	}
 }
