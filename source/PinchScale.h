@@ -7,10 +7,11 @@
 class PinchScale : public AnimationBase
 {
 private:
-	bool pinchComplete;
-	float targetScale;
-	float rate;
-	float halfTime;
+	bool m_pinchComplete;
+	float m_targetScale;
+	float m_rate;
+	float m_halfTime;
+	float m_currentScale;
 
 public:
 	/// <summary>
