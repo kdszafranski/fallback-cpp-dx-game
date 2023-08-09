@@ -29,16 +29,15 @@ protected:
 
 public:
 	// construction
-	AnimationBase(Image* target, float t);
+	AnimationBase(Image* target, float time);
 	~AnimationBase();
 
 	// Interface, override in each Animation
 	// called every frame from AnimationManager
 	virtual void init(void) { mState = RUNNING; }
-	virtual void update(float ms) = 0;
+	virtual void update(float deltaTime) = 0;
 	virtual void onSuccess(void) { }
 	virtual void onFail(void) { }
-	virtual void animate(float deltaTime) { }
 
 
 	// Functions for ending the process.

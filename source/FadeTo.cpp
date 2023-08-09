@@ -1,12 +1,12 @@
 #include "FadeTo.h"
 
-FadeTo::FadeTo(Image* target, float runTime, float alpha)
+FadeTo::FadeTo(Image* target, float timeLimit, float alpha)
 	: AnimationBase(target, time)
 {
 	m_color = entity->getColorFilter();
 	m_alphaTarget = alpha;
 	m_currentAlpha = m_color.a;
-	time = runTime;
+	time = timeLimit;
 }
 
 void FadeTo::update(float deltaTime)

@@ -11,7 +11,13 @@ private:
 	float rate;
 
 public:
-	PinchScale(Image* target, float scale, float time);
+	/// <summary>
+	/// Pinch the scale down and back over the course of the given time.
+	/// </summary>
+	/// <param name="target">Image object to act upon</param>
+	/// <param name="timeLimit">Time to run animation</param>
+	/// <param name="scale">Desired scale that is smaller than starting scale</param>
+	PinchScale(Image* target, float timeLimit, float scale);
 	void update(float ms);
 
 };

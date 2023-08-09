@@ -2,7 +2,7 @@
 #include "AnimationBase.h"
 
 /// <summary>
-/// Tween to fade graphic alpha to the given target over the specified amount of time (in seconds)
+/// Tween to fade graphic alpha down to the given target over the specified amount of time (in seconds)
 /// </summary>
 class FadeTo : public AnimationBase
 {
@@ -18,10 +18,10 @@ public:
 	/// <summary>
 	/// Constructs the Animation to run in seconds to given alpha (0-0.99)
 	/// </summary>
-	/// <param name="Image Ptr">Point to Image object</param>
-	/// <param name="time">Desired time limit</param>
-	/// <param name="alpha">Target alpha (0-0.99)</param>
-	FadeTo(Image*, float timeLimit, float alphaTarget);
+	/// <param name="target">Pointer to Image object</param>
+	/// <param name="timeLimit">Desired time limit</param>
+	/// <param name="alphaTarget">Target alpha (0-0.99)</param>
+	FadeTo(Image* target, float timeLimit, float alphaTarget);
 
 	void update(float deltaTime);
 };

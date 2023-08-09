@@ -722,8 +722,8 @@ void Fallback::setTitleScreen()
 	// set bg 
 	backgroundImage.setX(0);
 
-	StrongAnimationPtr animPtr = std::make_shared<FadeTo>(&creditsButton, 5.0f, 0.15f);
-	m_AnimationManager.attachProcess(animPtr);
+	StrongAnimationPtr animBounce = std::make_shared<PinchScale>(&creditsButton, 2.0f, 0.50f);
+	m_AnimationManager.attachProcess(animBounce);
 
 	currentScreen = TITLE;
 }

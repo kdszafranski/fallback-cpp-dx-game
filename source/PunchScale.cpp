@@ -1,12 +1,12 @@
 #include "PunchScale.h"
 
-PunchScale::PunchScale(Image* target, float scale, float t)
-	: AnimationBase(target, t) // initializer list, target was constructed already, we want to do this explicitly RIGHT NOW instead
+PunchScale::PunchScale(Image* target, float timeLimit, float scale)
+	: AnimationBase(target, timeLimit) // initializer list, target was constructed already, we want to do this explicitly RIGHT NOW instead
 {
 	endScale = scale;
 	target->setScale(1.001f);
 
-	rate = t / 30; // total time / 30 fps
+	rate = time / 30; // total time / 30 fps
 }
 
 /// <summary>

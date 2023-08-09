@@ -1,17 +1,18 @@
 #include "PinchScale.h"
 
-PinchScale::PinchScale(Image* target, float scale, float t)
-	: AnimationBase(target, t) // initializer list, target was constructed already, we want to do this explicitly RIGHT NOW instead
+PinchScale::PinchScale(Image* target, float timeLimit, float scale)
+	: AnimationBase(target, timeLimit) // initializer list, target was constructed already, we want to do this explicitly RIGHT NOW instead
 {
 	endScale = scale;
 	target->setScale(0.999f);
 
-	rate = t / 30; // total time / 30 fps
+	rate = time / 30; // total time / 30 fps
 }
 
-void PinchScale::update(float ms)
+void PinchScale::update(float deltaTime)
 {
 	if (entity) {
+		timer += deltaTime;
 		float const currentScale = entity->getScale();
 		if (currentScale > endScale && currentScale < originalScale) {
 			// go down
