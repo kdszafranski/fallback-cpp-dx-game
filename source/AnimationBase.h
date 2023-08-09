@@ -61,6 +61,13 @@ public:
 	// gets elapsed time
 	float getElapsedTime() { return timer; };
 
+	float clampHighLow(float x)
+	{
+		if (x < 0) x = 0.0f;
+		if (x > 1) x = 1.0f;
+		return x;
+	}
+
 private:
 	void setState(State newState) { mState = newState; }
 

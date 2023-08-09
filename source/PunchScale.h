@@ -1,5 +1,8 @@
 #pragma once
 #include "AnimationBase.h"
+#ifndef CLAMPHIGHLOW_H
+#include "TSMath.h" 
+#endif
 
 /// <summary>
 /// Tween to enlarge scale and return to original over the course of time.

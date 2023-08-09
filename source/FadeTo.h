@@ -1,7 +1,6 @@
 #pragma once
 #include "AnimationBase.h"
 
-
 /// <summary>
 /// Tween to fade graphic alpha down to the given target over the specified amount of time (in seconds)
 /// </summary>

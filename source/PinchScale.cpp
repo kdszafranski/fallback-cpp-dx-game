@@ -1,5 +1,4 @@
 #include "PinchScale.h"
-#include "TSMath.h"
 
 PinchScale::PinchScale(Image* target, float timeLimit, float scale)
 	: AnimationBase(target, timeLimit) // initializer list, target was constructed already, we want to do this explicitly RIGHT NOW instead
@@ -16,7 +15,7 @@ void PinchScale::update(float deltaTime)
 		float currentScale = entity->getScale();
 		if (timer < halfTime) {
 			timer += deltaTime;
-			currentScale = 1.0f - TSMath::clampHighLow(timer / time);
+			currentScale = 1.0f - clampHighLow(timer / time);
 			entity->setScale(currentScale);
 		} else {
 			mState = SUCCEEDED;
