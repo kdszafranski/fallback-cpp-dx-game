@@ -1,6 +1,6 @@
 #include "FadeTo.h"
 
-FadeTo::FadeTo(Entity* target, float time, int alpha)
+FadeTo::FadeTo(Image* target, float time, int alpha)
 	: AnimationBase(target, time)
 {
 	m_alphaTarget = alpha;
@@ -18,8 +18,8 @@ void FadeTo::update(float deltaTime)
 	if (entity) {
 		// reduce alpha
 		m_currentAlpha -= m_rate;
-		if (m_currentAlpha < 0) {
-			m_currentAlpha = 0;
+		if (m_currentAlpha < m_alphaTarget) {
+			m_currentAlpha = m_alphaTarget;
 			mState = SUCCEEDED;
 		}
 

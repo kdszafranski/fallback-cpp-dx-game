@@ -26,11 +26,11 @@ protected:
 	float elapsedTime;
 	float originalScale;
 	Vector2 originalPosition;
-	Entity* entity; // object to act upon
+	Image* entity; // object to act upon
 
 public:
 	// construction
-	AnimationBase(Entity* target, float t);
+	AnimationBase(Image* target, float t);
 	~AnimationBase();
 
 	// Interface, override in each Animation

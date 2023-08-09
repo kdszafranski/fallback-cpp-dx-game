@@ -8,7 +8,7 @@ private:
 	float rate;
 
 public:
-	BounceScale(Entity* target, float scale, float time);
+	BounceScale(Image* target, float scale, float time);
 	void update(float ms);
 
 };

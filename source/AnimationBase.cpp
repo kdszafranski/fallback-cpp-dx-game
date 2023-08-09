@@ -1,6 +1,6 @@
 #include "AnimationBase.h"
 
-AnimationBase::AnimationBase(Entity* target, float t)
+AnimationBase::AnimationBase(Image* target, float t)
 	: entity(target), elapsedTime(0), timer(0)
 {
 	originalScale = entity->getScale();

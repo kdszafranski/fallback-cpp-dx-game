@@ -1,6 +1,6 @@
 #include "BounceScale.h"
 
-BounceScale::BounceScale(Entity* target, float scale, float t)
+BounceScale::BounceScale(Image* target, float scale, float t)
 	: AnimationBase(target, t) // initializer list, target was constructed already, we want to do this explicitly RIGHT NOW instead
 {
 	endScale = scale;

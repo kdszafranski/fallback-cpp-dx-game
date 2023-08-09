@@ -10,7 +10,7 @@ private:
 	float m_rate;
 
 public:
-	FadeTo(Entity*, float time, int alpha);
+	FadeTo(Image*, float time, int alpha);
 	void update(float deltaTime);
 };
 

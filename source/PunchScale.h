@@ -8,7 +8,7 @@ private:
 	float rate;
 
 public:
-	PunchScale(Entity* target, float scale, float time);
+	PunchScale(Image* target, float scale, float time);
 	void update(float ms) override;
 
 };
