@@ -140,6 +140,7 @@
     <ClInclude Include="fileHandler.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="graphics.h" />
+    <ClInclude Include="TSMath.h" />
     <ClInclude Include="image.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="PinchScale.h" />

@@ -1,6 +1,7 @@
 #pragma once
 #include "AnimationBase.h"
 
+
 /// <summary>
 /// Tween to fade graphic alpha down to the given target over the specified amount of time (in seconds)
 /// </summary>
@@ -8,6 +9,7 @@ class FadeTo : public AnimationBase
 {
 private:
 	float m_alphaTarget;
+	float m_alphaDiff;
 	float m_currentAlpha;
 	float m_rate;
 	D3DXCOLOR m_color;

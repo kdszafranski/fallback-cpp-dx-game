@@ -1,4 +1,5 @@
 #include "FadeTo.h"
+#include "TSMath.h"
 
 FadeTo::FadeTo(Image* target, float timeLimit, float alpha)
 	: AnimationBase(target, time)
@@ -7,18 +8,34 @@ FadeTo::FadeTo(Image* target, float timeLimit, float alpha)
 	m_alphaTarget = alpha;
 	m_currentAlpha = m_color.a;
 	time = timeLimit;
+	m_alphaDiff = m_currentAlpha - m_alphaTarget;
+	// 0 / duration
 }
 
 void FadeTo::update(float deltaTime)
 {
+
+	/*while (elapsedTime < fadeTime)
+	{
+		yield return null;
+		elapsedTime += Time.deltaTime;
+		if (fadeIn)
+		{
+			c.a = Mathf.Clamp01(elapsedTime / fadeTime);
+		} else
+		{
+			c.a = 1f - Mathf.Clamp01(elapsedTime / fadeTime);
+		}
+
+		image.color = c;
+	}*/
+
 	if (entity) {
 		// reduce alpha
-		timer += deltaTime;
 		if (timer < time) {
-			// in order for it to take the full time to get there
-			// we need to spread the delta out
-			m_currentAlpha -= deltaTime / time;
-
+			timer += deltaTime;
+			m_currentAlpha = 1.0f - TSMath::clampHighLow(timer / time / 2);
+			
 			// cap to our target
 			if (m_currentAlpha < m_alphaTarget) {
 				m_currentAlpha = m_alphaTarget;

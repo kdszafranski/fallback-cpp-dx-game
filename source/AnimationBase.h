@@ -2,7 +2,6 @@
 #include "entity.h"
 #include <memory>
 
-
 /// <summary>
 /// Represents a base Animation Process, managed by an AnimationManager.
 /// </summary>

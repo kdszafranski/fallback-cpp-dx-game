@@ -170,6 +170,9 @@
     <ClInclude Include="PunchScale.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TSMath.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\docs\notes.md">
