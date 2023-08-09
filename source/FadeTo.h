@@ -4,13 +4,14 @@
 class FadeTo : public AnimationBase
 {
 private:
-	int m_alphaTarget;
-	int m_currentAlpha;
-	D3DXCOLOR m_color;
+	float m_alphaTarget;
+	float m_currentAlpha;
 	float m_rate;
+	D3DXCOLOR m_color;
 
 public:
-	FadeTo(Image*, float time, int alpha);
+	// Construction
+	FadeTo(Image*, float time, float alpha);
 	void update(float deltaTime);
 };
 

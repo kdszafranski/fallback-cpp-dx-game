@@ -1,11 +1,11 @@
 #include "FadeTo.h"
 
-FadeTo::FadeTo(Image* target, float time, int alpha)
+FadeTo::FadeTo(Image* target, float time, float alpha)
 	: AnimationBase(target, time)
 {
 	m_alphaTarget = alpha;
-	m_currentAlpha = 255; // TODO make this dynamic
-	m_rate = .05; // 256/30 frames
+	m_currentAlpha = 1.0f; // TODO make this dynamic
+	m_rate = .005;			// 256/30 frames
 	m_color = entity->getColorFilter();
 
 }
