@@ -609,8 +609,8 @@ void Fallback::collisions()
 						removeBlock(i);
 					} else {
 						// fire off animation process
-						//StrongAnimationPtr animBounce = std::make_shared<PinchScale>(&blocks.at(i), 0.25f, 0.85f);
-						//m_AnimationManager.attachProcess(animBounce);
+						StrongAnimationPtr animBounce = std::make_shared<PinchScale>(&blocks.at(i), 0.50f, 0.85f);
+						m_AnimationManager.attachProcess(animBounce);
 					}
 				} else {
 					// invincible!
@@ -722,10 +722,10 @@ void Fallback::setTitleScreen()
 	// set bg 
 	backgroundImage.setX(0);
 
-	//StrongAnimationPtr animBounce = std::make_shared<PinchScale>(&creditsButton, .5f, .85f);
+	//StrongAnimationPtr animBounce = std::make_shared<PinchScale>(&creditsButton, 3.0f, 0.0f);
 
-	//StrongAnimationPtr animBounce = std::make_shared<FadeTo>(&creditsButton, 10.0f, 0.25f);
-	//m_AnimationManager.attachProcess(animBounce);
+	StrongAnimationPtr animBounce = std::make_shared<FadeTo>(&creditsButton, 10.0f, 0.1f);
+	m_AnimationManager.attachProcess(animBounce);
 
 	currentScreen = TITLE;
 }
