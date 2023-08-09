@@ -114,7 +114,7 @@
     <ClCompile Include="graphics.cpp" />
     <ClCompile Include="image.cpp" />
     <ClCompile Include="input.cpp" />
-    <ClCompile Include="BounceScale.cpp" />
+    <ClCompile Include="PinchScale.cpp" />
     <ClCompile Include="PunchScale.cpp" />
     <ClCompile Include="ship.cpp" />
     <ClCompile Include="fallback.cpp" />
@@ -142,7 +142,7 @@
     <ClInclude Include="graphics.h" />
     <ClInclude Include="image.h" />
     <ClInclude Include="input.h" />
-    <ClInclude Include="BounceScale.h" />
+    <ClInclude Include="PinchScale.h" />
     <ClInclude Include="PunchScale.h" />
     <ClInclude Include="ship.h" />
     <ClInclude Include="fallback.h" />

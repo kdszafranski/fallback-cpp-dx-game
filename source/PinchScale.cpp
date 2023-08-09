@@ -1,6 +1,6 @@
-#include "BounceScale.h"
+#include "PinchScale.h"
 
-BounceScale::BounceScale(Image* target, float scale, float t)
+PinchScale::PinchScale(Image* target, float scale, float t)
 	: AnimationBase(target, t) // initializer list, target was constructed already, we want to do this explicitly RIGHT NOW instead
 {
 	endScale = scale;
@@ -9,7 +9,7 @@ BounceScale::BounceScale(Image* target, float scale, float t)
 	rate = t / 30; // total time / 30 fps
 }
 
-void BounceScale::update(float ms)
+void PinchScale::update(float ms)
 {
 	if (entity) {
 		float const currentScale = entity->getScale();

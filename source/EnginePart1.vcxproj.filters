@@ -81,13 +81,19 @@
     <ClCompile Include="fileHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BounceScale.cpp">
+    <ClCompile Include="PinchScale.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AnimationBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AnimationManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FadeTo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PunchScale.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -149,13 +155,19 @@
     <ClInclude Include="fileHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BounceScale.h">
+    <ClInclude Include="PinchScale.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="AnimationBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="AnimationManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FadeTo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PunchScale.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

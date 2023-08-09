@@ -13,8 +13,9 @@ using namespace std;
 #include <iostream>
 #include "editor.h"
 #include "fileHandler.h"
+// Animations
 #include "PunchScale.h"
-#include "BounceScale.h"
+#include "PinchScale.h"
 #include "FadeTo.h"
 
 //=============================================================================
@@ -608,7 +609,7 @@ void Fallback::collisions()
 						removeBlock(i);
 					} else {
 						// fire off animation process
-						StrongAnimationPtr animBounce = std::make_shared<BounceScale>(&blocks.at(i), 0.75f, 0.75f);
+						StrongAnimationPtr animBounce = std::make_shared<PinchScale>(&blocks.at(i), 0.75f, 0.75f);
 						m_AnimationManager.attachProcess(animBounce);
 					}
 				} else {

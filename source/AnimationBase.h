@@ -23,7 +23,6 @@ protected:
 	State mState; // state of this animation
 	float time;		// time tween takes to run
 	float timer;	// timer counts up
-	float elapsedTime;
 	float originalScale;
 	Vector2 originalPosition;
 	Image* entity; // object to act upon
@@ -62,7 +61,7 @@ public:
 	// gets run time
 	float getTime() { return time; };
 	// gets elapsed time
-	float getElapsedTime() { return elapsedTime; };
+	float getElapsedTime() { return timer; };
 
 private:
 	void setState(State newState) { mState = newState; }
