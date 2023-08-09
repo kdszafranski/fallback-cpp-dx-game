@@ -1,11 +1,11 @@
 #include "AnimationBase.h"
 
-AnimationBase::AnimationBase(Image* target, float t)
+AnimationBase::AnimationBase(Image* target, float runTime)
 	: entity(target), elapsedTime(0), timer(0)
 {
 	originalScale = entity->getScale();
 	originalPosition = { entity->getX(), entity->getY() };
-	time = t;
+	time = runTime;
 	mState = UNINITIATED;
 }
 

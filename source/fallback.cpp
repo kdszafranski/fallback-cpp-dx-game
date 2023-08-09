@@ -427,11 +427,11 @@ void Fallback::update(float frameTime)
 
 		m_AnimationManager.updateProcesses(frameTime);
 
-		if (creditsButton.isMouseOver()) {
+		/*if (creditsButton.isMouseOver()) {
 			if (input->getMouseLButton()) {
 				console.setLogText("launch credits");
 			}
-		}
+		}*/
 
 		// too lazy for the mouse
 		if (input->wasKeyPressed(ENTER_KEY)) {
@@ -720,6 +720,10 @@ void Fallback::setTitleScreen()
 
 	// set bg 
 	backgroundImage.setX(0);
+
+	StrongAnimationPtr animPtr = std::make_shared<FadeTo>(&creditsButton, 5.0f, 0.15f);
+	m_AnimationManager.attachProcess(animPtr);
+
 	currentScreen = TITLE;
 }
 

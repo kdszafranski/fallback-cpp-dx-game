@@ -1,6 +1,9 @@
 #pragma once
 #include "AnimationBase.h"
 
+/// <summary>
+/// Tween to fade graphic alpha to the given target over the specified amount of time (in seconds)
+/// </summary>
 class FadeTo : public AnimationBase
 {
 private:
@@ -11,7 +14,15 @@ private:
 
 public:
 	// Construction
-	FadeTo(Image*, float time, float alpha);
+
+	/// <summary>
+	/// Constructs the Animation to run in seconds to given alpha (0-0.99)
+	/// </summary>
+	/// <param name="Image Ptr">Point to Image object</param>
+	/// <param name="time">Desired time limit</param>
+	/// <param name="alpha">Target alpha (0-0.99)</param>
+	FadeTo(Image*, float timeLimit, float alphaTarget);
+
 	void update(float deltaTime);
 };
 
