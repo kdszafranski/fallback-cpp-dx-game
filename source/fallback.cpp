@@ -625,7 +625,7 @@ void Fallback::collisions()
 					}
 				} else {
 					// invincible!
-					// bounce
+					// bounce away from ball
 					Vector2 end = block->getPosition();
 					switch (direction) {
 						case 1:
@@ -641,7 +641,7 @@ void Fallback::collisions()
 						case 4: // go right
 							end.x += 3.0f;
 							break;
-						default: // 0
+						default: // 0 up
 							end.y -= 3.0f;
 					}
 
