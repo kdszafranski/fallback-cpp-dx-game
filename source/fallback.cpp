@@ -17,6 +17,7 @@ using namespace std;
 #include "FadeTo.h"
 #include "PinchScale.h"
 #include "PunchScale.h"
+#include "DirectionBounce.h"
 
 //=============================================================================
 // Constructor
@@ -24,8 +25,6 @@ using namespace std;
 Fallback::Fallback()
 {
 	editor = new Editor();
-	resetGame();
-	setTitleScreen();
 }
 
 //=============================================================================
@@ -69,7 +68,10 @@ void Fallback::initialize(HWND hwnd)
 	// for testing
 	if (skipTitleScreen) {
 		startNewGame();
+	} else {
+		setTitleScreen();
 	}
+
 
 	return;
 }
@@ -732,10 +734,14 @@ void Fallback::setTitleScreen()
 	// set bg 
 	backgroundImage.setX(0);
 
-	StrongAnimationPtr animBounce = std::make_shared<PunchScale>(&creditsButton, 1.2f, 1.35f);
+	Vector2 end;
+	end.x = creditsButton.getX() - 20.0f;
+	end.y = creditsButton.getY();
+	StrongAnimationPtr animBounce = std::make_shared<DirectionBounce>(&creditsButton, 0.23f, end);
 	m_AnimationManager.attachProcess(animBounce);
-	StrongAnimationPtr fade = std::make_shared<FadeTo>(&creditsButton, 1.2f, .33f);
-	m_AnimationManager.attachProcess(fade);
+
+	//StrongAnimationPtr fade = std::make_shared<FadeTo>(&creditsButton, 1.2f, .33f);
+	//m_AnimationManager.attachProcess(fade);
 
 	currentScreen = TITLE;
 }

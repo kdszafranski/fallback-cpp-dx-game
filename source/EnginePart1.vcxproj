@@ -110,6 +110,7 @@
     <ClCompile Include="blockButton.cpp" />
     <ClCompile Include="button.cpp" />
     <ClCompile Include="console.cpp" />
+    <ClCompile Include="DirectionBounce.cpp" />
     <ClCompile Include="editor.cpp" />
     <ClCompile Include="entity.cpp" />
     <ClCompile Include="FadeTo.cpp" />
@@ -138,6 +139,7 @@
     <ClInclude Include="button.h" />
     <ClInclude Include="console.h" />
     <ClInclude Include="constants.h" />
+    <ClInclude Include="DirectionBounce.h" />
     <ClInclude Include="editor.h" />
     <ClInclude Include="entity.h" />
     <ClInclude Include="FadeTo.h" />
