@@ -619,11 +619,17 @@ void Fallback::collisions()
 						removeBlock(i);
 					} else {
 						// fire off animation process
-						StrongAnimationPtr animBounce = std::make_shared<PinchScale>(&blocks.at(i), 0.10f, 0.80f);
-						m_AnimationManager.attachProcess(animBounce);
+						StrongAnimationPtr pinch = std::make_shared<PinchScale>(&blocks.at(i), 0.10f, 0.80f);
+						m_AnimationManager.attachProcess(pinch);
 					}
 				} else {
 					// invincible!
+					// bounce
+					Vector2 end = block->getPosition();
+					end.y -= 3.0f;
+					StrongAnimationPtr bounce = std::make_shared<DirectionBounce>(&blocks.at(i), 0.15f, end);
+					m_AnimationManager.attachProcess(bounce);
+
 					audio->playCue(CLICK);
 				}
 
