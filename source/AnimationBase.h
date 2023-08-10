@@ -68,6 +68,13 @@ public:
 		return x;
 	}
 
+	float clampToLow(float t, float low)
+	{
+		if (t < low) t = low;
+		if (t > 1) t = 1.0f;
+		return t;
+	}
+
 private:
 	void setState(State newState) { mState = newState; }
 

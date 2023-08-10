@@ -33,10 +33,12 @@ void FadeTo::update(float deltaTime)
 		// reduce alpha
 		if (timer < time) {
 			timer += deltaTime;
-			m_currentAlpha = 1.0f - clampHighLow(timer / time);
+			// raise upper limit by the desired amount
+			// target = .25  ->  1.0 + 0.25 - 1.0 = .25
+			m_currentAlpha = 1.0f + m_alphaTarget - clampHighLow(timer / time);
 			
 			// cap to our target
-			if (m_currentAlpha < m_alphaTarget) {
+			if (m_currentAlpha <= m_alphaTarget) {
 				m_currentAlpha = m_alphaTarget;
 			}
 
