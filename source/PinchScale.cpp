@@ -16,32 +16,23 @@ void PinchScale::update(float deltaTime)
 			// at half should match 1.5s and 0 scale
 			if (timer < m_halfTime) {
 				timer += deltaTime;
-				//m_currentAlpha = 1.0f + m_alphaTarget - clampHighLow(timer / time);
 				m_currentScale = 1.0f + m_targetScale - clampHighLow(timer / m_halfTime);
-
-				// 10s, 0 scale
-				if (m_currentScale <= m_targetScale) {
-					m_currentScale = m_targetScale;
-					m_pinchComplete = true;
-					timer = 0.0f;
-				}
-
 				entity->setScale(m_currentScale);
+			} else {
+				m_currentScale = m_targetScale;
+				m_pinchComplete = true;
+				timer = 0.0f;
 			}
 		} else {
 			// initial pinch/shrink is complete
 			if (timer < m_halfTime) {
 				timer += deltaTime;
 				m_currentScale = m_targetScale + clampHighLow(timer / m_halfTime);
-
-				if (m_currentScale >= originalScale) {
-					m_currentScale = originalScale;
-					mState = SUCCEEDED;
-				}
-
 				entity->setScale(m_currentScale);
+			} else {
+				entity->setScale(originalScale);
+				mState = SUCCEEDED;
 			}
-			entity->setScale(m_currentScale);
 		}
 	}
 }

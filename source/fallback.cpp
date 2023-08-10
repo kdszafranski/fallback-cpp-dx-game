@@ -609,8 +609,8 @@ void Fallback::collisions()
 						removeBlock(i);
 					} else {
 						// fire off animation process
-						//StrongAnimationPtr animBounce = std::make_shared<PinchScale>(&blocks.at(i), 0.5f, 0.85f);
-						//m_AnimationManager.attachProcess(animBounce);
+						StrongAnimationPtr animBounce = std::make_shared<PinchScale>(&blocks.at(i), 0.25f, 0.85f);
+						m_AnimationManager.attachProcess(animBounce);
 					}
 				} else {
 					// invincible!
@@ -668,12 +668,14 @@ void Fallback::render()
 		graphics->spriteBegin();
 
 		// screen/game state
+			D3DXCOLOR c = creditsButton.getColorFilter();
 		switch (currentScreen) {
 		case TITLE:
 			backgroundImage.draw();
 			newGameButton.draw();
 			editorButton.draw();
 			creditsButton.draw();
+			console.setLogText(std::to_string(c.a));
 			textButton.draw();
 			console.renderLog();
 			break;
@@ -722,10 +724,10 @@ void Fallback::setTitleScreen()
 	// set bg 
 	backgroundImage.setX(0);
 
-	//StrongAnimationPtr animBounce = std::make_shared<PinchScale>(&creditsButton, 0.5f, .15);
+	//StrongAnimationPtr animBounce = std::make_shared<PinchScale>(&creditsButton, 0.25f, 0.85f);
 	// 5s, half time time /2
 	//StrongAnimationPtr animBounce = std::make_shared<FadeTo>(&creditsButton, 2.0f, .75);
-	StrongAnimationPtr animBounce = std::make_shared<FadeTo>(&creditsButton, 2.5f, .33f);
+	StrongAnimationPtr animBounce = std::make_shared<FadeTo>(&creditsButton, 3.0f, .85);
 	m_AnimationManager.attachProcess(animBounce);
 
 	currentScreen = TITLE;
