@@ -644,9 +644,12 @@ void Fallback::collisions()
 						default: // 0 up
 							end.y -= 3.0f;
 					}
+					// reset just in case
 					block->setCurrentFrame(0);
+
 					StrongAnimationPtr bounce = std::make_shared<DirectionBounce>(&blocks.at(i), 0.15f, end);
 					m_AnimationManager.attachProcess(bounce);
+					// set filled, animation will reset when complete
 					block->setCurrentFrame(1);
 
 					audio->playCue(CLICK);
