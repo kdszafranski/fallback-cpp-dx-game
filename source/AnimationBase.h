@@ -75,6 +75,11 @@ public:
 		return t;
 	}
 
+	float lerp(float a, float b, float f)
+	{
+		return a * (1.0 - f) + (b * f);
+	}
+
 private:
 	void setState(State newState) { mState = newState; }
 

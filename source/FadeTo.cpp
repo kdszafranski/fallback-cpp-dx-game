@@ -1,4 +1,5 @@
 #include "FadeTo.h"
+#include <cmath>
 
 FadeTo::FadeTo(Image* target, float timeLimit, float alpha)
 	: AnimationBase(target, time)
@@ -35,7 +36,10 @@ void FadeTo::update(float deltaTime)
 			timer += deltaTime;
 			// raise upper limit by the desired amount
 			// target = .25  ->  1.0 + 0.25 - 1.0 = .25
-			m_currentAlpha = 1.0f + m_alphaTarget - clampHighLow(timer / time);
+			
+			// startValue, endValue, timeElapsed / lerpDuration
+			m_currentAlpha = lerp(1.0f, m_alphaTarget, clampHighLow(timer / time));
+			//m_currentAlpha = 1.0f + m_alphaTarget - clampHighLow(timer / time);
 			
 			// cap to our target
 			if (m_currentAlpha <= m_alphaTarget) {
