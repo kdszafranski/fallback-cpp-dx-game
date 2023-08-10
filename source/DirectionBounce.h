@@ -7,13 +7,13 @@
 /// <summary>
 /// Tween to enlarge scale and return to original over the course of time.
 /// </summary>
-class PunchScale : public AnimationBase
+class DirectionBounce : public AnimationBase
 {
 private:
-	bool m_punchComplete;
-	float m_targetScale;
+	bool m_moveComplete;
 	float m_halfTime;
-	float m_currentScale;
+	Vector2 m_targetPosition;
+	Vector2 m_currentPosition;
 
 public:
 	/// <summary>
@@ -22,7 +22,7 @@ public:
 	/// <param name="target">Pointer to Image object</param>
 	/// <param name="timeLimit">Desired time to run</param>
 	/// <param name="scale">Scale target larger than original - 1.0 is graphic original, 2.0 is twice as large, etc.</param>
-	PunchScale(Image* target, float timeLimit, float scale);
-	void update(float ms) override;
+	DirectionBounce(Image* target, float timeLimit, Vector2 moveToPos);
+	void update(float deltaTime) override;
 
 };

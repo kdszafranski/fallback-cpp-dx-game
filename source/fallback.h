@@ -120,6 +120,7 @@ public:
     void initMessageSprites();
     void setTitleScreen();
     void setGameScreen();
+    void exitGame();
     void setEditorScreen();
     // checks if there are blocks left
     void checkGameOver();

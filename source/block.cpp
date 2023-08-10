@@ -76,27 +76,27 @@ void Block::draw()
 //=============================================================================
 void Block::update(float frameTime)
 {
-    if (isAnimating) {
-        // scale
-        float const scale = getScale();
-        if (scale > animScale && scale < originalScale) {
-            // go down
-             setScale(getScale() - 0.025f);
-        } else {
-            if (scale > originalScale) {
-                // done
-                setScale(originalScale);
-                isAnimating = false;
-            } else {
-                // going up
-                animScale = originalScale; // need to keep going up
-                setScale(getScale() + 0.025f);
-            }
-        }
-    } else {
-        // blocks don't move
-        Entity::update(frameTime);
-    }
+    //if (isAnimating) {
+    //    // scale
+    //    float const scale = getScale();
+    //    if (scale > animScale && scale < originalScale) {
+    //        // go down
+    //         setScale(getScale() - 0.025f);
+    //    } else {
+    //        if (scale > originalScale) {
+    //            // done
+    //            setScale(originalScale);
+    //            isAnimating = false;
+    //        } else {
+    //            // going up
+    //            animScale = originalScale; // need to keep going up
+    //            setScale(getScale() + 0.025f);
+    //        }
+    //    }
+    //} else {
+    //    // blocks don't move
+    //    Entity::update(frameTime);
+    //}
 }
 
 //=============================================================================

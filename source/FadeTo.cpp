@@ -1,29 +1,27 @@
 #include "FadeTo.h"
+#include <cmath>
 
-FadeTo::FadeTo(Entity* target, float time, int alpha)
-	: AnimationBase(target, time)
+FadeTo::FadeTo(Image* target, float timeLimit, float alpha)
+	: AnimationBase(target, timeLimit)
 {
-	m_alphaTarget = alpha;
-	m_currentAlpha = 255; // TODO make this dynamic
-	m_rate = .05; // 256/30 frames
 	m_color = entity->getColorFilter();
-
+	m_alphaTarget = alpha;
 }
-
-//ALPHA25 = D3DCOLOR_ARGB(64, 255, 255, 255); 
-//const COLOR_ARGB FB_METAL = D3DCOLOR_ARGB(255, 22, 242, 250); 
 
 void FadeTo::update(float deltaTime)
 {
 	if (entity) {
 		// reduce alpha
-		m_currentAlpha -= m_rate;
-		if (m_currentAlpha < 0) {
-			m_currentAlpha = 0;
-			mState = SUCCEEDED;
-		}
+		if (timer < time) {
+			timer += deltaTime;
 
-		m_color.a = m_currentAlpha;
-		entity->setColorFilter(m_color);
+			// startValue, endValue, timeElapsed / lerpDuration
+			m_color.a = lerp(1.0f, m_alphaTarget, clampHighLow(timer / time));
+
+			entity->setColorFilter(m_color);
+
+		} else {
+			mState = SUCCEEDED;
+		}		
 	}
 }

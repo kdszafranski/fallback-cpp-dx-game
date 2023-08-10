@@ -2,7 +2,6 @@
 #include "entity.h"
 #include <memory>
 
-
 /// <summary>
 /// Represents a base Animation Process, managed by an AnimationManager.
 /// </summary>
@@ -23,23 +22,21 @@ protected:
 	State mState; // state of this animation
 	float time;		// time tween takes to run
 	float timer;	// timer counts up
-	float elapsedTime;
 	float originalScale;
 	Vector2 originalPosition;
-	Entity* entity; // object to act upon
+	Image* entity; // object to act upon
 
 public:
 	// construction
-	AnimationBase(Entity* target, float t);
+	AnimationBase(Image* target, float time);
 	~AnimationBase();
 
 	// Interface, override in each Animation
 	// called every frame from AnimationManager
 	virtual void init(void) { mState = RUNNING; }
-	virtual void update(float ms) = 0;
+	virtual void update(float deltaTime) = 0;
 	virtual void onSuccess(void) { }
 	virtual void onFail(void) { }
-	virtual void animate(float deltaTime) { }
 
 
 	// Functions for ending the process.
@@ -62,7 +59,26 @@ public:
 	// gets run time
 	float getTime() { return time; };
 	// gets elapsed time
-	float getElapsedTime() { return elapsedTime; };
+	float getElapsedTime() { return timer; };
+
+	float clampHighLow(float x)
+	{
+		if (x < 0) x = 0.0f;
+		if (x > 1) x = 1.0f;
+		return x;
+	}
+
+	float clampToLow(float t, float low)
+	{
+		if (t < low) t = low;
+		if (t > 1) t = 1.0f;
+		return t;
+	}
+
+	float lerp(float a, float b, float f)
+	{
+		return a * (1.0 - f) + (b * f);
+	}
 
 private:
 	void setState(State newState) { mState = newState; }

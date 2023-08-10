@@ -13,9 +13,11 @@ using namespace std;
 #include <iostream>
 #include "editor.h"
 #include "fileHandler.h"
-#include "PunchScale.h"
-#include "BounceScale.h"
+// Animations
 #include "FadeTo.h"
+#include "PinchScale.h"
+#include "PunchScale.h"
+#include "DirectionBounce.h"
 
 //=============================================================================
 // Constructor
@@ -23,8 +25,6 @@ using namespace std;
 Fallback::Fallback()
 {
 	editor = new Editor();
-	resetGame();
-	setTitleScreen();
 }
 
 //=============================================================================
@@ -68,7 +68,10 @@ void Fallback::initialize(HWND hwnd)
 	// for testing
 	if (skipTitleScreen) {
 		startNewGame();
+	} else {
+		setTitleScreen();
 	}
+
 
 	return;
 }
@@ -107,6 +110,14 @@ void Fallback::resetGame()
 	score = 590;
 	currentLevel = 0; // points into levels vector, 0 is the first level
 	console.resetLog();
+}
+
+void Fallback::exitGame()
+{
+	console.setLogText("");
+	isPaused = true;
+	// go to main menu
+	setTitleScreen();
 }
 
 //=============================================================================
@@ -424,11 +435,14 @@ void Fallback::update(float frameTime)
 				launchEditor();
 			}
 		}
-		if (creditsButton.isMouseOver()) {
+
+		m_AnimationManager.updateProcesses(frameTime);
+
+		/*if (creditsButton.isMouseOver()) {
 			if (input->getMouseLButton()) {
 				console.setLogText("launch credits");
 			}
-		}
+		}*/
 
 		// too lazy for the mouse
 		if (input->wasKeyPressed(ENTER_KEY)) {
@@ -516,7 +530,7 @@ void Fallback::loseBall()
 	ballCount--;
 
 	// bounce icon
-	StrongAnimationPtr animPtr = std::make_shared<PunchScale>(&ballCountIcon, 1.6f, 1);
+	StrongAnimationPtr animPtr = std::make_shared<PunchScale>(&ballCountIcon, 0.2f, 1.5f);
 	m_AnimationManager.attachProcess(animPtr);
 }
 
@@ -586,10 +600,11 @@ void Fallback::collisions()
 			// must use .at() to properly access the actual block object
 			// .at() returns a "reference".. hence a pointer is needed to capture it properly
 			Block* const block = &blocks.at(i);
+			int direction = 0;
 
 			// collidesWith needs an Entity*
 			if (ball.collidesWith(blocks.at(i), collisionVector)) {
-				ball.bounce(collisionVector, block->getSpriteData());
+				ball.bounce(collisionVector, block->getSpriteData(), direction);
 
 				// reduce health if possible
 				if (block->getBlockType() != INVINCIBLE) {
@@ -605,11 +620,34 @@ void Fallback::collisions()
 						removeBlock(i);
 					} else {
 						// fire off animation process
-						StrongAnimationPtr animBounce = std::make_shared<BounceScale>(&blocks.at(i), 0.75f, 0.75f);
-						m_AnimationManager.attachProcess(animBounce);
+						StrongAnimationPtr pinch = std::make_shared<PinchScale>(&blocks.at(i), 0.10f, 0.80f);
+						m_AnimationManager.attachProcess(pinch);
 					}
 				} else {
 					// invincible!
+					// bounce away from ball
+					Vector2 end = block->getPosition();
+					switch (direction) {
+						case 1:
+							// go down
+							end.y += 3.0f;
+							break;
+						case 2: // go left
+							end.x -= 3.0f;
+							break;
+						case 3: // go up
+							end.y -= 3.0f;
+							break;
+						case 4: // go right
+							end.x += 3.0f;
+							break;
+						default: // 0 up
+							end.y -= 3.0f;
+					}
+
+					StrongAnimationPtr bounce = std::make_shared<DirectionBounce>(&blocks.at(i), 0.15f, end);
+					m_AnimationManager.attachProcess(bounce);
+
 					audio->playCue(CLICK);
 				}
 
@@ -664,12 +702,14 @@ void Fallback::render()
 		graphics->spriteBegin();
 
 		// screen/game state
+			D3DXCOLOR c = creditsButton.getColorFilter();
 		switch (currentScreen) {
 		case TITLE:
 			backgroundImage.draw();
 			newGameButton.draw();
 			editorButton.draw();
 			creditsButton.draw();
+			console.setLogText(std::to_string(c.a));
 			textButton.draw();
 			console.renderLog();
 			break;
@@ -717,6 +757,16 @@ void Fallback::setTitleScreen()
 
 	// set bg 
 	backgroundImage.setX(0);
+
+	Vector2 end;
+	end.x = creditsButton.getX() - 20.0f;
+	end.y = creditsButton.getY();
+	StrongAnimationPtr animBounce = std::make_shared<DirectionBounce>(&creditsButton, 0.23f, end);
+	m_AnimationManager.attachProcess(animBounce);
+
+	//StrongAnimationPtr fade = std::make_shared<FadeTo>(&creditsButton, 1.2f, .33f);
+	//m_AnimationManager.attachProcess(fade);
+
 	currentScreen = TITLE;
 }
 
@@ -834,10 +884,10 @@ void Fallback::CheckForExit() {
 	if (input->wasKeyPressed(ESC_KEY)) {
 		switch (currentScreen) {
 		case TITLE:
-			PostQuitMessage(0);
+			PostQuitMessage(0); // quits app
 			break;
 		case GAME:
-			setTitleScreen();
+			exitGame();
 			break;
 		case EDITOR:
 			exitEditor();
