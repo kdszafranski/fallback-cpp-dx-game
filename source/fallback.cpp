@@ -600,10 +600,11 @@ void Fallback::collisions()
 			// must use .at() to properly access the actual block object
 			// .at() returns a "reference".. hence a pointer is needed to capture it properly
 			Block* const block = &blocks.at(i);
+			int direction = 0;
 
 			// collidesWith needs an Entity*
 			if (ball.collidesWith(blocks.at(i), collisionVector)) {
-				ball.bounce(collisionVector, block->getSpriteData());
+				ball.bounce(collisionVector, block->getSpriteData(), direction);
 
 				// reduce health if possible
 				if (block->getBlockType() != INVINCIBLE) {
@@ -626,7 +627,24 @@ void Fallback::collisions()
 					// invincible!
 					// bounce
 					Vector2 end = block->getPosition();
-					end.y -= 3.0f;
+					switch (direction) {
+						case 1:
+							// go down
+							end.y += 3.0f;
+							break;
+						case 2: // go left
+							end.x -= 3.0f;
+							break;
+						case 3: // go up
+							end.y -= 3.0f;
+							break;
+						case 4: // go right
+							end.x += 3.0f;
+							break;
+						default: // 0
+							end.y -= 3.0f;
+					}
+
 					StrongAnimationPtr bounce = std::make_shared<DirectionBounce>(&blocks.at(i), 0.15f, end);
 					m_AnimationManager.attachProcess(bounce);
 

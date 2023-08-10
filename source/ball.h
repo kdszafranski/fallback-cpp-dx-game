@@ -29,7 +29,7 @@ public:
     Ball();
 
     // override
-    void bounce(VECTOR2 &collisionVector, SpriteData sData);
+    void bounce(VECTOR2 &collisionVector, SpriteData sData, int& dir);
     void bounceOffShip(VECTOR2& collisionVector, VECTOR2& collisionPosition, SpriteData sData);
      
     // inherited member functions

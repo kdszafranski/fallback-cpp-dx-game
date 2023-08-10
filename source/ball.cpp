@@ -60,7 +60,7 @@ void Ball::draw()
 //=============================================================================
 // Ball bounces off a BOX collider entity (really just the Blocks, ship is handled separately)
 //=============================================================================
-void Ball::bounce(VECTOR2& collisionVector, SpriteData otherSpriteData)
+void Ball::bounce(VECTOR2& collisionVector, SpriteData otherSpriteData, int& dir)
 {
     const float myX = getX();
     const float myY = getY();
@@ -70,6 +70,8 @@ void Ball::bounce(VECTOR2& collisionVector, SpriteData otherSpriteData)
     const float boxHeight = (otherSpriteData.y + otherSpriteData.height);
 
     const D3DXVECTOR2* myCenter = getCenter();
+    // set dir with direction of collision
+    // 1 top, 2 right, 3 bottom, 4 left
 
     // left
     // determine more above or more below
@@ -81,22 +83,26 @@ void Ball::bounce(VECTOR2& collisionVector, SpriteData otherSpriteData)
             // now, where specifically is the ball?
             // more to the side than above
             if (myCenter->y >= otherSpriteData.y) {
+                dir = 4;
                 flipX();
                 return;
             }
 
             // more above
             flipY();
+            dir = 1;
             return;
         }
 
         // bottom left
         if (myY >= boxHeight - 2) {
+            dir = 3;
             flipY();
             return;
         }
 
         // just left
+        dir = 4;
         flipX();        
     }
 
@@ -105,6 +111,7 @@ void Ball::bounce(VECTOR2& collisionVector, SpriteData otherSpriteData)
         
         // top
         if (myY < otherSpriteData.y) {
+            dir = 1;
             flipY();
             return;
         }
@@ -114,16 +121,19 @@ void Ball::bounce(VECTOR2& collisionVector, SpriteData otherSpriteData)
         {
             if (myCenter->x > boxWidth) { // -1?
                 // more right
+                dir = 2;
                 flipX();
                 return;
             } else {
                 // more bottom
+                dir = 3;
                 flipY();
                 return;
             }
         }
 
         // just right
+        dir = 2;
         flipX();        
     }
 
