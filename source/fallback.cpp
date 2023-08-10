@@ -328,7 +328,7 @@ void Fallback::loadLevel(int levelNumber)
 				{
 					throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing block entity"));
 				}
-
+				newBlock.setCurrentFrame(0);
 				newBlock.setPosition(x, y);
 				newBlock.setVelocity(VECTOR2(0, 0));
 
@@ -644,9 +644,10 @@ void Fallback::collisions()
 						default: // 0 up
 							end.y -= 3.0f;
 					}
-
+					block->setCurrentFrame(0);
 					StrongAnimationPtr bounce = std::make_shared<DirectionBounce>(&blocks.at(i), 0.15f, end);
 					m_AnimationManager.attachProcess(bounce);
+					block->setCurrentFrame(1);
 
 					audio->playCue(CLICK);
 				}

@@ -14,7 +14,7 @@ namespace blockNS
     const int Y = 0;
     const float SPEED = 0;                // 100 pixels per second
     const float MASS = 0;// 10.0f;              // mass
-    const int   TEXTURE_COLS = 1;           // texture has 8 columns
+    const int   TEXTURE_COLS = 2;           // texture has 2 columns
     const int   BLOCK_START_FRAME = 0;      // ball starts at frame 0
     const int   BLOCK_END_FRAME = 0;        // ball animation 
 }

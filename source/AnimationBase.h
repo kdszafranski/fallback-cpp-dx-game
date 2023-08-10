@@ -20,6 +20,7 @@ public:
 
 protected:
 	State mState; // state of this animation
+	int originalFrame;
 	float time;		// time tween takes to run
 	float timer;	// timer counts up
 	float originalScale;

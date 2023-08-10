@@ -25,4 +25,9 @@ public:
 	DirectionBounce(Image* target, float timeLimit, Vector2 moveToPos);
 	void update(float deltaTime) override;
 
+	void onSuccess() override
+	{
+		entity->setCurrentFrame(originalFrame);
+	}
+
 };
