@@ -8,9 +8,7 @@ class FadeTo : public AnimationBase
 {
 private:
 	float m_alphaTarget;
-	float m_alphaDiff;
 	float m_currentAlpha;
-	float m_rate;
 	D3DXCOLOR m_color;
 
 public:
@@ -24,6 +22,6 @@ public:
 	/// <param name="alphaTarget">Target alpha (0-0.99)</param>
 	FadeTo(Image* target, float timeLimit, float alphaTarget);
 
-	void update(float deltaTime);
+	virtual void update(float deltaTime) override;
 };
 
