@@ -1,7 +1,8 @@
 #include "PinchScale.h"
 
 PinchScale::PinchScale(Image* target, float timeLimit, float scale)
-	: AnimationBase(target, timeLimit) // initializer list, target was constructed already, we want to do this explicitly RIGHT NOW instead
+	// initializer list, target was constructed already, we want to do this explicitly RIGHT NOW instead
+	: AnimationBase(target, timeLimit) 
 {
 	m_pinchComplete = false;
 	m_targetScale = scale;
@@ -13,13 +14,13 @@ void PinchScale::update(float deltaTime)
 {
 	if (entity) {
 		if (!m_pinchComplete) {
-			// at half should match 1.5s and 0 scale
+			// first half of time goes down
 			if (timer < m_halfTime) {
 				timer += deltaTime;
-				m_currentScale = 1.0f + m_targetScale - clampHighLow(timer / m_halfTime);
+				// startValue, endValue, timeElapsed / lerpDuration
+				m_currentScale = lerp(1.0f, m_targetScale, clampHighLow(timer / m_halfTime));
 				entity->setScale(m_currentScale);
 			} else {
-				m_currentScale = m_targetScale;
 				m_pinchComplete = true;
 				timer = 0.0f;
 			}
@@ -27,10 +28,9 @@ void PinchScale::update(float deltaTime)
 			// initial pinch/shrink is complete
 			if (timer < m_halfTime) {
 				timer += deltaTime;
-				m_currentScale = m_targetScale + clampHighLow(timer / m_halfTime);
+				m_currentScale = lerp(m_targetScale, originalScale, clampHighLow(timer / m_halfTime));
 				entity->setScale(m_currentScale);
 			} else {
-				entity->setScale(originalScale);
 				mState = SUCCEEDED;
 			}
 		}
