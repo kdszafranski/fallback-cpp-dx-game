@@ -110,6 +110,14 @@ void Fallback::resetGame()
 	console.resetLog();
 }
 
+void Fallback::exitGame()
+{
+	console.setLogText("");
+	isPaused = true;
+	// go to main menu
+	setTitleScreen();
+}
+
 //=============================================================================
 // Initializes all the game sprites from textures
 //=============================================================================
@@ -724,10 +732,10 @@ void Fallback::setTitleScreen()
 	// set bg 
 	backgroundImage.setX(0);
 
-	StrongAnimationPtr animBounce = std::make_shared<PunchScale>(&creditsButton, .2f, 1.35f);
+	StrongAnimationPtr animBounce = std::make_shared<PunchScale>(&creditsButton, 1.2f, 1.35f);
 	m_AnimationManager.attachProcess(animBounce);
-	//StrongAnimationPtr fade = std::make_shared<FadeTo>(&creditsButton, 1.1f, .33f);
-	//m_AnimationManager.attachProcess(fade);
+	StrongAnimationPtr fade = std::make_shared<FadeTo>(&creditsButton, 1.2f, .33f);
+	m_AnimationManager.attachProcess(fade);
 
 	currentScreen = TITLE;
 }
@@ -846,10 +854,10 @@ void Fallback::CheckForExit() {
 	if (input->wasKeyPressed(ESC_KEY)) {
 		switch (currentScreen) {
 		case TITLE:
-			PostQuitMessage(0);
+			PostQuitMessage(0); // quits app
 			break;
 		case GAME:
-			setTitleScreen();
+			exitGame();
 			break;
 		case EDITOR:
 			exitEditor();
