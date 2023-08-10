@@ -1,34 +1,40 @@
 #include "PunchScale.h"
 
 PunchScale::PunchScale(Image* target, float timeLimit, float scale)
-	: AnimationBase(target, timeLimit) // initializer list, target was constructed already, we want to do this explicitly RIGHT NOW instead
+	: AnimationBase(target, timeLimit)
 {
-	endScale = scale;
-	target->setScale(1.001f);
-
-	rate = time / 30; // total time / 30 fps
+	m_punchComplete = false;
+	m_targetScale = scale;
+	m_currentScale = originalScale;
+	m_halfTime = time / 2;
 }
 
 /// <summary>
-/// Scales up and returns to normal
+/// Scales up over time and returns to original scale
 /// </summary>
 /// <param name="ms"></param>
-void PunchScale::update(float ms)
+void PunchScale::update(float deltaTime)
 {
 	if (entity) {
-		float const currentScale = entity->getScale();
-		if (currentScale < endScale && currentScale > originalScale) {
-			// go up
-			entity->setScale(currentScale + rate);
-		} else {
-			if (currentScale < originalScale) {
-				// done
-				entity->setScale(originalScale);
-				mState = SUCCEEDED;
+		if (!m_punchComplete) {
+			// first half of time goes down
+			if (timer < m_halfTime) {
+				timer += deltaTime;
+				// startValue, endValue, timeElapsed / lerpDuration
+				m_currentScale = lerp(originalScale, m_targetScale, clampHighLow(timer / m_halfTime));
+				entity->setScale(m_currentScale);
 			} else {
-				// going down
-				endScale = originalScale; // need to keep going down
-				entity->setScale(currentScale - rate);
+				m_punchComplete = true;
+				timer = 0.0f;
+			}
+		} else {
+			// initial pinch/shrink is complete
+			if (timer < m_halfTime) {
+				timer += deltaTime;
+				m_currentScale = lerp(m_targetScale, originalScale, clampHighLow(timer / m_halfTime));
+				entity->setScale(m_currentScale);
+			} else {
+				mState = SUCCEEDED;
 			}
 		}
 	}

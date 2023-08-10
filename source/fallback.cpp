@@ -520,7 +520,7 @@ void Fallback::loseBall()
 	ballCount--;
 
 	// bounce icon
-	StrongAnimationPtr animPtr = std::make_shared<PunchScale>(&ballCountIcon, 1.6f, 1);
+	StrongAnimationPtr animPtr = std::make_shared<PunchScale>(&ballCountIcon, 0.2f, 1.5f);
 	m_AnimationManager.attachProcess(animPtr);
 }
 
@@ -724,9 +724,10 @@ void Fallback::setTitleScreen()
 	// set bg 
 	backgroundImage.setX(0);
 
-	//StrongAnimationPtr animBounce = std::make_shared<PinchScale>(&creditsButton, 0.85f, 0.65f);
-	//StrongAnimationPtr animBounce = std::make_shared<FadeTo>(&creditsButton, 1.1f, .33f);
-	//m_AnimationManager.attachProcess(animBounce);
+	StrongAnimationPtr animBounce = std::make_shared<PunchScale>(&creditsButton, .2f, 1.35f);
+	m_AnimationManager.attachProcess(animBounce);
+	//StrongAnimationPtr fade = std::make_shared<FadeTo>(&creditsButton, 1.1f, .33f);
+	//m_AnimationManager.attachProcess(fade);
 
 	currentScreen = TITLE;
 }

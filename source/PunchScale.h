@@ -10,8 +10,10 @@
 class PunchScale : public AnimationBase
 {
 private:
-	float endScale;
-	float rate;
+	bool m_punchComplete;
+	float m_targetScale;
+	float m_halfTime;
+	float m_currentScale;
 
 public:
 	/// <summary>
