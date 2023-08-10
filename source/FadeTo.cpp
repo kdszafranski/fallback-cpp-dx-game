@@ -2,11 +2,10 @@
 #include <cmath>
 
 FadeTo::FadeTo(Image* target, float timeLimit, float alpha)
-	: AnimationBase(target, time)
+	: AnimationBase(target, timeLimit)
 {
 	m_color = entity->getColorFilter();
 	m_alphaTarget = alpha;
-	m_currentAlpha = m_color.a;
 }
 
 void FadeTo::update(float deltaTime)
@@ -17,8 +16,7 @@ void FadeTo::update(float deltaTime)
 			timer += deltaTime;
 
 			// startValue, endValue, timeElapsed / lerpDuration
-			m_currentAlpha = lerp(1.0f, m_alphaTarget, clampHighLow(timer / time));
-			m_color.a = m_currentAlpha;
+			m_color.a = lerp(1.0f, m_alphaTarget, clampHighLow(timer / time));
 
 			entity->setColorFilter(m_color);
 

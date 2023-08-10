@@ -8,7 +8,6 @@ class FadeTo : public AnimationBase
 {
 private:
 	float m_alphaTarget;
-	float m_currentAlpha;
 	D3DXCOLOR m_color;
 
 public:
