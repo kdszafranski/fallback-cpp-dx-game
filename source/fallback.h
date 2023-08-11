@@ -54,13 +54,15 @@ private:
     TextureManager backgroundTexture;
     TextureManager ballTexture;
     TextureManager shipTexture;
+    TextureManager detailsTexture;
     TextureManager blockTexture;
     TextureManager buttonTexture;
     TextureManager gameOverTexture;
     Image backgroundImage;
     Image gameOverImage;
-    Entity ballCountIcon; // just the ship sprite
+    Image racersImage;
     Image ballCountXImage;
+    Entity ballCountIcon; // just the ship sprite
     Button newGameButton;
     Button editorButton;
     Button creditsButton;

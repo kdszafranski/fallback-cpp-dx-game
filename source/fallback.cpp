@@ -223,6 +223,12 @@ void Fallback::initShip()
 	ship.setX(GAME_WIDTH / 2 - shipNS::WIDTH / 2);
 	ship.setY(GAME_HEIGHT - 88);
 	ship.setVelocity(VECTOR2(0, 0)); // start standing still
+
+	// racers/details
+	if (!detailsTexture.initialize(graphics, RACER_PATH)) {
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing details texture"));
+	}
+
 }
 
 
@@ -904,7 +910,6 @@ void Fallback::CheckForExit() {
 void Fallback::exitEditor()
 {
 	// clean up
-	//SAFE_DELETE(editor);
 	console.setLogText("");
 	loadLevelFiles();
 	setTitleScreen();
@@ -921,6 +926,9 @@ void Fallback::releaseAll()
 	shipTexture.onLostDevice();
 	blockTexture.onLostDevice();
 	buttonTexture.onLostDevice();
+	gameOverTexture.onLostDevice();
+	detailsTexture.onLostDevice();
+
 	dxScoreFont.onLostDevice();
 	dxBallCount.onLostDevice();
 	console.onLostDevice();
@@ -936,10 +944,13 @@ void Fallback::releaseAll()
 void Fallback::resetAll()
 {
 	backgroundTexture.onResetDevice();
-	shipTexture.onResetDevice();
 	ballTexture.onResetDevice();
+	shipTexture.onResetDevice();
+	detailsTexture.onResetDevice();
 	blockTexture.onResetDevice();
 	buttonTexture.onResetDevice();
+	gameOverTexture.onResetDevice();
+
 	dxScoreFont.onResetDevice();
 	dxBallCount.onResetDevice();
 	console.onResetDevice();
