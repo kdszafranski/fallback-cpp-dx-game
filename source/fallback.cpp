@@ -629,7 +629,7 @@ void Fallback::restartBall()
 		console.setLogText("GAME OVER!");
 	} else {
 		ball.setPosition(220, 300);
-		ball.setVelocity(VECTOR2(ballNS::SPEED, ballNS::SPEED)); // move!
+		ball.setVelocity(VECTOR2(ballNS::SPEED - 30, ballNS::SPEED)); // move!
 
 		recentBallPositions.clear();
 		recentBallPositions.push_back(VECTOR2(ball.getX(), ball.getY()));
