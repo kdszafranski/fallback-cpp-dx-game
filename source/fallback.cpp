@@ -430,8 +430,6 @@ void Fallback::update(float frameTime)
 	// check if we want to exit
 	CheckForExit();
 
-	//SpawnRacers();
-
 	// handle inputs on Title Screen only
 	if (currentScreen == TITLE) {
 		if (newGameButton.isMouseOver()) {
@@ -505,8 +503,20 @@ void Fallback::update(float frameTime)
 
 }
 
-void Fallback::SpawnRacers()
+void Fallback::spawnRacers()
 {
+	Image racersImage;
+	if (!racersImage.initialize(graphics, 32, 2, 0, &detailsTexture))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing racers image"));
+
+	racersImage.setPosition(GAME_WIDTH, 400);
+	Vector2 end = racersImage.getPosition();
+	end.x = -32;
+
+	racers.push_back(racersImage);
+
+	StrongAnimationPtr racerMove = std::make_shared<MoveTo>(&racers.at(0), 2.5f, end);
+	m_AnimationManager.attachProcess(racerMove);
 
 }
 
@@ -723,12 +733,7 @@ void Fallback::render()
 		// screen/game state
 		switch (currentScreen) {
 		case TITLE:
-			backgroundImage.draw();
-			newGameButton.draw();
-			editorButton.draw();			
-			creditsButton.draw();
-			racersImage.draw();
-			console.renderLog();
+			renderTitleScreen();
 			break;
 		case GAME:
 			renderGameScreen();
@@ -745,6 +750,21 @@ void Fallback::render()
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error in Graphics::render"));
 	}
 
+}
+
+void Fallback::renderTitleScreen()
+{
+	backgroundImage.draw();
+	newGameButton.draw();
+	editorButton.draw();
+	creditsButton.draw();
+
+	// racers
+	for (int i = 0; i < racers.size(); i++) {
+		racers.at(i).draw();
+	}
+
+	console.renderLog();
 }
 
 /// <summary>
@@ -775,15 +795,7 @@ void Fallback::setTitleScreen()
 	// set bg 
 	backgroundImage.setX(0);
 
-	if(!racersImage.initialize(graphics, 32, 2, 0, &detailsTexture))
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing racers image"));
-
-	racersImage.setPosition(GAME_WIDTH, 400);
-
-	Vector2 end = racersImage.getPosition();
-	end.x = -32;
-	StrongAnimationPtr racerMove = std::make_shared<MoveTo>(&racersImage, 5.0f, end);
-	m_AnimationManager.attachProcess(racerMove);
+	spawnRacers();
 	
 	isPaused = false;
 	currentScreen = TITLE;

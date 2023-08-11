@@ -38,6 +38,7 @@ private:
 
     std::vector<Block> blocks;
     std::vector<Level> levels;
+    std::vector<Image> racers;
     bool gameOver = false;
     int score;
     int ballCount;
@@ -60,7 +61,6 @@ private:
     TextureManager gameOverTexture;
     Image backgroundImage;
     Image gameOverImage;
-    Image racersImage;
     Image ballCountXImage;
     Entity ballCountIcon; // just the ship sprite
     Button newGameButton;
@@ -98,13 +98,14 @@ public:
     void ai();          // "
     void collisions();  // "
     void render();  // render game objects
+    void renderTitleScreen();
     void renderGameScreen();
     void renderUI(); // display UI
     void releaseAll();
     void resetAll();
     void loseBall();    // reduce ball count
     bool isGameOver();  // check if we're out of balls
-    void SpawnRacers();
+    void spawnRacers();
     
     // gameplay methods
     void removeBlock(int index);
