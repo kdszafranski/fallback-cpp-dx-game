@@ -35,6 +35,7 @@ private:
     // variables
     // testing
     bool skipTitleScreen = false;
+    int animId;
 
     std::vector<Block> blocks;
     std::vector<Level> levels;
@@ -43,6 +44,7 @@ private:
     int score;
     int ballCount;
     int currentLevel;
+    float racerSpawnTimer;
 
     // Game objects
     TextDX dxScoreFont;
@@ -105,7 +107,10 @@ public:
     void resetAll();
     void loseBall();    // reduce ball count
     bool isGameOver();  // check if we're out of balls
+    // periodically spawns details in the bg
     void spawnRacers();
+    // actually creates the racer animation instances
+    void spawnRacerAnimation(Vector2 position);
     
     // gameplay methods
     void removeBlock(int index);

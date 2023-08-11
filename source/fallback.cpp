@@ -26,6 +26,9 @@ using namespace std;
 Fallback::Fallback()
 {
 	editor = new Editor();
+	animId = 0;
+	racers.reserve(20);
+	racerSpawnTimer = 0;
 }
 
 //=============================================================================
@@ -429,6 +432,13 @@ void Fallback::update(float frameTime)
 {
 	// check if we want to exit
 	CheckForExit();
+	
+	//for (int i = 0; i < racers.size(); i++) {
+	//	if (racers.at(i).getX() < -33) {
+	//		// destroy this object
+	//		racers.erase(racers.begin() + i);
+	//	}
+	//}
 
 	// handle inputs on Title Screen only
 	if (currentScreen == TITLE) {
@@ -444,7 +454,7 @@ void Fallback::update(float frameTime)
 			}
 		}
 
-		m_AnimationManager.updateProcesses(frameTime);
+		m_AnimationManager.updateProcesses(frameTime);	
 
 		/*if (creditsButton.isMouseOver()) {
 			if (input->getMouseLButton()) {
@@ -501,23 +511,57 @@ void Fallback::update(float frameTime)
 		editor->update(frameTime);
 	}
 
+	// clean up racers
+	for (vector<Image>::iterator it = racers.begin(); it != racers.end();) {
+		if (it->canDestroy())
+			it = racers.erase(it);
+		else
+			++it;
+	}
+
+	// every 5 seconds there is a chance to spawn racers
+	racerSpawnTimer += frameTime;
+	if (racerSpawnTimer > 3.3f) {
+		spawnRacers();
+		racerSpawnTimer = 0;
+	}
+	console.setLogText(to_string(racerSpawnTimer));
 }
 
 void Fallback::spawnRacers()
 {
+	// chance
+	srand((unsigned)time(0));
+	int numberToSpawn = 0;
+
+	if (true) {
+		numberToSpawn = rand() % 3;
+		Vector2 position = { GAME_WIDTH, rand() % GAME_HEIGHT };
+		for (int i = 0; i < numberToSpawn; i++) {
+			spawnRacerAnimation(position);
+			position.x += 30;
+			position.y += 3;
+		}
+	}
+
+}
+
+void Fallback::spawnRacerAnimation(Vector2 startPos)
+{
 	Image racersImage;
+	animId++;
+	racersImage.myId = animId;
 	if (!racersImage.initialize(graphics, 32, 2, 0, &detailsTexture))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing racers image"));
 
-	racersImage.setPosition(GAME_WIDTH, 400);
-	Vector2 end = racersImage.getPosition();
-	end.x = -32;
+	racersImage.setPosition(startPos);
+	Vector2 end = startPos;
+	end.x -= GAME_WIDTH + racersImage.getWidth(); // go  832 pixels from start
 
 	racers.push_back(racersImage);
 
-	StrongAnimationPtr racerMove = std::make_shared<MoveTo>(&racers.at(0), 2.5f, end);
+	StrongAnimationPtr racerMove = std::make_shared<MoveTo>(&racers.back(), 3.0f, end);
 	m_AnimationManager.attachProcess(racerMove);
-
 }
 
 void Fallback::CheckPauseInput()
@@ -790,6 +834,7 @@ void Fallback::setTitleScreen()
 {
 	// clean up game
 	blocks.clear();
+	racers.clear();
 	m_AnimationManager.clearAllProcesses();
 
 	// set bg 

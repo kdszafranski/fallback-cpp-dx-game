@@ -17,6 +17,9 @@ protected:
 	SpriteData spriteData; 	
 	COLOR_ARGB colorFilter;
 	int	frameCols;		// number of cols (1 to n) in multi-frame sprite
+
+    // lifetime
+    bool readyToDestroy;
 	
 	// frame timing
 	int     startFrame;     // first frame of current animation
@@ -30,6 +33,9 @@ protected:
 	bool	visible;		// true: draw it
 	bool	initialized;	
 	bool	animComplete;	// true when loop is false and endFrame has finished
+
+public:
+    int myId;
 
 public:	
 	// constructor
@@ -53,6 +59,9 @@ public:
 
     // Return Y position.
     virtual float getY() { return spriteData.y; }
+
+    bool canDestroy() { return readyToDestroy; }
+    void setCanDestroy(bool b) { readyToDestroy = b; }
 
     // Return scale factor.
     virtual float getScale() { return spriteData.scale; }

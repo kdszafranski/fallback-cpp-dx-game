@@ -21,7 +21,13 @@ void MoveTo::update(float deltaTime)
 
 			entity->setPosition(m_currentPosition);
 		} else {
+			entity->setPosition(m_targetPosition);// make sure it's exact
 			mState = SUCCEEDED;
 		}
 	}
+}
+
+void MoveTo::onSuccess()
+{
+	entity->setCanDestroy(true);
 }
