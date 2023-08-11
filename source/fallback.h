@@ -35,13 +35,16 @@ private:
     // variables
     // testing
     bool skipTitleScreen = false;
+    int animId;
 
     std::vector<Block> blocks;
     std::vector<Level> levels;
+    std::vector<Image> racers;
     bool gameOver = false;
     int score;
     int ballCount;
     int currentLevel;
+    float racerSpawnTimer;
 
     // Game objects
     TextDX dxScoreFont;
@@ -52,6 +55,7 @@ private:
 
     // textures/sprites
     TextureManager backgroundTexture;
+    TextureManager titleTexture;
     TextureManager ballTexture;
     TextureManager shipTexture;
     TextureManager detailsTexture;
@@ -59,14 +63,13 @@ private:
     TextureManager buttonTexture;
     TextureManager gameOverTexture;
     Image backgroundImage;
+    Image titleImage;
     Image gameOverImage;
-    Image racersImage;
     Image ballCountXImage;
     Entity ballCountIcon; // just the ship sprite
     Button newGameButton;
     Button editorButton;
     Button creditsButton;
-    TextButton textButton;
 
 
     // ball shadow
@@ -99,12 +102,18 @@ public:
     void ai();          // "
     void collisions();  // "
     void render();  // render game objects
+    void renderTitleScreen();
+    void renderRacers();
     void renderGameScreen();
     void renderUI(); // display UI
     void releaseAll();
     void resetAll();
     void loseBall();    // reduce ball count
     bool isGameOver();  // check if we're out of balls
+    // periodically spawns details in the bg
+    void spawnRacers();
+    // actually creates the racer animation instances
+    void spawnRacerAnimation(Vector2 position);
     
     // gameplay methods
     void removeBlock(int index);

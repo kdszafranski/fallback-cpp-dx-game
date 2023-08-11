@@ -39,7 +39,7 @@ struct Vector2 {
 
 // graphic files
 const char BG_PATH[] = "pictures\\bg-sprites.jpg";
-const char TITLE_PATH[] = "pictures\\title-screen-bg.jpg";
+const char TITLE_PATH[] = "pictures\\fallback-title.png";
 const char GAME_OVER_PATH[] = "pictures\\game-over-msg.png";
 const char ICONS_PATH[] = "pictures\\ui-icons.png";
 const char SHIP_PATH[] = "pictures\\ship.png";

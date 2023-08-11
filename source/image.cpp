@@ -10,6 +10,8 @@
 Image::Image()
 {
 	initialized = false;            // set true when successfully initialized
+	myId = 0;
+	readyToDestroy = false;
 	spriteData.width = 2;
 	spriteData.height = 2;
 	spriteData.x = 0.0;

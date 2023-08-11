@@ -18,6 +18,7 @@ using namespace std;
 #include "PinchScale.h"
 #include "PunchScale.h"
 #include "DirectionBounce.h"
+#include "MoveTo.h"
 
 //=============================================================================
 // Constructor
@@ -25,6 +26,9 @@ using namespace std;
 Fallback::Fallback()
 {
 	editor = new Editor();
+	animId = 0;
+	racers.reserve(20);
+	racerSpawnTimer = 0;
 }
 
 //=============================================================================
@@ -151,6 +155,19 @@ void Fallback::initBackgrounds()
 	{
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing game bg image"));
 	}
+	// title
+	if (!titleTexture.initialize(graphics, TITLE_PATH))
+	{
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing title texture"));
+	}
+
+	// game bg image
+	if (!titleImage.initialize(graphics, 0, 0, 1, &titleTexture))
+	{
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing title image"));
+	}
+	titleImage.setPosition(GAME_WIDTH / 2 - titleImage.getWidth() / 2 + 5, 178);
+	//titleImage.setColorFilter(graphicsNS::WHITE & graphicsNS::ALPHA25);
 }
 
 void Fallback::initButtons()
@@ -184,6 +201,11 @@ void Fallback::initButtons()
 
 	creditsButton.setCurrentFrame(1);
 	creditsButton.setPosition(400 - creditsButton.getSpriteData().width / 2, 510);
+
+	// racers/details
+	if (!detailsTexture.initialize(graphics, RACER_PATH)) {
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing details texture"));
+	}
 }
 
 void Fallback::initMessageSprites()
@@ -223,11 +245,6 @@ void Fallback::initShip()
 	ship.setX(GAME_WIDTH / 2 - shipNS::WIDTH / 2);
 	ship.setY(GAME_HEIGHT - 88);
 	ship.setVelocity(VECTOR2(0, 0)); // start standing still
-
-	// racers/details
-	if (!detailsTexture.initialize(graphics, RACER_PATH)) {
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing details texture"));
-	}
 
 }
 
@@ -300,6 +317,7 @@ void Fallback::startNextLevel()
 	}
 
 	m_AnimationManager.clearAllProcesses();
+	racers.clear();
 
 	loadLevel(currentLevel);
 	restartBall();
@@ -428,6 +446,13 @@ void Fallback::update(float frameTime)
 {
 	// check if we want to exit
 	CheckForExit();
+	
+	//for (int i = 0; i < racers.size(); i++) {
+	//	if (racers.at(i).getX() < -33) {
+	//		// destroy this object
+	//		racers.erase(racers.begin() + i);
+	//	}
+	//}
 
 	// handle inputs on Title Screen only
 	if (currentScreen == TITLE) {
@@ -443,7 +468,7 @@ void Fallback::update(float frameTime)
 			}
 		}
 
-		m_AnimationManager.updateProcesses(frameTime);
+		m_AnimationManager.updateProcesses(frameTime);	
 
 		/*if (creditsButton.isMouseOver()) {
 			if (input->getMouseLButton()) {
@@ -500,6 +525,58 @@ void Fallback::update(float frameTime)
 		editor->update(frameTime);
 	}
 
+	// clean up racers
+	for (vector<Image>::iterator it = racers.begin(); it != racers.end();) {
+		if (it->canDestroy())
+			it = racers.erase(it);
+		else
+			++it;
+	}
+
+	// every 5 seconds there is a chance to spawn racers
+	racerSpawnTimer += frameTime;
+	if (racerSpawnTimer > 5) {
+		spawnRacers();
+		racerSpawnTimer = 0;
+	}
+	console.setLogText(to_string(racerSpawnTimer));
+}
+
+void Fallback::spawnRacers()
+{
+	// chance
+	srand((unsigned)time(0));
+	int numberToSpawn = 0;
+
+	if (true) {
+		numberToSpawn = rand() % 4;
+		Vector2 position = { GAME_WIDTH, rand() % GAME_HEIGHT };
+		for (int i = 0; i < numberToSpawn; i++) {
+			spawnRacerAnimation(position);
+			position.x += 25;
+			position.y += 3;
+		}
+	}
+
+}
+
+void Fallback::spawnRacerAnimation(Vector2 startPos)
+{
+	Image racersImage;
+	racersImage.myId = ++animId;
+
+	if (!racersImage.initialize(graphics, 32, 2, 0, &detailsTexture))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing racers image"));
+
+	racersImage.setPosition(startPos);
+	Vector2 end = startPos;
+	end.x -= GAME_WIDTH + racersImage.getWidth(); // go  832 pixels from start
+
+	racers.push_back(racersImage);
+
+	//  = rand() % 100 + 1;     // v2 in the range 1 to 100
+	StrongAnimationPtr racerMove = std::make_shared<MoveTo>(&racers.back(), rand() % 4 + 2, end);
+	m_AnimationManager.attachProcess(racerMove);
 }
 
 void Fallback::CheckPauseInput()
@@ -552,7 +629,7 @@ void Fallback::restartBall()
 		console.setLogText("GAME OVER!");
 	} else {
 		ball.setPosition(220, 300);
-		ball.setVelocity(VECTOR2(ballNS::SPEED, ballNS::SPEED)); // move!
+		ball.setVelocity(VECTOR2(ballNS::SPEED - 30, ballNS::SPEED)); // move!
 
 		recentBallPositions.clear();
 		recentBallPositions.push_back(VECTOR2(ball.getX(), ball.getY()));
@@ -713,22 +790,16 @@ void Fallback::render()
 		graphics->spriteBegin();
 
 		// screen/game state
-			D3DXCOLOR c = creditsButton.getColorFilter();
 		switch (currentScreen) {
 		case TITLE:
-			backgroundImage.draw();
-			newGameButton.draw();
-			editorButton.draw();
-			creditsButton.draw();
-			console.setLogText(std::to_string(c.a));
-			textButton.draw();
-			console.renderLog();
+			renderTitleScreen();
 			break;
 		case GAME:
 			renderGameScreen();
 			break;
 		case EDITOR:
 			backgroundImage.draw();
+			renderRacers();
 			editor->draw();
 			break;
 		}
@@ -739,6 +810,33 @@ void Fallback::render()
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error in Graphics::render"));
 	}
 
+}
+
+void Fallback::renderTitleScreen()
+{
+	backgroundImage.draw();
+	// racers behind UI
+	renderRacers();	
+
+	titleImage.draw();
+	newGameButton.draw();
+	editorButton.draw();
+	creditsButton.draw();
+	console.renderLog();
+}
+
+/// <summary>
+/// Loops thru and renders any background vfx
+/// </summary>
+void Fallback::renderRacers()
+{
+	for (int i = 0; i < racers.size(); i++) {
+		if (i % 2 == 0) {
+			racers.at(i).draw(graphicsNS::ALPHA75);
+		} else {
+			racers.at(i).draw();
+		}
+	}
 }
 
 /// <summary>
@@ -764,20 +862,15 @@ void Fallback::setTitleScreen()
 {
 	// clean up game
 	blocks.clear();
+	racers.clear();
 	m_AnimationManager.clearAllProcesses();
 
 	// set bg 
 	backgroundImage.setX(0);
 
-	Vector2 end;
-	end.x = creditsButton.getX() - 20.0f;
-	end.y = creditsButton.getY();
-	StrongAnimationPtr animBounce = std::make_shared<DirectionBounce>(&creditsButton, 0.23f, end);
-	m_AnimationManager.attachProcess(animBounce);
-
-	//StrongAnimationPtr fade = std::make_shared<FadeTo>(&creditsButton, 1.2f, .33f);
-	//m_AnimationManager.attachProcess(fade);
-
+	spawnRacers();
+	
+	isPaused = false;
 	currentScreen = TITLE;
 }
 
@@ -805,6 +898,8 @@ void Fallback::launchEditor()
 void Fallback::renderGameScreen()
 {
 	backgroundImage.draw();
+
+	renderRacers();
 
 	if (gameOver) {
 		// show message
@@ -922,6 +1017,7 @@ void Fallback::exitEditor()
 void Fallback::releaseAll()
 {
 	backgroundTexture.onLostDevice();
+	titleTexture.onLostDevice();
 	ballTexture.onLostDevice();
 	shipTexture.onLostDevice();
 	blockTexture.onLostDevice();
@@ -944,6 +1040,7 @@ void Fallback::releaseAll()
 void Fallback::resetAll()
 {
 	backgroundTexture.onResetDevice();
+	titleTexture.onResetDevice();
 	ballTexture.onResetDevice();
 	shipTexture.onResetDevice();
 	detailsTexture.onResetDevice();

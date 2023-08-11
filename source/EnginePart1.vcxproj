@@ -119,6 +119,7 @@
     <ClCompile Include="graphics.cpp" />
     <ClCompile Include="image.cpp" />
     <ClCompile Include="input.cpp" />
+    <ClCompile Include="MoveTo.cpp" />
     <ClCompile Include="PinchScale.cpp" />
     <ClCompile Include="PunchScale.cpp" />
     <ClCompile Include="ship.cpp" />
@@ -146,6 +147,7 @@
     <ClInclude Include="fileHandler.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="graphics.h" />
+    <ClInclude Include="MoveTo.h" />
     <ClInclude Include="TSMath.h" />
     <ClInclude Include="image.h" />
     <ClInclude Include="input.h" />

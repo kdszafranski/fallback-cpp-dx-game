@@ -1,17 +1,12 @@
 #pragma once
 #include "AnimationBase.h"
-#ifndef CLAMPHIGHLOW_H
-#include "TSMath.h" 
-#endif
 
 /// <summary>
-/// Tween to enlarge scale and return to original over the course of time.
+/// Tween to move from one position to another over time.
 /// </summary>
-class DirectionBounce : public AnimationBase
+class MoveTo : public AnimationBase
 {
 private:
-	bool m_moveComplete;
-	float m_halfTime;
 	Vector2 m_targetPosition;
 	Vector2 m_currentPosition;
 
@@ -21,13 +16,9 @@ public:
 	/// </summary>
 	/// <param name="target">Pointer to Image object</param>
 	/// <param name="timeLimit">Desired time to run</param>
-	/// <param name="scale">Postion to move to in world space</param>
-	DirectionBounce(Image* target, float timeLimit, Vector2 moveToPos);
+	/// <param name="scale">Position to move to in world space</param>
+	MoveTo(Image* target, float timeLimit, Vector2 moveToPos);
 	void update(float deltaTime) override;
-
-	void onSuccess() override
-	{
-		entity->setCurrentFrame(originalFrame);
-	}
-
+	void onSuccess() override;
 };
+
