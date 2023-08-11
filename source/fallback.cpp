@@ -217,7 +217,7 @@ void Fallback::initShip()
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ship entity"));
 
 	//ship.setFrames(shipNS::SHIP_START_FRAME, shipNS::SHIP_END_FRAME);
-	ship.setCurrentFrame(1);
+	ship.setCurrentFrame(0);
 
 	// start center, near the bottom
 	ship.setX(GAME_WIDTH / 2 - shipNS::WIDTH / 2);
