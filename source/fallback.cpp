@@ -522,7 +522,7 @@ void Fallback::update(float frameTime)
 
 	// every 5 seconds there is a chance to spawn racers
 	racerSpawnTimer += frameTime;
-	if (racerSpawnTimer > 3.3f) {
+	if (racerSpawnTimer > 5) {
 		spawnRacers();
 		racerSpawnTimer = 0;
 	}
@@ -536,11 +536,11 @@ void Fallback::spawnRacers()
 	int numberToSpawn = 0;
 
 	if (true) {
-		numberToSpawn = rand() % 3;
+		numberToSpawn = rand() % 4;
 		Vector2 position = { GAME_WIDTH, rand() % GAME_HEIGHT };
 		for (int i = 0; i < numberToSpawn; i++) {
 			spawnRacerAnimation(position);
-			position.x += 30;
+			position.x += 25;
 			position.y += 3;
 		}
 	}
@@ -550,8 +550,8 @@ void Fallback::spawnRacers()
 void Fallback::spawnRacerAnimation(Vector2 startPos)
 {
 	Image racersImage;
-	animId++;
-	racersImage.myId = animId;
+	racersImage.myId = ++animId;
+
 	if (!racersImage.initialize(graphics, 32, 2, 0, &detailsTexture))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing racers image"));
 
@@ -561,7 +561,8 @@ void Fallback::spawnRacerAnimation(Vector2 startPos)
 
 	racers.push_back(racersImage);
 
-	StrongAnimationPtr racerMove = std::make_shared<MoveTo>(&racers.back(), 3.0f, end);
+	//  = rand() % 100 + 1;     // v2 in the range 1 to 100
+	StrongAnimationPtr racerMove = std::make_shared<MoveTo>(&racers.back(), rand() % 4 + 2, end);
 	m_AnimationManager.attachProcess(racerMove);
 }
 
@@ -785,6 +786,7 @@ void Fallback::render()
 			break;
 		case EDITOR:
 			backgroundImage.draw();
+			renderRacers();
 			editor->draw();
 			break;
 		}
@@ -809,6 +811,9 @@ void Fallback::renderTitleScreen()
 	console.renderLog();
 }
 
+/// <summary>
+/// Loops thru and renders any background vfx
+/// </summary>
 void Fallback::renderRacers()
 {
 	for (int i = 0; i < racers.size(); i++) {
