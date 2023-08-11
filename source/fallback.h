@@ -55,6 +55,7 @@ private:
 
     // textures/sprites
     TextureManager backgroundTexture;
+    TextureManager titleTexture;
     TextureManager ballTexture;
     TextureManager shipTexture;
     TextureManager detailsTexture;
@@ -62,6 +63,7 @@ private:
     TextureManager buttonTexture;
     TextureManager gameOverTexture;
     Image backgroundImage;
+    Image titleImage;
     Image gameOverImage;
     Image ballCountXImage;
     Entity ballCountIcon; // just the ship sprite

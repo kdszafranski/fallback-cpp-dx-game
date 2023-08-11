@@ -155,6 +155,19 @@ void Fallback::initBackgrounds()
 	{
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing game bg image"));
 	}
+	// title
+	if (!titleTexture.initialize(graphics, TITLE_PATH))
+	{
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing title texture"));
+	}
+
+	// game bg image
+	if (!titleImage.initialize(graphics, 0, 0, 1, &titleTexture))
+	{
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing title image"));
+	}
+	titleImage.setPosition(GAME_WIDTH / 2 - titleImage.getWidth() / 2 + 5, 178);
+	//titleImage.setColorFilter(graphicsNS::WHITE & graphicsNS::ALPHA25);
 }
 
 void Fallback::initButtons()
@@ -805,6 +818,7 @@ void Fallback::renderTitleScreen()
 	// racers behind UI
 	renderRacers();	
 
+	titleImage.draw();
 	newGameButton.draw();
 	editorButton.draw();
 	creditsButton.draw();
@@ -1003,6 +1017,7 @@ void Fallback::exitEditor()
 void Fallback::releaseAll()
 {
 	backgroundTexture.onLostDevice();
+	titleTexture.onLostDevice();
 	ballTexture.onLostDevice();
 	shipTexture.onLostDevice();
 	blockTexture.onLostDevice();
@@ -1025,6 +1040,7 @@ void Fallback::releaseAll()
 void Fallback::resetAll()
 {
 	backgroundTexture.onResetDevice();
+	titleTexture.onResetDevice();
 	ballTexture.onResetDevice();
 	shipTexture.onResetDevice();
 	detailsTexture.onResetDevice();
