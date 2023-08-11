@@ -9,7 +9,7 @@ DirectionBounce::DirectionBounce(Image* target, float timeLimit, Vector2 moveToP
 }
 
 /// <summary>
-/// Scales up over time and returns to original scale
+/// Moves over time and returns to original position
 /// </summary>
 /// <param name="ms"></param>
 void DirectionBounce::update(float deltaTime)

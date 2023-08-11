@@ -66,7 +66,6 @@ private:
     Button newGameButton;
     Button editorButton;
     Button creditsButton;
-    TextButton textButton;
 
 
     // ball shadow
@@ -105,6 +104,7 @@ public:
     void resetAll();
     void loseBall();    // reduce ball count
     bool isGameOver();  // check if we're out of balls
+    void SpawnRacers();
     
     // gameplay methods
     void removeBlock(int index);

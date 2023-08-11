@@ -18,6 +18,7 @@ using namespace std;
 #include "PinchScale.h"
 #include "PunchScale.h"
 #include "DirectionBounce.h"
+#include "MoveTo.h"
 
 //=============================================================================
 // Constructor
@@ -184,6 +185,11 @@ void Fallback::initButtons()
 
 	creditsButton.setCurrentFrame(1);
 	creditsButton.setPosition(400 - creditsButton.getSpriteData().width / 2, 510);
+
+	// racers/details
+	if (!detailsTexture.initialize(graphics, RACER_PATH)) {
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing details texture"));
+	}
 }
 
 void Fallback::initMessageSprites()
@@ -223,11 +229,6 @@ void Fallback::initShip()
 	ship.setX(GAME_WIDTH / 2 - shipNS::WIDTH / 2);
 	ship.setY(GAME_HEIGHT - 88);
 	ship.setVelocity(VECTOR2(0, 0)); // start standing still
-
-	// racers/details
-	if (!detailsTexture.initialize(graphics, RACER_PATH)) {
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing details texture"));
-	}
 
 }
 
@@ -429,6 +430,8 @@ void Fallback::update(float frameTime)
 	// check if we want to exit
 	CheckForExit();
 
+	//SpawnRacers();
+
 	// handle inputs on Title Screen only
 	if (currentScreen == TITLE) {
 		if (newGameButton.isMouseOver()) {
@@ -499,6 +502,11 @@ void Fallback::update(float frameTime)
 	if (currentScreen == EDITOR) {
 		editor->update(frameTime);
 	}
+
+}
+
+void Fallback::SpawnRacers()
+{
 
 }
 
@@ -713,15 +721,13 @@ void Fallback::render()
 		graphics->spriteBegin();
 
 		// screen/game state
-			D3DXCOLOR c = creditsButton.getColorFilter();
 		switch (currentScreen) {
 		case TITLE:
 			backgroundImage.draw();
 			newGameButton.draw();
-			editorButton.draw();
+			editorButton.draw();			
 			creditsButton.draw();
-			console.setLogText(std::to_string(c.a));
-			textButton.draw();
+			racersImage.draw();
 			console.renderLog();
 			break;
 		case GAME:
@@ -769,15 +775,17 @@ void Fallback::setTitleScreen()
 	// set bg 
 	backgroundImage.setX(0);
 
-	Vector2 end;
-	end.x = creditsButton.getX() - 20.0f;
-	end.y = creditsButton.getY();
-	StrongAnimationPtr animBounce = std::make_shared<DirectionBounce>(&creditsButton, 0.23f, end);
-	m_AnimationManager.attachProcess(animBounce);
+	if(!racersImage.initialize(graphics, 32, 2, 0, &detailsTexture))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing racers image"));
 
-	//StrongAnimationPtr fade = std::make_shared<FadeTo>(&creditsButton, 1.2f, .33f);
-	//m_AnimationManager.attachProcess(fade);
+	racersImage.setPosition(GAME_WIDTH, 400);
 
+	Vector2 end = racersImage.getPosition();
+	end.x = -32;
+	StrongAnimationPtr racerMove = std::make_shared<MoveTo>(&racersImage, 5.0f, end);
+	m_AnimationManager.attachProcess(racerMove);
+	
+	isPaused = false;
 	currentScreen = TITLE;
 }
 
