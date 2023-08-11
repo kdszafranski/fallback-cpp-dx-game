@@ -216,11 +216,12 @@ void Fallback::initShip()
 	if (!ship.initialize(this, shipNS::WIDTH, shipNS::HEIGHT, shipNS::TEXTURE_COLS, &shipTexture))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ship entity"));
 
-	ship.setFrames(shipNS::SHIP_START_FRAME, shipNS::SHIP_END_FRAME);
+	//ship.setFrames(shipNS::SHIP_START_FRAME, shipNS::SHIP_END_FRAME);
+	ship.setCurrentFrame(1);
 
 	// start center, near the bottom
 	ship.setX(GAME_WIDTH / 2 - shipNS::WIDTH / 2);
-	ship.setY(GAME_HEIGHT - 84);
+	ship.setY(GAME_HEIGHT - 88);
 	ship.setVelocity(VECTOR2(0, 0)); // start standing still
 }
 
