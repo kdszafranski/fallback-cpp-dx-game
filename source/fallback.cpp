@@ -304,6 +304,7 @@ void Fallback::startNextLevel()
 	}
 
 	m_AnimationManager.clearAllProcesses();
+	racers.clear();
 
 	loadLevel(currentLevel);
 	restartBall();
@@ -799,16 +800,24 @@ void Fallback::render()
 void Fallback::renderTitleScreen()
 {
 	backgroundImage.draw();
+	// racers behind UI
+	renderRacers();	
+
 	newGameButton.draw();
 	editorButton.draw();
 	creditsButton.draw();
-
-	// racers
-	for (int i = 0; i < racers.size(); i++) {
-		racers.at(i).draw();
-	}
-
 	console.renderLog();
+}
+
+void Fallback::renderRacers()
+{
+	for (int i = 0; i < racers.size(); i++) {
+		if (i % 2 == 0) {
+			racers.at(i).draw(graphicsNS::ALPHA75);
+		} else {
+			racers.at(i).draw();
+		}
+	}
 }
 
 /// <summary>
@@ -870,6 +879,8 @@ void Fallback::launchEditor()
 void Fallback::renderGameScreen()
 {
 	backgroundImage.draw();
+
+	renderRacers();
 
 	if (gameOver) {
 		// show message

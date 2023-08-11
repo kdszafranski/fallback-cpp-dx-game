@@ -101,6 +101,7 @@ public:
     void collisions();  // "
     void render();  // render game objects
     void renderTitleScreen();
+    void renderRacers();
     void renderGameScreen();
     void renderUI(); // display UI
     void releaseAll();
