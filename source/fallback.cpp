@@ -464,13 +464,6 @@ void Fallback::update(float frameTime)
 
 		// process animations
 		m_AnimationManager.updateProcesses(frameTime);
-		// clean up list
-		cleanUpRacerList();
-
-		std::string out = "anims: " + to_string(m_AnimationManager.getProcessCount());
-		out += " // racers: ";
-		out += to_string(racers.size());
-		console.setLogText(out);
 
 		if (creditsButton.isMouseOver()) {
 			if (input->getMouseLButton()) {
@@ -513,12 +506,8 @@ void Fallback::update(float frameTime)
 				// particles
 				explosionManager.update(frameTime);
 
-				// run animations
+				// update animations
 				m_AnimationManager.updateProcesses(frameTime);
-				// clean up list
-				cleanUpRacerList();
-
-				//console.setLogText(to_string(explosionManager.getParticleCount()));
 
 				// check if the ball went off below ship
 				if (ball.getY() > GAME_HEIGHT - ballNS::HEIGHT) {
@@ -534,9 +523,10 @@ void Fallback::update(float frameTime)
 		editor->update(frameTime);
 		// process animations
 		m_AnimationManager.updateProcesses(frameTime);
-		// clean up list
-		cleanUpRacerList();
 	}
+
+	// they run on all screens
+	cleanUpRacerList();
 
 	// every 5 seconds there is a chance to spawn racers
 	racerSpawnTimer += frameTime;
