@@ -9,9 +9,9 @@
 #define _BREAKOUT_H_             // ..file is included in more than one place
 #define WIN32_LEAN_AND_MEAN
 
-//#include <stdlib.h>
-#include <vector>
 #include "game.h"
+#include <vector>
+#include <list>
 #include "textureManager.h"
 #include "image.h"
 #include "ship.h"
@@ -24,6 +24,7 @@
 #include "editor.h"
 #include "AnimationManager.h"
 #include "level.h"
+#include "Explosion.h"
 #include <memory>
 
 //=============================================================================
@@ -39,7 +40,7 @@ private:
 
     std::vector<Block> blocks;
     std::vector<Level> levels;
-    std::vector<Image> racers;
+    std::list<Image> racers;
     bool gameOver = false;
     int score;
     int ballCount;
@@ -52,6 +53,7 @@ private:
     Console console;
     Editor* editor;
     AnimationManager m_AnimationManager;
+    Explosion explosionManager;
 
     // textures/sprites
     TextureManager backgroundTexture;
@@ -114,6 +116,7 @@ public:
     void spawnRacers();
     // actually creates the racer animation instances
     void spawnRacerAnimation(Vector2 position);
+    void cleanUpRacerList();
     
     // gameplay methods
     void removeBlock(int index);

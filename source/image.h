@@ -129,6 +129,12 @@ public:
         spriteData.y = newPos.y;
     }
 
+    virtual void setPosition(VECTOR2 newPos)
+    {
+        spriteData.x = newPos.x;
+        spriteData.y = newPos.y;
+    }
+
     virtual Vector2 getPosition()
     {
         return Vector2 { spriteData.x, spriteData.y };
@@ -204,6 +210,8 @@ public:
 
     // Update the animation. frameTime is used to regulate the speed.
     virtual void update(float frameTime);
+
+    D3DXCOLOR getRandomColor();
 
     virtual std::string toString();
 };
