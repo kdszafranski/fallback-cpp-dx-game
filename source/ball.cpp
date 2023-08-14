@@ -184,8 +184,8 @@ void Ball::update(float frameTime)
 {
     Entity::update(frameTime);
     
-    spriteData.x += frameTime * velocity.x;         // move along X 
-    spriteData.y += frameTime * velocity.y;         // move along Y
+    spriteData.x += frameTime * velocity.x * ballNS::SPEED;         // move along X 
+    spriteData.y += frameTime * velocity.y * ballNS::SPEED;         // move along Y
 
     // Bounce off walls
     // NOT done with actual collisions, this is done strictly from screen position

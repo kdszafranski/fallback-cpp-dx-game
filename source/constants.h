@@ -46,6 +46,7 @@ const char SHIP_PATH[] = "pictures\\ship.png";
 const char RACER_PATH[] = "pictures\\racers.png";
 const char BLOCK_PATH[] = "pictures\\blocks.png";
 const char NG_BUTTON_PATH[] = "pictures\\buttons.png";
+const char POWERUP_PATH[] = "pictures\\powerup-letters.png";
 
 
 // window
@@ -70,6 +71,11 @@ enum WEAPON { TORPEDO, SHIP, PLANET, BALL };
 enum BLOCK { WEAK, STRONG, HARD, METAL, INVINCIBLE, NONE };
 // screen states
 enum SCREEN { TITLE, GAME, EDITOR, CREDITS };
+
+
+
+// powerup types
+enum POW { SLOW, BLOCK, GROW, FAST };
 
 
 // audio files required by audio.cpp
