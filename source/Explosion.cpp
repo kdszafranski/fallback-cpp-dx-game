@@ -68,7 +68,7 @@ void Explosion::update(float deltaTime)
 			it->getY() > GAME_HEIGHT || it->getY() < 0
 			) {
 			// it++ here advances the iterator to the next one after the erasure
-			// so we can erase the current item
+			// so we can erase the current item.. what if it's end()?
 			particles.erase(it++);
 		} else {
 			it->update(deltaTime);

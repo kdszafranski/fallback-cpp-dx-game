@@ -28,7 +28,6 @@ Fallback::Fallback()
 {
 	editor = new Editor();
 	animId = 0;
-	racers.reserve(20);
 	racerSpawnTimer = 0;
 }
 
@@ -40,6 +39,7 @@ Fallback::~Fallback()
 	releaseAll();           // call onLostDevice() for every graphics item
 
 	// remove all running animations
+	racers.clear();
 	m_AnimationManager.abortAllProcesses(true);
 
 	SAFE_DELETE(editor);
@@ -448,13 +448,6 @@ void Fallback::update(float frameTime)
 	// check if we want to exit
 	CheckForExit();
 
-	//for (int i = 0; i < racers.size(); i++) {
-	//	if (racers.at(i).getX() < -33) {
-	//		// destroy this object
-	//		racers.erase(racers.begin() + i);
-	//	}
-	//}
-
 	// handle inputs on Title Screen only
 	if (currentScreen == TITLE) {
 		if (newGameButton.isMouseOver()) {
@@ -469,13 +462,21 @@ void Fallback::update(float frameTime)
 			}
 		}
 
+		// process animations
 		m_AnimationManager.updateProcesses(frameTime);
+		// clean up list
+		cleanUpRacerList();
 
-		/*if (creditsButton.isMouseOver()) {
+		std::string out = "anims: " + to_string(m_AnimationManager.getProcessCount());
+		out += " // racers: ";
+		out += to_string(racers.size());
+		console.setLogText(out);
+
+		if (creditsButton.isMouseOver()) {
 			if (input->getMouseLButton()) {
 				console.setLogText("launch credits");
 			}
-		}*/
+		}
 
 		// too lazy for the mouse
 		if (input->wasKeyPressed(ENTER_KEY)) {
@@ -514,9 +515,10 @@ void Fallback::update(float frameTime)
 
 				// run animations
 				m_AnimationManager.updateProcesses(frameTime);
+				// clean up list
+				cleanUpRacerList();
 
-				console.setLogText(to_string(explosionManager.getParticleCount()));
-
+				//console.setLogText(to_string(explosionManager.getParticleCount()));
 
 				// check if the ball went off below ship
 				if (ball.getY() > GAME_HEIGHT - ballNS::HEIGHT) {
@@ -530,14 +532,6 @@ void Fallback::update(float frameTime)
 
 	if (currentScreen == EDITOR) {
 		editor->update(frameTime);
-	}
-
-	// clean up racers
-	for (vector<Image>::iterator it = racers.begin(); it != racers.end();) {
-		if (it->canDestroy())
-			it = racers.erase(it);
-		else
-			++it;
 	}
 
 	// every 5 seconds there is a chance to spawn racers
@@ -581,6 +575,19 @@ void Fallback::spawnRacerAnimation(Vector2 startPos)
 	//  = rand() % 100 + 1;     // v2 in the range 1 to 100
 	StrongAnimationPtr racerMove = std::make_shared<MoveTo>(&racers.back(), rand() % 4 + 2, end);
 	m_AnimationManager.attachProcess(racerMove);
+}
+
+void Fallback::cleanUpRacerList()
+{
+	std::list<Image>::iterator it = racers.begin();
+	while (it != racers.end()) {
+		if (it->canDestroy()) {
+			racers.erase(it++);
+		}
+		if (it != racers.end()) {
+			it++;
+		}
+	}
 }
 
 void Fallback::CheckPauseInput()
@@ -847,12 +854,14 @@ void Fallback::renderTitleScreen()
 /// </summary>
 void Fallback::renderRacers()
 {
-	for (int i = 0; i < racers.size(); i++) {
+	int i = 0;
+	for (auto& racer : racers) {
 		if (i % 2 == 0) {
-			racers.at(i).draw(graphicsNS::ALPHA75);
+			racer.draw(graphicsNS::ALPHA75);
 		} else {
-			racers.at(i).draw();
+			racer.draw();
 		}
+		++i;
 	}
 }
 
