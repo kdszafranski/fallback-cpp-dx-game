@@ -1,14 +1,6 @@
 #include "Explosion.h"
 #include <time.h>
 
-bool xIsOffScreen(const int& value) {
-	return value > GAME_WIDTH || value < 0;
-}
-
-bool yIsOffScreen(const int& value) {
-	return value > GAME_HEIGHT || value < 0;
-}
-
 Explosion::Explosion()
 {
 	position = { 0,0 };
@@ -25,9 +17,11 @@ void Explosion::spawnExplosion(Game* game, TextureManager* texture, VECTOR2 pos)
 	//srand((unsigned)time(0));
 	position = pos;
 	partId++;
-	int numberToSpawn = 0;
+	if (partId > 1000) {
+		partId = 0;
+	}
 
-	numberToSpawn = rand() % 10 + 10;
+	const int numberToSpawn = rand() % 10 + 16;
 	for (int i = 0; i < numberToSpawn; i++) {
 		Entity particle;
 
@@ -35,21 +29,26 @@ void Explosion::spawnExplosion(Game* game, TextureManager* texture, VECTOR2 pos)
 			throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing explosion image"));
 
 		particle.myId = partId;
-		particle.setCurrentFrame(2);
-		particle.setScale(0.25);
+		if (rand() % 100 < 50) {
+			// frame 2 or 3
+			particle.setCurrentFrame(3);
+			particle.setScale(0.5);
+		} else {
+			particle.setCurrentFrame(2);
+			particle.setScale(0.25);
+		}
 		particle.setActive(false); // no collisions
 		particle.setPosition(position);
 
+		// set the direction
 		float x = rand() % 90;
 		float y = rand() % 90;
-		if (rand() % 100 < 50) {
-			x = -x;
-		}
-		if (rand() % 100 < 50) {
-			y = -y;
-		}
+		// chance to flip around axis
+		if (rand() % 100 < 50) x = -x;
+		if (rand() % 100 < 50) y = -y;
 		// set it in motion and speed it up
 		particle.setVelocity({ x * 3, y * 3 });
+		particle.setColorFilter(particle.getRandomColor());
 
 		particles.push_back(particle);
 	}
@@ -82,11 +81,13 @@ void Explosion::update(float deltaTime)
 
 void Explosion::draw()
 {
-	D3DXCOLOR color; 
+	
+	//D3DXCOLOR color = getRandomColor();
+
 	for (auto &part : particles) {
-		float const amount = ((float)rand() / (RAND_MAX + 1));
-		color = { 0.75f, amount, 0.5f, 1 };
-		part.draw(color);
+		// produces a glitterly effect on each particle
+		//float const amount = ((float)rand() / (RAND_MAX + 1));
+		//color = { 0.75f, amount, 0.5f, 1 };
+		part.draw(part.getColorFilter());
 	}
 }
-

@@ -188,6 +188,39 @@ inline void Image::setRect()
 	spriteData.rect.bottom = spriteData.rect.top + spriteData.height;
 }
 
+
+D3DXCOLOR Image::getRandomColor()
+{
+	D3DXCOLOR color;
+	const int colorChance = rand() % 4;
+	switch (colorChance) {
+	case 0:
+		color = graphicsNS::FB_WEAK;
+		break;
+	case 1:
+		color = graphicsNS::FB_STRONG;
+		break;
+	case 2:
+		color = graphicsNS::FB_HARD;
+		break;
+	case 3:
+		color = graphicsNS::FB_METAL;
+		break;
+	case 4:
+		color = graphicsNS::FB_INVINCIBLE;
+		break;
+	default:
+		color = graphicsNS::WHITE;
+	}
+
+	// adjust alpha
+	color.a = ((float)rand() / (RAND_MAX + 1));
+
+	return color;
+}
+
+
+
 /// <summary>
 /// Returns a string representation of this object (to log)
 /// </summary>

@@ -211,6 +211,8 @@ public:
     // Update the animation. frameTime is used to regulate the speed.
     virtual void update(float frameTime);
 
+    D3DXCOLOR getRandomColor();
+
     virtual std::string toString();
 };
 
