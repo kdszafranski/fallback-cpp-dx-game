@@ -17,6 +17,7 @@ namespace blockNS
     const int   TEXTURE_COLS = 2;           // texture has 2 columns
     const int   BLOCK_START_FRAME = 0;      // ball starts at frame 0
     const int   BLOCK_END_FRAME = 0;        // ball animation 
+    const int   BLOCK_VALUE = 5;
 }
 
 // inherits from Entity class

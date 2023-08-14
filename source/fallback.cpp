@@ -697,17 +697,15 @@ void Fallback::collisions()
 
 				// reduce health if possible
 				if (block->getBlockType() != INVINCIBLE) {
-					// damage
-					block->damage(BALL);
-					// soundfx
 					audio->playCue(CLUNK);
 
+					block->damage(BALL);
 					// check if ball is dead
 					if (block->getHealth() <= 0) {
-						// update score
-						score += block->getPointValue();
+						score += block->getPointValue() * 2; // double for destroying the block
 						removeBlock(i);
 					} else {
+						score += block->getPointValue();
 						// fire off animation process
 						StrongAnimationPtr pinch = std::make_shared<PinchScale>(&blocks.at(i), 0.10f, 0.80f);
 						m_AnimationManager.attachProcess(pinch);

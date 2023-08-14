@@ -15,7 +15,7 @@ Block::Block(BLOCK type) : Entity()
     // set values based on given type
     blockType = type;
     health = type + 1;
-    pointValue = health * 5;
+    pointValue = blockNS::BLOCK_VALUE;
 
     spriteData.width = blockNS::WIDTH;           // size of Ball
     spriteData.height = blockNS::HEIGHT;
