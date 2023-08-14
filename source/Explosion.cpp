@@ -28,28 +28,30 @@ void Explosion::spawnExplosion(Game* game, TextureManager* texture, VECTOR2 pos)
 		if (!particle.initialize(game, 16, 16, 4, texture))
 			throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing explosion image"));
 
-		particle.setActive(false); // no collisions
 		particle.myId = partId;
+		particle.setActive(false); // no collisions
+		particle.setPosition(position); // starts at Block center
 
-		// some are bigger
 		if (rand() % 100 < 30) {
+			// L shapes
 			particle.setCurrentFrame(3);
 			particle.setScale(0.75);
 		} else {
+			// squares
 			particle.setCurrentFrame(2);
 			particle.setScale(0.25);
 		}
 
-		particle.setPosition(position);
-
 		// set the direction
 		float x = rand() % 90;
 		float y = rand() % 90;
-		// chance to flip around axis
+		// chance to flip around each axis
 		if (rand() % 100 < 50) x = -x;
 		if (rand() % 100 < 50) y = -y;
+
 		// set it in motion and speed it up
 		particle.setVelocity({ x * 3, y * 3 });
+		
 		// apply one of the block colors for the duration of this particle
 		particle.setColorFilter(particle.getRandomColor());
 
@@ -66,6 +68,7 @@ void Explosion::update(float deltaTime)
 			it->getY() > GAME_HEIGHT || it->getY() < 0
 			) {
 			// it++ here advances the iterator to the next one after the erasure
+			// so we can erase the current item
 			particles.erase(it++);
 		} else {
 			it->update(deltaTime);
