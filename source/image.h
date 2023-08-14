@@ -129,6 +129,12 @@ public:
         spriteData.y = newPos.y;
     }
 
+    virtual void setPosition(VECTOR2 newPos)
+    {
+        spriteData.x = newPos.x;
+        spriteData.y = newPos.y;
+    }
+
     virtual Vector2 getPosition()
     {
         return Vector2 { spriteData.x, spriteData.y };

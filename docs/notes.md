@@ -11,6 +11,7 @@
 - [ ] move large constructors to init methods
 - [ ] Implement an IScreen interface
 - [ ] make consistent style
+- [ ] choose Vector standard
 
 ## Technical Challenges
 - [ ] separate direction from speed

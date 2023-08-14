@@ -201,7 +201,7 @@ void Fallback::initButtons()
 	}
 
 	creditsButton.setCurrentFrame(1);
-	creditsButton.setPosition(400 - creditsButton.getSpriteData().width / 2, 510);
+	creditsButton.setPosition(400 -creditsButton.getSpriteData().width / 2, 510);
 
 	// racers/details
 	if (!detailsTexture.initialize(graphics, RACER_PATH)) {
@@ -756,7 +756,16 @@ void Fallback::collisions()
 void Fallback::removeBlock(int index)
 {
 	// explode
-	explosionManager.spawnExplosion(this, &detailsTexture, blocks.at(index).getPosition());
+	const Vector2 pos = { 
+		blocks.at(index).getCenterX(),
+		blocks.at(index).getCenterY() 
+	};
+
+	explosionManager.spawnExplosion(
+		this, 
+		&ballTexture, 
+		{ pos.x, pos.y }
+	);
 	
 	audio->playCue(POP);
 	blocks.erase(blocks.begin() + index);
