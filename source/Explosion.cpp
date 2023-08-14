@@ -80,12 +80,13 @@ void Explosion::update(float deltaTime)
 	}
 }
 
-
-
 void Explosion::draw()
 {
+	D3DXCOLOR color; 
 	for (auto &part : particles) {
-		part.draw();
+		float const amount = ((float)rand() / (RAND_MAX + 1));
+		color = { 0.75f, amount, 0.5f, 1 };
+		part.draw(color);
 	}
 }
 
