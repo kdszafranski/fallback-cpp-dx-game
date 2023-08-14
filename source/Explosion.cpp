@@ -28,16 +28,17 @@ void Explosion::spawnExplosion(Game* game, TextureManager* texture, VECTOR2 pos)
 		if (!particle.initialize(game, 16, 16, 3, texture))
 			throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing explosion image"));
 
+		particle.setActive(false); // no collisions
 		particle.myId = partId;
-		if (rand() % 100 < 50) {
-			// frame 2 or 3
-			particle.setCurrentFrame(3);
-			particle.setScale(0.5);
+		particle.setCurrentFrame(2);
+
+		// some are bigger
+		if (rand() % 100 < 30) {
+			particle.setScale(0.35);
 		} else {
-			particle.setCurrentFrame(2);
 			particle.setScale(0.25);
 		}
-		particle.setActive(false); // no collisions
+
 		particle.setPosition(position);
 
 		// set the direction
@@ -48,6 +49,7 @@ void Explosion::spawnExplosion(Game* game, TextureManager* texture, VECTOR2 pos)
 		if (rand() % 100 < 50) y = -y;
 		// set it in motion and speed it up
 		particle.setVelocity({ x * 3, y * 3 });
+		// apply one of the block colors for the duration of this particle
 		particle.setColorFilter(particle.getRandomColor());
 
 		particles.push_back(particle);
@@ -81,13 +83,7 @@ void Explosion::update(float deltaTime)
 
 void Explosion::draw()
 {
-	
-	//D3DXCOLOR color = getRandomColor();
-
 	for (auto &part : particles) {
-		// produces a glitterly effect on each particle
-		//float const amount = ((float)rand() / (RAND_MAX + 1));
-		//color = { 0.75f, amount, 0.5f, 1 };
 		part.draw(part.getColorFilter());
 	}
 }
