@@ -25,17 +25,18 @@ void Explosion::spawnExplosion(Game* game, TextureManager* texture, VECTOR2 pos)
 	for (int i = 0; i < numberToSpawn; i++) {
 		Entity particle;
 
-		if (!particle.initialize(game, 16, 16, 3, texture))
+		if (!particle.initialize(game, 16, 16, 4, texture))
 			throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing explosion image"));
 
 		particle.setActive(false); // no collisions
 		particle.myId = partId;
-		particle.setCurrentFrame(2);
 
 		// some are bigger
 		if (rand() % 100 < 30) {
-			particle.setScale(0.35);
+			particle.setCurrentFrame(3);
+			particle.setScale(0.75);
 		} else {
+			particle.setCurrentFrame(2);
 			particle.setScale(0.25);
 		}
 
@@ -72,10 +73,14 @@ void Explosion::update(float deltaTime)
 			x += deltaTime * it->getVelocity().x;
 			float y = it->getY();
 			y += deltaTime * it->getVelocity().y;
-
 			it->setX(x);
 			it->setY(y);
-			
+
+			// spin the L shapes
+			if (it->getCurrentFrame() == 3) {
+				it->setDegrees(it->getDegrees() + deltaTime * 360);
+			}
+
 			++it;
 		}
 	}
@@ -83,7 +88,7 @@ void Explosion::update(float deltaTime)
 
 void Explosion::draw()
 {
-	for (auto &part : particles) {
+	for (auto& part : particles) {
 		part.draw(part.getColorFilter());
 	}
 }
