@@ -18,11 +18,10 @@ namespace powerupNS
 class PowerUp : public Entity
 {
 private:
-	POW type;
+	POWERUP type;
 
 public:
-	PowerUp(POW t);
-	~PowerUp();
+	PowerUp(POWERUP pType);
 
 	// inherited
 	virtual void draw();

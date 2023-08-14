@@ -1,8 +1,8 @@
 #include "PowerUp.h"
 
-PowerUp::PowerUp(POW t) : Entity()
+PowerUp::PowerUp(POWERUP pType) : Entity()
 {
-    type = t;
+    type = pType;
     spriteData.width = powerupNS::WIDTH;           // size of Ball
     spriteData.height = powerupNS::WIDTH;
     spriteData.x = powerupNS::X;                   // location on screen

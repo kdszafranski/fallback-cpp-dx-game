@@ -65,17 +65,14 @@ const float MAX_FRAME_TIME = 1.0f/MIN_FRAME_RATE; // maximum time used in calcul
 const short MAX_BALLS = 3;
 const float BALLSHADOW_INTERVAL = 0.07;
 
+// powerup types
+//enum POWERUP { SLOW, BLOCK, GROW, FAST };
 // weapon types
 enum WEAPON { TORPEDO, SHIP, PLANET, BALL };
 // block types
 enum BLOCK { WEAK, STRONG, HARD, METAL, INVINCIBLE, NONE };
 // screen states
 enum SCREEN { TITLE, GAME, EDITOR, CREDITS };
-
-
-
-// powerup types
-enum POW { SLOW, BLOCK, GROW, FAST };
 
 
 // audio files required by audio.cpp
