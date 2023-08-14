@@ -532,6 +532,10 @@ void Fallback::update(float frameTime)
 
 	if (currentScreen == EDITOR) {
 		editor->update(frameTime);
+		// process animations
+		m_AnimationManager.updateProcesses(frameTime);
+		// clean up list
+		cleanUpRacerList();
 	}
 
 	// every 5 seconds there is a chance to spawn racers
