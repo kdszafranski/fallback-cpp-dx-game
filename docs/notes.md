@@ -2,7 +2,7 @@
 
 ## Fix Bugs
 - [x] fix collisions
-- [ ] block should complete animation before being destroyed
+- [x] block should complete animation before being destroyed
 
 
 ## Architecture
@@ -26,11 +26,11 @@
 ## Graphics
 - [ ] add more animations
 - [x] ball trail
-- [ ] juicier, particles
+- [x] juicier, particles
 - [ ] custom cursor (resource)
 - [ ] screen transitions (start with fading in/out)
-- [ ] clean up score UI
-- [ ] clean up balls remaining
+- [x] clean up score UI
+- [x] clean up balls remaining
 
 
 ## Audio
