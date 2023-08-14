@@ -24,6 +24,7 @@
 #include "editor.h"
 #include "AnimationManager.h"
 #include "level.h"
+#include "Explosion.h"
 #include <memory>
 
 //=============================================================================
@@ -52,6 +53,7 @@ private:
     Console console;
     Editor* editor;
     AnimationManager m_AnimationManager;
+    Explosion explosionManager;
 
     // textures/sprites
     TextureManager backgroundTexture;

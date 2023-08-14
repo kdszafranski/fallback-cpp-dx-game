@@ -13,6 +13,7 @@ using namespace std;
 #include <iostream>
 #include "editor.h"
 #include "fileHandler.h"
+#include "Explosion.h"
 // Animations
 #include "FadeTo.h"
 #include "PinchScale.h"
@@ -270,7 +271,7 @@ void Fallback::initBall()
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ball shadow image"));
 	}
 	shadowBallImage.setCurrentFrame(0);
-	
+
 	// ball count icon image
 	if (!ballCountIcon.initialize(this, ballNS::WIDTH, ballNS::HEIGHT, ballNS::TEXTURE_COLS, &ballTexture))
 	{
@@ -279,7 +280,7 @@ void Fallback::initBall()
 	ballCountIcon.setActive(false); // no collisions please
 	ballCountIcon.setCurrentFrame(0);
 	ballCountIcon.setPosition(736, 68);
-	
+
 	// ball count X icon
 	if (!ballCountXImage.initialize(graphics, ballNS::WIDTH, ballNS::HEIGHT, ballNS::TEXTURE_COLS, &ballTexture))
 	{
@@ -446,7 +447,7 @@ void Fallback::update(float frameTime)
 {
 	// check if we want to exit
 	CheckForExit();
-	
+
 	//for (int i = 0; i < racers.size(); i++) {
 	//	if (racers.at(i).getX() < -33) {
 	//		// destroy this object
@@ -468,7 +469,7 @@ void Fallback::update(float frameTime)
 			}
 		}
 
-		m_AnimationManager.updateProcesses(frameTime);	
+		m_AnimationManager.updateProcesses(frameTime);
 
 		/*if (creditsButton.isMouseOver()) {
 			if (input->getMouseLButton()) {
@@ -508,6 +509,9 @@ void Fallback::update(float frameTime)
 
 				ball.update(frameTime);
 				
+				// particles
+				explosionManager.update(frameTime);
+
 				// run animations
 				m_AnimationManager.updateProcesses(frameTime);
 
@@ -548,14 +552,12 @@ void Fallback::spawnRacers()
 	srand((unsigned)time(0));
 	int numberToSpawn = 0;
 
-	if (true) {
-		numberToSpawn = rand() % 4;
-		Vector2 position = { GAME_WIDTH, rand() % GAME_HEIGHT };
-		for (int i = 0; i < numberToSpawn; i++) {
-			spawnRacerAnimation(position);
-			position.x += 25;
-			position.y += 3;
-		}
+	numberToSpawn = rand() % 4;
+	Vector2 position = { GAME_WIDTH, rand() % GAME_HEIGHT };
+	for (int i = 0; i < numberToSpawn; i++) {
+		spawnRacerAnimation(position);
+		position.x += 25;
+		position.y += 3;
 	}
 
 }
@@ -696,7 +698,7 @@ void Fallback::collisions()
 					block->damage(BALL);
 					// soundfx
 					audio->playCue(CLUNK);
-					
+
 					// check if ball is dead
 					if (block->getHealth() <= 0) {
 						// update score
@@ -712,21 +714,21 @@ void Fallback::collisions()
 					// bounce away from ball
 					Vector2 end = block->getPosition();
 					switch (direction) {
-						case 1:
-							// go down
-							end.y += 3.0f;
-							break;
-						case 2: // go left
-							end.x -= 3.0f;
-							break;
-						case 3: // go up
-							end.y -= 3.0f;
-							break;
-						case 4: // go right
-							end.x += 3.0f;
-							break;
-						default: // 0 up
-							end.y -= 3.0f;
+					case 1:
+						// go down
+						end.y += 3.0f;
+						break;
+					case 2: // go left
+						end.x -= 3.0f;
+						break;
+					case 3: // go up
+						end.y -= 3.0f;
+						break;
+					case 4: // go right
+						end.x += 3.0f;
+						break;
+					default: // 0 up
+						end.y -= 3.0f;
 					}
 					// reset just in case
 					block->setCurrentFrame(0);
@@ -753,8 +755,12 @@ void Fallback::collisions()
 //=============================================================================
 void Fallback::removeBlock(int index)
 {
+	// explode
+	explosionManager.spawnExplosion(this, &detailsTexture, blocks.at(index).getPosition());
+	
 	audio->playCue(POP);
 	blocks.erase(blocks.begin() + index);
+	
 }
 
 void Fallback::checkGameOver()
@@ -816,7 +822,7 @@ void Fallback::renderTitleScreen()
 {
 	backgroundImage.draw();
 	// racers behind UI
-	renderRacers();	
+	renderRacers();
 
 	titleImage.draw();
 	newGameButton.draw();
@@ -869,7 +875,7 @@ void Fallback::setTitleScreen()
 	backgroundImage.setX(0);
 
 	spawnRacers();
-	
+
 	isPaused = false;
 	currentScreen = TITLE;
 }
@@ -926,6 +932,9 @@ void Fallback::renderGameScreen()
 	for (int i = 0; i < blocks.size(); i++) {
 		blocks.at(i).draw();
 	}
+
+	// particles
+	explosionManager.draw();
 
 	// UI
 	renderUI();
