@@ -515,6 +515,9 @@ void Fallback::update(float frameTime)
 				// run animations
 				m_AnimationManager.updateProcesses(frameTime);
 
+				console.setLogText(to_string(explosionManager.getParticleCount()));
+
+
 				// check if the ball went off below ship
 				if (ball.getY() > GAME_HEIGHT - ballNS::HEIGHT) {
 					audio->playCue(ZAP);
@@ -543,7 +546,6 @@ void Fallback::update(float frameTime)
 		spawnRacers();
 		racerSpawnTimer = 0;
 	}
-	console.setLogText(to_string(racerSpawnTimer));
 }
 
 void Fallback::spawnRacers()

@@ -5,6 +5,7 @@
 
 class Explosion 
 {
+    int partId;
     VECTOR2 position;
     TextureManager texture;
     std::list<Entity> particles;
@@ -16,8 +17,10 @@ public:
     void spawnExplosion(Game* game, TextureManager* texture, VECTOR2 position);
     
     // lifecycle
-    //void spawnExplosion(Vector2 position);
     void update(float deltaTime);
     void draw();
+
+    // accessor
+    int getParticleCount() { return particles.size(); }
 };
 
