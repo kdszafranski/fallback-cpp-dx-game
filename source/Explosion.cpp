@@ -27,7 +27,7 @@ void Explosion::spawnExplosion(Game* game, TextureManager* texture, VECTOR2 pos)
 	partId++;
 	int numberToSpawn = 0;
 
-	numberToSpawn = rand() % 10 + 5;
+	numberToSpawn = rand() % 10 + 10;
 	for (int i = 0; i < numberToSpawn; i++) {
 		Entity particle;
 
@@ -39,7 +39,17 @@ void Explosion::spawnExplosion(Game* game, TextureManager* texture, VECTOR2 pos)
 		particle.setScale(0.25);
 		particle.setActive(false); // no collisions
 		particle.setPosition(position);
-		particle.setVelocity(VECTOR2(rand() % 180, rand() % 180));
+
+		float x = rand() % 90;
+		float y = rand() % 90;
+		if (rand() % 100 < 50) {
+			x = -x;
+		}
+		if (rand() % 100 < 50) {
+			y = -y;
+		}
+		// set it in motion and speed it up
+		particle.setVelocity({ x * 3, y * 3 });
 
 		particles.push_back(particle);
 	}
