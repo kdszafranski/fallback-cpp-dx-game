@@ -47,41 +47,34 @@ void Explosion::spawnExplosion(Game* game, TextureManager* texture, VECTOR2 pos)
 
 void Explosion::update(float deltaTime)
 {
-	// auto is a copy... need the ref to change values
-	for (auto& part : particles) {
-		part.update(deltaTime);
-		float x = part.getX();
-		x += deltaTime * part.getVelocity().x;
-		float y = part.getY();
-		y += deltaTime * part.getVelocity().y;
-		part.setX(x);
-		part.setY(y);
-	}
-
-	// remove.. like JS filter
-	//for (std::list<Entity>::iterator it = particles.begin(); it != particles.end(); it++)
-	//{
-	//		it = particles.erase(it);
-	//	}
-	//}
-
+	// iterator is just that, the number
 	std::list<Entity>::iterator it = particles.begin();
 	while (it != particles.end()) {
-		if (it->getX() > GAME_WIDTH) {
+		if (it->getX() > GAME_WIDTH || it->getX() < 0 ||
+			it->getY() > GAME_HEIGHT || it->getY() < 0
+			) {
+			// it++ here advances the iterator to the next one after the erasure
 			particles.erase(it++);
 		} else {
+			it->update(deltaTime);
+			float x = it->getX();
+			x += deltaTime * it->getVelocity().x;
+			float y = it->getY();
+			y += deltaTime * it->getVelocity().y;
+
+			it->setX(x);
+			it->setY(y);
+			
 			++it;
 		}
 	}
-
-
 }
 
 
 
 void Explosion::draw()
 {
-	for (auto part : particles) {
+	for (auto &part : particles) {
 		part.draw();
 	}
 }
