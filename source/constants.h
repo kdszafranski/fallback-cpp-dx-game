@@ -61,7 +61,7 @@ const float FRAME_RATE  = 200.0f;               // the target frame rate (frames
 const float MIN_FRAME_RATE = 10.0f;             // the minimum frame rate
 const float MIN_FRAME_TIME = 1.0f/FRAME_RATE;   // minimum desired time for 1 frame
 const float MAX_FRAME_TIME = 1.0f/MIN_FRAME_RATE; // maximum time used in calculations
-const short MAX_BALLS = 10;
+const short MAX_BALLS = 3;
 const float BALLSHADOW_INTERVAL = 0.07;
 
 // weapon types

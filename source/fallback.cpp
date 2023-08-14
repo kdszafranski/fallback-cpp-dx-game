@@ -112,7 +112,7 @@ void Fallback::resetGame()
 	ballCount = MAX_BALLS;
 	gameOver = false;
 	isPaused = false;
-	score = 590;
+	score = 0;
 	currentLevel = 0; // points into levels vector, 0 is the first level
 	console.resetLog();
 }
