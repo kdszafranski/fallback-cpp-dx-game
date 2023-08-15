@@ -162,7 +162,7 @@ void Fallback::initSprites() {
 	{
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing power up texture"));
 	}
-	
+
 }
 
 
@@ -226,7 +226,7 @@ void Fallback::initButtons()
 	}
 
 	creditsButton.setCurrentFrame(1);
-	creditsButton.setPosition(400 -creditsButton.getSpriteData().width / 2, 510);
+	creditsButton.setPosition(400 - creditsButton.getSpriteData().width / 2, 510);
 
 	// racers/details
 	if (!detailsTexture.initialize(graphics, RACER_PATH)) {
@@ -344,6 +344,8 @@ void Fallback::startNextLevel()
 
 	m_AnimationManager.clearAllProcesses();
 	racers.clear();
+	removePowerUp();
+	SAFE_DELETE(powerUp);
 
 	loadLevel(currentLevel);
 	restartBall();
@@ -536,7 +538,7 @@ void Fallback::update(float frameTime)
 				console.setLogText("POW: " + to_string(powerUpTimer));
 
 				ball.update(frameTime);
-				
+
 				// particles
 				explosionManager.update(frameTime);
 
@@ -632,24 +634,31 @@ void Fallback::cleanUpRacerList()
 
 #pragma region PowerUps
 
+// Creates the Entity on the screen
 void Fallback::spawnPowerUp(VECTOR2 position)
 {
 	// spawn powerup
 	if (powerUp == NULL) {
-		powerUp = new PowerUp(FAST, position);
+		const int n = rand() % 1;
+		powerUp = new PowerUp(static_cast<POWERUP>(n), position);
 		powerUp->initialize(this, 32, 32, 4, &powerUpTexture);
 	}
 }
 
 void Fallback::applyPowerUp(POWERUP p)
 {
-	// apply power up...
 	hasPowerUp = true;
 	powerUpTimer = 0;
+	currentPowerUp = p;
+
+	// apply to the correct Entity
 	switch (p) {
-	case FAST:
-		ship.applyPowerUp(p);
-		break;
+		case FAST:
+			ship.applyPowerUp(p);
+			break;
+		case SLOW:
+			ball.applyPowerUp(p);
+			break;
 	}
 }
 
@@ -657,8 +666,13 @@ void Fallback::removePowerUp()
 {
 	hasPowerUp = false;
 	powerUpTimer = 0;
-	if (currentPowerUp == FAST) {
-		ship.removePowerUp();
+	switch (currentPowerUp) {
+		case FAST:
+			ship.removePowerUp();
+			break;
+		case SLOW:
+			ball.removePowerUp();
+			break;
 	}
 }
 #pragma endregion
@@ -814,21 +828,21 @@ void Fallback::collisions()
 					// bounce away from ball
 					Vector2 end = block->getPosition();
 					switch (direction) {
-					case 1:
-						// go down
-						end.y += 3.0f;
-						break;
-					case 2: // go left
-						end.x -= 3.0f;
-						break;
-					case 3: // go up
-						end.y -= 3.0f;
-						break;
-					case 4: // go right
-						end.x += 3.0f;
-						break;
-					default: // 0 up
-						end.y -= 3.0f;
+						case 1:
+							// go down
+							end.y += 3.0f;
+							break;
+						case 2: // go left
+							end.x -= 3.0f;
+							break;
+						case 3: // go up
+							end.y -= 3.0f;
+							break;
+						case 4: // go right
+							end.x += 3.0f;
+							break;
+						default: // 0 up
+							end.y -= 3.0f;
 					}
 					// reset just in case
 					block->setCurrentFrame(0);
@@ -856,14 +870,14 @@ void Fallback::collisions()
 void Fallback::removeBlock(int index)
 {
 	// explode
-	const VECTOR2 pos = { 
+	const VECTOR2 pos = {
 		blocks.at(index).getCenterX(),
-		blocks.at(index).getCenterY() 
+		blocks.at(index).getCenterY()
 	};
 
 	explosionManager.spawnExplosion(
-		this, 
-		&iconTexture, 
+		this,
+		&iconTexture,
 		pos
 	);
 
@@ -871,10 +885,10 @@ void Fallback::removeBlock(int index)
 	if (powerUp == NULL && !hasPowerUp) {
 		spawnPowerUp(pos);
 	}
-	
+
 	audio->playCue(POP);
 	blocks.erase(blocks.begin() + index);
-	
+
 }
 
 void Fallback::checkGameOver()
@@ -911,17 +925,17 @@ void Fallback::render()
 
 		// screen/game state
 		switch (currentScreen) {
-		case TITLE:
-			renderTitleScreen();
-			break;
-		case GAME:
-			renderGameScreen();
-			break;
-		case EDITOR:
-			backgroundImage.draw();
-			renderRacers();
-			editor->draw();
-			break;
+			case TITLE:
+				renderTitleScreen();
+				break;
+			case GAME:
+				renderGameScreen();
+				break;
+			case EDITOR:
+				backgroundImage.draw();
+				renderRacers();
+				editor->draw();
+				break;
 		}
 
 		graphics->spriteEnd();
@@ -1098,15 +1112,15 @@ void Fallback::renderUI()
 COLOR_ARGB Fallback::getBallCountColor()
 {
 	switch (ballCount) {
-	case 1:
-		return graphicsNS::FB_HARD;
-		break;
-	case 2:
-		return graphicsNS::FB_STRONG;
-		break;
-	case 3:
-		return graphicsNS::FB_INVINCIBLE;
-		break;
+		case 1:
+			return graphicsNS::FB_HARD;
+			break;
+		case 2:
+			return graphicsNS::FB_STRONG;
+			break;
+		case 3:
+			return graphicsNS::FB_INVINCIBLE;
+			break;
 	}
 
 	return graphicsNS::WHITE;
@@ -1119,15 +1133,15 @@ void Fallback::CheckForExit() {
 	// ESC key always quits
 	if (input->wasKeyPressed(ESC_KEY)) {
 		switch (currentScreen) {
-		case TITLE:
-			PostQuitMessage(0); // quits app
-			break;
-		case GAME:
-			exitGame();
-			break;
-		case EDITOR:
-			exitEditor();
-			break;
+			case TITLE:
+				PostQuitMessage(0); // quits app
+				break;
+			case GAME:
+				exitGame();
+				break;
+			case EDITOR:
+				exitEditor();
+				break;
 		}
 	}
 }
