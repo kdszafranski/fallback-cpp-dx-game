@@ -3,14 +3,15 @@
 PowerUp::PowerUp(POWERUP pType) : Entity()
 {
     type = pType;
-    spriteData.width = powerupNS::WIDTH;           // size of Ball
+    spriteData.width = powerupNS::WIDTH;           // size of powerup
     spriteData.height = powerupNS::WIDTH;
     spriteData.x = powerupNS::X;                   // location on screen
     spriteData.y = powerupNS::Y;
     visible = true;
 
+    collisionType = entityNS::BOX;                  // override's Image default to CIRCLE
+
     // set bounding box for BOX collider
-    collisionType = entityNS::BOX;      // override's Image default to CIRCLE
     edge.top = -powerupNS::HEIGHT / 2;    // -16
     edge.right = powerupNS::WIDTH / 2;    // 16
     edge.bottom = powerupNS::HEIGHT / 2;  // 16
@@ -26,7 +27,6 @@ PowerUp::PowerUp(POWERUP pType) : Entity()
 bool PowerUp::initialize(Game* gamePtr, int width, int height, int ncols,
     TextureManager* textureM)
 {
-
     return(Entity::initialize(gamePtr, width, height, ncols, textureM));
 }
 
