@@ -557,8 +557,6 @@ void Fallback::update(float frameTime)
 					}
 				}
 
-				console.setLogText("POW: " + to_string(powerUpTimer));
-
 				// update particles
 				explosionManager.update(frameTime);
 
