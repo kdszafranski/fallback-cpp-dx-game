@@ -156,6 +156,8 @@ void Fallback::initSprites() {
 	initBlocks();
 	// ball sprites
 	initBall();
+	// ui/hud
+	initUI();
 
 	// power ups texture
 	if (!powerUpTexture.initialize(graphics, POWERUP_PATH))
@@ -297,6 +299,10 @@ void Fallback::initBall()
 	}
 	shadowBallImage.setCurrentFrame(4);
 
+}
+
+void Fallback::initUI()
+{
 	// ball count icon image
 	if (!ballCountIcon.initialize(this->graphics, ballNS::WIDTH, ballNS::HEIGHT, ballNS::TEXTURE_COLS, &iconTexture))
 	{
@@ -312,6 +318,22 @@ void Fallback::initBall()
 	}
 	ballCountXImage.setCurrentFrame(1);
 	ballCountXImage.setPosition(ballCountIcon.getX() + ballCountIcon.getWidth() + 4, ballCountIcon.getY());
+
+	// power up stuff
+	if (!uiCurrentPowerUpDiamond.initialize(this->graphics, powerupNS::WIDTH, powerupNS::HEIGHT, powerupNS::TEXTURE_COLS, &powerUpTexture))
+	{
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing power up UI icon"));
+	}
+	uiCurrentPowerUpDiamond.setCurrentFrame(7);
+	uiCurrentPowerUpDiamond.setPosition(750, ballCountIcon.getY() + 24);
+
+	if (!uiCurrentPowerUpIcon.initialize(this->graphics, powerupNS::WIDTH, powerupNS::HEIGHT, powerupNS::TEXTURE_COLS, &powerUpTexture))
+	{
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing power up Letter"));
+	}
+	uiCurrentPowerUpIcon.setCurrentFrame(currentPowerUp);
+	uiCurrentPowerUpIcon.setPosition(uiCurrentPowerUpDiamond.getPosition());
+
 }
 
 //=============================================================================
@@ -643,30 +665,33 @@ void Fallback::spawnPowerUp(VECTOR2 position)
 	}
 }
 
-void Fallback::applyPowerUp(POWERUP p)
+// applies the collided Power up
+void Fallback::applyPowerUp()
 {
 	hasPowerUp = true;
 	powerUpTimer = 0;
-	currentPowerUp = p;
+	currentPowerUp = powerUp->getPowerUpType();
+	uiCurrentPowerUpIcon.setCurrentFrame(currentPowerUp);
 
-	if (p == MYSTERY) {
+	if (currentPowerUp == MYSTERY) {
 		int pick = rand() % 6; // pick one of the others
-		p = static_cast<POWERUP>(pick);
+		currentPowerUp = static_cast<POWERUP>(pick);
 	}
 
 	// apply to the correct Entity
-	switch (p) {
+	switch (currentPowerUp){
 		case FAST:
-			ship.applyPowerUp(p);
+			ship.applyPowerUp(currentPowerUp);
 			break;
 		case SLOW:
-			ball.applyPowerUp(p);
+			ball.applyPowerUp(currentPowerUp);
 			break;
 		case ZOOM:
-			ball.applyPowerUp(p);
+			ball.applyPowerUp(currentPowerUp);
 			break;
 	}
 
+	currentPowerUpColor = powerUp->getColor();
 	ship.setHasPowerUp(true); // colors the ship
 }
 
@@ -801,7 +826,7 @@ void Fallback::collisions()
 				audio->playCue(ZAP);
 
 				score += POWERUP_POINT_VALUE;
-				applyPowerUp(powerUp->getPowerUpType());
+				applyPowerUp();
 
 				explosionManager.spawnExplosion(this, &iconTexture, { powerUp->getX(), powerUp->getY() });
 
@@ -1121,6 +1146,12 @@ void Fallback::renderUI()
 	// ball count icon and x
 	ballCountIcon.draw(ballCountIcon.getColorFilter());
 	ballCountXImage.draw();
+
+	// power ups
+	if (hasPowerUp) {
+		uiCurrentPowerUpDiamond.draw(currentPowerUpColor);
+		uiCurrentPowerUpIcon.draw();
+	}
 }
 
 COLOR_ARGB Fallback::getBallCountColor()

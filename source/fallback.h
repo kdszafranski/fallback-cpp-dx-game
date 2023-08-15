@@ -80,6 +80,9 @@ private:
     // ui images
     Image ballCountXImage;
     Image ballCountIcon;
+    Image uiCurrentPowerUpIcon;
+    Image uiCurrentPowerUpDiamond;
+    COLOR_ARGB currentPowerUpColor;
 
     // ball shadow
     float timer;
@@ -130,7 +133,7 @@ public:
     void restartBall();
     COLOR_ARGB getBallCountColor();
     void spawnPowerUp(VECTOR2 position);
-    void applyPowerUp(POWERUP p);
+    void applyPowerUp();
     void removePowerUp();
 
     // Game state/flow
@@ -140,6 +143,7 @@ public:
     void initSprites();
     void initShip();
     void initBall();
+    void initUI();
     void initBlocks();
     void initMessageSprites();
     void setTitleScreen();

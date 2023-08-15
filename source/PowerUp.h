@@ -12,7 +12,7 @@ namespace powerupNS
 	const int Y = 0;
 	const float SPEED = 80;                // 
 	const float MASS = 0; // 10.0f;              // mass
-	const int   TEXTURE_COLS = 4; 
+	const int   TEXTURE_COLS = 8; 
 }
 
 class PowerUp : public Entity

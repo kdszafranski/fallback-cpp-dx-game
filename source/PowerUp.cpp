@@ -27,7 +27,7 @@ PowerUp::PowerUp(POWERUP pType, VECTOR2 position) : Entity()
 
 bool PowerUp::initialize(Game* gamePtr, int width, int height, int ncols, TextureManager* powerupTexture)
 {
-    if (!diamond.initialize(gamePtr->getGraphics(), powerupNS::WIDTH, powerupNS::WIDTH, 8, powerupTexture))
+    if (!diamond.initialize(gamePtr->getGraphics(), powerupNS::WIDTH, powerupNS::WIDTH, powerupNS::TEXTURE_COLS, powerupTexture))
     {
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing power up diamond image"));
         return false;
