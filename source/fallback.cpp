@@ -545,7 +545,6 @@ void Fallback::update(float frameTime)
 						// remove first
 						recentBallPositions.erase(recentBallPositions.begin());
 					}
-
 					timer = 0;
 				}
 
@@ -573,7 +572,7 @@ void Fallback::update(float frameTime)
 				}
 
 				// check if the ball went off below ship
-				if (ball.getY() > GAME_HEIGHT - ballNS::HEIGHT) {
+				if (ball.getY() > GAME_HEIGHT) {
 					audio->playCue(ZAP);
 					loseBall();
 					restartBall();
