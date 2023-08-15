@@ -182,8 +182,8 @@ class Entity : public Image
     virtual void activate();
 
     // Power up virtual methods
-    virtual void ApplyPowerUp(POWERUP type) {};
-    virtual void RemovePowerUp() {};
+    virtual void applyPowerUp(POWERUP type) {};
+    virtual void removePowerUp() {};
 
     // Empty ai function to allow Entity objects to be instantiated.
     virtual void ai(float frameTime, Entity &ent);

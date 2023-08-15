@@ -40,8 +40,8 @@ public:
     void update(float frameTime);
     void damage(WEAPON);
     // power ups
-    void ApplyPowerUp(POWERUP type) override;
-    void RemovePowerUp() override;
+    void applyPowerUp(POWERUP type) override;
+    void removePowerUp() override;
 };
 #endif
 

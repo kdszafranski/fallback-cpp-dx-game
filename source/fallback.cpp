@@ -613,12 +613,14 @@ void Fallback::cleanUpRacerList()
 	}
 }
 
+#pragma region PowerUps
+
 void Fallback::removePowerUp()
 {
 	hasPowerUp = false;
 	powerUpTimer = 0;
 	if (currentPowerUp == FAST) {
-		ball.RemovePowerUp();
+		ball.removePowerUp();
 	}
 }
 
@@ -631,6 +633,8 @@ void Fallback::CheckPauseInput()
 		}
 	}
 }
+#pragma endregion
+
 
 void Fallback::CheckCheatInput()
 {
@@ -652,11 +656,17 @@ bool Fallback::isGameOver()
 	return false;
 }
 
+//=============================================================================
+// Reset things so a new ball works like the beginning of the game
+//=============================================================================
 void Fallback::loseBall()
 {
 	ballCount--;
 
-	// bounce icon
+	// we lose power ups
+	removePowerUp();
+
+	// bounce ball UI icon
 	StrongAnimationPtr animPtr = std::make_shared<PunchScale>(&ballCountIcon, 0.2f, 1.5f);
 	m_AnimationManager.attachProcess(animPtr);
 }
@@ -836,7 +846,7 @@ void Fallback::applyPowerUp(POWERUP p)
 	powerUpTimer = 0;
 	switch (p) {
 	case FAST:
-		ball.ApplyPowerUp(p);
+		ball.applyPowerUp(p);
 		break;
 	}
 }

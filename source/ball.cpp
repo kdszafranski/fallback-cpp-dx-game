@@ -58,7 +58,10 @@ void Ball::draw()
     Image::draw();              // draw ball
 }
 
-void Ball::ApplyPowerUp(POWERUP type)
+//=============================================================================
+// apply the given power up
+//=============================================================================
+void Ball::applyPowerUp(POWERUP type)
 {
     // apply relevant power up
     if (type == FAST) {
@@ -67,7 +70,10 @@ void Ball::ApplyPowerUp(POWERUP type)
     }
 }
 
-void Ball::RemovePowerUp()
+//=============================================================================
+// remove power ups
+//=============================================================================
+void Ball::removePowerUp()
 {
     currentSpeed = ballNS::SPEED;
 }
