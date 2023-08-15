@@ -93,7 +93,6 @@ void Fallback::initialize(HWND hwnd)
 /// </summary>
 void Fallback::startNewGame()
 {
-
 	// set proper bg screen state
 	setGameScreen();
 
@@ -102,6 +101,7 @@ void Fallback::startNewGame()
 
 	// stop any other animations
 	m_AnimationManager.clearAllProcesses();
+	explosionManager.clearAllParticles();
 	racers.clear();
 
 	// reset game variables
@@ -115,7 +115,7 @@ void Fallback::startNewGame()
 }
 
 /// <summary>
-/// Resets score and board
+/// Resets score, board, and general game state
 /// </summary>
 void Fallback::resetGame()
 {
