@@ -81,6 +81,11 @@ void Ball::removePowerUp()
     currentSpeed = ballNS::SPEED;
 }
 
+void Ball::bumpSpeedUp()
+{
+    currentSpeed += 0.1f;
+}
+
 //=============================================================================
 // Ball bounces off a BOX collider entity (really just the Blocks, ship is handled separately)
 //=============================================================================

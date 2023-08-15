@@ -39,9 +39,13 @@ public:
         TextureManager* textureM);
     void update(float frameTime);
     void damage(WEAPON);
+
     // power ups
     void applyPowerUp(POWERUP type) override;
     void removePowerUp() override;
-};
-#endif
 
+    // adjusts speed up for difficulty
+    void bumpSpeedUp();
+};
+
+#endif

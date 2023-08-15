@@ -49,6 +49,7 @@ public:
     void removePowerUp() override;
     void setHasPowerUp(bool v) { hasPowerUp = v; }
     bool getHasPowerUp() { return hasPowerUp; }
+
 };
 #endif
 

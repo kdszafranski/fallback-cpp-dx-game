@@ -670,20 +670,21 @@ void Fallback::applyPowerUp(POWERUP p)
 	}
 
 	ship.setHasPowerUp(true); // colors the ship
-
 }
 
 void Fallback::removePowerUp()
 {
 	hasPowerUp = false;
 	powerUpTimer = 0;
-	switch (currentPowerUp) {
-		case SLOW:
-		case ZOOM:
-			ball.removePowerUp();
-			break;
-	}
+	//switch (currentPowerUp) {
+	//	case SLOW:
+	//	case ZOOM:
+	//		ball.removePowerUp();
+	//		break;
+	//}
 
+	// clear up speeds and such
+	ball.removePowerUp();
 	ship.removePowerUp(); // remove color
 }
 #pragma endregion
@@ -892,6 +893,9 @@ void Fallback::removeBlock(int index)
 		&iconTexture,
 		pos
 	);
+
+	// destroying blocks increases the ball speed
+	ball.bumpSpeedUp();
 
 	// no power up entity in play and ship has no powerup
 	if (powerUp == NULL && !hasPowerUp) {
