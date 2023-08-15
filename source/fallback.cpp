@@ -325,7 +325,7 @@ void Fallback::initUI()
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing power up UI icon"));
 	}
 	uiCurrentPowerUpDiamond.setCurrentFrame(7);
-	uiCurrentPowerUpDiamond.setPosition(750, ballCountIcon.getY() + 24);
+	uiCurrentPowerUpDiamond.setPosition(GAME_WIDTH / 2 - powerupNS::WIDTH, GAME_HEIGHT - powerupNS::HEIGHT * 1.5);
 
 	if (!uiCurrentPowerUpIcon.initialize(this->graphics, powerupNS::WIDTH, powerupNS::HEIGHT, powerupNS::TEXTURE_COLS, &powerUpTexture))
 	{
@@ -671,12 +671,12 @@ void Fallback::applyPowerUp()
 	hasPowerUp = true;
 	powerUpTimer = 0;
 	currentPowerUp = powerUp->getPowerUpType();
-	uiCurrentPowerUpIcon.setCurrentFrame(currentPowerUp);
 
 	if (currentPowerUp == MYSTERY) {
 		int pick = rand() % 6; // pick one of the others
 		currentPowerUp = static_cast<POWERUP>(pick);
 	}
+
 
 	// apply to the correct Entity
 	switch (currentPowerUp){
@@ -691,6 +691,7 @@ void Fallback::applyPowerUp()
 			break;
 	}
 
+	uiCurrentPowerUpIcon.setCurrentFrame(currentPowerUp);
 	currentPowerUpColor = powerUp->getColor();
 	ship.setHasPowerUp(true); // colors the ship
 }
