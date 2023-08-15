@@ -652,7 +652,7 @@ void Fallback::applyPowerUp(POWERUP p)
 	currentPowerUp = p;
 
 	if (p == MYSTERY) {
-		int pick = rand() % 6;
+		int pick = rand() % 6; // pick one of the others
 		p = static_cast<POWERUP>(pick);
 	}
 
@@ -668,6 +668,9 @@ void Fallback::applyPowerUp(POWERUP p)
 			ball.applyPowerUp(p);
 			break;
 	}
+
+	ship.setHasPowerUp(true); // colors the ship
+
 }
 
 void Fallback::removePowerUp()
@@ -675,14 +678,13 @@ void Fallback::removePowerUp()
 	hasPowerUp = false;
 	powerUpTimer = 0;
 	switch (currentPowerUp) {
-		case FAST:
-			ship.removePowerUp();
-			break;
 		case SLOW:
 		case ZOOM:
 			ball.removePowerUp();
 			break;
 	}
+
+	ship.removePowerUp(); // remove color
 }
 #pragma endregion
 
@@ -799,6 +801,7 @@ void Fallback::collisions()
 			if (ship.collidesWith(*powerUp, collisionVector)) {
 				audio->playCue(ZAP);
 
+				score += POWERUP_POINT_VALUE;
 				applyPowerUp(powerUp->getPowerUpType());
 
 				// remove power up entity

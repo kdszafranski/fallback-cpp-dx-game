@@ -13,6 +13,7 @@
 Ship::Ship() : Entity()
 {
     currentSpeed = shipNS::SPEED;
+    hasPowerUp = false;
 
     spriteData.width = shipNS::WIDTH;           // size of Ship1
     spriteData.height = shipNS::HEIGHT;
@@ -53,7 +54,11 @@ bool Ship::initialize(Game *gamePtr, int width, int height, int ncols,
 //=============================================================================
 void Ship::draw()
 {
-    Image::draw();              // draw ship
+    if (hasPowerUp) {
+        Image::draw(graphicsNS::FB_METAL);
+    } else {
+        Image::draw(); // white
+    }
 }
 
 //=============================================================================
@@ -66,6 +71,8 @@ void Ship::applyPowerUp(POWERUP type)
         // bump our speed
         currentSpeed *= 1.5;
     }
+    
+    hasPowerUp = true;
 }
 
 //=============================================================================
@@ -74,6 +81,7 @@ void Ship::applyPowerUp(POWERUP type)
 void Ship::removePowerUp()
 {
     currentSpeed = shipNS::SPEED;
+    hasPowerUp = false;
 }
 
 //=============================================================================
