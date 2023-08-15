@@ -580,7 +580,16 @@ void Fallback::update(float frameTime)
 					loseBall();
 					restartBall();
 				}
+
+				// every 5 seconds there is a chance to spawn racers
+				racerSpawnTimer += frameTime;
+				if (racerSpawnTimer > 5) {
+					spawnRacers();
+					racerSpawnTimer = 0;
+				}
+
 			} // game over
+
 		}  // paused
 	} // GAME screen
 
@@ -592,13 +601,7 @@ void Fallback::update(float frameTime)
 
 	// they run on all screens
 	cleanUpRacerList();
-
-	// every 5 seconds there is a chance to spawn racers
-	racerSpawnTimer += frameTime;
-	if (racerSpawnTimer > 5) {
-		spawnRacers();
-		racerSpawnTimer = 0;
-	}
+	
 }
 
 #pragma region Racers
