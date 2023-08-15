@@ -30,6 +30,7 @@ namespace shipNS
 class Ship : public Entity
 {
 private:
+    float currentSpeed;
 
 public:
     // constructor
@@ -41,6 +42,10 @@ public:
                             TextureManager *textureM);
     void update(float frameTime);
     void damage(WEAPON);
+
+    // power ups
+    void applyPowerUp(POWERUP type) override;
+    void removePowerUp() override;
 };
 #endif
 

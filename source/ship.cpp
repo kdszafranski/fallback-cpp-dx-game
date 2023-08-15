@@ -12,6 +12,8 @@
 //=============================================================================
 Ship::Ship() : Entity()
 {
+    currentSpeed = shipNS::SPEED;
+
     spriteData.width = shipNS::WIDTH;           // size of Ship1
     spriteData.height = shipNS::HEIGHT;
     spriteData.x = shipNS::X;                   // location on screen
@@ -55,6 +57,26 @@ void Ship::draw()
 }
 
 //=============================================================================
+// apply the given power up
+//=============================================================================
+void Ship::applyPowerUp(POWERUP type)
+{
+    // apply relevant power up
+    if (type == FAST) {
+        // bump our speed
+        currentSpeed *= 1.5;
+    }
+}
+
+//=============================================================================
+// remove power ups
+//=============================================================================
+void Ship::removePowerUp()
+{
+    currentSpeed = shipNS::SPEED;
+}
+
+//=============================================================================
 // update
 // typically called once per frame
 // frameTime is used to regulate the speed of movement and animation
@@ -63,12 +85,12 @@ void Ship::update(float frameTime)
 {
     // move right
     if (input->isKeyDown(SHIP_RIGHT_KEY)) {
-        spriteData.x += frameTime * shipNS::SPEED;
+        spriteData.x += frameTime * currentSpeed;
     }
 
     // move left
     if (input->isKeyDown(SHIP_LEFT_KEY)) {
-       spriteData.x -= frameTime * shipNS::SPEED;
+       spriteData.x -= frameTime * currentSpeed;
     }
 
     // keep it on the screen

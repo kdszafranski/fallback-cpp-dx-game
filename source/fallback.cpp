@@ -536,6 +536,10 @@ void Fallback::update(float frameTime)
 				// power up
 				if (powerUp) {
 					powerUp->update(frameTime);
+					// off the screen?
+					if (powerUp->getY() > GAME_HEIGHT) {
+						SAFE_DELETE(powerUp);
+					}
 				}
 
 				// check if the ball went off below ship
@@ -565,6 +569,7 @@ void Fallback::update(float frameTime)
 	}
 }
 
+#pragma region Racers
 void Fallback::spawnRacers()
 {
 	// chance
@@ -612,15 +617,28 @@ void Fallback::cleanUpRacerList()
 		}
 	}
 }
+#pragma endregion
+
 
 #pragma region PowerUps
+void Fallback::applyPowerUp(POWERUP p)
+{
+	// apply power up...
+	hasPowerUp = true;
+	powerUpTimer = 0;
+	switch (p) {
+	case FAST:
+		ship.applyPowerUp(p);
+		break;
+	}
+}
 
 void Fallback::removePowerUp()
 {
 	hasPowerUp = false;
 	powerUpTimer = 0;
 	if (currentPowerUp == FAST) {
-		ball.removePowerUp();
+		ship.removePowerUp();
 	}
 }
 
@@ -837,18 +855,6 @@ void Fallback::removeBlock(int index)
 	audio->playCue(POP);
 	blocks.erase(blocks.begin() + index);
 	
-}
-
-void Fallback::applyPowerUp(POWERUP p)
-{
-	// apply power up...
-	hasPowerUp = true;
-	powerUpTimer = 0;
-	switch (p) {
-	case FAST:
-		ball.applyPowerUp(p);
-		break;
-	}
 }
 
 void Fallback::checkGameOver()
