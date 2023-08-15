@@ -10,7 +10,7 @@ namespace powerupNS
 	const int HEIGHT = 32;                  // image height
 	const int X = 0;   // starting location on screen
 	const int Y = 0;
-	const float SPEED = 1;                // 
+	const float SPEED = 50;                // 
 	const float MASS = 0; // 10.0f;              // mass
 	const int   TEXTURE_COLS = 4; 
 }

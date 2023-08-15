@@ -712,8 +712,8 @@ void Fallback::collisions()
 				if (block->getBlockType() != INVINCIBLE) {
 					audio->playCue(CLUNK);
 
-					block->damage(BALL);
 					// check if ball is dead
+					block->damage(BALL);
 					if (block->getHealth() <= 0) {
 						score += block->getPointValue() * 2; // double for destroying the block
 						removeBlock(i);
@@ -770,7 +770,7 @@ void Fallback::collisions()
 void Fallback::removeBlock(int index)
 {
 	// explode
-	const Vector2 pos = { 
+	const VECTOR2 pos = { 
 		blocks.at(index).getCenterX(),
 		blocks.at(index).getCenterY() 
 	};
@@ -778,8 +778,13 @@ void Fallback::removeBlock(int index)
 	explosionManager.spawnExplosion(
 		this, 
 		&ballTexture, 
-		{ pos.x, pos.y }
+		pos
 	);
+
+	//power up
+	if (powerUp == nullptr) {
+		spawnPowerUp(pos);
+	}
 	
 	audio->playCue(POP);
 	blocks.erase(blocks.begin() + index);
