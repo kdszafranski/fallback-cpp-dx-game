@@ -295,7 +295,7 @@ void Fallback::initBall()
 	{
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ball shadow image"));
 	}
-	shadowBallImage.setCurrentFrame(0);
+	shadowBallImage.setCurrentFrame(4);
 
 	// ball count icon image
 	if (!ballCountIcon.initialize(this, ballNS::WIDTH, ballNS::HEIGHT, ballNS::TEXTURE_COLS, &iconTexture))
@@ -1067,7 +1067,7 @@ void Fallback::renderGameScreen()
 			if (i > 0) { // leaves the last 2 the same size
 				shadowBallImage.setScale(i * 0.23);
 			}
-			shadowBallImage.draw(graphicsNS::BLACK50); // ??
+			shadowBallImage.draw(graphicsNS::WHITE & graphicsNS::ALPHA50); // ??
 		}
 
 		ball.draw();

@@ -80,6 +80,7 @@ enum SCREEN { TITLE, GAME, EDITOR, CREDITS };
 // Penalties
 // Zoom - speeds up ball
 // Tiny - shrinks ship
+// Mystery - picks one of the others randomly
 enum POWERUP { SLOW, MULTIBALL, FAST, GROW, ZOOM, TINY, MYSTERY };
 
 
