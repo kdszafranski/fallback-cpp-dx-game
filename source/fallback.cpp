@@ -298,11 +298,10 @@ void Fallback::initBall()
 	shadowBallImage.setCurrentFrame(4);
 
 	// ball count icon image
-	if (!ballCountIcon.initialize(this, ballNS::WIDTH, ballNS::HEIGHT, ballNS::TEXTURE_COLS, &iconTexture))
+	if (!ballCountIcon.initialize(this->graphics, ballNS::WIDTH, ballNS::HEIGHT, ballNS::TEXTURE_COLS, &iconTexture))
 	{
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ball count icon"));
 	}
-	ballCountIcon.setActive(false); // no collisions please
 	ballCountIcon.setCurrentFrame(0);
 	ballCountIcon.setPosition(736, 68);
 

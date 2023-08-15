@@ -50,9 +50,9 @@ private:
     float racerSpawnTimer;
     float powerUpTimer;
     float powerUpTimeLimit;
-    POWERUP currentPowerUp;
 
     // Game objects
+    POWERUP currentPowerUp;
     TextDX dxScoreFont;
     TextDX dxBallCount;
     Console console;
@@ -74,11 +74,12 @@ private:
     Image backgroundImage;
     Image titleImage;
     Image gameOverImage;
-    Image ballCountXImage;
-    Entity ballCountIcon;
     Button newGameButton;
     Button editorButton;
     Button creditsButton;
+    // ui images
+    Image ballCountXImage;
+    Image ballCountIcon;
 
     // ball shadow
     float timer;
