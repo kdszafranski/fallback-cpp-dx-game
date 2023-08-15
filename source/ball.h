@@ -23,6 +23,7 @@ namespace ballNS
 class Ball : public Entity
 {
 private:
+    float currentSpeed;
 
 public:
     // constructor
@@ -38,6 +39,9 @@ public:
         TextureManager* textureM);
     void update(float frameTime);
     void damage(WEAPON);
+    // power ups
+    void ApplyPowerUp(POWERUP type) override;
+    void RemovePowerUp() override;
 };
 #endif
 

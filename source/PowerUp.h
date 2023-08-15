@@ -30,6 +30,7 @@ public:
 
 	// other
 	void setFrameByType();
+	POWERUP getPowerUpType() { return type; }
 };
 
 

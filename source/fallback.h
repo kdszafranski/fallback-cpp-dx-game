@@ -50,6 +50,7 @@ private:
     float racerSpawnTimer;
     float powerUpTimer;
     float powerUpTimeLimit;
+    POWERUP currentPowerUp;
 
     // Game objects
     TextDX dxScoreFont;
@@ -128,6 +129,8 @@ public:
     void restartBall();
     COLOR_ARGB getBallCountColor();
     void spawnPowerUp(VECTOR2 position);
+    void applyPowerUp(POWERUP p);
+    void removePowerUp();
 
     // Game state/flow
     void startNewGame();

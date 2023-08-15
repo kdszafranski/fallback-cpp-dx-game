@@ -31,6 +31,7 @@ Fallback::Fallback()
 	racerSpawnTimer = 0;
 	hasPowerUp = false;
 	powerUpTimer = 0;
+	currentPowerUp = FAST; // not actually applied, null would be better
 	powerUpTimeLimit = 5.0f;
 	animId = 0;
 }
@@ -518,9 +519,7 @@ void Fallback::update(float frameTime)
 				if (hasPowerUp) {
 					powerUpTimer += frameTime;
 					if (powerUpTimer > powerUpTimeLimit) {
-						// remove power up
-						hasPowerUp = false;
-						powerUpTimer = 0;
+						removePowerUp();
 					}
 				}
 
@@ -611,6 +610,15 @@ void Fallback::cleanUpRacerList()
 		if (it != racers.end()) {
 			it++;
 		}
+	}
+}
+
+void Fallback::removePowerUp()
+{
+	hasPowerUp = false;
+	powerUpTimer = 0;
+	if (currentPowerUp == FAST) {
+		ball.RemovePowerUp();
 	}
 }
 
@@ -720,9 +728,7 @@ void Fallback::collisions()
 			if (ship.collidesWith(*powerUp, collisionVector)) {
 				audio->playCue(ZAP);
 
-				// apply power up...
-				hasPowerUp = true;
-				powerUpTimer = 0;
+				applyPowerUp(powerUp->getPowerUpType());
 
 				// remove power up entity
 				SAFE_DELETE(powerUp);
@@ -821,6 +827,18 @@ void Fallback::removeBlock(int index)
 	audio->playCue(POP);
 	blocks.erase(blocks.begin() + index);
 	
+}
+
+void Fallback::applyPowerUp(POWERUP p)
+{
+	// apply power up...
+	hasPowerUp = true;
+	powerUpTimer = 0;
+	switch (p) {
+	case FAST:
+		ball.ApplyPowerUp(p);
+		break;
+	}
 }
 
 void Fallback::checkGameOver()

@@ -27,6 +27,7 @@ Ball::Ball() : Entity()
     velocity.x = 0;                             // velocity X
     velocity.y = 0;                             // velocity Y
     frameDelay = 1;
+    currentSpeed = ballNS::SPEED;   // starting speed
 
     startFrame = ballNS::BALL_START_FRAME;     // first frame of ship animation
     endFrame = ballNS::BALL_END_FRAME;     // last frame of ship animation
@@ -55,6 +56,20 @@ bool Ball::initialize(Game* gamePtr, int width, int height, int ncols,
 void Ball::draw()
 {
     Image::draw();              // draw ball
+}
+
+void Ball::ApplyPowerUp(POWERUP type)
+{
+    // apply relevant power up
+    if (type == FAST) {
+        // bump our speed
+        currentSpeed *= 1.5;
+    }
+}
+
+void Ball::RemovePowerUp()
+{
+    currentSpeed = ballNS::SPEED;
 }
 
 //=============================================================================
@@ -184,8 +199,8 @@ void Ball::update(float frameTime)
 {
     Entity::update(frameTime);
     
-    spriteData.x += frameTime * velocity.x * ballNS::SPEED;         // move along X 
-    spriteData.y += frameTime * velocity.y * ballNS::SPEED;         // move along Y
+    spriteData.x += frameTime * velocity.x * currentSpeed;         // move along X 
+    spriteData.y += frameTime * velocity.y * currentSpeed;         // move along Y
 
     // Bounce off walls
     // NOT done with actual collisions, this is done strictly from screen position
