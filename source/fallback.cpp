@@ -513,10 +513,10 @@ void Fallback::update(float frameTime)
 			if (!gameOver) {
 				// update position of all game objects
 				ship.update(frameTime);
+				ball.update(frameTime);
 
 				timer += frameTime;
-
-				// every second
+				// every second adjust ball trail
 				if (timer > BALLSHADOW_INTERVAL) {
 					recentBallPositions.push_back(VECTOR2(ball.getX(), ball.getY()));
 
@@ -528,6 +528,7 @@ void Fallback::update(float frameTime)
 					timer = 0;
 				}
 
+				// handle power ups
 				if (hasPowerUp) {
 					powerUpTimer += frameTime;
 					if (powerUpTimer > powerUpTimeLimit) {
@@ -537,15 +538,13 @@ void Fallback::update(float frameTime)
 
 				console.setLogText("POW: " + to_string(powerUpTimer));
 
-				ball.update(frameTime);
-
-				// particles
+				// update particles
 				explosionManager.update(frameTime);
 
-				// update animations
+				// update Entity tweens/animations
 				m_AnimationManager.updateProcesses(frameTime);
 
-				// power up
+				// update falling power up
 				if (powerUp) {
 					powerUp->update(frameTime);
 					// off the screen?
@@ -805,6 +804,8 @@ void Fallback::collisions()
 				score += POWERUP_POINT_VALUE;
 				applyPowerUp(powerUp->getPowerUpType());
 
+				explosionManager.spawnExplosion(this, &iconTexture, { powerUp->getX(), powerUp->getY() });
+
 				// remove power up entity
 				SAFE_DELETE(powerUp);
 			}
@@ -888,11 +889,8 @@ void Fallback::removeBlock(int index)
 		blocks.at(index).getCenterY()
 	};
 
-	explosionManager.spawnExplosion(
-		this,
-		&iconTexture,
-		pos
-	);
+	// send parts flying
+	explosionManager.spawnExplosion(this, &iconTexture, pos);
 
 	// destroying blocks increases the ball speed
 	ball.bumpSpeedUp();
@@ -903,6 +901,7 @@ void Fallback::removeBlock(int index)
 	}
 
 	audio->playCue(POP);
+
 	blocks.erase(blocks.begin() + index);
 
 }
