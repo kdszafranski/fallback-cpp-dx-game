@@ -72,7 +72,7 @@ enum BLOCK { WEAK, STRONG, HARD, METAL, INVINCIBLE, NONE };
 // screen states
 enum SCREEN { TITLE, GAME, EDITOR, CREDITS };
 // powerup types
-enum POWERUP { SLOW, MULTIBALL, GROW, FAST };
+enum POWERUP { SLOW, MULTIBALL, FAST, GROW };
 
 
 // audio files required by audio.cpp

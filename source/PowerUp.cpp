@@ -20,14 +20,13 @@ PowerUp::PowerUp(POWERUP pType) : Entity()
     velocity.y = 0;   // velocity Y
     frameDelay = 1;
 
-    startFrame = 0;     // first frame of ship animation
-    endFrame = 0;     // last frame of ship animation
-    currentFrame = startFrame;
+    setFrameByType();
 }
 
 bool PowerUp::initialize(Game* gamePtr, int width, int height, int ncols,
     TextureManager* textureM)
 {
+
     return(Entity::initialize(gamePtr, width, height, ncols, textureM));
 }
 
@@ -42,4 +41,23 @@ void PowerUp::update(float frameTime)
 
     // just moves down
     spriteData.y += frameTime * velocity.y;
+}
+
+void PowerUp::setFrameByType()
+{
+    //  SLOW, MULTIBALL, GROW, FAST };
+    switch (type) {
+    case SLOW:
+        setCurrentFrame(SLOW);
+        break;
+    case MULTIBALL:
+        setCurrentFrame(MULTIBALL);
+        break;
+    case FAST:
+        setCurrentFrame(FAST);
+        break;
+    case GROW:
+        setCurrentFrame(GROW);
+        break;
+    }
 }
