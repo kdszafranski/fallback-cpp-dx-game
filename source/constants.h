@@ -72,6 +72,10 @@ enum BLOCK { WEAK, STRONG, HARD, METAL, INVINCIBLE, NONE };
 // screen states
 enum SCREEN { TITLE, GAME, EDITOR, CREDITS };
 // powerup types
+// Slow - slows ball
+// Multiball - adds 2 more balls into play
+// Fast - speeds up ship
+// Grow - lengthens ship along x-axis
 enum POWERUP { SLOW, MULTIBALL, FAST, GROW };
 
 

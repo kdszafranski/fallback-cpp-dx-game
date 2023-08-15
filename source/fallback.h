@@ -43,10 +43,13 @@ private:
     std::vector<Level> levels;
     std::list<Image> racers;
     bool gameOver = false;
+    bool hasPowerUp = false;
     int score;
     int ballCount;
     int currentLevel;
     float racerSpawnTimer;
+    float powerUpTimer;
+    float powerUpTimeLimit;
 
     // Game objects
     TextDX dxScoreFont;

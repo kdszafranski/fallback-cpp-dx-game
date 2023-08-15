@@ -28,8 +28,11 @@ Fallback::Fallback()
 {
 	editor = new Editor();
 	powerUp = nullptr;
-	animId = 0;
 	racerSpawnTimer = 0;
+	hasPowerUp = false;
+	powerUpTimer = 0;
+	powerUpTimeLimit = 5.0f;
+	animId = 0;
 }
 
 //=============================================================================
@@ -110,10 +113,12 @@ void Fallback::startNewGame()
 /// </summary>
 void Fallback::resetGame()
 {
-	timer = 0;
-	ballCount = MAX_BALLS;
+	hasPowerUp = false;
 	gameOver = false;
 	isPaused = false;
+	ballCount = MAX_BALLS;
+	timer = 0;
+	powerUpTimer = 0;
 	score = 0;
 	currentLevel = 0; // points into levels vector, 0 is the first level
 	console.resetLog();
@@ -123,6 +128,7 @@ void Fallback::exitGame()
 {
 	console.setLogText("");
 	isPaused = true;
+	SAFE_DELETE(powerUp);
 	// go to main menu
 	setTitleScreen();
 }
@@ -509,6 +515,17 @@ void Fallback::update(float frameTime)
 					timer = 0;
 				}
 
+				if (hasPowerUp) {
+					powerUpTimer += frameTime;
+					if (powerUpTimer > powerUpTimeLimit) {
+						// remove power up
+						hasPowerUp = false;
+						powerUpTimer = 0;
+					}
+				}
+
+				console.setLogText("POW: " + to_string(powerUpTimer));
+
 				ball.update(frameTime);
 				
 				// particles
@@ -702,6 +719,13 @@ void Fallback::collisions()
 			// powerUp is a ptr so dereference with *powerUp
 			if (ship.collidesWith(*powerUp, collisionVector)) {
 				audio->playCue(ZAP);
+
+				// apply power up...
+				hasPowerUp = true;
+				powerUpTimer = 0;
+
+				// remove power up entity
+				SAFE_DELETE(powerUp);
 			}
 		}
 
@@ -789,8 +813,8 @@ void Fallback::removeBlock(int index)
 		pos
 	);
 
-	//power up
-	if (powerUp == nullptr) {
+	// no power up entity in play and ship has no powerup
+	if (powerUp == nullptr && !hasPowerUp) {
 		spawnPowerUp(pos);
 	}
 	
@@ -1037,9 +1061,11 @@ COLOR_ARGB Fallback::getBallCountColor()
 void Fallback::spawnPowerUp(VECTOR2 position)
 {
 	// spawn powerup
-	powerUp = new PowerUp(FAST);
-	powerUp->initialize(this, 32, 32, 4, &powerUpTexture);
-	powerUp->setPosition(position);
+	if (powerUp == nullptr) {
+		powerUp = new PowerUp(FAST);
+		powerUp->initialize(this, 32, 32, 4, &powerUpTexture);
+		powerUp->setPosition(position);
+	}
 
 }
 
