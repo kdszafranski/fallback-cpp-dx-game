@@ -27,6 +27,7 @@ using namespace std;
 Fallback::Fallback()
 {
 	editor = new Editor();
+	powerUp = nullptr;
 	animId = 0;
 	racerSpawnTimer = 0;
 }
@@ -43,6 +44,7 @@ Fallback::~Fallback()
 	m_AnimationManager.abortAllProcesses(true);
 
 	SAFE_DELETE(editor);
+	SAFE_DELETE(powerUp);
 }
 
 
@@ -137,6 +139,13 @@ void Fallback::initSprites() {
 	initBlocks();
 	// ball sprites
 	initBall();
+
+	// power ups texture
+	if (!powerUpTexture.initialize(graphics, POWERUP_PATH))
+	{
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing power up texture"));
+	}
+	
 }
 
 
@@ -150,7 +159,6 @@ void Fallback::initBackgrounds()
 	{
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing background texture"));
 	}
-
 	// game bg image
 	if (!backgroundImage.initialize(graphics, 0, 0, 2, &backgroundTexture))
 	{
@@ -508,6 +516,11 @@ void Fallback::update(float frameTime)
 
 				// update animations
 				m_AnimationManager.updateProcesses(frameTime);
+
+				// power up
+				if (powerUp) {
+					powerUp->update(frameTime);
+				}
 
 				// check if the ball went off below ship
 				if (ball.getY() > GAME_HEIGHT - ballNS::HEIGHT) {
@@ -948,6 +961,11 @@ void Fallback::renderGameScreen()
 	// particles
 	explosionManager.draw();
 
+	// power up
+	if (powerUp) {
+		powerUp->draw();
+	}
+
 	// UI
 	renderUI();
 	console.renderLog();
@@ -1001,6 +1019,15 @@ COLOR_ARGB Fallback::getBallCountColor()
 	}
 
 	return graphicsNS::WHITE;
+}
+
+void Fallback::spawnPowerUp(VECTOR2 position)
+{
+	// spawn powerup
+	powerUp = new PowerUp(FAST);
+	powerUp->initialize(this, 32, 32, 4, &powerUpTexture);
+	powerUp->setPosition(position);
+
 }
 
 //=============================================================================

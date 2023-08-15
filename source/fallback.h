@@ -26,6 +26,7 @@
 #include "level.h"
 #include "Explosion.h"
 #include <memory>
+#include "PowerUp.h"
 
 //=============================================================================
 // Create game class
@@ -54,6 +55,7 @@ private:
     Editor* editor;
     AnimationManager m_AnimationManager;
     Explosion explosionManager;
+    PowerUp* powerUp;
 
     // textures/sprites
     TextureManager backgroundTexture;
@@ -64,15 +66,15 @@ private:
     TextureManager blockTexture;
     TextureManager buttonTexture;
     TextureManager gameOverTexture;
+    TextureManager powerUpTexture;
     Image backgroundImage;
     Image titleImage;
     Image gameOverImage;
     Image ballCountXImage;
-    Entity ballCountIcon; // just the ship sprite
+    Entity ballCountIcon;
     Button newGameButton;
     Button editorButton;
     Button creditsButton;
-
 
     // ball shadow
     float timer;
@@ -122,6 +124,7 @@ public:
     void removeBlock(int index);
     void restartBall();
     COLOR_ARGB getBallCountColor();
+    void spawnPowerUp(VECTOR2 position);
 
     // Game state/flow
     void startNewGame();

@@ -40,7 +40,7 @@ void PowerUp::update(float frameTime)
     Entity::update(frameTime);
 
     // just moves down
-    spriteData.y += frameTime * velocity.y;
+    spriteData.y += frameTime * velocity.y * powerupNS::SPEED;
 }
 
 void PowerUp::setFrameByType()
