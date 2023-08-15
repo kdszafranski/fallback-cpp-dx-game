@@ -19,13 +19,14 @@ class PowerUp : public Entity
 {
 private:
 	POWERUP type;
+	Image diamond;
 
 public:
-	PowerUp(POWERUP pType);
+	PowerUp(POWERUP pType, VECTOR2 position);
 
 	// inherited
 	virtual void draw();
-	bool initialize(Game* gamePtr, int width, int height, int ncols, TextureManager* textureM);
+	bool initialize(Game* gamePtr, int width, int height, int ncols, TextureManager* powerupTexture);
 	void update(float frameTime);
 
 	// other

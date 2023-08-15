@@ -64,7 +64,7 @@ private:
     // textures/sprites
     TextureManager backgroundTexture;
     TextureManager titleTexture;
-    TextureManager ballTexture;
+    TextureManager iconTexture;
     TextureManager shipTexture;
     TextureManager detailsTexture;
     TextureManager blockTexture;

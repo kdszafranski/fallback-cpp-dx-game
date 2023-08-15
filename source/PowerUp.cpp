@@ -1,12 +1,13 @@
 #include "PowerUp.h"
 
-PowerUp::PowerUp(POWERUP pType) : Entity()
+PowerUp::PowerUp(POWERUP pType, VECTOR2 position) : Entity()
 {
     type = pType;
     spriteData.width = powerupNS::WIDTH;           // size of powerup
     spriteData.height = powerupNS::WIDTH;
-    spriteData.x = powerupNS::X;                   // location on screen
-    spriteData.y = powerupNS::Y;
+    spriteData.x = position.x;                   // location on screen
+    spriteData.y = position.y;
+    spriteData.scale = 1;
     visible = true;
 
     collisionType = entityNS::BOX;                  // override's Image default to CIRCLE
@@ -24,14 +25,22 @@ PowerUp::PowerUp(POWERUP pType) : Entity()
     setFrameByType();
 }
 
-bool PowerUp::initialize(Game* gamePtr, int width, int height, int ncols,
-    TextureManager* textureM)
+bool PowerUp::initialize(Game* gamePtr, int width, int height, int ncols, TextureManager* powerupTexture)
 {
-    return(Entity::initialize(gamePtr, width, height, ncols, textureM));
+    if (!diamond.initialize(gamePtr->getGraphics(), powerupNS::WIDTH, powerupNS::WIDTH, 5, powerupTexture))
+    {
+        throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing power up diamond image"));
+        return false;
+    }
+    diamond.setPosition(getX(), getY()); // top left, will roatate around center
+    diamond.setCurrentFrame(4);
+
+    return(Entity::initialize(gamePtr, width, height, ncols, powerupTexture));
 }
 
 void PowerUp::draw()
 {
+    diamond.draw(graphicsNS::FB_STRONG); // orange
     Image::draw();
 }
 
@@ -41,6 +50,10 @@ void PowerUp::update(float frameTime)
 
     // just moves down
     spriteData.y += frameTime * powerupNS::SPEED;
+    diamond.setY(diamond.getY() + frameTime * powerupNS::SPEED);
+
+    // spin bg diamond
+    diamond.setDegrees(diamond.getDegrees() + frameTime * 180);
 }
 
 void PowerUp::setFrameByType()

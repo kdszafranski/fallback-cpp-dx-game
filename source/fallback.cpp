@@ -102,6 +102,7 @@ void Fallback::startNewGame()
 
 	// stop any other animations
 	m_AnimationManager.clearAllProcesses();
+	racers.clear();
 
 	// reset game variables
 	resetGame();
@@ -279,25 +280,25 @@ void Fallback::initShip()
 //=============================================================================
 void Fallback::initBall()
 {
-	if (!ballTexture.initialize(graphics, ICONS_PATH))
+	if (!iconTexture.initialize(graphics, ICONS_PATH))
 	{
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ball texture"));
 	}
-	if (!ball.initialize(this, ballNS::WIDTH, ballNS::HEIGHT, ballNS::TEXTURE_COLS, &ballTexture))
+	if (!ball.initialize(this, ballNS::WIDTH, ballNS::HEIGHT, ballNS::TEXTURE_COLS, &iconTexture))
 	{
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ball entity"));
 	}
 	ball.setCurrentFrame(0);
 
 	// ball shadow image
-	if (!shadowBallImage.initialize(graphics, ballNS::WIDTH, ballNS::HEIGHT, ballNS::TEXTURE_COLS, &ballTexture))
+	if (!shadowBallImage.initialize(graphics, ballNS::WIDTH, ballNS::HEIGHT, ballNS::TEXTURE_COLS, &iconTexture))
 	{
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ball shadow image"));
 	}
 	shadowBallImage.setCurrentFrame(0);
 
 	// ball count icon image
-	if (!ballCountIcon.initialize(this, ballNS::WIDTH, ballNS::HEIGHT, ballNS::TEXTURE_COLS, &ballTexture))
+	if (!ballCountIcon.initialize(this, ballNS::WIDTH, ballNS::HEIGHT, ballNS::TEXTURE_COLS, &iconTexture))
 	{
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ball count icon"));
 	}
@@ -306,7 +307,7 @@ void Fallback::initBall()
 	ballCountIcon.setPosition(736, 68);
 
 	// ball count X icon
-	if (!ballCountXImage.initialize(graphics, ballNS::WIDTH, ballNS::HEIGHT, ballNS::TEXTURE_COLS, &ballTexture))
+	if (!ballCountXImage.initialize(graphics, ballNS::WIDTH, ballNS::HEIGHT, ballNS::TEXTURE_COLS, &iconTexture))
 	{
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ball count X icon"));
 	}
@@ -630,6 +631,16 @@ void Fallback::cleanUpRacerList()
 
 
 #pragma region PowerUps
+
+void Fallback::spawnPowerUp(VECTOR2 position)
+{
+	// spawn powerup
+	if (powerUp == NULL) {
+		powerUp = new PowerUp(FAST, position);
+		powerUp->initialize(this, 32, 32, 4, &powerUpTexture);
+	}
+}
+
 void Fallback::applyPowerUp(POWERUP p)
 {
 	// apply power up...
@@ -650,6 +661,7 @@ void Fallback::removePowerUp()
 		ship.removePowerUp();
 	}
 }
+#pragma endregion
 
 void Fallback::CheckPauseInput()
 {
@@ -660,7 +672,6 @@ void Fallback::CheckPauseInput()
 		}
 	}
 }
-#pragma endregion
 
 
 void Fallback::CheckCheatInput()
@@ -852,7 +863,7 @@ void Fallback::removeBlock(int index)
 
 	explosionManager.spawnExplosion(
 		this, 
-		&ballTexture, 
+		&iconTexture, 
 		pos
 	);
 
@@ -1101,17 +1112,6 @@ COLOR_ARGB Fallback::getBallCountColor()
 	return graphicsNS::WHITE;
 }
 
-void Fallback::spawnPowerUp(VECTOR2 position)
-{
-	// spawn powerup
-	if (powerUp == NULL) {
-		powerUp = new PowerUp(FAST);
-		powerUp->initialize(this, 32, 32, 4, &powerUpTexture);
-		powerUp->setPosition(position);
-	}
-
-}
-
 //=============================================================================
 // ESC key quits the game
 //=============================================================================
@@ -1148,7 +1148,7 @@ void Fallback::releaseAll()
 {
 	backgroundTexture.onLostDevice();
 	titleTexture.onLostDevice();
-	ballTexture.onLostDevice();
+	iconTexture.onLostDevice();
 	shipTexture.onLostDevice();
 	blockTexture.onLostDevice();
 	buttonTexture.onLostDevice();
@@ -1171,7 +1171,7 @@ void Fallback::resetAll()
 {
 	backgroundTexture.onResetDevice();
 	titleTexture.onResetDevice();
-	ballTexture.onResetDevice();
+	iconTexture.onResetDevice();
 	shipTexture.onResetDevice();
 	detailsTexture.onResetDevice();
 	blockTexture.onResetDevice();
