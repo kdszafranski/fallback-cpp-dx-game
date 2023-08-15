@@ -677,7 +677,6 @@ void Fallback::applyPowerUp()
 		currentPowerUp = static_cast<POWERUP>(pick);
 	}
 
-
 	// apply to the correct Entity
 	switch (currentPowerUp){
 		case FAST:
@@ -693,6 +692,11 @@ void Fallback::applyPowerUp()
 
 	uiCurrentPowerUpIcon.setCurrentFrame(currentPowerUp);
 	currentPowerUpColor = powerUp->getColor();
+
+	// bounce the UI power up icon
+	StrongAnimationPtr bounce = std::make_shared<PunchScale>(&uiCurrentPowerUpDiamond, 0.2f, 1.5f);
+	m_AnimationManager.attachProcess(bounce);
+
 	ship.setHasPowerUp(true); // colors the ship
 }
 
