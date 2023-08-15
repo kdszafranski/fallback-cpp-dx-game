@@ -95,3 +95,8 @@ void Explosion::draw()
 		part.draw(part.getColorFilter());
 	}
 }
+
+void Explosion::clearAllParticles()
+{
+	particles.clear();
+}

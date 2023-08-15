@@ -27,7 +27,7 @@ using namespace std;
 Fallback::Fallback()
 {
 	editor = new Editor();
-	powerUp = nullptr;
+	powerUp = NULL;
 	racerSpawnTimer = 0;
 	hasPowerUp = false;
 	powerUpTimer = 0;
@@ -47,8 +47,8 @@ Fallback::~Fallback()
 	racers.clear();
 	m_AnimationManager.abortAllProcesses(true);
 
-	SAFE_DELETE(editor);
 	SAFE_DELETE(powerUp);
+	SAFE_DELETE(editor);
 }
 
 
@@ -93,11 +93,15 @@ void Fallback::initialize(HWND hwnd)
 /// </summary>
 void Fallback::startNewGame()
 {
+
 	// set proper bg screen state
 	setGameScreen();
 
 	// load game sprites
 	initSprites();
+
+	// stop any other animations
+	m_AnimationManager.clearAllProcesses();
 
 	// reset game variables
 	resetGame();
@@ -130,6 +134,11 @@ void Fallback::exitGame()
 	console.setLogText("");
 	isPaused = true;
 	SAFE_DELETE(powerUp);
+
+	// remove animations
+	explosionManager.clearAllParticles();
+	m_AnimationManager.clearAllProcesses();
+
 	// go to main menu
 	setTitleScreen();
 }
@@ -848,7 +857,7 @@ void Fallback::removeBlock(int index)
 	);
 
 	// no power up entity in play and ship has no powerup
-	if (powerUp == nullptr && !hasPowerUp) {
+	if (powerUp == NULL && !hasPowerUp) {
 		spawnPowerUp(pos);
 	}
 	
@@ -1095,7 +1104,7 @@ COLOR_ARGB Fallback::getBallCountColor()
 void Fallback::spawnPowerUp(VECTOR2 position)
 {
 	// spawn powerup
-	if (powerUp == nullptr) {
+	if (powerUp == NULL) {
 		powerUp = new PowerUp(FAST);
 		powerUp->initialize(this, 32, 32, 4, &powerUpTexture);
 		powerUp->setPosition(position);
