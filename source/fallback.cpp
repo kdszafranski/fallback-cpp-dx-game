@@ -697,6 +697,14 @@ void Fallback::collisions()
 			audio->playCue(CLICK);
 		}
 
+		// active power up collides with ship
+		if (powerUp) {
+			// powerUp is a ptr so dereference with *powerUp
+			if (ship.collidesWith(*powerUp, collisionVector)) {
+				audio->playCue(ZAP);
+			}
+		}
+
 		// collision ball with block
 		for (int i = 0; i < blocks.size(); i++) {
 			// must use .at() to properly access the actual block object
