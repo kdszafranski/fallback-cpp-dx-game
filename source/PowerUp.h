@@ -19,7 +19,9 @@ class PowerUp : public Entity
 {
 private:
 	POWERUP type;
+	COLOR_ARGB color;
 	Image diamond;
+
 
 public:
 	PowerUp(POWERUP pType, VECTOR2 position);
@@ -32,6 +34,7 @@ public:
 	// other
 	void setFrameByType();
 	POWERUP getPowerUpType() { return type; }
+	COLOR_ARGB getColor() { return color; }
 };
 
 

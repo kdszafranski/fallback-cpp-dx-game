@@ -639,9 +639,9 @@ void Fallback::spawnPowerUp(VECTOR2 position)
 {
 	// spawn powerup
 	if (powerUp == NULL) {
-		const int n = rand() % 1;
+		const int n = rand() % 7;
 		powerUp = new PowerUp(static_cast<POWERUP>(n), position);
-		powerUp->initialize(this, 32, 32, 4, &powerUpTexture);
+		powerUp->initialize(this, 32, 32, 8, &powerUpTexture);
 	}
 }
 
@@ -651,12 +651,20 @@ void Fallback::applyPowerUp(POWERUP p)
 	powerUpTimer = 0;
 	currentPowerUp = p;
 
+	if (p == MYSTERY) {
+		int pick = rand() % 6;
+		p = static_cast<POWERUP>(pick);
+	}
+
 	// apply to the correct Entity
 	switch (p) {
 		case FAST:
 			ship.applyPowerUp(p);
 			break;
 		case SLOW:
+			ball.applyPowerUp(p);
+			break;
+		case ZOOM:
 			ball.applyPowerUp(p);
 			break;
 	}
@@ -671,6 +679,7 @@ void Fallback::removePowerUp()
 			ship.removePowerUp();
 			break;
 		case SLOW:
+		case ZOOM:
 			ball.removePowerUp();
 			break;
 	}

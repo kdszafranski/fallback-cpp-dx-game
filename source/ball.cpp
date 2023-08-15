@@ -64,6 +64,9 @@ void Ball::draw()
 void Ball::applyPowerUp(POWERUP type)
 {
     // apply relevant power up
+    if (type == ZOOM) {
+        currentSpeed *= 1.5;
+    }
     if (type == SLOW) {
         // slow our speed
         currentSpeed *= 0.5;

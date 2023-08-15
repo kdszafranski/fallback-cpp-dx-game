@@ -27,20 +27,20 @@ PowerUp::PowerUp(POWERUP pType, VECTOR2 position) : Entity()
 
 bool PowerUp::initialize(Game* gamePtr, int width, int height, int ncols, TextureManager* powerupTexture)
 {
-    if (!diamond.initialize(gamePtr->getGraphics(), powerupNS::WIDTH, powerupNS::WIDTH, 5, powerupTexture))
+    if (!diamond.initialize(gamePtr->getGraphics(), powerupNS::WIDTH, powerupNS::WIDTH, 8, powerupTexture))
     {
         throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing power up diamond image"));
         return false;
     }
     diamond.setPosition(getX(), getY()); // top left, will roatate around center
-    diamond.setCurrentFrame(4);
+    diamond.setCurrentFrame(7);
 
     return(Entity::initialize(gamePtr, width, height, ncols, powerupTexture));
 }
 
 void PowerUp::draw()
 {
-    diamond.draw(graphicsNS::FB_STRONG); // orange
+    diamond.draw(color); // orange
     Image::draw();
 }
 
@@ -58,19 +58,20 @@ void PowerUp::update(float frameTime)
 
 void PowerUp::setFrameByType()
 {
-    //  SLOW, MULTIBALL, GROW, FAST };
+    setCurrentFrame(type);
+
     switch (type) {
     case SLOW:
-        setCurrentFrame(SLOW);
-        break;
-    case MULTIBALL:
-        setCurrentFrame(MULTIBALL);
-        break;
     case FAST:
-        setCurrentFrame(FAST);
-        break;
+    case MULTIBALL:
     case GROW:
-        setCurrentFrame(GROW);
+        color = graphicsNS::FB_STRONG;
         break;
+    case ZOOM:
+    case TINY:
+        color = graphicsNS::FB_HARD;        
+        break;
+    case MYSTERY:
+        color = graphicsNS::FB_INVINCIBLE;
     }
 }
