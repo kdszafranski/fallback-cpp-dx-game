@@ -7,6 +7,7 @@ PowerUp::PowerUp(POWERUP pType) : Entity()
     spriteData.height = powerupNS::WIDTH;
     spriteData.x = powerupNS::X;                   // location on screen
     spriteData.y = powerupNS::Y;
+    visible = true;
 
     // set bounding box for BOX collider
     collisionType = entityNS::BOX;      // override's Image default to CIRCLE
