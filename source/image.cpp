@@ -11,12 +11,14 @@ Image::Image()
 {
 	initialized = false;            // set true when successfully initialized
 	myId = 0;
-	readyToDestroy = false;
+	readyToDestroy = false;			// used by animation manager to know when to remove this object
 	spriteData.width = 2;
 	spriteData.height = 2;
 	spriteData.x = 0.0;
 	spriteData.y = 0.0;
 	spriteData.scale = 1.0;
+	spriteData.xScale = 1.0;
+	spriteData.yScale = 1.0;
 	spriteData.angle = 0.0;
 	spriteData.rect.left = 0;       // used to select one frame from multi-frame image
 	spriteData.rect.top = 0;

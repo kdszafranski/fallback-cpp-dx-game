@@ -88,6 +88,8 @@ struct SpriteData
     float       x;          // screen location (top left corner of sprite)
     float       y;
     float       scale;      // <1 smaller, >1 bigger
+    float       xScale;
+    float       yScale;
     float       angle;      // rotation angle in radians
     RECT        rect;       // used to select an image from a larger texture
     LP_TEXTURE  texture;    // pointer to texture

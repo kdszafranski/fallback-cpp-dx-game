@@ -233,7 +233,7 @@ void Graphics::drawSprite(const SpriteData &spriteData, COLOR_ARGB color)
     // Screen position of the sprite
     D3DXVECTOR2 translate = D3DXVECTOR2((float)spriteData.x,(float)spriteData.y);
     // Scaling X,Y
-    D3DXVECTOR2 scaling(spriteData.scale,spriteData.scale);
+    D3DXVECTOR2 scaling(spriteData.xScale,spriteData.yScale);
     if (spriteData.flipHorizontal)  // if flip horizontal
     {
         scaling.x *= -1;            // negative X scale to flip

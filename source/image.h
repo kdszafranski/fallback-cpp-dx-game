@@ -140,8 +140,17 @@ public:
         return Vector2 { spriteData.x, spriteData.y };
     }
 
-    // Set scale.
-    virtual void setScale(float s) { spriteData.scale = s; }
+    // Set scale to both axes
+    virtual void setScale(float s) { 
+        spriteData.scale = s; // used for legacy purposes
+        spriteData.xScale = s;
+        spriteData.yScale = s;
+    }
+    // Set scale with differing scale on each axis
+    virtual void setScale(float x, float y) {
+        spriteData.xScale = x;
+        spriteData.yScale = y;
+    }
 
     // Set rotation angle in degrees.
     // 0 degrees is up. Angles progress clockwise.
