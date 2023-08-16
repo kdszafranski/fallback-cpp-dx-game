@@ -19,6 +19,7 @@ public:
     // lifecycle
     void update(float deltaTime);
     void draw();
+    void clearAllParticles();
 
     // accessor
     int getParticleCount() { return particles.size(); }

@@ -12,9 +12,9 @@ namespace ballNS
     const int HEIGHT = 16;                  // image height
     const int X = 0;   // starting location on screen
     const int Y = 0;
-    const float SPEED = 190;                // 
+    const float SPEED = 1.1;                // 
     const float MASS = 0;// 10.0f;              // mass
-    const int   TEXTURE_COLS = 4;           // texture has 8 columns
+    const int   TEXTURE_COLS = 5;           // texture has 8 columns
     const int   BALL_START_FRAME = 0;      // ball starts at frame 0
     const int   BALL_END_FRAME = 0;        // ball animation 
 }
@@ -23,6 +23,7 @@ namespace ballNS
 class Ball : public Entity
 {
 private:
+    float currentSpeed;
 
 public:
     // constructor
@@ -38,6 +39,13 @@ public:
         TextureManager* textureM);
     void update(float frameTime);
     void damage(WEAPON);
-};
-#endif
 
+    // power ups
+    void applyPowerUp(POWERUP type) override;
+    void removePowerUp() override;
+
+    // adjusts speed up for difficulty
+    void bumpSpeedUp();
+};
+
+#endif

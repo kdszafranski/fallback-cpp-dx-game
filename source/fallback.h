@@ -26,6 +26,7 @@
 #include "level.h"
 #include "Explosion.h"
 #include <memory>
+#include "PowerUp.h"
 
 //=============================================================================
 // Create game class
@@ -42,37 +43,46 @@ private:
     std::vector<Level> levels;
     std::list<Image> racers;
     bool gameOver = false;
+    bool hasPowerUp = false;
     int score;
     int ballCount;
     int currentLevel;
     float racerSpawnTimer;
+    float powerUpTimer;
+    float powerUpTimeLimit;
 
     // Game objects
+    POWERUP currentPowerUp;
     TextDX dxScoreFont;
     TextDX dxBallCount;
     Console console;
     Editor* editor;
     AnimationManager m_AnimationManager;
     Explosion explosionManager;
+    PowerUp* powerUp;
 
     // textures/sprites
     TextureManager backgroundTexture;
     TextureManager titleTexture;
-    TextureManager ballTexture;
+    TextureManager iconTexture;
     TextureManager shipTexture;
     TextureManager detailsTexture;
     TextureManager blockTexture;
     TextureManager buttonTexture;
     TextureManager gameOverTexture;
+    TextureManager powerUpTexture;
     Image backgroundImage;
     Image titleImage;
     Image gameOverImage;
-    Image ballCountXImage;
-    Entity ballCountIcon; // just the ship sprite
     Button newGameButton;
     Button editorButton;
     Button creditsButton;
-
+    // ui images
+    Image ballCountXImage;
+    Image ballCountIcon;
+    Image uiCurrentPowerUpIcon;
+    Image uiCurrentPowerUpDiamond;
+    COLOR_ARGB currentPowerUpColor;
 
     // ball shadow
     float timer;
@@ -122,6 +132,9 @@ public:
     void removeBlock(int index);
     void restartBall();
     COLOR_ARGB getBallCountColor();
+    void spawnPowerUp(VECTOR2 position);
+    void applyPowerUp();
+    void removePowerUp();
 
     // Game state/flow
     void startNewGame();
@@ -130,6 +143,7 @@ public:
     void initSprites();
     void initShip();
     void initBall();
+    void initUI();
     void initBlocks();
     void initMessageSprites();
     void setTitleScreen();

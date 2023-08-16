@@ -27,8 +27,13 @@ using namespace std;
 Fallback::Fallback()
 {
 	editor = new Editor();
-	animId = 0;
+	powerUp = NULL;
 	racerSpawnTimer = 0;
+	hasPowerUp = false;
+	powerUpTimer = 0;
+	currentPowerUp = FAST; // not actually applied, null would be better
+	powerUpTimeLimit = 5.0f;
+	animId = 0;
 }
 
 //=============================================================================
@@ -42,6 +47,7 @@ Fallback::~Fallback()
 	racers.clear();
 	m_AnimationManager.abortAllProcesses(true);
 
+	SAFE_DELETE(powerUp);
 	SAFE_DELETE(editor);
 }
 
@@ -93,6 +99,11 @@ void Fallback::startNewGame()
 	// load game sprites
 	initSprites();
 
+	// stop any other animations
+	m_AnimationManager.clearAllProcesses();
+	explosionManager.clearAllParticles();
+	racers.clear();
+
 	// reset game variables
 	resetGame();
 
@@ -104,14 +115,16 @@ void Fallback::startNewGame()
 }
 
 /// <summary>
-/// Resets score and board
+/// Resets score, board, and general game state
 /// </summary>
 void Fallback::resetGame()
 {
-	timer = 0;
-	ballCount = MAX_BALLS;
+	hasPowerUp = false;
 	gameOver = false;
 	isPaused = false;
+	ballCount = MAX_BALLS;
+	timer = 0;
+	powerUpTimer = 0;
 	score = 0;
 	currentLevel = 0; // points into levels vector, 0 is the first level
 	console.resetLog();
@@ -121,6 +134,12 @@ void Fallback::exitGame()
 {
 	console.setLogText("");
 	isPaused = true;
+	SAFE_DELETE(powerUp);
+
+	// remove animations
+	explosionManager.clearAllParticles();
+	m_AnimationManager.clearAllProcesses();
+
 	// go to main menu
 	setTitleScreen();
 }
@@ -137,6 +156,15 @@ void Fallback::initSprites() {
 	initBlocks();
 	// ball sprites
 	initBall();
+	// ui/hud
+	initUI();
+
+	// power ups texture
+	if (!powerUpTexture.initialize(graphics, POWERUP_PATH))
+	{
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing power up texture"));
+	}
+
 }
 
 
@@ -150,7 +178,6 @@ void Fallback::initBackgrounds()
 	{
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing background texture"));
 	}
-
 	// game bg image
 	if (!backgroundImage.initialize(graphics, 0, 0, 2, &backgroundTexture))
 	{
@@ -201,7 +228,7 @@ void Fallback::initButtons()
 	}
 
 	creditsButton.setCurrentFrame(1);
-	creditsButton.setPosition(400 -creditsButton.getSpriteData().width / 2, 510);
+	creditsButton.setPosition(400 - creditsButton.getSpriteData().width / 2, 510);
 
 	// racers/details
 	if (!detailsTexture.initialize(graphics, RACER_PATH)) {
@@ -255,39 +282,58 @@ void Fallback::initShip()
 //=============================================================================
 void Fallback::initBall()
 {
-	if (!ballTexture.initialize(graphics, ICONS_PATH))
+	if (!iconTexture.initialize(graphics, ICONS_PATH))
 	{
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ball texture"));
 	}
-	if (!ball.initialize(this, ballNS::WIDTH, ballNS::HEIGHT, ballNS::TEXTURE_COLS, &ballTexture))
+	if (!ball.initialize(this, ballNS::WIDTH, ballNS::HEIGHT, ballNS::TEXTURE_COLS, &iconTexture))
 	{
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ball entity"));
 	}
 	ball.setCurrentFrame(0);
 
 	// ball shadow image
-	if (!shadowBallImage.initialize(graphics, ballNS::WIDTH, ballNS::HEIGHT, ballNS::TEXTURE_COLS, &ballTexture))
+	if (!shadowBallImage.initialize(graphics, ballNS::WIDTH, ballNS::HEIGHT, ballNS::TEXTURE_COLS, &iconTexture))
 	{
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ball shadow image"));
 	}
-	shadowBallImage.setCurrentFrame(0);
+	shadowBallImage.setCurrentFrame(4);
 
+}
+
+void Fallback::initUI()
+{
 	// ball count icon image
-	if (!ballCountIcon.initialize(this, ballNS::WIDTH, ballNS::HEIGHT, ballNS::TEXTURE_COLS, &ballTexture))
+	if (!ballCountIcon.initialize(this->graphics, ballNS::WIDTH, ballNS::HEIGHT, ballNS::TEXTURE_COLS, &iconTexture))
 	{
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ball count icon"));
 	}
-	ballCountIcon.setActive(false); // no collisions please
 	ballCountIcon.setCurrentFrame(0);
 	ballCountIcon.setPosition(736, 68);
 
 	// ball count X icon
-	if (!ballCountXImage.initialize(graphics, ballNS::WIDTH, ballNS::HEIGHT, ballNS::TEXTURE_COLS, &ballTexture))
+	if (!ballCountXImage.initialize(graphics, ballNS::WIDTH, ballNS::HEIGHT, ballNS::TEXTURE_COLS, &iconTexture))
 	{
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ball count X icon"));
 	}
 	ballCountXImage.setCurrentFrame(1);
 	ballCountXImage.setPosition(ballCountIcon.getX() + ballCountIcon.getWidth() + 4, ballCountIcon.getY());
+
+	// power up stuff
+	if (!uiCurrentPowerUpDiamond.initialize(this->graphics, powerupNS::WIDTH, powerupNS::HEIGHT, powerupNS::TEXTURE_COLS, &powerUpTexture))
+	{
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing power up UI icon"));
+	}
+	uiCurrentPowerUpDiamond.setCurrentFrame(7);
+	uiCurrentPowerUpDiamond.setPosition(GAME_WIDTH / 2 - powerupNS::WIDTH, GAME_HEIGHT - powerupNS::HEIGHT * 1.5);
+
+	if (!uiCurrentPowerUpIcon.initialize(this->graphics, powerupNS::WIDTH, powerupNS::HEIGHT, powerupNS::TEXTURE_COLS, &powerUpTexture))
+	{
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing power up Letter"));
+	}
+	uiCurrentPowerUpIcon.setCurrentFrame(currentPowerUp);
+	uiCurrentPowerUpIcon.setPosition(uiCurrentPowerUpDiamond.getPosition());
+
 }
 
 //=============================================================================
@@ -319,6 +365,8 @@ void Fallback::startNextLevel()
 
 	m_AnimationManager.clearAllProcesses();
 	racers.clear();
+	removePowerUp();
+	SAFE_DELETE(powerUp);
 
 	loadLevel(currentLevel);
 	restartBall();
@@ -486,10 +534,10 @@ void Fallback::update(float frameTime)
 			if (!gameOver) {
 				// update position of all game objects
 				ship.update(frameTime);
+				ball.update(frameTime);
 
 				timer += frameTime;
-
-				// every second
+				// every second adjust ball trail
 				if (timer > BALLSHADOW_INTERVAL) {
 					recentBallPositions.push_back(VECTOR2(ball.getX(), ball.getY()));
 
@@ -497,25 +545,48 @@ void Fallback::update(float frameTime)
 						// remove first
 						recentBallPositions.erase(recentBallPositions.begin());
 					}
-
 					timer = 0;
 				}
 
-				ball.update(frameTime);
-				
-				// particles
+				// handle power ups
+				if (hasPowerUp) {
+					powerUpTimer += frameTime;
+					if (powerUpTimer > powerUpTimeLimit) {
+						removePowerUp();
+					}
+				}
+
+				// update particles
 				explosionManager.update(frameTime);
 
-				// update animations
+				// update Entity tweens/animations
 				m_AnimationManager.updateProcesses(frameTime);
 
+				// update falling power up
+				if (powerUp) {
+					powerUp->update(frameTime);
+					// off the screen?
+					if (powerUp->getY() > GAME_HEIGHT) {
+						SAFE_DELETE(powerUp);
+					}
+				}
+
 				// check if the ball went off below ship
-				if (ball.getY() > GAME_HEIGHT - ballNS::HEIGHT) {
+				if (ball.getY() > GAME_HEIGHT) {
 					audio->playCue(ZAP);
 					loseBall();
 					restartBall();
 				}
+
+				// every 5 seconds there is a chance to spawn racers
+				racerSpawnTimer += frameTime;
+				if (racerSpawnTimer > 5) {
+					spawnRacers();
+					racerSpawnTimer = 0;
+				}
+
 			} // game over
+
 		}  // paused
 	} // GAME screen
 
@@ -527,15 +598,10 @@ void Fallback::update(float frameTime)
 
 	// they run on all screens
 	cleanUpRacerList();
-
-	// every 5 seconds there is a chance to spawn racers
-	racerSpawnTimer += frameTime;
-	if (racerSpawnTimer > 5) {
-		spawnRacers();
-		racerSpawnTimer = 0;
-	}
+	
 }
 
+#pragma region Racers
 void Fallback::spawnRacers()
 {
 	// chance
@@ -583,6 +649,75 @@ void Fallback::cleanUpRacerList()
 		}
 	}
 }
+#pragma endregion
+
+
+#pragma region PowerUps
+
+// Creates the Entity on the screen
+void Fallback::spawnPowerUp(VECTOR2 position)
+{
+	// spawn powerup
+	if (powerUp == NULL) {
+		const int n = rand() % 7;
+		powerUp = new PowerUp(static_cast<POWERUP>(n), position);
+		powerUp->initialize(this, 32, 32, 8, &powerUpTexture);
+	}
+}
+
+// applies the collided Power up
+void Fallback::applyPowerUp()
+{
+	hasPowerUp = true;
+	powerUpTimer = 0;
+	currentPowerUp = powerUp->getPowerUpType();
+
+	if (currentPowerUp == MYSTERY) {
+		int pick = rand() % 6; // pick one of the others
+		currentPowerUp = static_cast<POWERUP>(pick);
+	}
+
+	// apply to the correct Entity
+	switch (currentPowerUp){
+		case FAST:
+			ship.applyPowerUp(currentPowerUp);
+			break;
+		case SLOW:
+			ball.applyPowerUp(currentPowerUp);
+			break;
+		case ZOOM:
+			ball.applyPowerUp(currentPowerUp);
+			break;
+	}
+
+	ship.applyPowerUp(GROW);
+
+	uiCurrentPowerUpIcon.setCurrentFrame(currentPowerUp);
+	currentPowerUpColor = powerUp->getColor();
+
+	// bounce the UI power up icon
+	StrongAnimationPtr bounce = std::make_shared<PunchScale>(&uiCurrentPowerUpDiamond, 0.2f, 1.5f);
+	m_AnimationManager.attachProcess(bounce);
+
+	ship.setHasPowerUp(true); // colors the ship
+}
+
+void Fallback::removePowerUp()
+{
+	hasPowerUp = false;
+	powerUpTimer = 0;
+	//switch (currentPowerUp) {
+	//	case SLOW:
+	//	case ZOOM:
+	//		ball.removePowerUp();
+	//		break;
+	//}
+
+	// clear up speeds and such
+	ball.removePowerUp();
+	ship.removePowerUp(); // remove color
+}
+#pragma endregion
 
 void Fallback::CheckPauseInput()
 {
@@ -593,6 +728,7 @@ void Fallback::CheckPauseInput()
 		}
 	}
 }
+
 
 void Fallback::CheckCheatInput()
 {
@@ -614,11 +750,17 @@ bool Fallback::isGameOver()
 	return false;
 }
 
+//=============================================================================
+// Reset things so a new ball works like the beginning of the game
+//=============================================================================
 void Fallback::loseBall()
 {
 	ballCount--;
 
-	// bounce icon
+	// we lose power ups
+	removePowerUp();
+
+	// bounce ball UI icon
 	StrongAnimationPtr animPtr = std::make_shared<PunchScale>(&ballCountIcon, 0.2f, 1.5f);
 	m_AnimationManager.attachProcess(animPtr);
 }
@@ -634,7 +776,7 @@ void Fallback::restartBall()
 		console.setLogText("GAME OVER!");
 	} else {
 		ball.setPosition(220, 300);
-		ball.setVelocity(VECTOR2(ballNS::SPEED - 30, ballNS::SPEED)); // move!
+		ball.setVelocity(VECTOR2(180, 150)); // move!
 
 		recentBallPositions.clear();
 		recentBallPositions.push_back(VECTOR2(ball.getX(), ball.getY()));
@@ -684,6 +826,22 @@ void Fallback::collisions()
 			audio->playCue(CLICK);
 		}
 
+		// active power up collides with ship
+		if (powerUp) {
+			// powerUp is a ptr so dereference with *powerUp
+			if (ship.collidesWith(*powerUp, collisionVector)) {
+				audio->playCue(ZAP);
+
+				score += POWERUP_POINT_VALUE;
+				applyPowerUp();
+
+				explosionManager.spawnExplosion(this, &iconTexture, { powerUp->getX(), powerUp->getY() });
+
+				// remove power up entity
+				SAFE_DELETE(powerUp);
+			}
+		}
+
 		// collision ball with block
 		for (int i = 0; i < blocks.size(); i++) {
 			// must use .at() to properly access the actual block object
@@ -699,8 +857,8 @@ void Fallback::collisions()
 				if (block->getBlockType() != INVINCIBLE) {
 					audio->playCue(CLUNK);
 
-					block->damage(BALL);
 					// check if ball is dead
+					block->damage(BALL);
 					if (block->getHealth() <= 0) {
 						score += block->getPointValue() * 2; // double for destroying the block
 						removeBlock(i);
@@ -715,21 +873,21 @@ void Fallback::collisions()
 					// bounce away from ball
 					Vector2 end = block->getPosition();
 					switch (direction) {
-					case 1:
-						// go down
-						end.y += 3.0f;
-						break;
-					case 2: // go left
-						end.x -= 3.0f;
-						break;
-					case 3: // go up
-						end.y -= 3.0f;
-						break;
-					case 4: // go right
-						end.x += 3.0f;
-						break;
-					default: // 0 up
-						end.y -= 3.0f;
+						case 1:
+							// go down
+							end.y += 3.0f;
+							break;
+						case 2: // go left
+							end.x -= 3.0f;
+							break;
+						case 3: // go up
+							end.y -= 3.0f;
+							break;
+						case 4: // go right
+							end.x += 3.0f;
+							break;
+						default: // 0 up
+							end.y -= 3.0f;
 					}
 					// reset just in case
 					block->setCurrentFrame(0);
@@ -757,20 +915,26 @@ void Fallback::collisions()
 void Fallback::removeBlock(int index)
 {
 	// explode
-	const Vector2 pos = { 
+	const VECTOR2 pos = {
 		blocks.at(index).getCenterX(),
-		blocks.at(index).getCenterY() 
+		blocks.at(index).getCenterY()
 	};
 
-	explosionManager.spawnExplosion(
-		this, 
-		&ballTexture, 
-		{ pos.x, pos.y }
-	);
-	
+	// send parts flying
+	explosionManager.spawnExplosion(this, &iconTexture, pos);
+
+	// destroying blocks increases the ball speed
+	ball.bumpSpeedUp();
+
+	// no power up entity in play and ship has no powerup
+	if (powerUp == NULL && !hasPowerUp) {
+		spawnPowerUp(pos);
+	}
+
 	audio->playCue(POP);
+
 	blocks.erase(blocks.begin() + index);
-	
+
 }
 
 void Fallback::checkGameOver()
@@ -807,17 +971,17 @@ void Fallback::render()
 
 		// screen/game state
 		switch (currentScreen) {
-		case TITLE:
-			renderTitleScreen();
-			break;
-		case GAME:
-			renderGameScreen();
-			break;
-		case EDITOR:
-			backgroundImage.draw();
-			renderRacers();
-			editor->draw();
-			break;
+			case TITLE:
+				renderTitleScreen();
+				break;
+			case GAME:
+				renderGameScreen();
+				break;
+			case EDITOR:
+				backgroundImage.draw();
+				renderRacers();
+				editor->draw();
+				break;
 		}
 
 		graphics->spriteEnd();
@@ -933,7 +1097,7 @@ void Fallback::renderGameScreen()
 			if (i > 0) { // leaves the last 2 the same size
 				shadowBallImage.setScale(i * 0.23);
 			}
-			shadowBallImage.draw(graphicsNS::BLACK50); // ??
+			shadowBallImage.draw(graphicsNS::WHITE & graphicsNS::ALPHA50); // ??
 		}
 
 		ball.draw();
@@ -947,6 +1111,11 @@ void Fallback::renderGameScreen()
 
 	// particles
 	explosionManager.draw();
+
+	// power up
+	if (powerUp) {
+		powerUp->draw();
+	}
 
 	// UI
 	renderUI();
@@ -984,20 +1153,26 @@ void Fallback::renderUI()
 	// ball count icon and x
 	ballCountIcon.draw(ballCountIcon.getColorFilter());
 	ballCountXImage.draw();
+
+	// power ups
+	if (hasPowerUp) {
+		uiCurrentPowerUpDiamond.draw(currentPowerUpColor);
+		uiCurrentPowerUpIcon.draw();
+	}
 }
 
 COLOR_ARGB Fallback::getBallCountColor()
 {
 	switch (ballCount) {
-	case 1:
-		return graphicsNS::FB_HARD;
-		break;
-	case 2:
-		return graphicsNS::FB_STRONG;
-		break;
-	case 3:
-		return graphicsNS::FB_INVINCIBLE;
-		break;
+		case 1:
+			return graphicsNS::FB_HARD;
+			break;
+		case 2:
+			return graphicsNS::FB_STRONG;
+			break;
+		case 3:
+			return graphicsNS::FB_INVINCIBLE;
+			break;
 	}
 
 	return graphicsNS::WHITE;
@@ -1010,15 +1185,15 @@ void Fallback::CheckForExit() {
 	// ESC key always quits
 	if (input->wasKeyPressed(ESC_KEY)) {
 		switch (currentScreen) {
-		case TITLE:
-			PostQuitMessage(0); // quits app
-			break;
-		case GAME:
-			exitGame();
-			break;
-		case EDITOR:
-			exitEditor();
-			break;
+			case TITLE:
+				PostQuitMessage(0); // quits app
+				break;
+			case GAME:
+				exitGame();
+				break;
+			case EDITOR:
+				exitEditor();
+				break;
 		}
 	}
 }
@@ -1039,7 +1214,7 @@ void Fallback::releaseAll()
 {
 	backgroundTexture.onLostDevice();
 	titleTexture.onLostDevice();
-	ballTexture.onLostDevice();
+	iconTexture.onLostDevice();
 	shipTexture.onLostDevice();
 	blockTexture.onLostDevice();
 	buttonTexture.onLostDevice();
@@ -1062,7 +1237,7 @@ void Fallback::resetAll()
 {
 	backgroundTexture.onResetDevice();
 	titleTexture.onResetDevice();
-	ballTexture.onResetDevice();
+	iconTexture.onResetDevice();
 	shipTexture.onResetDevice();
 	detailsTexture.onResetDevice();
 	blockTexture.onResetDevice();

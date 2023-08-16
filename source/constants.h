@@ -46,6 +46,7 @@ const char SHIP_PATH[] = "pictures\\ship.png";
 const char RACER_PATH[] = "pictures\\racers.png";
 const char BLOCK_PATH[] = "pictures\\blocks.png";
 const char NG_BUTTON_PATH[] = "pictures\\buttons.png";
+const char POWERUP_PATH[] = "pictures\\powerup-letters.png";
 
 
 // window
@@ -63,6 +64,7 @@ const float MIN_FRAME_TIME = 1.0f/FRAME_RATE;   // minimum desired time for 1 fr
 const float MAX_FRAME_TIME = 1.0f/MIN_FRAME_RATE; // maximum time used in calculations
 const short MAX_BALLS = 3;
 const float BALLSHADOW_INTERVAL = 0.07;
+const int POWERUP_POINT_VALUE = 50;
 
 // weapon types
 enum WEAPON { TORPEDO, SHIP, PLANET, BALL };
@@ -70,6 +72,16 @@ enum WEAPON { TORPEDO, SHIP, PLANET, BALL };
 enum BLOCK { WEAK, STRONG, HARD, METAL, INVINCIBLE, NONE };
 // screen states
 enum SCREEN { TITLE, GAME, EDITOR, CREDITS };
+// Powerups
+// Slow - slows ball x
+// Multiball - adds 2 more balls into play
+// Fast - speeds up ship x
+// Grow - lengthens ship along x-axis
+// Penalties
+// Zoom - speeds up ball x
+// Tiny - shrinks ship
+// Mystery - picks one of the others randomly
+enum POWERUP { SLOW, MULTIBALL, FAST, GROW, ZOOM, TINY, MYSTERY };
 
 
 // audio files required by audio.cpp

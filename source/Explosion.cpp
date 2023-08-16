@@ -14,7 +14,7 @@ Explosion::~Explosion()
 
 void Explosion::spawnExplosion(Game* game, TextureManager* texture, VECTOR2 pos)
 {
-	//srand((unsigned)time(0));
+	srand((unsigned)time(0));
 	position = pos;
 	partId++;
 	if (partId > 1000) {
@@ -94,4 +94,9 @@ void Explosion::draw()
 	for (auto& part : particles) {
 		part.draw(part.getColorFilter());
 	}
+}
+
+void Explosion::clearAllParticles()
+{
+	particles.clear();
 }

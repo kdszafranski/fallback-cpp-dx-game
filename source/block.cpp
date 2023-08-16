@@ -70,36 +70,6 @@ void Block::draw()
 }
 
 //=============================================================================
-// update
-// typically called once per frame
-// frameTime is used to regulate the speed of movement and animation
-//=============================================================================
-void Block::update(float frameTime)
-{
-    //if (isAnimating) {
-    //    // scale
-    //    float const scale = getScale();
-    //    if (scale > animScale && scale < originalScale) {
-    //        // go down
-    //         setScale(getScale() - 0.025f);
-    //    } else {
-    //        if (scale > originalScale) {
-    //            // done
-    //            setScale(originalScale);
-    //            isAnimating = false;
-    //        } else {
-    //            // going up
-    //            animScale = originalScale; // need to keep going up
-    //            setScale(getScale() + 0.025f);
-    //        }
-    //    }
-    //} else {
-    //    // blocks don't move
-    //    Entity::update(frameTime);
-    //}
-}
-
-//=============================================================================
 // damage
 //=============================================================================
 void Block::damage(WEAPON weapon)
@@ -110,9 +80,6 @@ void Block::damage(WEAPON weapon)
             // shift my type down
             blockType = static_cast<BLOCK>(blockType - 1);
             setBlockColorByType(); // update my color
-
-            // animate the block
-            //bounceScale(1.0f, 0.75f);
         }
     }
 }
@@ -136,13 +103,5 @@ void Block::setBlockColorByType()
             color = graphicsNS::FB_INVINCIBLE;
             break;
         }
-}
-
-void Block::bounceScale(float initialScale, float endScale)
-{
-    isAnimating = true;
-    animScale = endScale;
-    // needs to be less than originalScale to trigger
-    setScale(0.999f);
 }
 

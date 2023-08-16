@@ -27,6 +27,7 @@ Ball::Ball() : Entity()
     velocity.x = 0;                             // velocity X
     velocity.y = 0;                             // velocity Y
     frameDelay = 1;
+    currentSpeed = ballNS::SPEED;   // starting speed
 
     startFrame = ballNS::BALL_START_FRAME;     // first frame of ship animation
     endFrame = ballNS::BALL_END_FRAME;     // last frame of ship animation
@@ -55,6 +56,34 @@ bool Ball::initialize(Game* gamePtr, int width, int height, int ncols,
 void Ball::draw()
 {
     Image::draw();              // draw ball
+}
+
+//=============================================================================
+// apply the given power up
+//=============================================================================
+void Ball::applyPowerUp(POWERUP type)
+{
+    // apply relevant power up
+    if (type == ZOOM) {
+        currentSpeed *= 1.5;
+    }
+    if (type == SLOW) {
+        // slow our speed
+        currentSpeed *= 0.5;
+    }
+}
+
+//=============================================================================
+// remove power ups
+//=============================================================================
+void Ball::removePowerUp()
+{
+    currentSpeed = ballNS::SPEED;
+}
+
+void Ball::bumpSpeedUp()
+{
+    currentSpeed += 0.1f;
 }
 
 //=============================================================================
@@ -162,7 +191,7 @@ void Ball::bounceOffShip(VECTOR2& collisionVector, VECTOR2& collisionPosition, S
     if (collisionPosition.x < middleX) {
         // left-hand side, aim left
         velocity.y = -velocity.y;
-        velocity.x = -250;
+        velocity.x = -200;
     } else if(collisionPosition.x > middleX && collisionPosition.x < rightX) {
         // middle, just reflect upish
         velocity.y = -velocity.y;
@@ -170,7 +199,7 @@ void Ball::bounceOffShip(VECTOR2& collisionVector, VECTOR2& collisionPosition, S
     } else {
         // right third, aim right
         velocity.y = -velocity.y;
-        velocity.x = 250;
+        velocity.x = 200;
     }
 
 }
@@ -184,8 +213,8 @@ void Ball::update(float frameTime)
 {
     Entity::update(frameTime);
     
-    spriteData.x += frameTime * velocity.x;         // move along X 
-    spriteData.y += frameTime * velocity.y;         // move along Y
+    spriteData.x += frameTime * velocity.x * currentSpeed;         // move along X 
+    spriteData.y += frameTime * velocity.y * currentSpeed;         // move along Y
 
     // Bounce off walls
     // NOT done with actual collisions, this is done strictly from screen position

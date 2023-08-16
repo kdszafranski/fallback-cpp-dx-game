@@ -12,6 +12,9 @@
 //=============================================================================
 Ship::Ship() : Entity()
 {
+    currentSpeed = shipNS::SPEED;
+    hasPowerUp = false;
+
     spriteData.width = shipNS::WIDTH;           // size of Ship1
     spriteData.height = shipNS::HEIGHT;
     spriteData.x = shipNS::X;                   // location on screen
@@ -51,7 +54,39 @@ bool Ship::initialize(Game *gamePtr, int width, int height, int ncols,
 //=============================================================================
 void Ship::draw()
 {
-    Image::draw();              // draw ship
+    if (hasPowerUp) {
+        Image::draw(graphicsNS::FB_METAL);
+    } else {
+        Image::draw(); // white
+    }
+}
+
+//=============================================================================
+// apply the given power up
+//=============================================================================
+void Ship::applyPowerUp(POWERUP type)
+{
+    // apply relevant power up
+    if (type == FAST) {
+        // bump our speed
+        currentSpeed *= 1.5;
+    }
+    if (type == GROW) {
+        // uf da
+        spriteData.width *= 1.5;
+    }
+    
+    hasPowerUp = true;
+}
+
+//=============================================================================
+// remove power ups
+//=============================================================================
+void Ship::removePowerUp()
+{
+    currentSpeed = shipNS::SPEED;
+    spriteData.width = shipNS::WIDTH;
+    hasPowerUp = false;
 }
 
 //=============================================================================
@@ -63,12 +98,12 @@ void Ship::update(float frameTime)
 {
     // move right
     if (input->isKeyDown(SHIP_RIGHT_KEY)) {
-        spriteData.x += frameTime * shipNS::SPEED;
+        spriteData.x += frameTime * currentSpeed;
     }
 
     // move left
     if (input->isKeyDown(SHIP_LEFT_KEY)) {
-       spriteData.x -= frameTime * shipNS::SPEED;
+       spriteData.x -= frameTime * currentSpeed;
     }
 
     // keep it on the screen
