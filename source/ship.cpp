@@ -71,6 +71,10 @@ void Ship::applyPowerUp(POWERUP type)
         // bump our speed
         currentSpeed *= 1.5;
     }
+    if (type == GROW) {
+        // uf da
+        spriteData.width *= 1.5;
+    }
     
     hasPowerUp = true;
 }
@@ -81,6 +85,7 @@ void Ship::applyPowerUp(POWERUP type)
 void Ship::removePowerUp()
 {
     currentSpeed = shipNS::SPEED;
+    spriteData.width = shipNS::WIDTH;
     hasPowerUp = false;
 }
 

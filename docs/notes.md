@@ -14,8 +14,8 @@
 - [ ] choose Vector standard
 
 ## Technical Challenges
-- [ ] separate direction from speed
 - [ ] add event manager, implement Observer pattern: https://gameprogrammingpatterns.com/observer.html
+- [X] separate direction from speed
 - [X] make level editor
 - [X] added animation/process manager to handle multi-frame animations
 - [ ] consider memory/profiling
@@ -24,11 +24,14 @@
 - [ ] allow blocks of varying sizes
 
 ## Graphics
-- [ ] add more animations
-- [x] ball trail
-- [x] juicier, particles
 - [ ] custom cursor (resource)
 - [ ] screen transitions (start with fading in/out)
+- [ ] screen shake on ball loss
+- [ ] delay between ball restart
+- [ ] ship explosion on game over
+- [x] add more animations
+- [x] ball trail
+- [x] juicier, particles
 - [x] clean up score UI
 - [x] clean up balls remaining
 
@@ -36,3 +39,12 @@
 ## Audio
 - [ ] better sfx
 - [ ] add music
+
+
+Multiball
+- change to vector of Ships
+    - need to change every instance to a loop, would have 1 ball 99% of the time
+
+Grow
+- stretch graphic, update Image and rendering to allow per-axis scaling
+- 
