@@ -229,9 +229,15 @@ void Graphics::drawSprite(const SpriteData& spriteData, COLOR_ARGB color, bool f
 	if (spriteData.texture == NULL)      // if no texture
 		return;
 
-	// Find center of sprite
-	D3DXVECTOR2 spriteCenter = D3DXVECTOR2((float)(spriteData.width / 2 * spriteData.xScale),
-		(float)(spriteData.height / 2 * spriteData.yScale));
+	// Find center of sprite... 
+	D3DXVECTOR2 spriteCenter;
+	if (fromCenter) {
+		// if scaling FROM the center, ignore the scale as it will move our real center
+		spriteCenter = D3DXVECTOR2((float)(spriteData.width / 2), (float)(spriteData.height / 2));
+	} else {
+		spriteCenter = D3DXVECTOR2((float)(spriteData.width / 2 * spriteData.xScale), (float)(spriteData.height / 2 * spriteData.yScale));
+	}
+	
 	// Screen position of the sprite
 	D3DXVECTOR2 translate = D3DXVECTOR2((float)spriteData.x, (float)spriteData.y);
 	// Scaling X,Y
@@ -259,7 +265,7 @@ void Graphics::drawSprite(const SpriteData& spriteData, COLOR_ARGB color, bool f
 		// top left
 		D3DXMatrixTransformation2D(
 			&matrix,                // the matrix
-			fromCenter? &spriteCenter : NULL, //&spriteCenter,          // NULL keeps origin at top left when scaling
+			fromCenter? &spriteCenter : NULL,  // NULL keeps origin at top left when scaling
 			0.0f,                   // no scaling rotation
 			&scaling,               // scale amount
 			&spriteCenter,          // rotation center
@@ -269,8 +275,17 @@ void Graphics::drawSprite(const SpriteData& spriteData, COLOR_ARGB color, bool f
 	// Tell the sprite about the matrix "Hello Neo"
 	sprite->SetTransform(&matrix);
 
+	D3DXVECTOR3 drawCenter = { 0,0,0 }; // top left is default
+	// https://learn.microsoft.com/en-us/windows/win32/direct3d9/id3dxsprite--draw
+
+	// adjust to our center for proper scaling point
+	if (fromCenter) {
+		drawCenter.x = spriteCenter.x;
+		drawCenter.y = spriteCenter.y;
+	}
+
 	// Draw the sprite
-	sprite->Draw(spriteData.texture, &spriteData.rect, NULL, NULL, color);
+	sprite->Draw(spriteData.texture, &spriteData.rect, &drawCenter, &drawCenter, color);
 }
 
 //=============================================================================
