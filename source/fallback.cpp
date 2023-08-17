@@ -692,7 +692,7 @@ void Fallback::applyPowerUp()
 			break;
 	}
 
-	ship.applyPowerUp(GROW);
+	ship.applyPowerUp(currentPowerUp);
 
 	uiCurrentPowerUpIcon.setCurrentFrame(currentPowerUp);
 	currentPowerUpColor = powerUp->getColor();
