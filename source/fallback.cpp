@@ -32,7 +32,7 @@ Fallback::Fallback()
 	hasPowerUp = false;
 	powerUpTimer = 0;
 	currentPowerUp = FAST; // not actually applied, null would be better
-	powerUpTimeLimit = 5.0f;
+	powerUpTimeLimit = 155.0f;
 	animId = 0;
 }
 
@@ -680,19 +680,19 @@ void Fallback::applyPowerUp()
 	}
 
 	// apply to the correct Entity
-	switch (currentPowerUp){
-		case FAST:
-			ship.applyPowerUp(currentPowerUp);
-			break;
-		case SLOW:
-			ball.applyPowerUp(currentPowerUp);
-			break;
-		case ZOOM:
-			ball.applyPowerUp(currentPowerUp);
-			break;
-	}
+	//switch (currentPowerUp){
+	//	case FAST:
+	//		ship.applyPowerUp(currentPowerUp);
+	//		break;
+	//	case SLOW:
+	//		ball.applyPowerUp(currentPowerUp);
+	//		break;
+	//	case ZOOM:
+	//		ball.applyPowerUp(currentPowerUp);
+	//		break;
+	//}
 
-	ship.applyPowerUp(currentPowerUp);
+	ship.applyPowerUp(TINY);
 
 	uiCurrentPowerUpIcon.setCurrentFrame(currentPowerUp);
 	currentPowerUpColor = powerUp->getColor();

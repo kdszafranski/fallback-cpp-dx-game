@@ -44,7 +44,3 @@
 Multiball
 - change to vector of Ships
     - need to change every instance to a loop, would have 1 ball 99% of the time
-
-Grow
-- stretch graphic, update Image and rendering to allow per-axis scaling
-- 

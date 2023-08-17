@@ -76,7 +76,7 @@ enum SCREEN { TITLE, GAME, EDITOR, CREDITS };
 // Slow - slows ball x
 // Multiball - adds 2 more balls into play
 // Fast - speeds up ship x
-// Grow - lengthens ship along x-axis
+// Grow - lengthens ship along x-axis x
 // Penalties
 // Zoom - speeds up ball x
 // Tiny - shrinks ship

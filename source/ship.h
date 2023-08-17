@@ -50,6 +50,7 @@ public:
     void setHasPowerUp(bool v) { hasPowerUp = v; }
     bool getHasPowerUp() { return hasPowerUp; }
     void grow();
+    void shrink();
     void resetSize();
 
 };
