@@ -757,10 +757,10 @@ bool Fallback::isGameOver()
 //=============================================================================
 void Fallback::loseBall()
 {
-	//ballCount--;
+	ballCount--;
 
 	// we lose power ups
-	//removePowerUp();
+	removePowerUp();
 
 	// bounce ball UI icon
 	StrongAnimationPtr animPtr = std::make_shared<PunchScale>(&ballCountIcon, 0.2f, 1.5f);

@@ -92,7 +92,6 @@ void Ship::grow()
 void Ship::resetSize()
 {
     spriteData.xScale = 1;
-    spriteData.x += 32;
     spriteData.width = shipNS::WIDTH;
     edge.right = spriteData.width / 2;    // 64
     edge.left = -spriteData.width / 2;

@@ -83,7 +83,7 @@ void Ball::removePowerUp()
 
 void Ball::bumpSpeedUp()
 {
-    //currentSpeed += 0.1f;
+    currentSpeed += 0.1f;
 }
 
 //=============================================================================
