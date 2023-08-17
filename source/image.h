@@ -65,6 +65,9 @@ public:
 
     // Return scale factor.
     virtual float getScale() { return spriteData.scale; }
+    virtual float getXScale() { return spriteData.xScale; }
+    virtual float getYScale() { return spriteData.yScale; }
+
 
     // Return width.
     virtual int   getWidth() { return spriteData.width; }
@@ -73,10 +76,10 @@ public:
     virtual int   getHeight() { return spriteData.height; }
 
     // Return center X.
-    virtual float getCenterX() { return spriteData.x + spriteData.width / 2 * getScale(); }
+    virtual float getCenterX() { return spriteData.x + spriteData.width / 2 * getXScale(); }
 
     // Return center Y.
-    virtual float getCenterY() { return spriteData.y + spriteData.height / 2 * getScale(); }
+    virtual float getCenterY() { return spriteData.y + spriteData.height / 2 * getYScale(); }
 
     // Return rotation angle in degrees.
     virtual float getDegrees() { return spriteData.angle * (180.0f / (float)PI); }
@@ -148,6 +151,7 @@ public:
     }
     // Set scale with differing scale on each axis
     virtual void setScale(float x, float y) {
+        //spriteData.scale = x; // problem
         spriteData.xScale = x;
         spriteData.yScale = y;
     }

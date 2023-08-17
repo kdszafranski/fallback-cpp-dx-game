@@ -15,7 +15,7 @@ Ship::Ship() : Entity()
     currentSpeed = shipNS::SPEED;
     hasPowerUp = false;
 
-    spriteData.width = shipNS::WIDTH;           // size of Ship1
+    spriteData.width = shipNS::WIDTH;           // size of ship
     spriteData.height = shipNS::HEIGHT;
     spriteData.x = shipNS::X;                   // location on screen
     spriteData.y = shipNS::Y;
@@ -72,11 +72,31 @@ void Ship::applyPowerUp(POWERUP type)
         currentSpeed *= 1.5;
     }
     if (type == GROW) {
-        // uf da
-        spriteData.width *= 1.5;
+        // adjust spriteData and collider 
+        // box collider now uses xScale for bounds
+        grow();
     }
     
     hasPowerUp = true;
+}
+
+void Ship::grow()
+{
+    spriteData.xScale *= 1.5f;  // for drawing
+    //spriteData.width = 192;     // *= 1.5
+    spriteData.x = spriteData.x - spriteData.width / 2;         // adjust position
+
+    edge.right = spriteData.width / 2;    // 96
+    edge.left = -spriteData.width / 2;    // -96
+}
+
+void Ship::resetSize()
+{
+    spriteData.xScale = 1;
+    spriteData.x += 32;
+    spriteData.width = shipNS::WIDTH;
+    edge.right = spriteData.width / 2;    // 64
+    edge.left = -spriteData.width / 2;
 }
 
 //=============================================================================
@@ -85,7 +105,8 @@ void Ship::applyPowerUp(POWERUP type)
 void Ship::removePowerUp()
 {
     currentSpeed = shipNS::SPEED;
-    spriteData.width = shipNS::WIDTH;
+    resetSize();
+
     hasPowerUp = false;
 }
 
@@ -107,8 +128,8 @@ void Ship::update(float frameTime)
     }
 
     // keep it on the screen
-    if (spriteData.x > GAME_WIDTH - shipNS::WIDTH) {
-        spriteData.x = GAME_WIDTH - shipNS::WIDTH;    // position at right screen edge
+    if (spriteData.x > GAME_WIDTH - spriteData.width) {
+        spriteData.x = GAME_WIDTH - spriteData.width;    // position at right screen edge
     } else if (spriteData.x < 0) {
         spriteData.x = 0;                             // position at left screen edge
     }
