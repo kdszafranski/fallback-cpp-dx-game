@@ -32,7 +32,7 @@ Fallback::Fallback()
 	hasPowerUp = false;
 	powerUpTimer = 0;
 	currentPowerUp = FAST; // not actually applied, null would be better
-	powerUpTimeLimit = 100.0f;
+	powerUpTimeLimit = 5.0f;
 	animId = 0;
 }
 
