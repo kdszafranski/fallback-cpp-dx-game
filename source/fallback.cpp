@@ -32,7 +32,7 @@ Fallback::Fallback()
 	hasPowerUp = false;
 	powerUpTimer = 0;
 	currentPowerUp = FAST; // not actually applied, null would be better
-	powerUpTimeLimit = 100.0f;
+	powerUpTimeLimit = 5.0f;
 	animId = 0;
 }
 
@@ -760,7 +760,7 @@ void Fallback::loseBall()
 	//ballCount--;
 
 	// we lose power ups
-	//removePowerUp();
+	removePowerUp();
 
 	// bounce ball UI icon
 	StrongAnimationPtr animPtr = std::make_shared<PunchScale>(&ballCountIcon, 0.2f, 1.5f);

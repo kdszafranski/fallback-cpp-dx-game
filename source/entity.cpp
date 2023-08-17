@@ -161,16 +161,25 @@ bool Entity::collideBox(Entity &ent, VECTOR2 &collisionVector)
         return false;
 
     // Check for collision using Axis Aligned Bounding Box.
-    if( (getCenterX() + edge.right*getXScale() >= ent.getCenterX() + ent.getEdge().left*ent.getXScale()) && 
-        (getCenterX() + edge.left*getXScale() <= ent.getCenterX() + ent.getEdge().right*ent.getXScale()) &&
-        (getCenterY() + edge.bottom*getYScale() >= ent.getCenterY() + ent.getEdge().top*ent.getYScale()) && 
-        (getCenterY() + edge.top*getYScale() <= ent.getCenterY() + ent.getEdge().bottom*ent.getYScale()) )
+    if( (getCenterX() + edge.right * getXScale() >= ent.getCenterX() + ent.getEdge().left) && 
+        (getCenterX() + edge.left * getXScale() <= ent.getCenterX() + ent.getEdge().right) &&
+        (getCenterY() + edge.bottom * getYScale() >= ent.getCenterY() + ent.getEdge().top) && 
+        (getCenterY() + edge.top * getYScale() <= ent.getCenterY() + ent.getEdge().bottom))
     {
         // set collision vector
+        float test = ent.getCenterX() + ent.getEdge().right; // *ent.getXScale();
         collisionVector = *ent.getCenter() - *getCenter();
         return true;
     }
     return false;
+
+
+    /*
+    if( (getCenterX() + edge.right * getXScale() >= ent.getCenterX() + ent.getEdge().left * ent.getXScale()) && 
+        (getCenterX() + edge.left * getXScale() <= ent.getCenterX() + ent.getEdge().right * ent.getXScale()) &&
+        (getCenterY() + edge.bottom * getYScale() >= ent.getCenterY() + ent.getEdge().top * ent.getYScale()) && 
+        (getCenterY() + edge.top * getYScale() <= ent.getCenterY() + ent.getEdge().bottom * ent.getYScale()) )
+    {*/
 }
 
 //=============================================================================
