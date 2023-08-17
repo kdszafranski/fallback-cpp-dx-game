@@ -20,6 +20,7 @@ using namespace std;
 #include "PunchScale.h"
 #include "DirectionBounce.h"
 #include "MoveTo.h"
+#include "scaleXTo.h"
 
 //=============================================================================
 // Constructor
@@ -32,7 +33,7 @@ Fallback::Fallback()
 	hasPowerUp = false;
 	powerUpTimer = 0;
 	currentPowerUp = FAST; // not actually applied, null would be better
-	powerUpTimeLimit = 155.0f;
+	powerUpTimeLimit = 10.0f;
 	animId = 0;
 }
 
@@ -600,7 +601,7 @@ void Fallback::update(float frameTime)
 
 	// they run on all screens
 	cleanUpRacerList();
-	
+
 }
 
 #pragma region Racers
@@ -672,27 +673,31 @@ void Fallback::applyPowerUp()
 {
 	hasPowerUp = true;
 	powerUpTimer = 0;
-	currentPowerUp = powerUp->getPowerUpType();
+	currentPowerUp = GROW; // powerUp->getPowerUpType();
 
-	if (currentPowerUp == MYSTERY) {
-		int pick = rand() % 6; // pick one of the others
-		currentPowerUp = static_cast<POWERUP>(pick);
-	}
-
-	// apply to the correct Entity
-	//switch (currentPowerUp){
-	//	case FAST:
-	//		ship.applyPowerUp(currentPowerUp);
-	//		break;
-	//	case SLOW:
-	//		ball.applyPowerUp(currentPowerUp);
-	//		break;
-	//	case ZOOM:
-	//		ball.applyPowerUp(currentPowerUp);
-	//		break;
+	//if (currentPowerUp == MYSTERY) {
+	//	int pick = rand() % 6; // pick one of the others
+	//	currentPowerUp = static_cast<POWERUP>(pick);
 	//}
 
-	ship.applyPowerUp(TINY);
+	// apply to the correct Entity
+	switch (currentPowerUp) {
+		case FAST:
+			ship.applyPowerUp(currentPowerUp);
+			break;
+		case SLOW:
+			ball.applyPowerUp(currentPowerUp);
+			break;
+		case ZOOM:
+			ball.applyPowerUp(currentPowerUp);
+			break;
+		case GROW:
+			ship.applyPowerUp(currentPowerUp);
+			StrongAnimationPtr grow = std::make_shared<ScaleXTo>(&ship, 0.5, 1.5f);
+			m_AnimationManager.attachProcess(grow);
+			break;
+	}
+
 
 	uiCurrentPowerUpIcon.setCurrentFrame(currentPowerUp);
 	currentPowerUpColor = powerUp->getColor();
@@ -706,18 +711,22 @@ void Fallback::applyPowerUp()
 
 void Fallback::removePowerUp()
 {
+	if (hasPowerUp) {
+		// allow end of power up animations
+		switch (currentPowerUp) {
+			case GROW:
+				StrongAnimationPtr reset = std::make_shared<ScaleXTo>(&ship, 0.5, 1.0f);
+				m_AnimationManager.attachProcess(reset);
+				break;
+		}
+	}
+
 	hasPowerUp = false;
 	powerUpTimer = 0;
-	//switch (currentPowerUp) {
-	//	case SLOW:
-	//	case ZOOM:
-	//		ball.removePowerUp();
-	//		break;
-	//}
 
 	// clear up speeds and such
 	ball.removePowerUp();
-	ship.removePowerUp(); // remove color
+	ship.removePowerUp(); // reset speed and color
 }
 #pragma endregion
 
@@ -760,7 +769,9 @@ void Fallback::loseBall()
 	//ballCount--;
 
 	// we lose power ups
-	removePowerUp();
+	if (hasPowerUp) {
+		removePowerUp();
+	}
 
 	// bounce ball UI icon
 	StrongAnimationPtr animPtr = std::make_shared<PunchScale>(&ballCountIcon, 0.2f, 1.5f);

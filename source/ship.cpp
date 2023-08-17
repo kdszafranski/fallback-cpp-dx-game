@@ -71,14 +71,33 @@ void Ship::applyPowerUp(POWERUP type)
         // bump our speed
         currentSpeed *= 1.5;
     }
-    if (type == GROW) {
-        grow();
-    }
-    if (type == TINY) {
-        shrink();
-    }
+    //if (type == GROW) {
+    //    grow();
+    //}
+    //if (type == TINY) {
+    //    shrink();
+    //}
     
     hasPowerUp = true;
+}
+
+
+/// <summary>
+/// Callback from animation process when animation is complete
+/// </summary>
+void Ship::onAnimationSuccess()
+{
+    if (spriteData.xScale > 1) {
+        // is now big
+        grow();
+    } else if (spriteData.xScale < 1) {
+        // now small
+        shrink();
+    } else {
+        // is equal
+        resetSize();
+    }
+
 }
 
 //=============================================================================
@@ -86,7 +105,6 @@ void Ship::applyPowerUp(POWERUP type)
 //=============================================================================
 void Ship::grow()
 {
-    spriteData.xScale *= 1.5f;  // for drawing
     spriteData.width = 192;     // needed for drawing, fucks with collisions
     // collisions
     edge.right = spriteData.width / 2;    // 96
@@ -98,16 +116,13 @@ void Ship::grow()
 //=============================================================================
 void Ship::shrink()
 {
-    spriteData.xScale = 0.5f;  // for drawing
-    spriteData.width = 64;     // needed for drawing, fucks with collisions
-    // collisions
-    edge.right = spriteData.width / 2;    // 96
-    edge.left = -spriteData.width / 2;    // -96
+    spriteData.width = 64;
+    edge.right = spriteData.width / 2;    // 32
+    edge.left = -spriteData.width / 2;    // -32
 }
 
 void Ship::resetSize()
 {
-    spriteData.xScale = 1;
     spriteData.width = shipNS::WIDTH;
     edge.right = spriteData.width / 2;    // 64
     edge.left = -spriteData.width / 2;
@@ -119,7 +134,7 @@ void Ship::resetSize()
 void Ship::removePowerUp()
 {
     currentSpeed = shipNS::SPEED;
-    resetSize();
+    //resetSize();
 
     hasPowerUp = false;
 }
@@ -141,6 +156,7 @@ void Ship::update(float frameTime)
        spriteData.x -= frameTime * currentSpeed;
     }
 
+
     // keep it on the screen
     if (spriteData.x > GAME_WIDTH - spriteData.width) {
         spriteData.x = GAME_WIDTH - spriteData.width;    // position at right screen edge
@@ -149,12 +165,3 @@ void Ship::update(float frameTime)
     }
 
 }
-
-//=============================================================================
-// damage
-//=============================================================================
-void Ship::damage(WEAPON weapon)
-{
-
-}
-

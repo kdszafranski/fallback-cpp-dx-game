@@ -178,6 +178,8 @@ public:
 
     // checks screen bounds
     void wrapScreenEdge(); 
+
+    AnimationManager* getAnimationManager() { return &m_AnimationManager; }
 };
 
 #endif

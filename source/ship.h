@@ -42,7 +42,6 @@ public:
     virtual bool initialize(Game *gamePtr, int width, int height, int ncols,
                             TextureManager *textureM);
     void update(float frameTime);
-    void damage(WEAPON);
 
     // power ups
     void applyPowerUp(POWERUP type) override;
@@ -52,6 +51,9 @@ public:
     void grow();
     void shrink();
     void resetSize();
+
+    // call back interface
+    void onAnimationSuccess() override;
 
 };
 #endif
