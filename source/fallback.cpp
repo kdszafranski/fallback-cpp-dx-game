@@ -1153,12 +1153,12 @@ void Fallback::renderUI()
 	dxBallCount.print(std::to_string(ballCount), scoreRect, DT_LEFT | DT_SINGLELINE);
 
 	// ball count icon and x
-	ballCountIcon.draw(ballCountIcon.getColorFilter());
+	ballCountIcon.draw(ballCountIcon.getColorFilter(), true);
 	ballCountXImage.draw();
 
 	// power ups
 	if (hasPowerUp) {
-		uiCurrentPowerUpDiamond.draw(currentPowerUpColor);
+		uiCurrentPowerUpDiamond.draw(currentPowerUpColor, true);
 		uiCurrentPowerUpIcon.draw();
 	}
 }

@@ -101,7 +101,7 @@ bool Image::initialize(Graphics* g, int width, int height, int ncols,
 // Pre : spriteBegin() is called
 // Post: spriteEnd() is called
 //=============================================================================
-void Image::draw(COLOR_ARGB color)
+void Image::draw(COLOR_ARGB color, bool fromCenter)
 {
 	if (!visible || graphics == NULL)
 		return;
@@ -110,9 +110,9 @@ void Image::draw(COLOR_ARGB color)
 	spriteData.texture = textureManager->getTexture();
 	
 	if (color == graphicsNS::FILTER)                     // if draw with filter
-		graphics->drawSprite(spriteData, colorFilter);  // use colorFilter
+		graphics->drawSprite(spriteData, colorFilter, fromCenter);  // use colorFilter
 	else
-		graphics->drawSprite(spriteData, color);        // use color as filter
+		graphics->drawSprite(spriteData, color, fromCenter);        // use color as filter
 }
 
 //=============================================================================

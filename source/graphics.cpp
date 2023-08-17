@@ -217,13 +217,14 @@ bool Graphics::isAdapterCompatible()
 //=============================================================================
 // Draw the sprite described in SpriteData structure
 // Color is optional, it is applied like a filter, WHITE is default (no change)
+// fromCenter allows drawing from Center position for scaling
 // Pre : sprite->Begin() is called
 // Post: sprite->End() is called
 // spriteData.rect defines the portion of spriteData.texture to draw
 //   spriteData.rect.right must be right edge + 1
 //   spriteData.rect.bottom must be bottom edge + 1
 //=============================================================================
-void Graphics::drawSprite(const SpriteData& spriteData, COLOR_ARGB color)
+void Graphics::drawSprite(const SpriteData& spriteData, COLOR_ARGB color, bool fromCenter)
 {
 	if (spriteData.texture == NULL)      // if no texture
 		return;
@@ -255,14 +256,15 @@ void Graphics::drawSprite(const SpriteData& spriteData, COLOR_ARGB color)
 	}
 	// Create a matrix to rotate, scale and position our sprite
 	D3DXMATRIX matrix;
-	D3DXMatrixTransformation2D(
-		&matrix,                // the matrix
-		NULL, //&spriteCenter,          // keep origin at top left when scaling
-		0.0f,                   // no scaling rotation
-		&scaling,               // scale amount
-		&spriteCenter,          // rotation center
-		(float)(spriteData.angle),  // rotation angle
-		&translate);            // X,Y location
+		// top left
+		D3DXMatrixTransformation2D(
+			&matrix,                // the matrix
+			fromCenter? &spriteCenter : NULL, //&spriteCenter,          // NULL keeps origin at top left when scaling
+			0.0f,                   // no scaling rotation
+			&scaling,               // scale amount
+			&spriteCenter,          // rotation center
+			(float)(spriteData.angle),  // rotation angle
+			&translate);            // X,Y location
 
 	// Tell the sprite about the matrix "Hello Neo"
 	sprite->SetTransform(&matrix);

@@ -84,7 +84,6 @@ void Ship::grow()
 {
     spriteData.xScale *= 1.5f;  // for drawing
     spriteData.width = 192;     // *= 1.5
-    //spriteData.x = spriteData.x - 64;         // adjust position
     // collisions
     edge.right = spriteData.width / 2;    // 96
     edge.left = -spriteData.width / 2;    // -96
