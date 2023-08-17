@@ -15,14 +15,14 @@ BlockButton::~BlockButton()
 
 }
 
-void BlockButton::draw()
+void BlockButton::draw(bool fromCenter)
 {
     if (isSelected) {
         setScale(1.2);
     } else {
         setScale(1);
     }
-    Button::draw();
+    Button::draw(fromCenter);
 }
 
 void BlockButton::changeBlockType(BLOCK type)

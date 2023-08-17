@@ -85,16 +85,16 @@ void Ship::grow()
     spriteData.xScale *= 1.5f;  // for drawing
     spriteData.width = 192;     // *= 1.5
     // collisions
-    edge.right = spriteData.width / 2;    // 96
-    edge.left = -spriteData.width / 2;    // -96
+    //edge.right = spriteData.width / 2;    // 96
+    //edge.left = -spriteData.width / 2;    // -96
 }
 
 void Ship::resetSize()
 {
     spriteData.xScale = 1;
     spriteData.width = shipNS::WIDTH;
-    edge.right = spriteData.width / 2;    // 64
-    edge.left = -spriteData.width / 2;
+    //edge.right = spriteData.width / 2;    // 64
+    //edge.left = -spriteData.width / 2;
 }
 
 //=============================================================================

@@ -29,9 +29,9 @@ void Button::draw(COLOR_ARGB otherColor) {
     Image::draw(otherColor);
 }
 
-void Button::draw()
+void Button::draw(bool fromCenter)
 {
-    Image::draw(colorFilter);
+    Image::draw(colorFilter, fromCenter);
 }
 
 

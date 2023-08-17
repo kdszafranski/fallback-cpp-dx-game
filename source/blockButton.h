@@ -15,7 +15,7 @@ public:
 	~BlockButton();
 	BLOCK getBlockType() { return blockType; }
 
-	virtual void draw();
+	virtual void draw(bool fromCenter = false);
 	void setBlockColorByType();
 	void changeBlockType(BLOCK type);
 	void setSelected(bool sel) { isSelected = sel; }
