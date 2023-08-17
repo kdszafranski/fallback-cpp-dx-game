@@ -83,7 +83,7 @@ void Ball::removePowerUp()
 
 void Ball::bumpSpeedUp()
 {
-    //currentSpeed += 0.1f;
+    currentSpeed += 0.1f;
 }
 
 //=============================================================================
@@ -132,7 +132,8 @@ void Ball::bounce(VECTOR2& collisionVector, SpriteData otherSpriteData, int& dir
 
         // just left
         dir = 4;
-        flipX();        
+        flipX();      
+        return;
     }
 
     // right of top-left corner... needs more specifics
