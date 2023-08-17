@@ -75,13 +75,12 @@ enum SCREEN { TITLE, GAME, EDITOR, CREDITS };
 // Powerups
 // Slow - slows ball x
 // Multiball - adds 2 more balls into play
-// 
 // Fast - speeds up ship x
 // Grow - lengthens ship along x-axis x
 // Penalties
 // Zoom - speeds up ball x
 // Tiny - shrinks ship x
-// Mystery - picks one of the others randomly
+// Mystery - picks one of the others randomly x
 enum POWERUP { SLOW, MULTIBALL, FAST, GROW, ZOOM, TINY, MYSTERY };
 
 

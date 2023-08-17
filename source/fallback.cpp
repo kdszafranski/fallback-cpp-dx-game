@@ -33,7 +33,7 @@ Fallback::Fallback()
 	hasPowerUp = false;
 	powerUpTimer = 0;
 	currentPowerUp = FAST; // not actually applied, null would be better
-	powerUpTimeLimit = 10.0f;
+	powerUpTimeLimit = 5.0f;
 	animId = 0;
 }
 
@@ -673,40 +673,40 @@ void Fallback::applyPowerUp()
 {
 	hasPowerUp = true;
 	powerUpTimer = 0;
-	currentPowerUp = GROW; // powerUp->getPowerUpType();
+	currentPowerUp = powerUp->getPowerUpType();
 
-	//if (currentPowerUp == MYSTERY) {
-	//	int pick = rand() % 6; // pick one of the others
-	//	currentPowerUp = static_cast<POWERUP>(pick);
-	//}
+	if (currentPowerUp == MYSTERY) {
+		int pick = rand() % 6; // pick one of the others
+		currentPowerUp = static_cast<POWERUP>(pick);
+	}
 
-	// apply to the correct Entity
+	// apply to the correct Entity and spawn animations
+	StrongAnimationPtr anim;
 	switch (currentPowerUp) {
-		case FAST:
-			ship.applyPowerUp(currentPowerUp);
-			break;
 		case SLOW:
-			ball.applyPowerUp(currentPowerUp);
-			break;
 		case ZOOM:
 			ball.applyPowerUp(currentPowerUp);
 			break;
-		case GROW:
+		case FAST:
 			ship.applyPowerUp(currentPowerUp);
-			StrongAnimationPtr grow = std::make_shared<ScaleXTo>(&ship, 0.5, 1.5f);
-			m_AnimationManager.attachProcess(grow);
+			break;
+		case GROW:
+			anim = std::make_shared<ScaleXTo>(&ship, 0.5f, 1.5f);
+			m_AnimationManager.attachProcess(anim);
+			break;
+		case TINY:
+			anim = std::make_shared<ScaleXTo>(&ship, 0.5f, 0.5f);
+			m_AnimationManager.attachProcess(anim);
 			break;
 	}
 
-
+	// update HUD icons
 	uiCurrentPowerUpIcon.setCurrentFrame(currentPowerUp);
 	currentPowerUpColor = powerUp->getColor();
 
 	// bounce the UI power up icon
 	StrongAnimationPtr bounce = std::make_shared<PunchScale>(&uiCurrentPowerUpDiamond, 0.2f, 1.5f);
 	m_AnimationManager.attachProcess(bounce);
-
-	ship.setHasPowerUp(true); // colors the ship
 }
 
 void Fallback::removePowerUp()
@@ -714,10 +714,14 @@ void Fallback::removePowerUp()
 	if (hasPowerUp) {
 		// allow end of power up animations
 		switch (currentPowerUp) {
+			case FAST:
+				ship.resetSpeed();
 			case GROW:
+			case TINY:
 				StrongAnimationPtr reset = std::make_shared<ScaleXTo>(&ship, 0.5, 1.0f);
 				m_AnimationManager.attachProcess(reset);
 				break;
+
 		}
 	}
 
@@ -726,7 +730,6 @@ void Fallback::removePowerUp()
 
 	// clear up speeds and such
 	ball.removePowerUp();
-	ship.removePowerUp(); // reset speed and color
 }
 #pragma endregion
 

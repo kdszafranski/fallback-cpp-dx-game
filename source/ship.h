@@ -45,12 +45,12 @@ public:
 
     // power ups
     void applyPowerUp(POWERUP type) override;
-    void removePowerUp() override;
     void setHasPowerUp(bool v) { hasPowerUp = v; }
     bool getHasPowerUp() { return hasPowerUp; }
     void grow();
     void shrink();
     void resetSize();
+    void resetSpeed();
 
     // call back interface
     void onAnimationSuccess() override;

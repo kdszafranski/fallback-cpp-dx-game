@@ -2,7 +2,7 @@
 #include "AnimationBase.h"
 
 /// <summary>
-/// Tween to fade graphic alpha down to the given target over the specified amount of time (in seconds)
+/// Tween to scale x-axis up or down to the given target over the specified amount of time (in seconds)
 /// </summary>
 class ScaleXTo : public AnimationBase
 {

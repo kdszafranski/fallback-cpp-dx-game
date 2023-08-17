@@ -71,12 +71,6 @@ void Ship::applyPowerUp(POWERUP type)
         // bump our speed
         currentSpeed *= 1.5;
     }
-    //if (type == GROW) {
-    //    grow();
-    //}
-    //if (type == TINY) {
-    //    shrink();
-    //}
     
     hasPowerUp = true;
 }
@@ -105,10 +99,10 @@ void Ship::onAnimationSuccess()
 //=============================================================================
 void Ship::grow()
 {
-    spriteData.width = 192;     // needed for drawing, fucks with collisions
-    // collisions
+    spriteData.width = 192; 
     edge.right = spriteData.width / 2;    // 96
     edge.left = -spriteData.width / 2;    // -96
+    hasPowerUp = true;
 }
 
 //=============================================================================
@@ -119,6 +113,7 @@ void Ship::shrink()
     spriteData.width = 64;
     edge.right = spriteData.width / 2;    // 32
     edge.left = -spriteData.width / 2;    // -32
+    hasPowerUp = true;
 }
 
 void Ship::resetSize()
@@ -126,18 +121,15 @@ void Ship::resetSize()
     spriteData.width = shipNS::WIDTH;
     edge.right = spriteData.width / 2;    // 64
     edge.left = -spriteData.width / 2;
-}
-
-//=============================================================================
-// remove power ups
-//=============================================================================
-void Ship::removePowerUp()
-{
-    currentSpeed = shipNS::SPEED;
-    //resetSize();
-
     hasPowerUp = false;
 }
+
+void Ship::resetSpeed()
+{
+    currentSpeed = shipNS::SPEED;
+    hasPowerUp = false;
+}
+
 
 //=============================================================================
 // update
@@ -155,7 +147,6 @@ void Ship::update(float frameTime)
     if (input->isKeyDown(SHIP_LEFT_KEY)) {
        spriteData.x -= frameTime * currentSpeed;
     }
-
 
     // keep it on the screen
     if (spriteData.x > GAME_WIDTH - spriteData.width) {
