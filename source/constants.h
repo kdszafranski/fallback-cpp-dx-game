@@ -79,8 +79,8 @@ enum SCREEN { TITLE, GAME, EDITOR, CREDITS };
 // Grow - lengthens ship along x-axis x
 // Penalties
 // Zoom - speeds up ball x
-// Tiny - shrinks ship
-// Mystery - picks one of the others randomly
+// Tiny - shrinks ship x
+// Mystery - picks one of the others randomly x
 enum POWERUP { SLOW, MULTIBALL, FAST, GROW, ZOOM, TINY, MYSTERY };
 
 

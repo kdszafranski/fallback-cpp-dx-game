@@ -3,8 +3,9 @@
 
 #include "textureManager.h"
 #include "constants.h"
+#include "IAnimation.h"
 
-class Image
+class Image : public IAnimation
 {
 protected:
 	Graphics* graphics;	// pointer to graphics
@@ -203,6 +204,10 @@ public:
 	////////////////////////////////////////
 	//         Other functions            //
 	////////////////////////////////////////
+
+	// IAnimation interface
+	virtual void onAnimationSuccess() { }
+
 
 	// Initialize Image
 	// Pre: *g = pointer to Graphics object
