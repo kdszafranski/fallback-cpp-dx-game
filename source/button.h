@@ -32,7 +32,7 @@ public:
 
 	virtual void update(float frameTime);
 	virtual void draw(COLOR_ARGB otherColor);
-	virtual void draw();
+	virtual void draw(bool fromCenter = false);
 
 	/// <summary>
 	/// Determines if the mouse position is currently inside this rect

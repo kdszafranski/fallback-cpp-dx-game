@@ -536,6 +536,8 @@ void Fallback::update(float frameTime)
 				ship.update(frameTime);
 				ball.update(frameTime);
 
+				console.setLogText(to_string(ship.getX()));
+
 				timer += frameTime;
 				// every second adjust ball trail
 				if (timer > BALLSHADOW_INTERVAL) {
@@ -690,7 +692,7 @@ void Fallback::applyPowerUp()
 			break;
 	}
 
-	ship.applyPowerUp(GROW);
+	ship.applyPowerUp(currentPowerUp);
 
 	uiCurrentPowerUpIcon.setCurrentFrame(currentPowerUp);
 	currentPowerUpColor = powerUp->getColor();
@@ -755,7 +757,7 @@ bool Fallback::isGameOver()
 //=============================================================================
 void Fallback::loseBall()
 {
-	ballCount--;
+	//ballCount--;
 
 	// we lose power ups
 	removePowerUp();
@@ -1151,12 +1153,12 @@ void Fallback::renderUI()
 	dxBallCount.print(std::to_string(ballCount), scoreRect, DT_LEFT | DT_SINGLELINE);
 
 	// ball count icon and x
-	ballCountIcon.draw(ballCountIcon.getColorFilter());
+	ballCountIcon.draw(ballCountIcon.getColorFilter(), true);
 	ballCountXImage.draw();
 
 	// power ups
 	if (hasPowerUp) {
-		uiCurrentPowerUpDiamond.draw(currentPowerUpColor);
+		uiCurrentPowerUpDiamond.draw(currentPowerUpColor, true);
 		uiCurrentPowerUpIcon.draw();
 	}
 }

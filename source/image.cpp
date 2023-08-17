@@ -11,12 +11,14 @@ Image::Image()
 {
 	initialized = false;            // set true when successfully initialized
 	myId = 0;
-	readyToDestroy = false;
+	readyToDestroy = false;			// used by animation manager to know when to remove this object
 	spriteData.width = 2;
 	spriteData.height = 2;
 	spriteData.x = 0.0;
 	spriteData.y = 0.0;
 	spriteData.scale = 1.0;
+	spriteData.xScale = 1.0;
+	spriteData.yScale = 1.0;
 	spriteData.angle = 0.0;
 	spriteData.rect.left = 0;       // used to select one frame from multi-frame image
 	spriteData.rect.top = 0;
@@ -99,7 +101,7 @@ bool Image::initialize(Graphics* g, int width, int height, int ncols,
 // Pre : spriteBegin() is called
 // Post: spriteEnd() is called
 //=============================================================================
-void Image::draw(COLOR_ARGB color)
+void Image::draw(COLOR_ARGB color, bool fromCenter)
 {
 	if (!visible || graphics == NULL)
 		return;
@@ -108,9 +110,9 @@ void Image::draw(COLOR_ARGB color)
 	spriteData.texture = textureManager->getTexture();
 	
 	if (color == graphicsNS::FILTER)                     // if draw with filter
-		graphics->drawSprite(spriteData, colorFilter);  // use colorFilter
+		graphics->drawSprite(spriteData, colorFilter, fromCenter);  // use colorFilter
 	else
-		graphics->drawSprite(spriteData, color);        // use color as filter
+		graphics->drawSprite(spriteData, color, fromCenter);        // use color as filter
 }
 
 //=============================================================================

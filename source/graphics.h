@@ -88,6 +88,8 @@ struct SpriteData
     float       x;          // screen location (top left corner of sprite)
     float       y;
     float       scale;      // <1 smaller, >1 bigger
+    float       xScale;
+    float       yScale;
     float       angle;      // rotation angle in radians
     RECT        rect;       // used to select an image from a larger texture
     LP_TEXTURE  texture;    // pointer to texture
@@ -163,7 +165,7 @@ public:
     //      spriteData.rect.right must be right edge + 1
     //      spriteData.rect.bottom must be bottom edge + 1
     void    drawSprite(const SpriteData &spriteData,           // sprite to draw
-                       COLOR_ARGB color = graphicsNS::WHITE);      // default to white color filter (no change)
+                       COLOR_ARGB color = graphicsNS::WHITE, bool fromCenter = false);      // default to white color filter (no change)
 
     // Reset the graphics device.
     HRESULT reset();

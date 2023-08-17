@@ -182,7 +182,7 @@ void Editor::draw()
 
 	// draw brush selector buttons
 	for (int i = 0; i < brushSelectorButtonList.size(); i++) {
-		brushSelectorButtonList.at(i).draw();
+		brushSelectorButtonList.at(i).draw(true);
 	}
 
 	// draw each level block button
