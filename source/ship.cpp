@@ -83,9 +83,8 @@ void Ship::applyPowerUp(POWERUP type)
 void Ship::grow()
 {
     spriteData.xScale *= 1.5f;  // for drawing
-    spriteData.width = 192;     // *= 1.5
-    // // needed for drawing, fucks with collisions
-    // collisions
+    spriteData.width = 192;     // needed for drawing, fucks with collisions
+    // collisions sizing
     edge.right = spriteData.width / 2;    // 96
     edge.left = -spriteData.width / 2;    // -96
 }
