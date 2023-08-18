@@ -51,5 +51,3 @@ Multiball
 
     - deal with losing a ball and restarting
         - screen/ship shake
-        - place ball on ship
-        - allow ship to "launch" ball upward

@@ -21,6 +21,7 @@ using namespace std;
 #include "DirectionBounce.h"
 #include "MoveTo.h"
 #include "ScaleXTo.h"
+#include "Shake.h"
 
 //=============================================================================
 // Constructor
@@ -788,6 +789,11 @@ void Fallback::loseBall()
 	if (hasPowerUp) {
 		removePowerUp();
 	}
+
+	// shake ship
+	Vector2 shakeLimits = { 10.0f, 10.0f };
+	StrongAnimationPtr shipShake = std::make_shared<Shake>(&ship, 0.5, shakeLimits);
+	m_AnimationManager.attachProcess(shipShake);
 
 	// bounce ball UI icon
 	StrongAnimationPtr animPtr = std::make_shared<PunchScale>(&ballCountIcon, 0.2f, 1.5f);
