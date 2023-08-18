@@ -368,6 +368,7 @@ void Fallback::loadLevelFiles() {
 
 void Fallback::startNextLevel()
 {
+	audio->playCue("next-level");
 	currentLevel++;
 	if (currentLevel >= levels.size()) {
 		currentLevel = 0;
