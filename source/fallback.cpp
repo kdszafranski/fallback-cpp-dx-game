@@ -508,35 +508,7 @@ void Fallback::update(float frameTime)
 	if (currentScreen == TITLE) {
 		// process animations
 		m_AnimationManager.updateProcesses(frameTime);
-
-		// wait for bg and title to fade in
-		titleLoadingTimer += frameTime;
-		if (titleLoadingTimer > 2.0f) {
-			titleLoadingTimer = 0;
-			titleLoading = false;
-		}
-
-		if (newGameButton.isMouseOver()) {
-			// over, allow clicks
-			if (input->getMouseLButton()) {
-				startNewGame();
-			}
-		}
-		if (editorButton.isMouseOver()) {
-			if (input->getMouseLButton()) {
-				launchEditor();
-			}
-		}
-		if (creditsButton.isMouseOver()) {
-			if (input->getMouseLButton()) {
-				console.setLogText("launch credits");
-			}
-		}
-
-		// too lazy for the mouse
-		if (input->wasKeyPressed(ENTER_KEY)) {
-			startNewGame();
-		}
+		updateTitleScreen(frameTime);		
 	}
 
 	// handle Game updates and inputs
@@ -632,6 +604,38 @@ void Fallback::update(float frameTime)
 	// check if we want to exit
 	CheckForExit();
 
+}
+
+void Fallback::updateTitleScreen(float frameTime)
+{
+	// wait for bg and title to fade in
+	titleLoadingTimer += frameTime;
+	if (titleLoadingTimer > 2.0f) {
+		titleLoadingTimer = 0;
+		titleLoading = false;
+	}
+
+	if (newGameButton.isMouseOver()) {
+		// over, allow clicks
+		if (input->getMouseLButton()) {
+			startNewGame();
+		}
+	}
+	if (editorButton.isMouseOver()) {
+		if (input->getMouseLButton()) {
+			launchEditor();
+		}
+	}
+	if (creditsButton.isMouseOver()) {
+		if (input->getMouseLButton()) {
+			console.setLogText("launch credits");
+		}
+	}
+
+	// too lazy for the mouse
+	if (input->wasKeyPressed(ENTER_KEY)) {
+		startNewGame();
+	}
 }
 
 /// <summary>
