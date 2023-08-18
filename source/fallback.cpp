@@ -124,7 +124,7 @@ void Fallback::resetGame()
 	hasPowerUp = false;
 	gameOver = false;
 	isPaused = false;
-	ballCount = MAX_BALLS;
+	ballCount = 1; // MAX_BALLS;
 	timer = 0;
 	powerUpTimer = 0;
 	score = 0;
@@ -550,7 +550,6 @@ void Fallback::update(float frameTime)
 					ball.update(frameTime);
 				}
 
-
 				console.setLogText(to_string(ship.getX()));
 
 				timer += frameTime;
@@ -565,29 +564,6 @@ void Fallback::update(float frameTime)
 					timer = 0;
 				}
 
-				// handle power ups
-				if (hasPowerUp) {
-					powerUpTimer += frameTime;
-					if (powerUpTimer > powerUpTimeLimit) {
-						removePowerUp();
-					}
-				}
-
-				// update particles
-				explosionManager.update(frameTime);
-
-				// update Entity tweens/animations
-				m_AnimationManager.updateProcesses(frameTime);
-
-				// update falling power up
-				if (powerUp) {
-					powerUp->update(frameTime);
-					// off the screen?
-					if (powerUp->getY() > GAME_HEIGHT) {
-						SAFE_DELETE(powerUp);
-					}
-				}
-
 				// check if the ball went off below ship
 				if (ball.getY() > GAME_HEIGHT) {
 					audio->playCue(ZAP);
@@ -595,14 +571,10 @@ void Fallback::update(float frameTime)
 					restartBall();
 				}
 
-				// every 5 seconds there is a chance to spawn racers
-				racerSpawnTimer += frameTime;
-				if (racerSpawnTimer > 5) {
-					spawnRacers();
-					racerSpawnTimer = 0;
-				}
+			} // end game over check
 
-			} // game over
+			// always update effects
+			updateEffects(frameTime);
 
 		}  // paused
 	} // GAME screen
@@ -616,6 +588,34 @@ void Fallback::update(float frameTime)
 	// they run on all screens
 	cleanUpRacerList();
 
+}
+
+/// <summary>
+/// Updates particles and effects
+/// </summary>
+/// <param name="frameTime">current frame time</param>
+void Fallback::updateEffects(float frameTime)
+{
+	// update these unless paused	
+	if (powerUp) {
+		powerUp->update(frameTime);
+		// off the screen?
+		if (powerUp->getY() > GAME_HEIGHT) {
+			SAFE_DELETE(powerUp);
+		}
+	}
+
+	// update particles
+	explosionManager.update(frameTime);
+	// update Entity tweens/animations
+	m_AnimationManager.updateProcesses(frameTime);
+
+	// every 5 seconds there is a chance to spawn racers
+	racerSpawnTimer += frameTime;
+	if (racerSpawnTimer > 5) {
+		spawnRacers();
+		racerSpawnTimer = 0;
+	}
 }
 
 #pragma region Racers
@@ -783,7 +783,7 @@ bool Fallback::isGameOver()
 //=============================================================================
 void Fallback::loseBall()
 {
-	//ballCount--;
+	ballCount--;
 
 	// we lose power ups
 	if (hasPowerUp) {
@@ -816,9 +816,7 @@ void Fallback::restartBall()
 		ball.setActive(false);
 		ball.setPosition((ship.getX() + ship.getWidth() / 2) - ball.getWidth() / 2, ship.getY() - ball.getHeight() - 1);
 		ball.setVelocity(VECTOR2(0, 0));
-
 		recentBallPositions.clear();
-		//recentBallPositions.push_back(VECTOR2(ball.getX(), ball.getY()));
 	}
 }
 
@@ -1141,7 +1139,6 @@ void Fallback::renderGameScreen()
 
 		ball.draw();
 	}
-
 
 	// render all blocks
 	for (int i = 0; i < blocks.size(); i++) {
