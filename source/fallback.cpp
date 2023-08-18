@@ -33,6 +33,8 @@ Fallback::Fallback()
 	racerSpawnTimer = 0;
 	hasPowerUp = false;
 	powerUpTimer = 0;
+	titleLoadingTimer = 0;
+	titleLoading = false;
 	currentPowerUp = FAST; // not actually applied, null would be better
 	powerUpTimeLimit = 5.0f;
 	animId = 0;
@@ -135,10 +137,16 @@ void Fallback::resetGame()
 void Fallback::exitGame()
 {
 	console.setLogText("");
-	isPaused = true;
+	isPaused = false;
+	ballCount = 0;
+
 	// remove animations
 	explosionManager.clearAllParticles();
 	m_AnimationManager.clearAllProcesses();
+
+	// clean up game
+	blocks.clear();
+	racers.clear();
 
 	SAFE_DELETE(powerUp);
 
@@ -496,36 +504,11 @@ bool Fallback::loadLevelFromFile(int n)
 //=============================================================================
 void Fallback::update(float frameTime)
 {
-	// check if we want to exit
-	CheckForExit();
-
 	// handle inputs on Title Screen only
 	if (currentScreen == TITLE) {
-		if (newGameButton.isMouseOver()) {
-			// over, allow clicks
-			if (input->getMouseLButton()) {
-				startNewGame();
-			}
-		}
-		if (editorButton.isMouseOver()) {
-			if (input->getMouseLButton()) {
-				launchEditor();
-			}
-		}
-
 		// process animations
 		m_AnimationManager.updateProcesses(frameTime);
-
-		if (creditsButton.isMouseOver()) {
-			if (input->getMouseLButton()) {
-				console.setLogText("launch credits");
-			}
-		}
-
-		// too lazy for the mouse
-		if (input->wasKeyPressed(ENTER_KEY)) {
-			startNewGame();
-		}
+		updateTitleScreen(frameTime);
 	}
 
 	// handle Game updates and inputs
@@ -536,70 +519,17 @@ void Fallback::update(float frameTime)
 		if (!isPaused) {
 			if (!gameOver) {
 				// update position of all game objects
-				ship.update(frameTime);
-				if (ballResetting) {
-					// move ball with ship
-					ball.setPosition((ship.getX() + ship.getWidth() / 2) - ball.getWidth() / 2, ship.getY() - ball.getHeight() - 1);
-					// allow input to launch
-					if (input->wasKeyPressed(LAUNCH_BALL_KEY)) {
-						ball.setVelocity({ 0,-90 });
-						ball.removePowerUp(); // resets speed
-						ball.activate(); // turn on collisions
-						ballResetting = false;
-					}
-				} else {
-					ball.update(frameTime);
-				}
-
-				// handle power ups timer
-				if (hasPowerUp) {
-					powerUpTimer += frameTime;
-					if (powerUpTimer > powerUpTimeLimit) {
-						removePowerUp();
-					}
-				}
-
-				// every second adjust ball trail
-				timer += frameTime;
-				if (timer > BALLSHADOW_INTERVAL) {
-					recentBallPositions.push_back(VECTOR2(ball.getX(), ball.getY()));
-
-					if (recentBallPositions.size() > 5) {
-						// remove first
-						recentBallPositions.erase(recentBallPositions.begin());
-					}
-					timer = 0;
-				}
-
-				// check if the ball went off below ship
-				if (ball.getY() > GAME_HEIGHT) {
-					loseBall();
-					restartBall();
-				}
-
-			} // end game over check
-			else {
+				updateGameScreen(frameTime);
+			} else {
 				// game over
-				// pick out a block and bounce it
-				timer += frameTime;
-				float duration = 0.75f;
-				if (timer > duration) {
-					int index = rand() % blocks.size();
-					StrongAnimationPtr animPtr;
-					if (index % 2 == 0) {
-						animPtr = std::make_shared<PinchScale>(&blocks.at(index), duration, 0.8f);
-					} else {
-						animPtr = std::make_shared<PunchScale>(&blocks.at(index), duration, 1.2f);
-					}
-					m_AnimationManager.attachProcess(animPtr);
-					timer = 0;
-				}
+				updateGameOverScreen(frameTime);
 			} // end game over
 
 			// always update effects
 			updateEffects(frameTime);
 
-		}  // paused
+		} // isPaused
+
 	} // GAME screen
 
 	if (currentScreen == EDITOR) {
@@ -608,9 +538,116 @@ void Fallback::update(float frameTime)
 		m_AnimationManager.updateProcesses(frameTime);
 	}
 
+	// Always update the following
+	// every 5 seconds there is a chance to spawn racers
+	racerSpawnTimer += frameTime;
+	if (racerSpawnTimer > 5) {
+		spawnRacers();
+		racerSpawnTimer = 0;
+	}
+
 	// they run on all screens
 	cleanUpRacerList();
 
+	// check if we want to exit
+	CheckForExit();
+}
+
+/// <summary>
+/// Updates elements for the title screen only, including a timer for some elements
+/// </summary>
+/// <param name="frameTime">current frame time</param>
+void Fallback::updateTitleScreen(float frameTime)
+{
+	// wait for bg and title to fade in
+	titleLoadingTimer += frameTime;
+	if (titleLoadingTimer > 2.0f) {
+		titleLoadingTimer = 0;
+		titleLoading = false;
+	}
+
+	if (newGameButton.isMouseOver()) {
+		// over, allow clicks
+		if (input->getMouseLButton()) {
+			startNewGame();
+		}
+	}
+	if (editorButton.isMouseOver()) {
+		if (input->getMouseLButton()) {
+			launchEditor();
+		}
+	}
+	if (creditsButton.isMouseOver()) {
+		if (input->getMouseLButton()) {
+			console.setLogText("launch credits");
+		}
+	}
+
+	// too lazy for the mouse
+	if (input->wasKeyPressed(ENTER_KEY)) {
+		startNewGame();
+	}
+}
+
+void Fallback::updateGameScreen(float frameTime) {
+	ship.update(frameTime);
+	if (ballResetting) {
+		// move ball with ship
+		ball.setPosition((ship.getX() + ship.getWidth() / 2) - ball.getWidth() / 2, ship.getY() - ball.getHeight() - 1);
+		// allow input to launch
+		if (input->wasKeyPressed(LAUNCH_BALL_KEY)) {
+			ball.setVelocity({ 0,-90 });
+			ball.removePowerUp(); // resets speed
+			ball.activate(); // turn on collisions
+			ballResetting = false;
+		}
+	} else {
+		ball.update(frameTime);
+	}
+
+	// handle power ups timer
+	if (hasPowerUp) {
+		powerUpTimer += frameTime;
+		if (powerUpTimer > powerUpTimeLimit) {
+			removePowerUp();
+		}
+	}
+
+	// every second adjust ball trail
+	timer += frameTime;
+	if (timer > BALLSHADOW_INTERVAL) {
+		recentBallPositions.push_back(VECTOR2(ball.getX(), ball.getY()));
+
+		if (recentBallPositions.size() > 5) {
+			// remove first
+			recentBallPositions.erase(recentBallPositions.begin());
+		}
+		timer = 0;
+	}
+
+	// check if the ball went off below ship
+	if (ball.getY() > GAME_HEIGHT) {
+		loseBall();
+		restartBall();
+	}
+}
+
+void Fallback::updateGameOverScreen(float frameTime)
+{
+	// pick out a block and bounce it
+	timer += frameTime;
+	float duration = 0.75f;
+	if (timer > duration) {
+		int index = rand() % blocks.size();
+		StrongAnimationPtr animPtr;
+		if (index % 2 == 0) {
+			animPtr = std::make_shared<PinchScale>(&blocks.at(index), duration, 0.8f);
+		} else {
+			animPtr = std::make_shared<PunchScale>(&blocks.at(index), duration, 1.2f);
+		}
+		m_AnimationManager.attachProcess(animPtr);
+		timer = 0;
+	}
 }
 
 /// <summary>
@@ -632,13 +669,6 @@ void Fallback::updateEffects(float frameTime)
 	explosionManager.update(frameTime);
 	// update Entity tweens/animations
 	m_AnimationManager.updateProcesses(frameTime);
-
-	// every 5 seconds there is a chance to spawn racers
-	racerSpawnTimer += frameTime;
-	if (racerSpawnTimer > 5) {
-		spawnRacers();
-		racerSpawnTimer = 0;
-	}
 }
 #pragma endregion
 
@@ -649,7 +679,7 @@ void Fallback::spawnRacers()
 	srand((unsigned)time(0));
 	int numberToSpawn = 0;
 
-	numberToSpawn = rand() % 4;
+	numberToSpawn = 3; // rand() % 4;
 	Vector2 position = { GAME_WIDTH, rand() % GAME_HEIGHT };
 	for (int i = 0; i < numberToSpawn; i++) {
 		spawnRacerAnimation(position);
@@ -900,6 +930,8 @@ void Fallback::ai()
 //=============================================================================
 void Fallback::collisions()
 {
+	if (isGameOver()) return;
+
 	VECTOR2 collisionVector, collisionPosition;
 
 	if (!isPaused) {
@@ -1083,9 +1115,13 @@ void Fallback::renderTitleScreen()
 	renderRacers();
 
 	titleImage.draw();
-	newGameButton.draw();
-	editorButton.draw();
-	creditsButton.draw();
+
+	if (titleLoading == false) {
+		newGameButton.draw();
+		editorButton.draw();
+		creditsButton.draw();
+	}
+
 	console.renderLog();
 }
 
@@ -1126,19 +1162,21 @@ void Fallback::setEditorScreen()
 /// </summary>
 void Fallback::setTitleScreen()
 {
-	// clean up game
-	blocks.clear();
-	racers.clear();
-	m_AnimationManager.clearAllProcesses();
+	currentScreen = TITLE;
+	titleLoading = true;
+	titleLoadingTimer = 0;
 
 	// set bg 
 	backgroundImage.setX(0);
+	backgroundImage.setColorFilter(graphicsNS::ALPHA25);
+	StrongAnimationPtr bgAnim = std::make_shared<FadeTo>(&backgroundImage, 2.0f, 1.0f);
+	m_AnimationManager.attachProcess(bgAnim);
 
-	spawnRacers();
+	titleImage.setColorFilter(graphicsNS::ALPHA25);
+	StrongAnimationPtr titleAnim = std::make_shared<FadeTo>(&titleImage, 0.75, 1.0f);
+	m_AnimationManager.attachProcess(titleAnim);
 
-	isPaused = false;
-	currentScreen = TITLE;
-	
+
 }
 
 void Fallback::launchEditor()
