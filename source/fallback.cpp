@@ -502,9 +502,6 @@ bool Fallback::loadLevelFromFile(int n)
 //=============================================================================
 void Fallback::update(float frameTime)
 {
-	// check if we want to exit
-	CheckForExit();
-
 	// handle inputs on Title Screen only
 	if (currentScreen == TITLE) {
 		// process animations
@@ -615,6 +612,9 @@ void Fallback::update(float frameTime)
 
 	// they run on all screens
 	cleanUpRacerList();
+
+	// check if we want to exit
+	CheckForExit();
 
 }
 
