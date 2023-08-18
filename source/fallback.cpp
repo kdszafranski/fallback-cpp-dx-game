@@ -124,7 +124,7 @@ void Fallback::resetGame()
 	hasPowerUp = false;
 	gameOver = false;
 	isPaused = false;
-	ballCount = 1; // MAX_BALLS;
+	ballCount = 2; // MAX_BALLS;
 	timer = 0;
 	powerUpTimer = 0;
 	score = 0;
@@ -136,11 +136,11 @@ void Fallback::exitGame()
 {
 	console.setLogText("");
 	isPaused = true;
-	SAFE_DELETE(powerUp);
-
 	// remove animations
 	explosionManager.clearAllParticles();
 	m_AnimationManager.clearAllProcesses();
+
+	SAFE_DELETE(powerUp);
 
 	// go to main menu
 	setTitleScreen();
@@ -567,7 +567,6 @@ void Fallback::update(float frameTime)
 
 				// check if the ball went off below ship
 				if (ball.getY() > GAME_HEIGHT) {
-					audio->playCue(ZAP);
 					loseBall();
 					restartBall();
 				}
@@ -804,42 +803,47 @@ void Fallback::loseBall()
 {
 	ballCount--;
 
-	// we lose power ups
-	if (hasPowerUp) {
-		removePowerUp();
-	}
-
-	// shake ship and bg for feedback
-	Vector2 shakeLimits = { 10.0f, 10.0f };
-	StrongAnimationPtr shipShake = std::make_shared<Shake>(&ship, 0.5, shakeLimits);
-	m_AnimationManager.attachProcess(shipShake);
-	StrongAnimationPtr bgShake = std::make_shared<Shake>(&backgroundImage, 0.5, shakeLimits);
-	m_AnimationManager.attachProcess(bgShake);
-
-	// bounce ball UI icon
-	StrongAnimationPtr animPtr = std::make_shared<PunchScale>(&ballCountIcon, 0.2f, 1.5f);
-	m_AnimationManager.attachProcess(animPtr);
-}
-
-//=============================================================================
-// Sets the ball at the staring position
-//=============================================================================
-void Fallback::restartBall()
-{
 	if (isGameOver()) {
+		audio->playCue("game-over");
 		// show screen
 		gameOver = true;
-
 		// blow up the ship
 		explosionManager.spawnExplosion(this, &iconTexture, { ship.getX() + 15, ship.getCenterY() });
 		explosionManager.spawnExplosion(this, &iconTexture, { ship.getX() + ship.getWidth() - 15, ship.getCenterY() });
 	} else {
-		ballResetting = true;
-		ball.setActive(false);
-		ball.setPosition((ship.getX() + ship.getWidth() / 2) - ball.getWidth() / 2, ship.getY() - ball.getHeight() - 1);
-		ball.setVelocity(VECTOR2(0, 0));
-		recentBallPositions.clear();
+		// game on!
+		audio->playCue(ZAP);
+
+		// we lose power ups
+		if (hasPowerUp) {
+			removePowerUp();
+		}
+
+		// shake ship and bg for feedback
+		Vector2 shakeLimits = { 10.0f, 10.0f };
+		StrongAnimationPtr shipShake = std::make_shared<Shake>(&ship, 0.5, shakeLimits);
+		m_AnimationManager.attachProcess(shipShake);
+		StrongAnimationPtr bgShake = std::make_shared<Shake>(&backgroundImage, 0.5, shakeLimits);
+		m_AnimationManager.attachProcess(bgShake);
+
+		// bounce ball UI icon
+		StrongAnimationPtr animPtr = std::make_shared<PunchScale>(&ballCountIcon, 0.2f, 1.5f);
+		m_AnimationManager.attachProcess(animPtr);
+
+		restartBall();
 	}
+}
+
+//=============================================================================
+// Sets the ball at the staring position on top of the ship, awaiting input to launch
+//=============================================================================
+void Fallback::restartBall()
+{
+	ballResetting = true;
+	ball.setActive(false);
+	ball.setPosition((ship.getX() + ship.getWidth() / 2) - ball.getWidth() / 2, ship.getY() - ball.getHeight() - 1);
+	ball.setVelocity(VECTOR2(0, 0));
+	recentBallPositions.clear();
 }
 
 //=============================================================================
