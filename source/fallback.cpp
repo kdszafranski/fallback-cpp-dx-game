@@ -1128,7 +1128,7 @@ void Fallback::renderGameScreen()
 			if (i > 0) { // leaves the last 2 the same size
 				shadowBallImage.setScale(i * 0.23);
 			}
-			shadowBallImage.draw(graphicsNS::WHITE & graphicsNS::ALPHA50); // ??
+			shadowBallImage.draw(graphicsNS::WHITE & graphicsNS::ALPHA50, true); // ??
 		}
 
 		ball.draw();
