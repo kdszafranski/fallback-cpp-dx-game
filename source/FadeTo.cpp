@@ -15,8 +15,14 @@ void FadeTo::update(float deltaTime)
 		if (timer < time) {
 			timer += deltaTime;
 
-			// startValue, endValue, timeElapsed / lerpDuration
-			m_color.a = lerp(1.0f, m_alphaTarget, clampHighLow(timer / time));
+			// lerp(startValue, endValue, timeElapsed / lerpDuration)
+			if (m_alphaTarget >= 1) {
+				// fade in (up to 1)
+				m_color.a = lerp(0, m_alphaTarget, clampHighLow(timer / time));
+			} else {
+				// fade out (from 1)
+				m_color.a = lerp(1.0f, m_alphaTarget, clampHighLow(timer / time));
+			}
 
 			entity->setColorFilter(m_color);
 

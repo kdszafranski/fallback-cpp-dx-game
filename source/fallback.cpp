@@ -124,7 +124,7 @@ void Fallback::resetGame()
 	hasPowerUp = false;
 	gameOver = false;
 	isPaused = false;
-	ballCount = MAX_BALLS;
+	ballCount = 2; // MAX_BALLS;
 	timer = 0;
 	powerUpTimer = 0;
 	score = 0;
@@ -136,11 +136,11 @@ void Fallback::exitGame()
 {
 	console.setLogText("");
 	isPaused = true;
-	SAFE_DELETE(powerUp);
-
 	// remove animations
 	explosionManager.clearAllParticles();
 	m_AnimationManager.clearAllProcesses();
+
+	SAFE_DELETE(powerUp);
 
 	// go to main menu
 	setTitleScreen();
@@ -490,6 +490,7 @@ bool Fallback::loadLevelFromFile(int n)
 	return true;
 }
 
+#pragma region Update
 //=============================================================================
 // Update all game items
 //=============================================================================
@@ -550,11 +551,16 @@ void Fallback::update(float frameTime)
 					ball.update(frameTime);
 				}
 
+				// handle power ups timer
+				if (hasPowerUp) {
+					powerUpTimer += frameTime;
+					if (powerUpTimer > powerUpTimeLimit) {
+						removePowerUp();
+					}
+				}
 
-				console.setLogText(to_string(ship.getX()));
-
-				timer += frameTime;
 				// every second adjust ball trail
+				timer += frameTime;
 				if (timer > BALLSHADOW_INTERVAL) {
 					recentBallPositions.push_back(VECTOR2(ball.getX(), ball.getY()));
 
@@ -565,44 +571,33 @@ void Fallback::update(float frameTime)
 					timer = 0;
 				}
 
-				// handle power ups
-				if (hasPowerUp) {
-					powerUpTimer += frameTime;
-					if (powerUpTimer > powerUpTimeLimit) {
-						removePowerUp();
-					}
-				}
-
-				// update particles
-				explosionManager.update(frameTime);
-
-				// update Entity tweens/animations
-				m_AnimationManager.updateProcesses(frameTime);
-
-				// update falling power up
-				if (powerUp) {
-					powerUp->update(frameTime);
-					// off the screen?
-					if (powerUp->getY() > GAME_HEIGHT) {
-						SAFE_DELETE(powerUp);
-					}
-				}
-
 				// check if the ball went off below ship
 				if (ball.getY() > GAME_HEIGHT) {
-					audio->playCue(ZAP);
 					loseBall();
 					restartBall();
 				}
 
-				// every 5 seconds there is a chance to spawn racers
-				racerSpawnTimer += frameTime;
-				if (racerSpawnTimer > 5) {
-					spawnRacers();
-					racerSpawnTimer = 0;
+			} // end game over check
+			else {
+				// game over
+				// pick out a block and bounce it
+				timer += frameTime;
+				float duration = 0.75f;
+				if (timer > duration) {
+					int index = rand() % blocks.size();
+					StrongAnimationPtr animPtr;
+					if (index % 2 == 0) {
+						animPtr = std::make_shared<PinchScale>(&blocks.at(index), duration, 0.8f);
+					} else {
+						animPtr = std::make_shared<PunchScale>(&blocks.at(index), duration, 1.2f);
+					}
+					m_AnimationManager.attachProcess(animPtr);
+					timer = 0;
 				}
+			} // end game over
 
-			} // game over
+			// always update effects
+			updateEffects(frameTime);
 
 		}  // paused
 	} // GAME screen
@@ -617,6 +612,35 @@ void Fallback::update(float frameTime)
 	cleanUpRacerList();
 
 }
+
+/// <summary>
+/// Updates particles and effects
+/// </summary>
+/// <param name="frameTime">current frame time</param>
+void Fallback::updateEffects(float frameTime)
+{
+	// update these unless paused	
+	if (powerUp) {
+		powerUp->update(frameTime);
+		// off the screen?
+		if (powerUp->getY() > GAME_HEIGHT) {
+			SAFE_DELETE(powerUp);
+		}
+	}
+
+	// update particles
+	explosionManager.update(frameTime);
+	// update Entity tweens/animations
+	m_AnimationManager.updateProcesses(frameTime);
+
+	// every 5 seconds there is a chance to spawn racers
+	racerSpawnTimer += frameTime;
+	if (racerSpawnTimer > 5) {
+		spawnRacers();
+		racerSpawnTimer = 0;
+	}
+}
+#pragma endregion
 
 #pragma region Racers
 void Fallback::spawnRacers()
@@ -695,11 +719,13 @@ void Fallback::applyPowerUp()
 	}
 
 	// apply to the correct Entity and spawn animations
+	//currentPowerUp = FAST;
 	StrongAnimationPtr anim;
 	switch (currentPowerUp) {
 		case SLOW:
 		case ZOOM:
 			ball.applyPowerUp(currentPowerUp);
+			ship.applyPowerUp(currentPowerUp);
 			break;
 		case FAST:
 			ship.applyPowerUp(currentPowerUp);
@@ -783,43 +809,62 @@ bool Fallback::isGameOver()
 //=============================================================================
 void Fallback::loseBall()
 {
-	//ballCount--;
+	ballCount--;
 
-	// we lose power ups
-	if (hasPowerUp) {
-		removePowerUp();
+	if (isGameOver()) {
+		handleGameOver();
+	} else {
+		// game on!
+		audio->playCue(ZAP);
+
+		// we lose power ups
+		if (hasPowerUp) {
+			removePowerUp();
+		}
+
+		// shake ship and bg for feedback
+		Vector2 shakeLimits = { 10.0f, 10.0f };
+		StrongAnimationPtr shipShake = std::make_shared<Shake>(&ship, 0.5, shakeLimits);
+		m_AnimationManager.attachProcess(shipShake);
+		StrongAnimationPtr bgShake = std::make_shared<Shake>(&backgroundImage, 0.5, shakeLimits);
+		m_AnimationManager.attachProcess(bgShake);
+
+		// bounce ball UI icon
+		StrongAnimationPtr animPtr = std::make_shared<PunchScale>(&ballCountIcon, 0.2f, 1.5f);
+		m_AnimationManager.attachProcess(animPtr);
+
+		restartBall();
 	}
+}
 
-	// shake ship and bg for feedback
-	Vector2 shakeLimits = { 10.0f, 10.0f };
-	StrongAnimationPtr shipShake = std::make_shared<Shake>(&ship, 0.5, shakeLimits);
-	m_AnimationManager.attachProcess(shipShake);
-	StrongAnimationPtr bgShake = std::make_shared<Shake>(&backgroundImage, 0.5, shakeLimits);
-	m_AnimationManager.attachProcess(bgShake);
-
-	// bounce ball UI icon
-	StrongAnimationPtr animPtr = std::make_shared<PunchScale>(&ballCountIcon, 0.2f, 1.5f);
+/// <summary>
+/// Handles game over tasks and animations
+/// </summary>
+void Fallback::handleGameOver()
+{
+	audio->playCue("game-over");
+	// show screen
+	gameOver = true;
+	// bring in message
+	gameOverImage.setColorFilter(graphicsNS::FB_TRANSPARENT);
+	StrongAnimationPtr animPtr = std::make_shared<FadeTo>(&gameOverImage, 1.25f, 1.0f);
 	m_AnimationManager.attachProcess(animPtr);
+
+	// blow up the ship
+	explosionManager.spawnExplosion(this, &iconTexture, { ship.getX() + 15, ship.getCenterY() });
+	explosionManager.spawnExplosion(this, &iconTexture, { ship.getX() + ship.getWidth() - 15, ship.getCenterY() });
 }
 
 //=============================================================================
-// Sets the ball at the staring position
+// Sets the ball at the staring position on top of the ship, awaiting input to launch
 //=============================================================================
 void Fallback::restartBall()
 {
-	if (isGameOver()) {
-		// show screen
-		gameOver = true;
-		console.setLogText("GAME OVER!");
-	} else {
-		ballResetting = true;
-		ball.setActive(false);
-		ball.setPosition((ship.getX() + ship.getWidth() / 2) - ball.getWidth() / 2, ship.getY() - ball.getHeight() - 1);
-		ball.setVelocity(VECTOR2(0, 0));
-
-		recentBallPositions.clear();
-		//recentBallPositions.push_back(VECTOR2(ball.getX(), ball.getY()));
-	}
+	ballResetting = true;
+	ball.setActive(false);
+	ball.setPosition((ship.getX() + ship.getWidth() / 2) - ball.getWidth() / 2, ship.getY() - ball.getHeight() - 1);
+	ball.setVelocity(VECTOR2(0, 0));
+	recentBallPositions.clear();
 }
 
 //=============================================================================
@@ -1093,6 +1138,7 @@ void Fallback::setTitleScreen()
 
 	isPaused = false;
 	currentScreen = TITLE;
+	
 }
 
 void Fallback::launchEditor()
@@ -1126,6 +1172,7 @@ void Fallback::renderGameScreen()
 		// show message
 		gameOverImage.draw();
 	} else {
+		// only draw these when playing
 		ship.draw();
 
 		for (int i = recentBallPositions.size() - 1; i > -1; i--) {
@@ -1140,8 +1187,10 @@ void Fallback::renderGameScreen()
 		}
 
 		ball.draw();
+
 	}
 
+	// always draw the following
 
 	// render all blocks
 	for (int i = 0; i < blocks.size(); i++) {

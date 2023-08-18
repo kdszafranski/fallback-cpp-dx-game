@@ -112,6 +112,8 @@ public:
 
     // Game Loop stuff
     void update(float frameTime);      // must override pure virtual from Game
+    // update extraneous elements
+    void updateEffects(float frameTime);
     void ai();          // "
     void collisions();  // "
     void render();  // render game objects
@@ -123,6 +125,8 @@ public:
     void resetAll();
     void loseBall();    // reduce ball count
     bool isGameOver();  // check if we're out of balls
+    // do game over things
+    void handleGameOver();
     // periodically spawns details in the bg
     void spawnRacers();
     // actually creates the racer animation instances
