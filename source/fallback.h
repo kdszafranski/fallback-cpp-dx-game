@@ -45,12 +45,14 @@ private:
     bool gameOver = false;
     bool hasPowerUp = false;
     bool ballResetting = false;
+    bool titleLoading = false;
     int score;
     int ballCount;
     int currentLevel;
     float racerSpawnTimer;
     float powerUpTimer;
     float powerUpTimeLimit;
+    float titleLoadingTimer;
 
     // Game objects
     POWERUP currentPowerUp;

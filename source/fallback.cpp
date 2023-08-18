@@ -33,6 +33,8 @@ Fallback::Fallback()
 	racerSpawnTimer = 0;
 	hasPowerUp = false;
 	powerUpTimer = 0;
+	titleLoadingTimer = 0;
+	titleLoading = false;
 	currentPowerUp = FAST; // not actually applied, null would be better
 	powerUpTimeLimit = 5.0f;
 	animId = 0;
@@ -506,6 +508,13 @@ void Fallback::update(float frameTime)
 	if (currentScreen == TITLE) {
 		// process animations
 		m_AnimationManager.updateProcesses(frameTime);
+
+		// wait for bg and title to fade in
+		titleLoadingTimer += frameTime;
+		if (titleLoadingTimer > 2.0f) {
+			titleLoadingTimer = 0;
+			titleLoading = false;
+		}
 
 		if (newGameButton.isMouseOver()) {
 			// over, allow clicks
@@ -1090,9 +1099,13 @@ void Fallback::renderTitleScreen()
 	renderRacers();
 
 	titleImage.draw();
-	newGameButton.draw();
-	editorButton.draw();
-	creditsButton.draw();
+
+	if (titleLoading == false) {
+		newGameButton.draw();
+		editorButton.draw();
+		creditsButton.draw();
+	}
+
 	console.renderLog();
 }
 
@@ -1134,13 +1147,20 @@ void Fallback::setEditorScreen()
 void Fallback::setTitleScreen()
 {
 	currentScreen = TITLE;
+	titleLoading = true;
+	titleLoadingTimer = 0;
 
 	// set bg 
 	backgroundImage.setX(0);
 	backgroundImage.setColorFilter(graphicsNS::ALPHA25);
-	StrongAnimationPtr bgAnim = std::make_shared<FadeTo>(&backgroundImage, 3.0f, 1.0f);
+	StrongAnimationPtr bgAnim = std::make_shared<FadeTo>(&backgroundImage, 2.0f, 1.0f);
 	m_AnimationManager.attachProcess(bgAnim);
-	
+
+	titleImage.setColorFilter(graphicsNS::ALPHA25);
+	StrongAnimationPtr titleAnim = std::make_shared<FadeTo>(&titleImage, 0.75, 1.0f);
+	m_AnimationManager.attachProcess(titleAnim);
+
+
 }
 
 void Fallback::launchEditor()
