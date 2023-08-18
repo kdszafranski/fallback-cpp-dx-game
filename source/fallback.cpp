@@ -490,6 +490,7 @@ bool Fallback::loadLevelFromFile(int n)
 	return true;
 }
 
+#pragma region Update
 //=============================================================================
 // Update all game items
 //=============================================================================
@@ -552,8 +553,8 @@ void Fallback::update(float frameTime)
 
 				console.setLogText(to_string(ship.getX()));
 
-				timer += frameTime;
 				// every second adjust ball trail
+				timer += frameTime;
 				if (timer > BALLSHADOW_INTERVAL) {
 					recentBallPositions.push_back(VECTOR2(ball.getX(), ball.getY()));
 
@@ -572,6 +573,23 @@ void Fallback::update(float frameTime)
 				}
 
 			} // end game over check
+			else {
+				// game over
+				// pick out a block and bounce it
+				timer += frameTime;
+				float duration = 0.75f;
+				if (timer > duration) {
+					int index = rand() % blocks.size();
+					StrongAnimationPtr animPtr;
+					if (index % 2 == 0) {
+						animPtr = std::make_shared<PinchScale>(&blocks.at(index), duration, 0.8f);
+					} else {
+						animPtr = std::make_shared<PunchScale>(&blocks.at(index), duration, 1.2f);
+					}
+					m_AnimationManager.attachProcess(animPtr);
+					timer = 0;
+				}
+			} // end game over
 
 			// always update effects
 			updateEffects(frameTime);
@@ -617,6 +635,7 @@ void Fallback::updateEffects(float frameTime)
 		racerSpawnTimer = 0;
 	}
 }
+#pragma endregion
 
 #pragma region Racers
 void Fallback::spawnRacers()
@@ -810,7 +829,10 @@ void Fallback::restartBall()
 	if (isGameOver()) {
 		// show screen
 		gameOver = true;
-		console.setLogText("GAME OVER!");
+
+		// blow up the ship
+		explosionManager.spawnExplosion(this, &iconTexture, { ship.getX() + 15, ship.getCenterY() });
+		explosionManager.spawnExplosion(this, &iconTexture, { ship.getX() + ship.getWidth() - 15, ship.getCenterY() });
 	} else {
 		ballResetting = true;
 		ball.setActive(false);
@@ -1124,6 +1146,7 @@ void Fallback::renderGameScreen()
 		// show message
 		gameOverImage.draw();
 	} else {
+		// only draw these when playing
 		ship.draw();
 
 		for (int i = recentBallPositions.size() - 1; i > -1; i--) {
@@ -1138,7 +1161,10 @@ void Fallback::renderGameScreen()
 		}
 
 		ball.draw();
+
 	}
+
+	// always draw the following
 
 	// render all blocks
 	for (int i = 0; i < blocks.size(); i++) {

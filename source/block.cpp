@@ -65,7 +65,7 @@ bool Block::initialize(Game* gamePtr, int width, int height, int ncols,
 //=============================================================================
 void Block::draw()
 {
-    // tint this block with its color filter
+    // tint this block with its color filter from the center
     Image::draw(color, true);
 }
 
