@@ -846,7 +846,7 @@ void Fallback::handleGameOver()
 	// show screen
 	gameOver = true;
 	// bring in message
-	gameOverImage.setColorFilter(D3DXCOLOR(255, 255, 255, 0));
+	gameOverImage.setColorFilter(graphicsNS::FB_TRANSPARENT);
 	StrongAnimationPtr animPtr = std::make_shared<FadeTo>(&gameOverImage, 1.25f, 1.0f);
 	m_AnimationManager.attachProcess(animPtr);
 
