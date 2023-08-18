@@ -508,7 +508,7 @@ void Fallback::update(float frameTime)
 	if (currentScreen == TITLE) {
 		// process animations
 		m_AnimationManager.updateProcesses(frameTime);
-		updateTitleScreen(frameTime);		
+		updateTitleScreen(frameTime);
 	}
 
 	// handle Game updates and inputs
@@ -519,70 +519,17 @@ void Fallback::update(float frameTime)
 		if (!isPaused) {
 			if (!gameOver) {
 				// update position of all game objects
-				ship.update(frameTime);
-				if (ballResetting) {
-					// move ball with ship
-					ball.setPosition((ship.getX() + ship.getWidth() / 2) - ball.getWidth() / 2, ship.getY() - ball.getHeight() - 1);
-					// allow input to launch
-					if (input->wasKeyPressed(LAUNCH_BALL_KEY)) {
-						ball.setVelocity({ 0,-90 });
-						ball.removePowerUp(); // resets speed
-						ball.activate(); // turn on collisions
-						ballResetting = false;
-					}
-				} else {
-					ball.update(frameTime);
-				}
-
-				// handle power ups timer
-				if (hasPowerUp) {
-					powerUpTimer += frameTime;
-					if (powerUpTimer > powerUpTimeLimit) {
-						removePowerUp();
-					}
-				}
-
-				// every second adjust ball trail
-				timer += frameTime;
-				if (timer > BALLSHADOW_INTERVAL) {
-					recentBallPositions.push_back(VECTOR2(ball.getX(), ball.getY()));
-
-					if (recentBallPositions.size() > 5) {
-						// remove first
-						recentBallPositions.erase(recentBallPositions.begin());
-					}
-					timer = 0;
-				}
-
-				// check if the ball went off below ship
-				if (ball.getY() > GAME_HEIGHT) {
-					loseBall();
-					restartBall();
-				}
-
-			} // end game over check
-			else {
+				updateGameScreen(frameTime);
+			} else {
 				// game over
-				// pick out a block and bounce it
-				timer += frameTime;
-				float duration = 0.75f;
-				if (timer > duration) {
-					int index = rand() % blocks.size();
-					StrongAnimationPtr animPtr;
-					if (index % 2 == 0) {
-						animPtr = std::make_shared<PinchScale>(&blocks.at(index), duration, 0.8f);
-					} else {
-						animPtr = std::make_shared<PunchScale>(&blocks.at(index), duration, 1.2f);
-					}
-					m_AnimationManager.attachProcess(animPtr);
-					timer = 0;
-				}
+				updateGameOverScreen(frameTime);
 			} // end game over
 
 			// always update effects
 			updateEffects(frameTime);
 
-		}  // paused
+		} // isPaused
+
 	} // GAME screen
 
 	if (currentScreen == EDITOR) {
@@ -591,6 +538,7 @@ void Fallback::update(float frameTime)
 		m_AnimationManager.updateProcesses(frameTime);
 	}
 
+	// Always update the following
 	// every 5 seconds there is a chance to spawn racers
 	racerSpawnTimer += frameTime;
 	if (racerSpawnTimer > 5) {
@@ -603,9 +551,12 @@ void Fallback::update(float frameTime)
 
 	// check if we want to exit
 	CheckForExit();
-
 }
 
+/// <summary>
+/// Updates elements for the title screen only, including a timer for some elements
+/// </summary>
+/// <param name="frameTime">current frame time</param>
 void Fallback::updateTitleScreen(float frameTime)
 {
 	// wait for bg and title to fade in
@@ -635,6 +586,67 @@ void Fallback::updateTitleScreen(float frameTime)
 	// too lazy for the mouse
 	if (input->wasKeyPressed(ENTER_KEY)) {
 		startNewGame();
+	}
+}
+
+void Fallback::updateGameScreen(float frameTime) {
+	ship.update(frameTime);
+	if (ballResetting) {
+		// move ball with ship
+		ball.setPosition((ship.getX() + ship.getWidth() / 2) - ball.getWidth() / 2, ship.getY() - ball.getHeight() - 1);
+		// allow input to launch
+		if (input->wasKeyPressed(LAUNCH_BALL_KEY)) {
+			ball.setVelocity({ 0,-90 });
+			ball.removePowerUp(); // resets speed
+			ball.activate(); // turn on collisions
+			ballResetting = false;
+		}
+	} else {
+		ball.update(frameTime);
+	}
+
+	// handle power ups timer
+	if (hasPowerUp) {
+		powerUpTimer += frameTime;
+		if (powerUpTimer > powerUpTimeLimit) {
+			removePowerUp();
+		}
+	}
+
+	// every second adjust ball trail
+	timer += frameTime;
+	if (timer > BALLSHADOW_INTERVAL) {
+		recentBallPositions.push_back(VECTOR2(ball.getX(), ball.getY()));
+
+		if (recentBallPositions.size() > 5) {
+			// remove first
+			recentBallPositions.erase(recentBallPositions.begin());
+		}
+		timer = 0;
+	}
+
+	// check if the ball went off below ship
+	if (ball.getY() > GAME_HEIGHT) {
+		loseBall();
+		restartBall();
+	}
+}
+
+void Fallback::updateGameOverScreen(float frameTime)
+{
+	// pick out a block and bounce it
+	timer += frameTime;
+	float duration = 0.75f;
+	if (timer > duration) {
+		int index = rand() % blocks.size();
+		StrongAnimationPtr animPtr;
+		if (index % 2 == 0) {
+			animPtr = std::make_shared<PinchScale>(&blocks.at(index), duration, 0.8f);
+		} else {
+			animPtr = std::make_shared<PunchScale>(&blocks.at(index), duration, 1.2f);
+		}
+		m_AnimationManager.attachProcess(animPtr);
+		timer = 0;
 	}
 }
 

@@ -115,10 +115,10 @@ public:
     // Game Loop stuff
     void update(float frameTime);      // must override pure virtual from Game
     void updateTitleScreen(float frameTime);
+    void updateGameScreen(float frameTime);
+    void updateGameOverScreen(float frameTime);
     // update extraneous elements
     void updateEffects(float frameTime);
-    
-    
     
     void ai();          // "
     void collisions();  // "
