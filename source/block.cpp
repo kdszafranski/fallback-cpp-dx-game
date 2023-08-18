@@ -66,7 +66,7 @@ bool Block::initialize(Game* gamePtr, int width, int height, int ncols,
 void Block::draw()
 {
     // tint this block with its color filter from the center
-    Image::draw(color, true);
+    Image::draw(0, true);
 }
 
 //=============================================================================
@@ -103,5 +103,7 @@ void Block::setBlockColorByType()
             color = graphicsNS::FB_INVINCIBLE;
             break;
         }
+
+    colorFilter = color;
 }
 

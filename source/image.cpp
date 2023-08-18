@@ -109,10 +109,14 @@ void Image::draw(COLOR_ARGB color, bool fromCenter)
 	// get fresh texture incase onReset() was called
 	spriteData.texture = textureManager->getTexture();
 	
-	if (color == graphicsNS::FILTER)                     // if draw with filter
-		graphics->drawSprite(spriteData, colorFilter, fromCenter);  // use colorFilter
-	else
-		graphics->drawSprite(spriteData, color, fromCenter);        // use color as filter
+	// color default is WHITE
+	if (color != 0) {
+		// if draw with filter
+		graphics->drawSprite(spriteData, color, fromCenter);  // use colorFilter
+	}
+	else {
+		graphics->drawSprite(spriteData, colorFilter, fromCenter);        // use color as filter
+	}
 }
 
 //=============================================================================

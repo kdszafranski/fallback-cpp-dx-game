@@ -551,7 +551,13 @@ void Fallback::update(float frameTime)
 					ball.update(frameTime);
 				}
 
-				console.setLogText(to_string(ship.getX()));
+				// handle power ups timer
+				if (hasPowerUp) {
+					powerUpTimer += frameTime;
+					if (powerUpTimer > powerUpTimeLimit) {
+						removePowerUp();
+					}
+				}
 
 				// every second adjust ball trail
 				timer += frameTime;
@@ -713,11 +719,13 @@ void Fallback::applyPowerUp()
 	}
 
 	// apply to the correct Entity and spawn animations
+	//currentPowerUp = FAST;
 	StrongAnimationPtr anim;
 	switch (currentPowerUp) {
 		case SLOW:
 		case ZOOM:
 			ball.applyPowerUp(currentPowerUp);
+			ship.applyPowerUp(currentPowerUp);
 			break;
 		case FAST:
 			ship.applyPowerUp(currentPowerUp);
@@ -804,12 +812,7 @@ void Fallback::loseBall()
 	ballCount--;
 
 	if (isGameOver()) {
-		audio->playCue("game-over");
-		// show screen
-		gameOver = true;
-		// blow up the ship
-		explosionManager.spawnExplosion(this, &iconTexture, { ship.getX() + 15, ship.getCenterY() });
-		explosionManager.spawnExplosion(this, &iconTexture, { ship.getX() + ship.getWidth() - 15, ship.getCenterY() });
+		handleGameOver();
 	} else {
 		// game on!
 		audio->playCue(ZAP);
@@ -832,6 +835,24 @@ void Fallback::loseBall()
 
 		restartBall();
 	}
+}
+
+/// <summary>
+/// Handles game over tasks and animations
+/// </summary>
+void Fallback::handleGameOver()
+{
+	audio->playCue("game-over");
+	// show screen
+	gameOver = true;
+	// bring in message
+	gameOverImage.setColorFilter(D3DXCOLOR(255, 255, 255, 0));
+	StrongAnimationPtr animPtr = std::make_shared<FadeTo>(&gameOverImage, 1.25f, 1.0f);
+	m_AnimationManager.attachProcess(animPtr);
+
+	// blow up the ship
+	explosionManager.spawnExplosion(this, &iconTexture, { ship.getX() + 15, ship.getCenterY() });
+	explosionManager.spawnExplosion(this, &iconTexture, { ship.getX() + ship.getWidth() - 15, ship.getCenterY() });
 }
 
 //=============================================================================
@@ -1117,6 +1138,7 @@ void Fallback::setTitleScreen()
 
 	isPaused = false;
 	currentScreen = TITLE;
+	
 }
 
 void Fallback::launchEditor()
