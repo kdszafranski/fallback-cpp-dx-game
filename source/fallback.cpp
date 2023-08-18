@@ -135,10 +135,16 @@ void Fallback::resetGame()
 void Fallback::exitGame()
 {
 	console.setLogText("");
-	isPaused = true;
+	isPaused = false;
+	ballCount = 0;
+
 	// remove animations
 	explosionManager.clearAllParticles();
 	m_AnimationManager.clearAllProcesses();
+
+	// clean up game
+	blocks.clear();
+	racers.clear();
 
 	SAFE_DELETE(powerUp);
 
@@ -501,6 +507,9 @@ void Fallback::update(float frameTime)
 
 	// handle inputs on Title Screen only
 	if (currentScreen == TITLE) {
+		// process animations
+		m_AnimationManager.updateProcesses(frameTime);
+
 		if (newGameButton.isMouseOver()) {
 			// over, allow clicks
 			if (input->getMouseLButton()) {
@@ -512,10 +521,6 @@ void Fallback::update(float frameTime)
 				launchEditor();
 			}
 		}
-
-		// process animations
-		m_AnimationManager.updateProcesses(frameTime);
-
 		if (creditsButton.isMouseOver()) {
 			if (input->getMouseLButton()) {
 				console.setLogText("launch credits");
@@ -649,7 +654,7 @@ void Fallback::spawnRacers()
 	srand((unsigned)time(0));
 	int numberToSpawn = 0;
 
-	numberToSpawn = rand() % 4;
+	numberToSpawn = 3; // rand() % 4;
 	Vector2 position = { GAME_WIDTH, rand() % GAME_HEIGHT };
 	for (int i = 0; i < numberToSpawn; i++) {
 		spawnRacerAnimation(position);
@@ -900,6 +905,8 @@ void Fallback::ai()
 //=============================================================================
 void Fallback::collisions()
 {
+	if (isGameOver()) return;
+
 	VECTOR2 collisionVector, collisionPosition;
 
 	if (!isPaused) {
@@ -1126,18 +1133,17 @@ void Fallback::setEditorScreen()
 /// </summary>
 void Fallback::setTitleScreen()
 {
-	// clean up game
-	blocks.clear();
-	racers.clear();
 	m_AnimationManager.clearAllProcesses();
+	currentScreen = TITLE;
 
 	// set bg 
 	backgroundImage.setX(0);
+	backgroundImage.setColorFilter(graphicsNS::ALPHA25);
+	StrongAnimationPtr bgAnim = std::make_shared<FadeTo>(&backgroundImage, 3.0f, 1.0f);
+	m_AnimationManager.attachProcess(bgAnim);
 
 	spawnRacers();
 
-	isPaused = false;
-	currentScreen = TITLE;
 	
 }
 
