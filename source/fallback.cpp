@@ -740,6 +740,7 @@ void Fallback::spawnPowerUp(VECTOR2 position)
 void Fallback::applyPowerUp()
 {
 	hasPowerUp = true;
+	audio->playCue("power-up");
 	powerUpTimer = 0;
 	currentPowerUp = powerUp->getPowerUpType();
 
@@ -946,10 +947,8 @@ void Fallback::collisions()
 		if (powerUp) {
 			// powerUp is a ptr so dereference with *powerUp
 			if (ship.collidesWith(*powerUp, collisionVector)) {
-				audio->playCue(ZAP);
-
-				score += POWERUP_POINT_VALUE;
 				applyPowerUp();
+				score += POWERUP_POINT_VALUE;
 
 				explosionManager.spawnExplosion(this, &iconTexture, { powerUp->getX(), powerUp->getY() });
 
