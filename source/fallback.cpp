@@ -790,14 +790,12 @@ void Fallback::loseBall()
 		removePowerUp();
 	}
 
-	// shake ship
+	// shake ship and bg for feedback
 	Vector2 shakeLimits = { 10.0f, 10.0f };
 	StrongAnimationPtr shipShake = std::make_shared<Shake>(&ship, 0.5, shakeLimits);
 	m_AnimationManager.attachProcess(shipShake);
 	StrongAnimationPtr bgShake = std::make_shared<Shake>(&backgroundImage, 0.5, shakeLimits);
 	m_AnimationManager.attachProcess(bgShake);
-
-	
 
 	// bounce ball UI icon
 	StrongAnimationPtr animPtr = std::make_shared<PunchScale>(&ballCountIcon, 0.2f, 1.5f);

@@ -27,8 +27,8 @@
 ## Graphics
 - [ ] custom cursor (resource)
 - [ ] screen transitions (start with fading in/out)
-- [ ] screen shake on ball loss
-- [ ] delay between ball restart
+- [x] screen shake on ball loss
+- [x] delay between ball restart
 - [ ] ship explosion on game over
 - [x] add more animations
 - [x] ball trail
