@@ -15,12 +15,13 @@
 
 ## Technical Challenges
 - [ ] add event manager, implement Observer pattern: https://gameprogrammingpatterns.com/observer.html
+- [ ] convert to OpenGL
+- [ ] convert to use SDL2
 - [X] separate direction from speed
 - [X] make level editor
 - [X] added animation/process manager to handle multi-frame animations
 - [ ] consider memory/profiling
-- [ ] compile to web assem using Emscripten
-- [ ] convert to use SDL2
+- [ ] compile to web assem using Emscripten (open gl only)
 - [ ] allow blocks of varying sizes
 
 ## Graphics
@@ -44,3 +45,11 @@
 Multiball
 - change to vector of Ships
     - need to change every instance to a loop, would have 1 ball 99% of the time
+
+
+    8/17
+
+    - deal with losing a ball and restarting
+        - screen/ship shake
+        - place ball on ship
+        - allow ship to "launch" ball upward
