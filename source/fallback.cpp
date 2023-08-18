@@ -20,7 +20,7 @@ using namespace std;
 #include "PunchScale.h"
 #include "DirectionBounce.h"
 #include "MoveTo.h"
-#include "scaleXTo.h"
+#include "ScaleXTo.h"
 
 //=============================================================================
 // Constructor
@@ -535,7 +535,20 @@ void Fallback::update(float frameTime)
 			if (!gameOver) {
 				// update position of all game objects
 				ship.update(frameTime);
-				ball.update(frameTime);
+				if (ballResetting) {
+					// move ball with ship
+					ball.setPosition((ship.getX() + ship.getWidth() / 2) - ball.getWidth() / 2, ship.getY() - ball.getHeight() - 1);
+					// allow input to launch
+					if (input->wasKeyPressed(LAUNCH_BALL_KEY)) {
+						ball.setVelocity({ 0,-90 });
+						ball.removePowerUp(); // resets speed
+						ball.activate(); // turn on collisions
+						ballResetting = false;
+					}
+				} else {
+					ball.update(frameTime);
+				}
+
 
 				console.setLogText(to_string(ship.getX()));
 
@@ -791,11 +804,13 @@ void Fallback::restartBall()
 		gameOver = true;
 		console.setLogText("GAME OVER!");
 	} else {
-		ball.setPosition(220, 300);
-		ball.setVelocity(VECTOR2(180, 150)); // move!
+		ballResetting = true;
+		ball.setActive(false);
+		ball.setPosition((ship.getX() + ship.getWidth() / 2) - ball.getWidth() / 2, ship.getY() - ball.getHeight() - 1);
+		ball.setVelocity(VECTOR2(0, 0));
 
 		recentBallPositions.clear();
-		recentBallPositions.push_back(VECTOR2(ball.getX(), ball.getY()));
+		//recentBallPositions.push_back(VECTOR2(ball.getX(), ball.getY()));
 	}
 }
 

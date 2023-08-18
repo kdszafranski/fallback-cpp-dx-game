@@ -44,6 +44,7 @@ private:
     std::list<Image> racers;
     bool gameOver = false;
     bool hasPowerUp = false;
+    bool ballResetting = false;
     int score;
     int ballCount;
     int currentLevel;
