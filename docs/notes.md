@@ -4,7 +4,6 @@
 - [x] fix collisions
 - [x] block should complete animation before being destroyed
 
-
 ## Architecture
 - [ ] Winmain, winproc
 - [ ] convert to be like the GCC book
@@ -29,7 +28,7 @@
 - [ ] screen transitions (start with fading in/out)
 - [x] screen shake on ball loss
 - [x] delay between ball restart
-- [ ] ship explosion on game over
+- [x] ship explosion on game over
 - [x] add more animations
 - [x] ball trail
 - [x] juicier, particles
@@ -45,9 +44,3 @@
 Multiball
 - change to vector of Ships
     - need to change every instance to a loop, would have 1 ball 99% of the time
-
-
-    8/17
-
-    - deal with losing a ball and restarting
-        - screen/ship shake

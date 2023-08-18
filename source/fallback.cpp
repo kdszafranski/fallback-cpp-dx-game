@@ -1148,6 +1148,7 @@ void Fallback::setGameScreen()
 {
 	// shift to next sprite frame for the game bg
 	backgroundImage.setX(-static_cast<int>(GAME_WIDTH));
+	backgroundImage.setColorFilter(graphicsNS::WHITE);
 	currentScreen = GAME;
 }
 
