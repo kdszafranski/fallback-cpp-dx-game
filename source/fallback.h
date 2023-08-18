@@ -36,7 +36,7 @@ class Fallback : public Game
 private:
     // variables
     // testing
-    bool skipTitleScreen = true;
+    bool skipTitleScreen = false;
     int animId;
 
     std::vector<Block> blocks;

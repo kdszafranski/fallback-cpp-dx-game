@@ -610,6 +610,13 @@ void Fallback::update(float frameTime)
 		m_AnimationManager.updateProcesses(frameTime);
 	}
 
+	// every 5 seconds there is a chance to spawn racers
+	racerSpawnTimer += frameTime;
+	if (racerSpawnTimer > 5) {
+		spawnRacers();
+		racerSpawnTimer = 0;
+	}
+
 	// they run on all screens
 	cleanUpRacerList();
 
@@ -637,13 +644,6 @@ void Fallback::updateEffects(float frameTime)
 	explosionManager.update(frameTime);
 	// update Entity tweens/animations
 	m_AnimationManager.updateProcesses(frameTime);
-
-	// every 5 seconds there is a chance to spawn racers
-	racerSpawnTimer += frameTime;
-	if (racerSpawnTimer > 5) {
-		spawnRacers();
-		racerSpawnTimer = 0;
-	}
 }
 #pragma endregion
 
@@ -1133,7 +1133,6 @@ void Fallback::setEditorScreen()
 /// </summary>
 void Fallback::setTitleScreen()
 {
-	m_AnimationManager.clearAllProcesses();
 	currentScreen = TITLE;
 
 	// set bg 
@@ -1141,9 +1140,6 @@ void Fallback::setTitleScreen()
 	backgroundImage.setColorFilter(graphicsNS::ALPHA25);
 	StrongAnimationPtr bgAnim = std::make_shared<FadeTo>(&backgroundImage, 3.0f, 1.0f);
 	m_AnimationManager.attachProcess(bgAnim);
-
-	spawnRacers();
-
 	
 }
 
