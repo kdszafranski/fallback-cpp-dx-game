@@ -125,6 +125,7 @@
     <ClCompile Include="PowerUp.cpp" />
     <ClCompile Include="PunchScale.cpp" />
     <ClCompile Include="ScaleXTo.cpp" />
+    <ClCompile Include="Shake.cpp" />
     <ClCompile Include="ship.cpp" />
     <ClCompile Include="fallback.cpp" />
     <ClCompile Include="level.h" />
@@ -155,6 +156,7 @@
     <ClInclude Include="MoveTo.h" />
     <ClInclude Include="PowerUp.h" />
     <ClInclude Include="ScaleXTo.h" />
+    <ClInclude Include="Shake.h" />
     <ClInclude Include="TSMath.h" />
     <ClInclude Include="image.h" />
     <ClInclude Include="input.h" />

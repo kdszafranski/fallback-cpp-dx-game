@@ -20,7 +20,8 @@ using namespace std;
 #include "PunchScale.h"
 #include "DirectionBounce.h"
 #include "MoveTo.h"
-#include "scaleXTo.h"
+#include "ScaleXTo.h"
+#include "Shake.h"
 
 //=============================================================================
 // Constructor
@@ -535,7 +536,20 @@ void Fallback::update(float frameTime)
 			if (!gameOver) {
 				// update position of all game objects
 				ship.update(frameTime);
-				ball.update(frameTime);
+				if (ballResetting) {
+					// move ball with ship
+					ball.setPosition((ship.getX() + ship.getWidth() / 2) - ball.getWidth() / 2, ship.getY() - ball.getHeight() - 1);
+					// allow input to launch
+					if (input->wasKeyPressed(LAUNCH_BALL_KEY)) {
+						ball.setVelocity({ 0,-90 });
+						ball.removePowerUp(); // resets speed
+						ball.activate(); // turn on collisions
+						ballResetting = false;
+					}
+				} else {
+					ball.update(frameTime);
+				}
+
 
 				console.setLogText(to_string(ship.getX()));
 
@@ -776,6 +790,13 @@ void Fallback::loseBall()
 		removePowerUp();
 	}
 
+	// shake ship and bg for feedback
+	Vector2 shakeLimits = { 10.0f, 10.0f };
+	StrongAnimationPtr shipShake = std::make_shared<Shake>(&ship, 0.5, shakeLimits);
+	m_AnimationManager.attachProcess(shipShake);
+	StrongAnimationPtr bgShake = std::make_shared<Shake>(&backgroundImage, 0.5, shakeLimits);
+	m_AnimationManager.attachProcess(bgShake);
+
 	// bounce ball UI icon
 	StrongAnimationPtr animPtr = std::make_shared<PunchScale>(&ballCountIcon, 0.2f, 1.5f);
 	m_AnimationManager.attachProcess(animPtr);
@@ -791,11 +812,13 @@ void Fallback::restartBall()
 		gameOver = true;
 		console.setLogText("GAME OVER!");
 	} else {
-		ball.setPosition(220, 300);
-		ball.setVelocity(VECTOR2(180, 150)); // move!
+		ballResetting = true;
+		ball.setActive(false);
+		ball.setPosition((ship.getX() + ship.getWidth() / 2) - ball.getWidth() / 2, ship.getY() - ball.getHeight() - 1);
+		ball.setVelocity(VECTOR2(0, 0));
 
 		recentBallPositions.clear();
-		recentBallPositions.push_back(VECTOR2(ball.getX(), ball.getY()));
+		//recentBallPositions.push_back(VECTOR2(ball.getX(), ball.getY()));
 	}
 }
 
@@ -1113,7 +1136,7 @@ void Fallback::renderGameScreen()
 			if (i > 0) { // leaves the last 2 the same size
 				shadowBallImage.setScale(i * 0.23);
 			}
-			shadowBallImage.draw(graphicsNS::WHITE & graphicsNS::ALPHA50); // ??
+			shadowBallImage.draw(graphicsNS::WHITE & graphicsNS::ALPHA50, true); // ??
 		}
 
 		ball.draw();
