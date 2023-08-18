@@ -846,7 +846,7 @@ void Fallback::loseBall()
 		handleGameOver();
 	} else {
 		// game on!
-		audio->playCue(ZAP);
+		audio->playCue("lose-ball");
 
 		// we lose power ups
 		if (hasPowerUp) {
@@ -1046,7 +1046,7 @@ void Fallback::removeBlock(int index)
 		spawnPowerUp(pos);
 	}
 
-	audio->playCue(POP);
+	audio->playCue("POP");
 
 	blocks.erase(blocks.begin() + index);
 
