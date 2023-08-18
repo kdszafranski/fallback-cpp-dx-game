@@ -16,7 +16,7 @@ Graphics::Graphics()
 	fullscreen = false;
 	width = GAME_WIDTH;    // width & height are replaced in initialize()
 	height = GAME_HEIGHT;
-	backColor = SETCOLOR_ARGB(255, 128, 0, 128); // purple
+	backColor = graphicsNS::BLACK; // black
 }
 
 //=============================================================================
