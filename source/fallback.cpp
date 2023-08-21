@@ -787,9 +787,10 @@ void Fallback::removePowerUp()
 {
 	if (hasPowerUp) {
 		switch (currentPowerUp) {
-			case FAST: // same as below
-			case ZOOM: // same as below
-			case SLOW:
+			case ZOOM: // ball speed
+			case SLOW: // ball speed
+				ball.removePowerUp();
+			case FAST: // ship speed
 				ship.resetSpeed();
 				break;
 			case WARP:
@@ -808,9 +809,7 @@ void Fallback::removePowerUp()
 	audio->playCue(LOSE_POWERUP);
 	hasPowerUp = false;
 	powerUpTimer = 0;
-
-	// clear up speeds and such
-	ball.removePowerUp();
+	
 }
 #pragma endregion
 
