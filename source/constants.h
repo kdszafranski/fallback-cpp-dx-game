@@ -91,10 +91,13 @@ const char WAVE_BANK[] = "audio\\WaveBank.xwb";
 const char SOUND_BANK[] = "audio\\SoundBank.xsb";
 
 // audio cues
+const char BOUNCE_SHIP[] = "bounce-ship";
 const char CLICK[] = "click";
 const char CLUNK[] = "clunk";
-const char GAME_OVER[] = "game-over";
+const char DESTROY_BLOCK[] = "destroy-block";
+const char GAME_OVER[] = "game-over";	
 const char LOSE_BALL[] = "lose-ball";
+const char LOSE_POWERUP[] = "lose-powerup";
 const char NEXT_LEVEL[] = "next-level";
 const char POP[] = "pop";
 const char POWER_UP[] = "power-up";

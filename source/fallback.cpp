@@ -797,6 +797,7 @@ void Fallback::removePowerUp()
 		}
 	}
 
+	audio->playCue(LOSE_POWERUP);
 	hasPowerUp = false;
 	powerUpTimer = 0;
 
@@ -941,7 +942,7 @@ void Fallback::collisions()
 		// if collision between ball and ship
 		if (ball.collidesWith(ship, collisionVector)) {
 			ball.bounceOffShip(collisionVector, collisionPosition, ship.getSpriteData());
-			audio->playCue(CLICK);
+			audio->playCue(BOUNCE_SHIP);
 		}
 
 		// active power up collides with ship
@@ -1030,7 +1031,7 @@ void Fallback::collisions()
 //=============================================================================
 void Fallback::removeBlock(int index)
 {
-	audio->playCue(POP);
+	audio->playCue(DESTROY_BLOCK);
 
 	// explode
 	const VECTOR2 pos = {
