@@ -857,7 +857,7 @@ void Fallback::loseBall()
 	if (isGameOver()) {
 		handleGameOver();
 	} else {
-		// game on!
+		// clean up, restart ball
 		audio->playCue(LOSE_BALL);
 
 		// we lose power ups
@@ -867,7 +867,7 @@ void Fallback::loseBall()
 
 		// remove falling power up, too
 		if (fallingPowerUpPtr) {
-			Vector2 place = fallingPowerUpPtr->getPosition();
+			const Vector2 place = fallingPowerUpPtr->getPosition();
 			explosionManager.spawnExplosion(this, &iconTexture, { place.x, place.y });
 			SAFE_DELETE(fallingPowerUpPtr);
 		}
