@@ -63,7 +63,7 @@ void PowerUp::setFrameByType()
     switch (type) {
     case SLOW:
     case FAST:
-    case MULTIBALL:
+    case WARP:
     case GROW:
         color = graphicsNS::FB_STRONG;
         break;
