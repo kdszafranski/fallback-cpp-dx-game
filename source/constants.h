@@ -99,6 +99,7 @@ const char DESTROY_BLOCK[] = "destroy-block";
 const char GAME_OVER[] = "game-over";	
 const char LOSE_BALL[] = "lose-ball";
 const char LOSE_POWERUP[] = "lose-powerup";
+const char MUSIC_LOOP[] = "music";
 const char NEXT_LEVEL[] = "next-level";
 const char POP[] = "pop";
 const char POWER_UP[] = "power-up";

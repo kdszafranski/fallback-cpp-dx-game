@@ -86,6 +86,8 @@ void Fallback::initialize(HWND hwnd)
 		setTitleScreen();
 	}
 
+	audio->playCue(MUSIC_LOOP);
+
 
 	return;
 }
