@@ -125,7 +125,7 @@ void Fallback::resetGame()
 	hasPowerUp = false;
 	gameOver = false;
 	isPaused = false;
-	ballCount = 2; // MAX_BALLS;
+	ballCount = MAX_BALLS;
 	timer = 0;
 	powerUpTimer = 0;
 	score = 0;
