@@ -93,11 +93,11 @@ const char SOUND_BANK[] = "audio\\SoundBank.xsb";
 // audio cues
 const char CLICK[] = "click";
 const char CLUNK[] = "clunk";
-const char POP[] = "pop";
-const char POWER_UP[] = "power-up";
-const char NEXT_LEVEL[] = "next-level";
 const char GAME_OVER[] = "game-over";
 const char LOSE_BALL[] = "lose-ball";
+const char NEXT_LEVEL[] = "next-level";
+const char POP[] = "pop";
+const char POWER_UP[] = "power-up";
 
 
 // key mappings
