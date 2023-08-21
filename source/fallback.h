@@ -132,6 +132,7 @@ public:
     void loseBall();    // reduce ball count
     bool isGameOver();  // check if we're out of balls
     // do game over things
+    void shakeScreen();
     void handleGameOver();
     // periodically spawns details in the bg
     void spawnRacers();

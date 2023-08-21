@@ -851,6 +851,9 @@ void Fallback::loseBall()
 {
 	ballCount--;
 
+	// shake ship and bg for feedback
+	shakeScreen();
+
 	if (isGameOver()) {
 		handleGameOver();
 	} else {
@@ -869,19 +872,21 @@ void Fallback::loseBall()
 			SAFE_DELETE(fallingPowerUpPtr);
 		}
 
-		// shake ship and bg for feedback
-		Vector2 shakeLimits = { 10.0f, 10.0f };
-		StrongAnimationPtr shipShake = std::make_shared<Shake>(&ship, 0.5, shakeLimits);
-		m_AnimationManager.attachProcess(shipShake);
-		StrongAnimationPtr bgShake = std::make_shared<Shake>(&backgroundImage, 0.5, shakeLimits);
-		m_AnimationManager.attachProcess(bgShake);
-
 		// bounce ball UI icon
 		StrongAnimationPtr animPtr = std::make_shared<PunchScale>(&ballCountIcon, 0.2f, 1.5f);
 		m_AnimationManager.attachProcess(animPtr);
 
 		restartBall();
 	}
+}
+
+void Fallback::shakeScreen()
+{
+	Vector2 shakeLimits = { 10.0f, 10.0f };
+	StrongAnimationPtr shipShake = std::make_shared<Shake>(&ship, 0.5, shakeLimits);
+	m_AnimationManager.attachProcess(shipShake);
+	StrongAnimationPtr bgShake = std::make_shared<Shake>(&backgroundImage, 0.5, shakeLimits);
+	m_AnimationManager.attachProcess(bgShake);
 }
 
 /// <summary>
@@ -900,6 +905,7 @@ void Fallback::handleGameOver()
 	// blow up the ship
 	explosionManager.spawnExplosion(this, &iconTexture, { ship.getX() + 15, ship.getCenterY() });
 	explosionManager.spawnExplosion(this, &iconTexture, { ship.getX() + ship.getWidth() - 15, ship.getCenterY() });
+	explosionManager.spawnExplosion(this, &iconTexture, { ship.getX() + ship.getCenterX(), ship.getCenterY()});
 }
 
 //=============================================================================
