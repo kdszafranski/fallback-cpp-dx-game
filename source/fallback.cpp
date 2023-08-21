@@ -368,7 +368,7 @@ void Fallback::loadLevelFiles() {
 
 void Fallback::startNextLevel()
 {
-	audio->playCue("next-level");
+	audio->playCue(NEXT_LEVEL);
 	currentLevel++;
 	if (currentLevel >= levels.size()) {
 		currentLevel = 0;
@@ -597,10 +597,7 @@ void Fallback::updateGameScreen(float frameTime) {
 		ball.setPosition((ship.getX() + ship.getWidth() / 2) - ball.getWidth() / 2, ship.getY() - ball.getHeight() - 1);
 		// allow input to launch
 		if (input->wasKeyPressed(LAUNCH_BALL_KEY)) {
-			ball.setVelocity({ 0,-90 });
-			ball.removePowerUp(); // resets speed
-			ball.activate(); // turn on collisions
-			ballResetting = false;
+			launchBall();
 		}
 	} else {
 		ball.update(frameTime);
@@ -614,7 +611,7 @@ void Fallback::updateGameScreen(float frameTime) {
 		}
 	}
 
-	// every second adjust ball trail
+	// every interval adjust ball trail
 	timer += frameTime;
 	if (timer > BALLSHADOW_INTERVAL) {
 		recentBallPositions.push_back(VECTOR2(ball.getX(), ball.getY()));
@@ -741,7 +738,7 @@ void Fallback::spawnPowerUp(VECTOR2 position)
 void Fallback::applyPowerUp()
 {
 	hasPowerUp = true;
-	audio->playCue("power-up");
+	audio->playCue(POWER_UP);
 	powerUpTimer = 0;
 	currentPowerUp = powerUp->getPowerUpType();
 
@@ -797,6 +794,7 @@ void Fallback::removePowerUp()
 		}
 	}
 
+	audio->playCue(LOSE_POWERUP);
 	hasPowerUp = false;
 	powerUpTimer = 0;
 
@@ -847,7 +845,7 @@ void Fallback::loseBall()
 		handleGameOver();
 	} else {
 		// game on!
-		audio->playCue("lose-ball");
+		audio->playCue(LOSE_BALL);
 
 		// we lose power ups
 		if (hasPowerUp) {
@@ -874,7 +872,7 @@ void Fallback::loseBall()
 /// </summary>
 void Fallback::handleGameOver()
 {
-	audio->playCue("game-over");
+	audio->playCue(GAME_OVER);
 	// show screen
 	gameOver = true;
 	// bring in message
@@ -897,6 +895,15 @@ void Fallback::restartBall()
 	ball.setPosition((ship.getX() + ship.getWidth() / 2) - ball.getWidth() / 2, ship.getY() - ball.getHeight() - 1);
 	ball.setVelocity(VECTOR2(0, 0));
 	recentBallPositions.clear();
+}
+
+void Fallback::launchBall()
+{
+	ball.setVelocity({ 0,-90 });
+	ball.removePowerUp(); // resets speed
+	ball.activate(); // turn on collisions
+	ballResetting = false;
+	audio->playCue(BOUNCE_SHIP);
 }
 
 //=============================================================================
@@ -941,7 +948,7 @@ void Fallback::collisions()
 		// if collision between ball and ship
 		if (ball.collidesWith(ship, collisionVector)) {
 			ball.bounceOffShip(collisionVector, collisionPosition, ship.getSpriteData());
-			audio->playCue(CLICK);
+			audio->playCue(BOUNCE_SHIP);
 		}
 
 		// active power up collides with ship
@@ -971,7 +978,6 @@ void Fallback::collisions()
 
 				// reduce health if possible
 				if (block->getBlockType() != INVINCIBLE) {
-					audio->playCue(CLUNK);
 
 					// check if ball is dead
 					block->damage(BALL);
@@ -979,6 +985,7 @@ void Fallback::collisions()
 						score += block->getPointValue() * 2; // double for destroying the block
 						removeBlock(i);
 					} else {
+						audio->playCue(CLUNK);
 						score += block->getPointValue();
 						// fire off animation process
 						StrongAnimationPtr pinch = std::make_shared<PinchScale>(&blocks.at(i), 0.10f, 0.80f);
@@ -1030,6 +1037,8 @@ void Fallback::collisions()
 //=============================================================================
 void Fallback::removeBlock(int index)
 {
+	audio->playCue(DESTROY_BLOCK);
+
 	// explode
 	const VECTOR2 pos = {
 		blocks.at(index).getCenterX(),
@@ -1047,7 +1056,6 @@ void Fallback::removeBlock(int index)
 		spawnPowerUp(pos);
 	}
 
-	audio->playCue("POP");
 
 	blocks.erase(blocks.begin() + index);
 
