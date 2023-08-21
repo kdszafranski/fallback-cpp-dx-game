@@ -46,6 +46,7 @@ public:
 
     // adjusts speed up for difficulty
     void bumpSpeedUp();
+    void launch();
 };
 
 #endif

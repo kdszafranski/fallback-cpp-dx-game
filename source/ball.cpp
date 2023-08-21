@@ -87,6 +87,14 @@ void Ball::bumpSpeedUp()
     currentSpeed += 0.1f;
 }
 
+void Ball::launch()
+{
+    // restart my stuff
+    setVelocity({ 0, -90 }); // straight up
+    removePowerUp();
+    activate();
+}
+
 //=============================================================================
 // Ball bounces off a BOX collider entity (really just the Blocks, ship is handled separately)
 //=============================================================================

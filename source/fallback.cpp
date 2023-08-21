@@ -923,9 +923,7 @@ void Fallback::restartBall()
 
 void Fallback::launchBall()
 {
-	ball.setVelocity({ 0,-90 });
-	ball.removePowerUp(); // resets speed
-	ball.activate(); // turn on collisions
+	ball.launch();
 	ballResetting = false;
 	audio->playCue(BOUNCE_SHIP);
 }
@@ -951,6 +949,7 @@ void Fallback::collisions()
 		if (ball.collidesWith(ship, collisionVector)) {
 			ball.bounceOffShip(collisionVector, collisionPosition, ship.getSpriteData());
 			audio->playCue(BOUNCE_SHIP);
+			ball.bumpSpeedUp();
 		}
 
 		// active power up collides with ship
