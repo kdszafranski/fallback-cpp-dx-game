@@ -368,7 +368,7 @@ void Fallback::loadLevelFiles() {
 
 void Fallback::startNextLevel()
 {
-	audio->playCue("next-level");
+	audio->playCue(NEXT_LEVEL);
 	currentLevel++;
 	if (currentLevel >= levels.size()) {
 		currentLevel = 0;
@@ -741,7 +741,7 @@ void Fallback::spawnPowerUp(VECTOR2 position)
 void Fallback::applyPowerUp()
 {
 	hasPowerUp = true;
-	audio->playCue("power-up");
+	audio->playCue(POWER_UP);
 	powerUpTimer = 0;
 	currentPowerUp = powerUp->getPowerUpType();
 
@@ -847,7 +847,7 @@ void Fallback::loseBall()
 		handleGameOver();
 	} else {
 		// game on!
-		audio->playCue("lose-ball");
+		audio->playCue(LOSE_BALL);
 
 		// we lose power ups
 		if (hasPowerUp) {
@@ -874,7 +874,7 @@ void Fallback::loseBall()
 /// </summary>
 void Fallback::handleGameOver()
 {
-	audio->playCue("game-over");
+	audio->playCue(GAME_OVER);
 	// show screen
 	gameOver = true;
 	// bring in message
@@ -971,7 +971,6 @@ void Fallback::collisions()
 
 				// reduce health if possible
 				if (block->getBlockType() != INVINCIBLE) {
-					audio->playCue(CLUNK);
 
 					// check if ball is dead
 					block->damage(BALL);
@@ -979,6 +978,7 @@ void Fallback::collisions()
 						score += block->getPointValue() * 2; // double for destroying the block
 						removeBlock(i);
 					} else {
+						audio->playCue(CLUNK);
 						score += block->getPointValue();
 						// fire off animation process
 						StrongAnimationPtr pinch = std::make_shared<PinchScale>(&blocks.at(i), 0.10f, 0.80f);
@@ -1030,6 +1030,8 @@ void Fallback::collisions()
 //=============================================================================
 void Fallback::removeBlock(int index)
 {
+	audio->playCue(POP);
+
 	// explode
 	const VECTOR2 pos = {
 		blocks.at(index).getCenterX(),
@@ -1047,7 +1049,6 @@ void Fallback::removeBlock(int index)
 		spawnPowerUp(pos);
 	}
 
-	audio->playCue("POP");
 
 	blocks.erase(blocks.begin() + index);
 

@@ -2,6 +2,9 @@
 
 - B power up does something
 - SFX
+    - game over
+    - destroy block
+    - power up over
 - Music
 - Button SFX (mouse enter)
 - Create Demo Video
