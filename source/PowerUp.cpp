@@ -63,13 +63,15 @@ void PowerUp::setFrameByType()
     switch (type) {
     case SLOW:
     case FAST:
-    case WARP:
     case GROW:
         color = graphicsNS::FB_STRONG;
         break;
     case ZOOM:
     case TINY:
         color = graphicsNS::FB_HARD;        
+        break;
+    case WARP:
+        color = graphicsNS::FB_METAL;
         break;
     case MYSTERY:
         color = graphicsNS::FB_INVINCIBLE;
