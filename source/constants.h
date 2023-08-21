@@ -101,6 +101,7 @@ const char LOSE_POWERUP[] = "lose-powerup";
 const char NEXT_LEVEL[] = "next-level";
 const char POP[] = "pop";
 const char POWER_UP[] = "power-up";
+const char ZAP[] = "zap";
 
 
 // key mappings
