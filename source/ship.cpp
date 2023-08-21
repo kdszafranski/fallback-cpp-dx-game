@@ -77,7 +77,13 @@ void Ship::applyPowerUp(POWERUP type)
 		canWrapEdge = true;
 	}
 
+	// change our color, covers SLOW
 	hasPowerUp = true;
+}
+
+void Ship::removePowerUp()
+{
+	hasPowerUp = false;
 }
 
 void Ship::removeWrapAround() {
@@ -131,7 +137,7 @@ void Ship::resetSize()
 	spriteData.width = shipNS::WIDTH;
 	edge.right = spriteData.width / 2;    // 64
 	edge.left = -spriteData.width / 2;
-	hasPowerUp = false;
+	removePowerUp();
 }
 
 /// <summary>
@@ -140,7 +146,7 @@ void Ship::resetSize()
 void Ship::resetSpeed()
 {
 	currentSpeed = shipNS::SPEED;
-	hasPowerUp = false;
+	removePowerUp();
 }
 
 

@@ -46,6 +46,7 @@ public:
 
     // power ups
     void applyPowerUp(POWERUP type) override;
+    void removePowerUp();
     void removeWrapAround();
     void setHasPowerUp(bool v) { hasPowerUp = v; }
     bool getHasPowerUp() { return hasPowerUp; }

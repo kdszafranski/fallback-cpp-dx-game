@@ -758,7 +758,8 @@ void Fallback::applyPowerUp()
 			ball.applyPowerUp(currentPowerUp);
 			ship.applyPowerUp(currentPowerUp);
 			break;
-		case FAST: // same as WARP
+		case FAST: // same as below
+		case SLOW: // same as below
 		case WARP:
 			ship.applyPowerUp(currentPowerUp);
 			break;
@@ -784,16 +785,17 @@ void Fallback::applyPowerUp()
 void Fallback::removePowerUp()
 {
 	if (hasPowerUp) {
-		// allow end of power up animations
 		switch (currentPowerUp) {
-			case FAST:
+			case FAST: // same as below
+			case ZOOM: // same as below
+			case SLOW:
 				ship.resetSpeed();
 				break;
 			case WARP:
 				ship.removeWrapAround();
 				break;
-			case GROW:
-				// same as TINY below
+			// allow end of power up animations
+			case GROW: // same as below
 			case TINY:
 				// animate to normal width
 				StrongAnimationPtr reset = std::make_shared<ScaleXTo>(&ship, 0.5, 1.0f);
