@@ -29,7 +29,7 @@ using namespace std;
 Fallback::Fallback()
 {
 	editor = new Editor();
-	powerUp = NULL;
+	fallingPowerUpPtr = NULL;
 	racerSpawnTimer = 0;
 	hasPowerUp = false;
 	powerUpTimer = 0;
@@ -50,7 +50,7 @@ Fallback::~Fallback()
 	racers.clear();
 	m_AnimationManager.abortAllProcesses(true);
 
-	SAFE_DELETE(powerUp);
+	SAFE_DELETE(fallingPowerUpPtr);
 	SAFE_DELETE(editor);
 }
 
@@ -147,7 +147,7 @@ void Fallback::exitGame()
 	blocks.clear();
 	racers.clear();
 
-	SAFE_DELETE(powerUp);
+	SAFE_DELETE(fallingPowerUpPtr);
 
 	// go to main menu
 	setTitleScreen();
@@ -376,7 +376,7 @@ void Fallback::startNextLevel()
 	m_AnimationManager.clearAllProcesses();
 	racers.clear();
 	removePowerUp();
-	SAFE_DELETE(powerUp);
+	SAFE_DELETE(fallingPowerUpPtr);
 
 	loadLevel(currentLevel);
 	restartBall();
@@ -658,11 +658,11 @@ void Fallback::updateGameOverScreen(float frameTime)
 void Fallback::updateEffects(float frameTime)
 {
 	// update these unless paused	
-	if (powerUp) {
-		powerUp->update(frameTime);
+	if (fallingPowerUpPtr) {
+		fallingPowerUpPtr->update(frameTime);
 		// off the screen?
-		if (powerUp->getY() > GAME_HEIGHT) {
-			SAFE_DELETE(powerUp);
+		if (fallingPowerUpPtr->getY() > GAME_HEIGHT) {
+			SAFE_DELETE(fallingPowerUpPtr);
 		}
 	}
 
@@ -730,10 +730,10 @@ void Fallback::cleanUpRacerList()
 void Fallback::spawnPowerUp(VECTOR2 position)
 {
 	// spawn powerup
-	if (powerUp == NULL) {
+	if (fallingPowerUpPtr == NULL) {
 		const int n = rand() % 7;
-		powerUp = new PowerUp(static_cast<POWERUP>(n), position);
-		powerUp->initialize(this, 32, 32, 8, &powerUpTexture);
+		fallingPowerUpPtr = new PowerUp(static_cast<POWERUP>(n), position);
+		fallingPowerUpPtr->initialize(this, 32, 32, 8, &powerUpTexture);
 	}
 }
 
@@ -743,7 +743,7 @@ void Fallback::applyPowerUp()
 	hasPowerUp = true;
 	audio->playCue(POWER_UP);
 	powerUpTimer = 0;
-	currentPowerUp = powerUp->getPowerUpType();
+	currentPowerUp = fallingPowerUpPtr->getPowerUpType();
 
 	if (currentPowerUp == MYSTERY) {
 		int pick = rand() % 6; // pick one of the others
@@ -774,7 +774,7 @@ void Fallback::applyPowerUp()
 
 	// update HUD icons
 	uiCurrentPowerUpIcon.setCurrentFrame(currentPowerUp);
-	currentPowerUpColor = powerUp->getColor();
+	currentPowerUpColor = fallingPowerUpPtr->getColor();
 
 	// bounce the UI power up icon
 	StrongAnimationPtr bounce = std::make_shared<PunchScale>(&uiCurrentPowerUpDiamond, 0.2f, 1.5f);
@@ -847,7 +847,7 @@ bool Fallback::isGameOver()
 //=============================================================================
 void Fallback::loseBall()
 {
-	//ballCount--;
+	ballCount--;
 
 	if (isGameOver()) {
 		handleGameOver();
@@ -859,6 +859,9 @@ void Fallback::loseBall()
 		if (hasPowerUp) {
 			removePowerUp();
 		}
+
+		// remove falling power up, too
+		SAFE_DELETE(fallingPowerUpPtr);
 
 		// shake ship and bg for feedback
 		Vector2 shakeLimits = { 10.0f, 10.0f };
@@ -938,16 +941,16 @@ void Fallback::collisions()
 		}
 
 		// active power up collides with ship
-		if (powerUp) {
-			// powerUp is a ptr so dereference with *powerUp
-			if (ship.collidesWith(*powerUp, collisionVector)) {
+		if (fallingPowerUpPtr) {
+			// fallingPowerUpPtr is a ptr so dereference with *fallingPowerUpPtr
+			if (ship.collidesWith(*fallingPowerUpPtr, collisionVector)) {
 				applyPowerUp();
 				score += POWERUP_POINT_VALUE;
 
-				explosionManager.spawnExplosion(this, &iconTexture, { powerUp->getX(), powerUp->getY() });
+				explosionManager.spawnExplosion(this, &iconTexture, { fallingPowerUpPtr->getX(), fallingPowerUpPtr->getY() });
 
 				// remove power up entity
-				SAFE_DELETE(powerUp);
+				SAFE_DELETE(fallingPowerUpPtr);
 			}
 		}
 
@@ -1038,7 +1041,7 @@ void Fallback::removeBlock(int index)
 	ball.bumpSpeedUp();
 
 	// no power up entity in play and ship has no powerup
-	if (powerUp == NULL && !hasPowerUp) {
+	if (fallingPowerUpPtr == NULL && !hasPowerUp) {
 		spawnPowerUp(pos);
 	}
 
@@ -1234,8 +1237,8 @@ void Fallback::renderGameScreen()
 	explosionManager.draw();
 
 	// power up
-	if (powerUp) {
-		powerUp->draw();
+	if (fallingPowerUpPtr) {
+		fallingPowerUpPtr->draw();
 	}
 
 	// UI

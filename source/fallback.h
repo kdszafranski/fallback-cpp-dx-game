@@ -62,7 +62,7 @@ private:
     Editor* editor;
     AnimationManager m_AnimationManager;
     Explosion explosionManager;
-    PowerUp* powerUp;
+    PowerUp* fallingPowerUpPtr;
 
     // textures/sprites
     TextureManager backgroundTexture;
