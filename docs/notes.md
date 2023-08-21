@@ -11,6 +11,7 @@
 - [ ] Implement an IScreen interface
 - [ ] make consistent style
 - [ ] choose Vector standard
+- [ ] WinRT and DX11
 
 ## Technical Challenges
 - [ ] add event manager, implement Observer pattern: https://gameprogrammingpatterns.com/observer.html
@@ -25,7 +26,6 @@
 
 ## Graphics
 - [ ] custom cursor (resource)
-- [ ] screen transitions (start with fading in/out)
 - [x] screen shake on ball loss
 - [x] delay between ball restart
 - [x] ship explosion on game over
@@ -38,9 +38,18 @@
 
 ## Audio
 - [ ] better sfx
+    - [ ] 
 - [ ] add music
 
 
-Multiball
-- change to vector of Ships
-    - need to change every instance to a loop, would have 1 ball 99% of the time
+
+Burn Down to Finish
+
+- B power up does something
+- SFX
+- Music
+- Button SFX (mouse enter)
+- Create Demo Video
+- Supply build/download for Win10
+- Add to portfolio page 
+- Add to resume
