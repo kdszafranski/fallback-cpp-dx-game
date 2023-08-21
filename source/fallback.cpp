@@ -758,8 +758,9 @@ void Fallback::applyPowerUp()
 			ball.applyPowerUp(currentPowerUp);
 			ship.applyPowerUp(currentPowerUp);
 			break;
+		case SLOW: // slow ball
+			ball.applyPowerUp(currentPowerUp);
 		case FAST: // same as below
-		case SLOW: // same as below
 		case WARP:
 			ship.applyPowerUp(currentPowerUp);
 			break;

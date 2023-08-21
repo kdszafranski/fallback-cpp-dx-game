@@ -65,6 +65,7 @@ void Ball::applyPowerUp(POWERUP type)
 {
     // apply relevant power up
     if (type == ZOOM) {
+        currentSpeed = ballNS::SPEED;
         currentSpeed *= 1.5;
     }
     if (type == SLOW) {
@@ -192,7 +193,7 @@ void Ball::bounceOffShip(VECTOR2& collisionVector, VECTOR2& collisionPosition, S
     if (collisionPosition.x < middleX) {
         // left-hand side, aim left
         velocity.y = -velocity.y;
-        velocity.x = -200;
+        velocity.x = -110;
     } else if(collisionPosition.x > middleX && collisionPosition.x < rightX) {
         // middle, just reflect upish
         velocity.y = -velocity.y;
@@ -200,7 +201,7 @@ void Ball::bounceOffShip(VECTOR2& collisionVector, VECTOR2& collisionPosition, S
     } else {
         // right third, aim right
         velocity.y = -velocity.y;
-        velocity.x = 200;
+        velocity.x = 110;
     }
 
 }
