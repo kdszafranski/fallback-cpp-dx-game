@@ -1,12 +1,8 @@
 ## Burn Down to Finish
 
-- B power up does something
-- SFX
-    - game over
-    - destroy block
-    - power up over
-- Music
+- B power up does something (wrap around?)
 - Button SFX (mouse enter)
+- Music
 - Create Demo Video
 - Supply build/download for Win10
 - Add to portfolio page 

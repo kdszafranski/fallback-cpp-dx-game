@@ -57,6 +57,7 @@ const UINT GAME_WIDTH =  800;               // width of game in pixels
 const UINT GAME_HEIGHT = 600;               // height of game in pixels
  
 // game
+const int POWERUP_POINT_VALUE = 50;
 const double PI = 3.14159265;
 const float FRAME_RATE  = 200.0f;               // the target frame rate (frames/sec)
 const float MIN_FRAME_RATE = 10.0f;             // the minimum frame rate
@@ -64,7 +65,7 @@ const float MIN_FRAME_TIME = 1.0f/FRAME_RATE;   // minimum desired time for 1 fr
 const float MAX_FRAME_TIME = 1.0f/MIN_FRAME_RATE; // maximum time used in calculations
 const short MAX_BALLS = 3;
 const float BALLSHADOW_INTERVAL = 0.07;
-const int POWERUP_POINT_VALUE = 50;
+const float POW_TIME_LIMIT = 5.0f;
 
 // weapon types
 enum WEAPON { TORPEDO, SHIP, PLANET, BALL };
@@ -81,7 +82,7 @@ enum SCREEN { TITLE, GAME, EDITOR, CREDITS };
 // Zoom - speeds up ball x
 // Tiny - shrinks ship x
 // Mystery - picks one of the others randomly x
-enum POWERUP { SLOW, MULTIBALL, FAST, GROW, ZOOM, TINY, MYSTERY };
+enum POWERUP { SLOW, WARP, FAST, GROW, ZOOM, TINY, MYSTERY };
 
 
 // audio files required by audio.cpp

@@ -62,7 +62,7 @@ private:
     Editor* editor;
     AnimationManager m_AnimationManager;
     Explosion explosionManager;
-    PowerUp* powerUp;
+    PowerUp* fallingPowerUpPtr;
 
     // textures/sprites
     TextureManager backgroundTexture;
@@ -187,9 +187,6 @@ public:
     void CheckPauseInput(); 
     // helper to handle cheat inputs
     void CheckCheatInput();
-
-    // checks screen bounds
-    void wrapScreenEdge(); 
 
     AnimationManager* getAnimationManager() { return &m_AnimationManager; }
 };
