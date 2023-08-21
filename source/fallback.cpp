@@ -751,7 +751,7 @@ void Fallback::applyPowerUp()
 	}
 
 	// apply to the correct Entity and spawn animations
-	currentPowerUp = WRAP;
+	//currentPowerUp = WRAP;
 	StrongAnimationPtr anim;
 	switch (currentPowerUp) {
 		case ZOOM:
