@@ -1,4 +1,15 @@
-# IDEAS to take this further
+## Burn Down to Finish
+
+- B power up does something
+- SFX
+- Music
+- Button SFX (mouse enter)
+- Create Demo Video
+- Supply build/download for Win10
+- Add to portfolio page 
+- Add to resume
+
+## IDEAS to take this further
 
 ## Fix Bugs
 - [x] fix collisions
@@ -42,14 +53,3 @@
 - [ ] add music
 
 
-
-Burn Down to Finish
-
-- B power up does something
-- SFX
-- Music
-- Button SFX (mouse enter)
-- Create Demo Video
-- Supply build/download for Win10
-- Add to portfolio page 
-- Add to resume
