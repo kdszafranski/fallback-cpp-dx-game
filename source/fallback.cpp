@@ -863,7 +863,11 @@ void Fallback::loseBall()
 		}
 
 		// remove falling power up, too
-		SAFE_DELETE(fallingPowerUpPtr);
+		if (fallingPowerUpPtr) {
+			Vector2 place = fallingPowerUpPtr->getPosition();
+			explosionManager.spawnExplosion(this, &iconTexture, { place.x, place.y });
+			SAFE_DELETE(fallingPowerUpPtr);
+		}
 
 		// shake ship and bg for feedback
 		Vector2 shakeLimits = { 10.0f, 10.0f };
