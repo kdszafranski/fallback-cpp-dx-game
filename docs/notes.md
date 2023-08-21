@@ -1,6 +1,5 @@
 ## Burn Down to Finish
 
-- B power up does something (wrap around?)
 - Button SFX (mouse enter)
 - Music
 - Create Demo Video
