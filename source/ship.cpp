@@ -72,7 +72,7 @@ void Ship::applyPowerUp(POWERUP type)
 		// bump our speed
 		currentSpeed *= 1.5;
 	}
-	if (type == WRAP) {
+	if (type == WARP) {
 		currentSpeed += .35f;
 		canWrapEdge = true;
 	}

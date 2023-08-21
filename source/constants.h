@@ -82,7 +82,7 @@ enum SCREEN { TITLE, GAME, EDITOR, CREDITS };
 // Zoom - speeds up ball x
 // Tiny - shrinks ship x
 // Mystery - picks one of the others randomly x
-enum POWERUP { SLOW, WRAP, FAST, GROW, ZOOM, TINY, MYSTERY };
+enum POWERUP { SLOW, WARP, FAST, GROW, ZOOM, TINY, MYSTERY };
 
 
 // audio files required by audio.cpp

@@ -751,14 +751,15 @@ void Fallback::applyPowerUp()
 	}
 
 	// apply to the correct Entity and spawn animations
-	//currentPowerUp = WRAP;
+	//currentPowerUp = WARP;
 	StrongAnimationPtr anim;
 	switch (currentPowerUp) {
 		case ZOOM:
 			ball.applyPowerUp(currentPowerUp);
 			ship.applyPowerUp(currentPowerUp);
 			break;
-		case WRAP:
+		case FAST: // same as WARP
+		case WARP:
 			ship.applyPowerUp(currentPowerUp);
 			break;
 		case GROW:
@@ -788,7 +789,7 @@ void Fallback::removePowerUp()
 			case FAST:
 				ship.resetSpeed();
 				break;
-			case WRAP:
+			case WARP:
 				ship.removeWrapAround();
 				break;
 			case GROW:
