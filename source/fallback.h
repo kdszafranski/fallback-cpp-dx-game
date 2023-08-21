@@ -188,9 +188,6 @@ public:
     // helper to handle cheat inputs
     void CheckCheatInput();
 
-    // checks screen bounds
-    void wrapScreenEdge(); 
-
     AnimationManager* getAnimationManager() { return &m_AnimationManager; }
 };
 

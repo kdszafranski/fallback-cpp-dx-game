@@ -36,7 +36,6 @@ Fallback::Fallback()
 	titleLoadingTimer = 0;
 	titleLoading = false;
 	currentPowerUp = FAST; // not actually applied, null would be better
-	powerUpTimeLimit = 5.0f;
 	animId = 0;
 }
 
@@ -591,7 +590,11 @@ void Fallback::updateTitleScreen(float frameTime)
 }
 
 void Fallback::updateGameScreen(float frameTime) {
+	
+	
 	ship.update(frameTime);
+
+
 	if (ballResetting) {
 		// move ball with ship
 		ball.setPosition((ship.getX() + ship.getWidth() / 2) - ball.getWidth() / 2, ship.getY() - ball.getHeight() - 1);
@@ -606,7 +609,7 @@ void Fallback::updateGameScreen(float frameTime) {
 	// handle power ups timer
 	if (hasPowerUp) {
 		powerUpTimer += frameTime;
-		if (powerUpTimer > powerUpTimeLimit) {
+		if (powerUpTimer > POW_TIME_LIMIT) {
 			removePowerUp();
 		}
 	}
@@ -748,15 +751,14 @@ void Fallback::applyPowerUp()
 	}
 
 	// apply to the correct Entity and spawn animations
-	//currentPowerUp = FAST;
+	currentPowerUp = WRAP;
 	StrongAnimationPtr anim;
 	switch (currentPowerUp) {
-		case SLOW:
 		case ZOOM:
 			ball.applyPowerUp(currentPowerUp);
 			ship.applyPowerUp(currentPowerUp);
 			break;
-		case FAST:
+		case WRAP:
 			ship.applyPowerUp(currentPowerUp);
 			break;
 		case GROW:
@@ -785,12 +787,17 @@ void Fallback::removePowerUp()
 		switch (currentPowerUp) {
 			case FAST:
 				ship.resetSpeed();
+				break;
+			case WRAP:
+				ship.removeWrapAround();
+				break;
 			case GROW:
+				// same as TINY below
 			case TINY:
+				// animate to normal width
 				StrongAnimationPtr reset = std::make_shared<ScaleXTo>(&ship, 0.5, 1.0f);
 				m_AnimationManager.attachProcess(reset);
 				break;
-
 		}
 	}
 
@@ -839,7 +846,7 @@ bool Fallback::isGameOver()
 //=============================================================================
 void Fallback::loseBall()
 {
-	ballCount--;
+	//ballCount--;
 
 	if (isGameOver()) {
 		handleGameOver();
@@ -904,28 +911,6 @@ void Fallback::launchBall()
 	ball.activate(); // turn on collisions
 	ballResetting = false;
 	audio->playCue(BOUNCE_SHIP);
-}
-
-//=============================================================================
-// allows the ship to wrap around from left to right and vice versa
-//=============================================================================
-void Fallback::wrapScreenEdge() {
-	// left/right bounds wrapping
-	if (ship.getX() > GAME_WIDTH) {
-		// off the edge to the right
-		ship.setX((float)-ship.getWidth());
-	} else if (ship.getX() < -ship.getWidth()) {
-		ship.setX((float)GAME_WIDTH); // top left of image
-	}
-
-	// top/bottom bounds wrapping
-	if (ship.getY() > GAME_HEIGHT) {
-		// off the bottom edge, place it at the top
-		ship.setY((float)-ship.getHeight());
-	} else if (ship.getY() < -ship.getHeight()) {
-		// off the top edge, place it at the bottom
-		ship.setY((float)GAME_HEIGHT);
-	}
 }
 
 //=============================================================================

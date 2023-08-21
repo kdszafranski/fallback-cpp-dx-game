@@ -32,6 +32,7 @@ class Ship : public Entity
 private:
     float currentSpeed;
     bool hasPowerUp;
+    bool canWrapEdge;
 
 public:
     // constructor
@@ -45,8 +46,10 @@ public:
 
     // power ups
     void applyPowerUp(POWERUP type) override;
+    void removeWrapAround();
     void setHasPowerUp(bool v) { hasPowerUp = v; }
     bool getHasPowerUp() { return hasPowerUp; }
+    bool canWrapAround() { return canWrapEdge; }
     void grow();
     void shrink();
     void resetSize();
