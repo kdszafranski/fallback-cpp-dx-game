@@ -142,6 +142,7 @@ public:
     // gameplay methods
     void removeBlock(int index);
     void restartBall();
+    void launchBall();
     COLOR_ARGB getBallCountColor();
     void spawnPowerUp(VECTOR2 position);
     void applyPowerUp();

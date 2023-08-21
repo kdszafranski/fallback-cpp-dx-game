@@ -597,10 +597,7 @@ void Fallback::updateGameScreen(float frameTime) {
 		ball.setPosition((ship.getX() + ship.getWidth() / 2) - ball.getWidth() / 2, ship.getY() - ball.getHeight() - 1);
 		// allow input to launch
 		if (input->wasKeyPressed(LAUNCH_BALL_KEY)) {
-			ball.setVelocity({ 0,-90 });
-			ball.removePowerUp(); // resets speed
-			ball.activate(); // turn on collisions
-			ballResetting = false;
+			launchBall();
 		}
 	} else {
 		ball.update(frameTime);
@@ -614,7 +611,7 @@ void Fallback::updateGameScreen(float frameTime) {
 		}
 	}
 
-	// every second adjust ball trail
+	// every interval adjust ball trail
 	timer += frameTime;
 	if (timer > BALLSHADOW_INTERVAL) {
 		recentBallPositions.push_back(VECTOR2(ball.getX(), ball.getY()));
@@ -898,6 +895,15 @@ void Fallback::restartBall()
 	ball.setPosition((ship.getX() + ship.getWidth() / 2) - ball.getWidth() / 2, ship.getY() - ball.getHeight() - 1);
 	ball.setVelocity(VECTOR2(0, 0));
 	recentBallPositions.clear();
+}
+
+void Fallback::launchBall()
+{
+	ball.setVelocity({ 0,-90 });
+	ball.removePowerUp(); // resets speed
+	ball.activate(); // turn on collisions
+	ballResetting = false;
+	audio->playCue(BOUNCE_SHIP);
 }
 
 //=============================================================================
