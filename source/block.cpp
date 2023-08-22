@@ -84,6 +84,14 @@ void Block::damage(WEAPON weapon)
     }
 }
 
+/// <summary>
+/// Callback from Animation so we can unlock collisions
+/// </summary>
+void Block::onAnimationSuccess()
+{
+    isAnimating = false;
+}
+
 void Block::setBlockColorByType()
 {
     switch (blockType) {

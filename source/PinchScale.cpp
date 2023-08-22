@@ -36,3 +36,11 @@ void PinchScale::update(float deltaTime)
 		}
 	}
 }
+
+/// <summary>
+/// See if the Entity wants to do anything after this animation
+/// </summary>
+void PinchScale::onSuccess()
+{
+	entity->onAnimationSuccess();
+}

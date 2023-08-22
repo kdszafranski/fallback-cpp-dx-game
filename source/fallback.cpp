@@ -86,7 +86,7 @@ void Fallback::initialize(HWND hwnd)
 		setTitleScreen();
 	}
 
-	audio->playCue(MUSIC_LOOP);
+	//audio->playCue(MUSIC_LOOP);
 
 
 	return;
@@ -516,7 +516,9 @@ void Fallback::update(float frameTime)
 	// handle Game updates and inputs
 	if (currentScreen == GAME) {
 		CheckPauseInput();
-		CheckCheatInput();
+		if (!gameOver) {
+			CheckCheatInput();
+		}
 
 		if (!isPaused) {
 			if (!gameOver) {
@@ -970,19 +972,25 @@ void Fallback::collisions()
 		}
 
 		// collision ball with block
+		bool hitThisFrame = false;
 		for (int i = 0; i < blocks.size(); i++) {
 			// must use .at() to properly access the actual block object
 			// .at() returns a "reference".. hence a pointer is needed to capture it properly
 			Block* const block = &blocks.at(i);
-			int direction = 0;
+			
+			// can't collide with animating Blocks
+			if (block->getIsAnimating()) {
+				continue; // skip
+			}
 
-			// collidesWith needs an Entity*
 			if (ball.collidesWith(blocks.at(i), collisionVector)) {
+				int direction = 0; // used to determine the direction of impact
+				hitThisFrame = true;
+				
 				ball.bounce(collisionVector, block->getSpriteData(), direction);
 
 				// reduce health if possible
 				if (block->getBlockType() != INVINCIBLE) {
-
 					// check if ball is dead
 					block->damage(BALL);
 					if (block->getHealth() <= 0) {
@@ -992,12 +1000,13 @@ void Fallback::collisions()
 						audio->playCue(CLUNK);
 						score += block->getPointValue();
 						// fire off animation process
+						block->setIsAnimating(true);
 						StrongAnimationPtr pinch = std::make_shared<PinchScale>(&blocks.at(i), 0.10f, 0.80f);
 						m_AnimationManager.attachProcess(pinch);
 					}
 				} else {
 					// invincible!
-					// bounce away from ball
+					// bounce Block away from ball
 					Vector2 end = block->getPosition();
 					switch (direction) {
 						case 1:
@@ -1019,12 +1028,17 @@ void Fallback::collisions()
 					// reset just in case
 					block->setCurrentFrame(0);
 
+					block->setIsAnimating(true);
 					StrongAnimationPtr bounce = std::make_shared<DirectionBounce>(&blocks.at(i), 0.15f, end);
 					m_AnimationManager.attachProcess(bounce);
-					// set filled, animation will reset when complete
+					// set filled color, animation will reset when complete
 					block->setCurrentFrame(1);
 
 					audio->playCue(CLICK);
+				}
+
+				if (hitThisFrame) {
+					break; // exit loop since we already hit a block
 				}
 
 			} // end collision if

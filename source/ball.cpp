@@ -12,31 +12,31 @@
 //=============================================================================
 Ball::Ball() : Entity()
 {
-    spriteData.width = ballNS::WIDTH;           // size of Ball
-    spriteData.height = ballNS::HEIGHT;
-    spriteData.x = ballNS::X;                   // location on screen
-    spriteData.y = ballNS::Y;
+	spriteData.width = ballNS::WIDTH;           // size of Ball
+	spriteData.height = ballNS::HEIGHT;
+	spriteData.x = ballNS::X;                   // location on screen
+	spriteData.y = ballNS::Y;
 
-    // set bounding box for BOX collider
-    collisionType = entityNS::BOX;      // override's Image default to CIRCLE
-    edge.top = -ballNS::HEIGHT / 2;     // -8
-    edge.right = ballNS::WIDTH / 2;     // 8
-    edge.bottom = ballNS::HEIGHT / 2;   // 8
-    edge.left = -ballNS::WIDTH / 2;     // -8
+	// set bounding box for BOX collider
+	collisionType = entityNS::BOX;      // override's Image default to CIRCLE
+	edge.top = -ballNS::HEIGHT / 2;     // -8
+	edge.right = ballNS::WIDTH / 2;     // 8
+	edge.bottom = ballNS::HEIGHT / 2;   // 8
+	edge.left = -ballNS::WIDTH / 2;     // -8
 
-    velocity.x = 0;                             // velocity X
-    velocity.y = 0;                             // velocity Y
-    frameDelay = 1;
-    currentSpeed = ballNS::SPEED;   // starting speed
+	velocity.x = 0;                             // velocity X
+	velocity.y = 0;                             // velocity Y
+	frameDelay = 1;
+	currentSpeed = ballNS::SPEED;   // starting speed
 
-    startFrame = ballNS::BALL_START_FRAME;     // first frame of ship animation
-    endFrame = ballNS::BALL_END_FRAME;     // last frame of ship animation
-    currentFrame = startFrame;
-    
-    radius = ballNS::WIDTH / 2.0;
-    mass = ballNS::MASS;
+	startFrame = ballNS::BALL_START_FRAME;     // first frame of ship animation
+	endFrame = ballNS::BALL_END_FRAME;     // last frame of ship animation
+	currentFrame = startFrame;
 
-    collisionType = entityNS::BOX;
+	radius = ballNS::WIDTH / 2.0;
+	mass = ballNS::MASS;
+
+	collisionType = entityNS::BOX;
 }
 
 
@@ -45,9 +45,9 @@ Ball::Ball() : Entity()
 // Post: returns true if successful, false if failed
 //=============================================================================
 bool Ball::initialize(Game* gamePtr, int width, int height, int ncols,
-    TextureManager* textureM)
+	TextureManager* textureM)
 {
-    return(Entity::initialize(gamePtr, width, height, ncols, textureM));
+	return(Entity::initialize(gamePtr, width, height, ncols, textureM));
 }
 
 //=============================================================================
@@ -55,7 +55,7 @@ bool Ball::initialize(Game* gamePtr, int width, int height, int ncols,
 //=============================================================================
 void Ball::draw()
 {
-    Image::draw();              // draw ball
+	Image::draw();              // draw ball
 }
 
 //=============================================================================
@@ -63,15 +63,18 @@ void Ball::draw()
 //=============================================================================
 void Ball::applyPowerUp(POWERUP type)
 {
-    // apply relevant power up
-    if (type == ZOOM) {
-        currentSpeed = ballNS::SPEED;
-        currentSpeed *= 1.5;
-    }
-    if (type == SLOW) {
-        // slow our speed
-        currentSpeed *= 0.5;
-    }
+	// apply relevant power up
+	if (type == ZOOM) {
+		// if we're going slow, let's really speed up
+		if (currentSpeed < ballNS::SPEED) {
+			currentSpeed = ballNS::SPEED;
+			currentSpeed *= 1.5;
+		}
+	}
+	if (type == SLOW) {
+		// slow our speed
+		currentSpeed *= 0.5;
+	}
 }
 
 //=============================================================================
@@ -79,20 +82,20 @@ void Ball::applyPowerUp(POWERUP type)
 //=============================================================================
 void Ball::removePowerUp()
 {
-    currentSpeed = ballNS::SPEED;
+	currentSpeed = ballNS::SPEED;
 }
 
 void Ball::bumpSpeedUp()
 {
-    currentSpeed += 0.15f;
+	currentSpeed += 0.15f;
 }
 
 void Ball::launch()
 {
-    // restart my stuff
-    setVelocity({ 0, -90 }); // straight up
-    removePowerUp();
-    activate();
+	// restart my stuff
+	setVelocity({ 0, -90 }); // straight up
+	removePowerUp();
+	activate();
 }
 
 //=============================================================================
@@ -100,104 +103,104 @@ void Ball::launch()
 //=============================================================================
 void Ball::bounce(VECTOR2& collisionVector, SpriteData otherSpriteData, int& dir)
 {
-    const float myX = getX();
-    const float myY = getY();
-    // total right-edge x position of other entity
-    const float boxWidth = (otherSpriteData.x + otherSpriteData.width);
-    // total bottom y position of other entity
-    const float boxHeight = (otherSpriteData.y + otherSpriteData.height);
+	const float myX = getX();
+	const float myY = getY();
+	// total right-edge x position of other entity
+	const float boxWidth = (otherSpriteData.x + otherSpriteData.width);
+	// total bottom y position of other entity
+	const float boxHeight = (otherSpriteData.y + otherSpriteData.height);
 
-    const D3DXVECTOR2* myCenter = getCenter();
-    // set dir with direction of collision
-    // 1 top, 2 right, 3 bottom, 4 left
+	const D3DXVECTOR2* myCenter = getCenter();
+	// set dir with direction of collision
+	// 1 top, 2 right, 3 bottom, 4 left
 
-    // left
-    // determine more above or more below
-     if (myX < otherSpriteData.x)
-    {
-        // top left
-        if (myY <= otherSpriteData.y)
-        {
-            // now, where specifically is the ball?
-            // more to the side than above
-            if (myCenter->y >= otherSpriteData.y) {
-                dir = 4;
-                flipX();
-                return;
-            }
+	// left
+	// determine more above or more below
+	if (myX < otherSpriteData.x)
+	{
+		// top left
+		if (myY <= otherSpriteData.y)
+		{
+			// now, where specifically is the ball?
+			// more to the side than above
+			if (myCenter->y >= otherSpriteData.y) {
+				dir = 4;
+				flipX();
+				return;
+			}
 
-            // more above
-            flipY();
-            dir = 1;
-            return;
-        }
+			// more above
+			flipY();
+			dir = 1;
+			return;
+		}
 
-        // bottom left
-        if (myY >= boxHeight ) {
-            dir = 3;
-            flipY();
-            return;
-        }
+		// bottom left
+		if (myY >= boxHeight) {
+			dir = 3;
+			flipY();
+			return;
+		}
 
-        if (velocity.x == 0) {
-            // going straight up, hitting bottom right
-            flipY();
-            dir = 3;
-            return;
-        }
+		if (velocity.x == 0) {
+			// going straight up, hitting bottom right
+			flipY();
+			dir = 3;
+			return;
+		}
 
-        // just left
-        dir = 4;
-        flipX();      
-        return;
-    }
+		// just left
+		dir = 4;
+		flipX();
+		return;
+	}
 
-    // right of top-left corner... needs more specifics
-    if(myX > otherSpriteData.x) {
-        
-        // top
-        if (myY < otherSpriteData.y) {
-            dir = 1;
-            flipY();
-            return;
-        }
+	// right of top-left corner... needs more specifics
+	if (myX > otherSpriteData.x) {
 
-        // bottom
-        if (myY > boxHeight - 2)
-        {
-            if (myCenter->x > boxWidth) { // -1?
-                // more right
-                if (velocity.x == 0) {
-                    // going straight up, hit bottom right
-                    dir = 3;
-                    flipY();
-                    return;
-                }
+		// top
+		if (myY < otherSpriteData.y) {
+			dir = 1;
+			flipY();
+			return;
+		}
 
-                // let's look closer
-                if (myX > boxWidth) {
-                    // more right
-                    dir = 2;
-                    flipX();
-                    return;
-                } else {
-                    // a bit bottom
-                    dir = 3;
-                    flipY();
-                    return;
-                }
-            } else {
-                // more bottom
-                dir = 3;
-                flipY();
-                return;
-            }
-        }
+		// bottom
+		if (myY > boxHeight - 2)
+		{
+			if (myCenter->x > boxWidth) { // -1?
+				// more right
+				if (velocity.x == 0) {
+					// going straight up, hit bottom right
+					dir = 3;
+					flipY();
+					return;
+				}
 
-        // just to the right
-        dir = 2;
-        flipX();        
-    }
+				// let's look closer
+				if (myX > boxWidth) {
+					// more right
+					dir = 2;
+					flipX();
+					return;
+				} else {
+					// a bit bottom
+					dir = 3;
+					flipY();
+					return;
+				}
+			} else {
+				// more bottom
+				dir = 3;
+				flipY();
+				return;
+			}
+		}
+
+		// just to the right
+		dir = 2;
+		flipX();
+	}
 
 }
 
@@ -211,29 +214,29 @@ void Ball::bounce(VECTOR2& collisionVector, SpriteData otherSpriteData, int& dir
 /// <param name="otherSpriteData"></param>
 void Ball::bounceOffShip(VECTOR2& collisionVector, VECTOR2& collisionPosition, SpriteData otherSpriteData)
 {
-    // determine WHERE along the ship we hit
-    const float myX = getCenterX();
-    const float myY = getY();
-    const float middleX = otherSpriteData.width / 3.0f; // middle third of ship
-    const float rightX = middleX * 2; // right-hand third of ship
+	// determine WHERE along the ship we hit
+	const float myX = getCenterX();
+	const float myY = getY();
+	const float middleX = otherSpriteData.width / 3.0f; // middle third of ship
+	const float rightX = middleX * 2; // right-hand third of ship
 
-    // get ship-relative position from ship's origin (x = 0)
-    collisionPosition.x = myX - otherSpriteData.x;
-    collisionPosition.y = myY - otherSpriteData.y;
+	// get ship-relative position from ship's origin (x = 0)
+	collisionPosition.x = myX - otherSpriteData.x;
+	collisionPosition.y = myY - otherSpriteData.y;
 
-    if (collisionPosition.x < middleX) {
-        // left-hand side, aim left
-        velocity.y = -velocity.y;
-        velocity.x = -110;
-    } else if(collisionPosition.x > middleX && collisionPosition.x < rightX) {
-        // middle, just reflect upish
-        velocity.y = -velocity.y;
-        velocity.x *= 0.5; // reducing the x angle by half
-    } else {
-        // right third, aim right
-        velocity.y = -velocity.y;
-        velocity.x = 110;
-    }
+	if (collisionPosition.x < middleX) {
+		// left-hand side, aim left
+		velocity.y = -velocity.y;
+		velocity.x = -110;
+	} else if (collisionPosition.x > middleX && collisionPosition.x < rightX) {
+		// middle, just reflect upish
+		velocity.y = -velocity.y;
+		velocity.x *= 0.5; // reducing the x angle by half
+	} else {
+		// right third, aim right
+		velocity.y = -velocity.y;
+		velocity.x = 110;
+	}
 
 }
 
@@ -244,31 +247,31 @@ void Ball::bounceOffShip(VECTOR2& collisionVector, VECTOR2& collisionPosition, S
 //=============================================================================
 void Ball::update(float frameTime)
 {
-    Entity::update(frameTime);
-    
-    spriteData.x += frameTime * velocity.x * currentSpeed;         // move along X 
-    spriteData.y += frameTime * velocity.y * currentSpeed;         // move along Y
+	Entity::update(frameTime);
 
-    // Bounce off walls
-    // NOT done with actual collisions, this is done strictly from screen position
-    if (spriteData.x > GAME_WIDTH - ballNS::WIDTH)    // if hit right screen edge
-    {
-        spriteData.x = GAME_WIDTH - ballNS::WIDTH;    // position at right screen edge
-        velocity.x = -velocity.x;                   // reverse X direction
-        audio->playCue(CLICK);
-    } else if (spriteData.x < 0)                    // else if hit left screen edge
-    {
-        spriteData.x = 0;                           // position at left screen edge
-        velocity.x = -velocity.x;                   // reverse X direction
-        audio->playCue(CLICK);
-    }
-    
-    if (spriteData.y < 0)                    // else if hit top screen edge
-    {
-        spriteData.y = 0;                           // position at top screen edge
-        velocity.y = -velocity.y;                   // reverse Y direction
-        audio->playCue(CLICK);
-    }
+	spriteData.x += frameTime * velocity.x * currentSpeed;         // move along X 
+	spriteData.y += frameTime * velocity.y * currentSpeed;         // move along Y
+
+	// Bounce off walls
+	// NOT done with actual collisions, this is done strictly from screen position
+	if (spriteData.x > GAME_WIDTH - ballNS::WIDTH)    // if hit right screen edge
+	{
+		spriteData.x = GAME_WIDTH - ballNS::WIDTH;    // position at right screen edge
+		velocity.x = -velocity.x;                   // reverse X direction
+		audio->playCue(CLICK);
+	} else if (spriteData.x < 0)                    // else if hit left screen edge
+	{
+		spriteData.x = 0;                           // position at left screen edge
+		velocity.x = -velocity.x;                   // reverse X direction
+		audio->playCue(CLICK);
+	}
+
+	if (spriteData.y < 0)                    // else if hit top screen edge
+	{
+		spriteData.y = 0;                           // position at top screen edge
+		velocity.y = -velocity.y;                   // reverse Y direction
+		audio->playCue(CLICK);
+	}
 }
 
 //=============================================================================

@@ -42,3 +42,9 @@ void DirectionBounce::update(float deltaTime)
 		}
 	}
 }
+
+void DirectionBounce::onSuccess()
+{
+	entity->setCurrentFrame(originalFrame);
+	entity->onAnimationSuccess();
+}
