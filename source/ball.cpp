@@ -84,7 +84,7 @@ void Ball::removePowerUp()
 
 void Ball::bumpSpeedUp()
 {
-    currentSpeed += 0.1f;
+    currentSpeed += 0.15f;
 }
 
 void Ball::launch()
@@ -113,7 +113,7 @@ void Ball::bounce(VECTOR2& collisionVector, SpriteData otherSpriteData, int& dir
 
     // left
     // determine more above or more below
-    if (myX < otherSpriteData.x)
+     if (myX < otherSpriteData.x)
     {
         // top left
         if (myY <= otherSpriteData.y)
@@ -133,9 +133,16 @@ void Ball::bounce(VECTOR2& collisionVector, SpriteData otherSpriteData, int& dir
         }
 
         // bottom left
-        if (myY >= boxHeight - 2) {
+        if (myY >= boxHeight ) {
             dir = 3;
             flipY();
+            return;
+        }
+
+        if (velocity.x == 0) {
+            // going straight up, hitting bottom right
+            flipY();
+            dir = 3;
             return;
         }
 
@@ -156,13 +163,29 @@ void Ball::bounce(VECTOR2& collisionVector, SpriteData otherSpriteData, int& dir
         }
 
         // bottom
-        if (myY > boxHeight - 1)
+        if (myY > boxHeight - 2)
         {
             if (myCenter->x > boxWidth) { // -1?
                 // more right
-                dir = 2;
-                flipX();
-                return;
+                if (velocity.x == 0) {
+                    // going straight up, hit bottom right
+                    dir = 3;
+                    flipY();
+                    return;
+                }
+
+                // let's look closer
+                if (myX > boxWidth) {
+                    // more right
+                    dir = 2;
+                    flipX();
+                    return;
+                } else {
+                    // a bit bottom
+                    dir = 3;
+                    flipY();
+                    return;
+                }
             } else {
                 // more bottom
                 dir = 3;
@@ -171,7 +194,7 @@ void Ball::bounce(VECTOR2& collisionVector, SpriteData otherSpriteData, int& dir
             }
         }
 
-        // just right
+        // just to the right
         dir = 2;
         flipX();        
     }
