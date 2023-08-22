@@ -36,3 +36,8 @@ void PinchScale::update(float deltaTime)
 		}
 	}
 }
+
+void PinchScale::onSuccess()
+{
+	entity->onAnimationSuccess();
+}

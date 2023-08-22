@@ -21,5 +21,6 @@ public:
 	/// <param name="scale">Desired scale that is smaller than starting scale</param>
 	PinchScale(Image* target, float timeLimit, float scale);
 	void update(float ms);
+	void onSuccess() override;
 
 };

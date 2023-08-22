@@ -44,6 +44,8 @@ public:
     // inline getters/setters
     BLOCK getBlockType() { return blockType;  }
     bool getIsAnimating() { return isAnimating; }
+    void setIsAnimating(bool value) { isAnimating = value; }
+    void onAnimationSuccess() override;
 
     void setColor(COLOR_ARGB c) { color = c; };
     COLOR_ARGB getColor() { return color; };

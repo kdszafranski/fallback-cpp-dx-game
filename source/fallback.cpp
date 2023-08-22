@@ -977,6 +977,10 @@ void Fallback::collisions()
 			Block* const block = &blocks.at(i);
 			int direction = 0;
 
+			if (block->getIsAnimating()) {
+				continue; // skip
+			}
+
 			// collidesWith needs an Entity*
 			if (ball.collidesWith(blocks.at(i), collisionVector)) {
 				ball.bounce(collisionVector, block->getSpriteData(), direction);
@@ -993,8 +997,9 @@ void Fallback::collisions()
 						audio->playCue(CLUNK);
 						score += block->getPointValue();
 						// fire off animation process
-						/*StrongAnimationPtr pinch = std::make_shared<PinchScale>(&blocks.at(i), 0.10f, 0.80f);
-						m_AnimationManager.attachProcess(pinch);*/
+						block->setIsAnimating(true);
+						StrongAnimationPtr pinch = std::make_shared<PinchScale>(&blocks.at(i), 0.10f, 0.80f);
+						m_AnimationManager.attachProcess(pinch);
 					}
 				} else {
 					// invincible!

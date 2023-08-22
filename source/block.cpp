@@ -84,6 +84,11 @@ void Block::damage(WEAPON weapon)
     }
 }
 
+void Block::onAnimationSuccess()
+{
+    isAnimating = false;
+}
+
 void Block::setBlockColorByType()
 {
     switch (blockType) {
