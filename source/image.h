@@ -205,7 +205,7 @@ public:
 	//         Other functions            //
 	////////////////////////////////////////
 
-	// IAnimation interface
+	// Allow this image/entity to do something when an animation completes
 	virtual void onAnimationSuccess() { }
 
 
