@@ -542,7 +542,7 @@ void Fallback::update(float frameTime)
 
 	// Always update the following
 	// every 5 seconds there is a chance to spawn racers
-	if (!paused) {
+	if (!isPaused) {
 		racerSpawnTimer += frameTime;
 		if (racerSpawnTimer > 5) {
 			spawnRacers();
