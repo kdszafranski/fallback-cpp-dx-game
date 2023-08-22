@@ -542,14 +542,16 @@ void Fallback::update(float frameTime)
 
 	// Always update the following
 	// every 5 seconds there is a chance to spawn racers
-	racerSpawnTimer += frameTime;
-	if (racerSpawnTimer > 5) {
-		spawnRacers();
-		racerSpawnTimer = 0;
-	}
+	if (!paused) {
+		racerSpawnTimer += frameTime;
+		if (racerSpawnTimer > 5) {
+			spawnRacers();
+			racerSpawnTimer = 0;
+		}
 
-	// they run on all screens
-	cleanUpRacerList();
+		// they run on all screens
+		cleanUpRacerList();
+	}
 
 	// check if we want to exit
 	CheckForExit();
@@ -592,8 +594,8 @@ void Fallback::updateTitleScreen(float frameTime)
 }
 
 void Fallback::updateGameScreen(float frameTime) {
-	
-	
+
+
 	ship.update(frameTime);
 
 
@@ -798,7 +800,7 @@ void Fallback::removePowerUp()
 			case WARP:
 				ship.removeWrapAround();
 				break;
-			// allow end of power up animations
+				// allow end of power up animations
 			case GROW: // same as below
 			case TINY:
 				// animate to normal width
@@ -811,7 +813,7 @@ void Fallback::removePowerUp()
 	audio->playCue(LOSE_POWERUP);
 	hasPowerUp = false;
 	powerUpTimer = 0;
-	
+
 }
 #pragma endregion
 
@@ -907,7 +909,7 @@ void Fallback::handleGameOver()
 	// blow up the ship
 	explosionManager.spawnExplosion(this, &iconTexture, { ship.getX() + 15, ship.getCenterY() });
 	explosionManager.spawnExplosion(this, &iconTexture, { ship.getX() + ship.getWidth() - 15, ship.getCenterY() });
-	explosionManager.spawnExplosion(this, &iconTexture, { ship.getX() + ship.getCenterX(), ship.getCenterY()});
+	explosionManager.spawnExplosion(this, &iconTexture, { ship.getX() + ship.getCenterX(), ship.getCenterY() });
 }
 
 //=============================================================================
