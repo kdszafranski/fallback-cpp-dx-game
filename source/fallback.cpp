@@ -1029,7 +1029,7 @@ void Fallback::collisions()
 				}
 
 				if (hitThisFrame) {
-					break; // exit loop
+					break; // exit loop since we already hit a block
 				}
 
 			} // end collision if
