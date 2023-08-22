@@ -160,6 +160,21 @@ void Ball::bounce(VECTOR2& collisionVector, SpriteData otherSpriteData, int& dir
 
 		// top
 		if (myY < otherSpriteData.y) {
+			if (myCenter->y > otherSpriteData.y) {
+				// right, toward the top
+				dir = 2;
+				flipX();
+				return;
+			}
+
+			if (velocity.y < 0 && velocity.x < 0) {
+				// negative
+				dir = 2;
+				flipX();
+				return;
+			}
+
+			// on top
 			dir = 1;
 			flipY();
 			return;

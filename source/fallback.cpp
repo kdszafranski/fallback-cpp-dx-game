@@ -1005,6 +1005,8 @@ void Fallback::collisions()
 					}
 				} else {
 					// invincible!
+					ball.bumpSpeedUp();
+
 					// bounce Block away from ball
 					Vector2 end = block->getPosition();
 					switch (direction) {
