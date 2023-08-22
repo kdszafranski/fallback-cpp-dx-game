@@ -423,11 +423,11 @@ void Fallback::loadLevel(int levelNumber)
 			}
 
 			// move to the right
-			x += blockNS::WIDTH + 4;
+			x += blockNS::WIDTH;
 		}
 
 		// set new row downward
-		y += blockNS::HEIGHT + 4;
+		y += blockNS::HEIGHT;
 	}
 }
 
