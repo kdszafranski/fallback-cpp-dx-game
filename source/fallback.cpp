@@ -516,7 +516,9 @@ void Fallback::update(float frameTime)
 	// handle Game updates and inputs
 	if (currentScreen == GAME) {
 		CheckPauseInput();
-		CheckCheatInput();
+		if (!gameOver) {
+			CheckCheatInput();
+		}
 
 		if (!isPaused) {
 			if (!gameOver) {
@@ -1025,6 +1027,7 @@ void Fallback::collisions()
 					// reset just in case
 					block->setCurrentFrame(0);
 
+					block->setIsAnimating(true);
 					StrongAnimationPtr bounce = std::make_shared<DirectionBounce>(&blocks.at(i), 0.15f, end);
 					m_AnimationManager.attachProcess(bounce);
 					// set filled, animation will reset when complete

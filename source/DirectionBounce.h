@@ -24,10 +24,6 @@ public:
 	/// <param name="scale">Postion to move to in world space</param>
 	DirectionBounce(Image* target, float timeLimit, Vector2 moveToPos);
 	void update(float deltaTime) override;
-
-	void onSuccess() override
-	{
-		entity->setCurrentFrame(originalFrame);
-	}
+	void onSuccess() override;
 
 };
