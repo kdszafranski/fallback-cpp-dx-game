@@ -86,7 +86,7 @@ void Fallback::initialize(HWND hwnd)
 		setTitleScreen();
 	}
 
-	audio->playCue(MUSIC_LOOP);
+	//audio->playCue(MUSIC_LOOP);
 
 
 	return;
@@ -423,11 +423,11 @@ void Fallback::loadLevel(int levelNumber)
 			}
 
 			// move to the right
-			x += blockNS::WIDTH;
+			x += blockNS::WIDTH + 4;
 		}
 
 		// set new row downward
-		y += blockNS::HEIGHT;
+		y += blockNS::HEIGHT + 4;
 	}
 }
 
@@ -970,6 +970,7 @@ void Fallback::collisions()
 		}
 
 		// collision ball with block
+		bool hitThisFrame = false;
 		for (int i = 0; i < blocks.size(); i++) {
 			// must use .at() to properly access the actual block object
 			// .at() returns a "reference".. hence a pointer is needed to capture it properly
@@ -979,7 +980,7 @@ void Fallback::collisions()
 			// collidesWith needs an Entity*
 			if (ball.collidesWith(blocks.at(i), collisionVector)) {
 				ball.bounce(collisionVector, block->getSpriteData(), direction);
-
+				hitThisFrame = true;
 				// reduce health if possible
 				if (block->getBlockType() != INVINCIBLE) {
 
@@ -992,8 +993,8 @@ void Fallback::collisions()
 						audio->playCue(CLUNK);
 						score += block->getPointValue();
 						// fire off animation process
-						StrongAnimationPtr pinch = std::make_shared<PinchScale>(&blocks.at(i), 0.10f, 0.80f);
-						m_AnimationManager.attachProcess(pinch);
+						/*StrongAnimationPtr pinch = std::make_shared<PinchScale>(&blocks.at(i), 0.10f, 0.80f);
+						m_AnimationManager.attachProcess(pinch);*/
 					}
 				} else {
 					// invincible!
@@ -1025,6 +1026,10 @@ void Fallback::collisions()
 					block->setCurrentFrame(1);
 
 					audio->playCue(CLICK);
+				}
+
+				if (hitThisFrame) {
+					break; // exit loop
 				}
 
 			} // end collision if

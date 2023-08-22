@@ -113,7 +113,7 @@ void Ball::bounce(VECTOR2& collisionVector, SpriteData otherSpriteData, int& dir
 
     // left
     // determine more above or more below
-     if (myX < otherSpriteData.x)
+    if (myX < otherSpriteData.x)
     {
         // top left
         if (myY <= otherSpriteData.y)
