@@ -223,7 +223,7 @@ void Ball::bounce(VECTOR2& collisionVector, SpriteData otherSpriteData, int& dir
 /// <summary>
 /// Allows basic left, normal, right aiming based on where the ball hits
 /// Still uses constant 250 y velocity
-/// </summary>
+/// </summary> 
 /// <param name="collisionVector"></param>
 /// <param name="collisionPosition"></param>
 /// <param name="otherSpriteData"></param>
