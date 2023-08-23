@@ -75,7 +75,7 @@ enum BLOCK { WEAK, STRONG, HARD, METAL, INVINCIBLE, NONE };
 enum SCREEN { TITLE, GAME, EDITOR, CREDITS };
 // Powerups
 // Slow - slows ball x
-// Multiball - adds 2 more balls into play
+// WRAP - allows ship to wrap around to the other side
 // Fast - speeds up ship x
 // Grow - lengthens ship along x-axis x
 // Penalties
