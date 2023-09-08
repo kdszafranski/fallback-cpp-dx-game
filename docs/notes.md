@@ -1,17 +1,15 @@
 ## Burn Down to Finish
 
-- Button SFX (mouse enter)
-- Music
-- Create Demo Video
-- Supply build/download for Win10
-- Add to portfolio page 
-- Add to resume
+- [x] Music
+- [x] Create Demo Video
+- [ ] Supply build/download for Win10
+- [x] Add to portfolio page 
+- [ ] Add to resume
 
 ## IDEAS to take this further
 
 ## Fix Bugs
-- [x] fix collisions
-- [x] block should complete animation before being destroyed
+- no known bugs
 
 ## Architecture
 - [ ] Winmain, winproc
@@ -21,6 +19,7 @@
 - [ ] make consistent style
 - [ ] choose Vector standard
 - [ ] WinRT and DX11
+- [ ] update to use std::string vs char[]
 
 ## Technical Challenges
 - [ ] add event manager, implement Observer pattern: https://gameprogrammingpatterns.com/observer.html
@@ -30,8 +29,9 @@
 - [X] make level editor
 - [X] added animation/process manager to handle multi-frame animations
 - [ ] consider memory/profiling
-- [ ] compile to web assem using Emscripten (open gl only)
+- [ ] compile to web assem using Emscripten (openGL only)
 - [ ] allow blocks of varying sizes
+- [ ] Button SFX (mouse enter only)
 
 ## Graphics
 - [ ] custom cursor (resource)
