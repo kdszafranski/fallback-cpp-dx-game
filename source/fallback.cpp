@@ -1262,7 +1262,7 @@ void Fallback::renderCreditsScreen()
 	dxCreditsFontLarge.setFontColor(graphicsNS::WHITE);
 	dxCreditsFontLarge.print("Design, Art, and Programming\nKris Szafranski", nameRect, DT_CENTER | DT_VCENTER);
 
-	nameRect = { 150, nameRect.top += 100, 650, nameRect.top += 250 };
+	nameRect = { 150, nameRect.top += 60, 650, nameRect.top += 200 };
 	dxCreditsFontSmall.setFontColor(graphicsNS::FB_INVINCIBLE);
 	dxCreditsFontSmall.print("With code from Programming 2D Games\nby Charles Kelly", nameRect, DT_CENTER | DT_WORDBREAK | DT_VCENTER);
 
