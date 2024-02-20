@@ -73,6 +73,12 @@ void Fallback::initialize(HWND hwnd)
 	if (dxBallCount.initialize(graphics, 34, true, false, "Agdasima") == false)
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ball count font"));
 
+	if (dxCreditsFontLarge.initialize(graphics, 36, false, false, "Agdasima") == false)
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing credits font"));
+	
+	if (dxCreditsFontSmall.initialize(graphics, 29, false, false, "Agdasima") == false)
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing credits font"));
+
 	// init the console log
 	console.initialize(graphics);
 
@@ -1130,8 +1136,7 @@ void Fallback::render()
 				editor->draw();
 				break;
 			case CREDITS:
-				backgroundImage.draw();
-				renderRacers();
+				renderCreditsScreen();
 				break;
 		}
 
@@ -1239,6 +1244,29 @@ void Fallback::launchEditor()
 void Fallback::launchCredits()
 {
 	currentScreen = CREDITS;
+}
+
+void Fallback::renderCreditsScreen()
+{
+	backgroundImage.draw();
+	renderRacers();
+
+	// draw names
+	RECT nameRect;
+	nameRect.left = 150;	// upper left X
+	nameRect.top = GAME_HEIGHT / 2 + 10;		// upper left Y
+	nameRect.right = 650;	// lower right X
+	nameRect.bottom = nameRect.top + 150;	// lower right Y
+
+	// score shadow
+	dxCreditsFontLarge.setFontColor(graphicsNS::WHITE);
+	dxCreditsFontLarge.print("Design, Art, and Programming\nKris Szafranski", nameRect, DT_CENTER | DT_VCENTER);
+
+	nameRect = { 150, nameRect.top += 100, 650, nameRect.top += 250 };
+	dxCreditsFontSmall.setFontColor(graphicsNS::FB_INVINCIBLE);
+	dxCreditsFontSmall.print("With code from Programming 2D Games\nby Charles Kelly", nameRect, DT_CENTER | DT_WORDBREAK | DT_VCENTER);
+
+
 }
 
 void Fallback::renderGameScreen()
@@ -1399,6 +1427,8 @@ void Fallback::releaseAll()
 
 	dxScoreFont.onLostDevice();
 	dxBallCount.onLostDevice();
+	dxCreditsFontLarge.onLostDevice();
+	dxCreditsFontSmall.onLostDevice();
 	console.onLostDevice();
 
 	Game::releaseAll();
@@ -1422,6 +1452,8 @@ void Fallback::resetAll()
 
 	dxScoreFont.onResetDevice();
 	dxBallCount.onResetDevice();
+	dxCreditsFontLarge.onResetDevice();
+	dxCreditsFontSmall.onResetDevice();
 	console.onResetDevice();
 
 	Game::resetAll();
