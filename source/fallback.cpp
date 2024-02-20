@@ -512,6 +512,10 @@ void Fallback::update(float frameTime)
 		updateTitleScreen(frameTime);
 	}
 
+	if (currentScreen == CREDITS) {
+		m_AnimationManager.updateProcesses(frameTime);
+	}
+
 	// handle Game updates and inputs
 	if (currentScreen == GAME) {
 		CheckPauseInput();
@@ -584,7 +588,7 @@ void Fallback::updateTitleScreen(float frameTime)
 	}
 	if (creditsButton.isMouseOver()) {
 		if (input->getMouseLButton()) {
-			console.setLogText("launch credits");
+			launchCredits();
 		}
 	}
 
@@ -1125,6 +1129,10 @@ void Fallback::render()
 				renderRacers();
 				editor->draw();
 				break;
+			case CREDITS:
+				backgroundImage.draw();
+				renderRacers();
+				break;
 		}
 
 		graphics->spriteEnd();
@@ -1226,6 +1234,11 @@ void Fallback::launchEditor()
 		setEditorScreen();
 	}
 
+}
+
+void Fallback::launchCredits()
+{
+	currentScreen = CREDITS;
 }
 
 void Fallback::renderGameScreen()
@@ -1348,6 +1361,9 @@ void Fallback::CheckForExit() {
 			case EDITOR:
 				exitEditor();
 				break;
+			case CREDITS:
+				exitCredits();
+				break;
 		}
 	}
 }
@@ -1357,6 +1373,12 @@ void Fallback::exitEditor()
 	// clean up
 	console.setLogText("");
 	loadLevelFiles();
+	setTitleScreen();
+}
+
+void Fallback::exitCredits()
+{
+	console.setLogText("");
 	setTitleScreen();
 }
 

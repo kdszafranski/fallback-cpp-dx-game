@@ -170,6 +170,11 @@ public:
     void launchEditor();
     void exitEditor();
 
+    // Credits
+    void launchCredits();
+    void exitCredits();
+
+
     // level loading
     void loadLevelFiles();  // loads all levels from disk
     // Advances the level
