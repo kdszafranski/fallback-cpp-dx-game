@@ -73,6 +73,12 @@ void Fallback::initialize(HWND hwnd)
 	if (dxBallCount.initialize(graphics, 34, true, false, "Agdasima") == false)
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ball count font"));
 
+	if (dxCreditsFontLarge.initialize(graphics, 36, false, false, "Agdasima") == false)
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing credits font"));
+	
+	if (dxCreditsFontSmall.initialize(graphics, 29, false, false, "Agdasima") == false)
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing credits font"));
+
 	// init the console log
 	console.initialize(graphics);
 
@@ -512,6 +518,10 @@ void Fallback::update(float frameTime)
 		updateTitleScreen(frameTime);
 	}
 
+	if (currentScreen == CREDITS) {
+		m_AnimationManager.updateProcesses(frameTime);
+	}
+
 	// handle Game updates and inputs
 	if (currentScreen == GAME) {
 		CheckPauseInput();
@@ -584,7 +594,7 @@ void Fallback::updateTitleScreen(float frameTime)
 	}
 	if (creditsButton.isMouseOver()) {
 		if (input->getMouseLButton()) {
-			console.setLogText("launch credits");
+			launchCredits();
 		}
 	}
 
@@ -1125,6 +1135,9 @@ void Fallback::render()
 				renderRacers();
 				editor->draw();
 				break;
+			case CREDITS:
+				renderCreditsScreen();
+				break;
 		}
 
 		graphics->spriteEnd();
@@ -1225,6 +1238,43 @@ void Fallback::launchEditor()
 		editor->start();
 		setEditorScreen();
 	}
+
+}
+
+void Fallback::launchCredits()
+{
+	backgroundImage.setX(-static_cast<int>(GAME_WIDTH));
+	currentScreen = CREDITS;
+}
+
+void Fallback::renderCreditsScreen()
+{
+	backgroundImage.draw();
+	renderRacers();
+
+	// draw names
+	RECT nameRect;
+	nameRect.left = 150;	// upper left X
+	nameRect.top = 169;		// upper left Y
+	nameRect.right = 650;	// lower right X
+	nameRect.bottom = nameRect.top + 150;	// lower right Y
+
+	// score shadow
+	dxCreditsFontLarge.setFontColor(graphicsNS::FB_METAL);
+	dxCreditsFontLarge.print("Design, Art, and Programming\nKris Szafranski", nameRect, DT_CENTER | DT_VCENTER);
+
+	nameRect = { 150, nameRect.top += 120, 650, nameRect.top += 200 };
+	dxCreditsFontSmall.setFontColor(graphicsNS::WHITE);
+	dxCreditsFontSmall.print("With code from Programming 2D Games\nby Charles Kelly", nameRect, DT_CENTER | DT_WORDBREAK | DT_VCENTER);
+
+	nameRect = { 150, nameRect.top += 60, 650, nameRect.top += 200 };
+	dxCreditsFontSmall.print("Music and some SFX by Khron Studio/Jorge Sound", nameRect, DT_CENTER | DT_WORDBREAK | DT_VCENTER);
+
+	nameRect = { 150, nameRect.top += 60, 650, nameRect.top += 200 };
+	dxCreditsFontSmall.print("Agdasima Font by The Agdasima Project Authors\n(https://github.com/docrepair-fonts/agdasima-fonts).", nameRect, DT_CENTER | DT_WORDBREAK | DT_VCENTER);
+
+
+
 
 }
 
@@ -1348,6 +1398,9 @@ void Fallback::CheckForExit() {
 			case EDITOR:
 				exitEditor();
 				break;
+			case CREDITS:
+				exitCredits();
+				break;
 		}
 	}
 }
@@ -1357,6 +1410,12 @@ void Fallback::exitEditor()
 	// clean up
 	console.setLogText("");
 	loadLevelFiles();
+	setTitleScreen();
+}
+
+void Fallback::exitCredits()
+{
+	console.setLogText("");
 	setTitleScreen();
 }
 
@@ -1377,6 +1436,8 @@ void Fallback::releaseAll()
 
 	dxScoreFont.onLostDevice();
 	dxBallCount.onLostDevice();
+	dxCreditsFontLarge.onLostDevice();
+	dxCreditsFontSmall.onLostDevice();
 	console.onLostDevice();
 
 	Game::releaseAll();
@@ -1400,6 +1461,8 @@ void Fallback::resetAll()
 
 	dxScoreFont.onResetDevice();
 	dxBallCount.onResetDevice();
+	dxCreditsFontLarge.onResetDevice();
+	dxCreditsFontSmall.onResetDevice();
 	console.onResetDevice();
 
 	Game::resetAll();

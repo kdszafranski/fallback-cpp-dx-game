@@ -58,6 +58,8 @@ private:
     POWERUP currentPowerUp;
     TextDX dxScoreFont;
     TextDX dxBallCount;
+    TextDX dxCreditsFontLarge;
+    TextDX dxCreditsFontSmall;
     Console console;
     Editor* editor;
     AnimationManager m_AnimationManager;
@@ -126,6 +128,7 @@ public:
     void renderTitleScreen();
     void renderRacers();
     void renderGameScreen();
+    void renderCreditsScreen();
     void renderUI(); // display UI
     void releaseAll();
     void resetAll();
@@ -169,6 +172,11 @@ public:
     // Editor
     void launchEditor();
     void exitEditor();
+
+    // Credits
+    void launchCredits();
+    void exitCredits();
+
 
     // level loading
     void loadLevelFiles();  // loads all levels from disk

@@ -224,6 +224,8 @@ void Game::run(HWND hwnd)
     {
         switch (currentScreen) {
             case TITLE:
+            case EDITOR:
+            case CREDITS:
                 update(frameTime); // allows for input
                 break;
             case GAME:
@@ -231,10 +233,7 @@ void Game::run(HWND hwnd)
                 ai();                       // artificial intelligence
                 collisions();               // handle collisions
                 input->vibrateControllers(frameTime); // handle controller vibration
-                break;
-            case EDITOR:
-                update(frameTime);
-                break;
+                break;          
         }
     }
     renderGame();                   // draw all game items
