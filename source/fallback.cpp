@@ -1243,6 +1243,7 @@ void Fallback::launchEditor()
 
 void Fallback::launchCredits()
 {
+	backgroundImage.setX(-static_cast<int>(GAME_WIDTH));
 	currentScreen = CREDITS;
 }
 
@@ -1254,17 +1255,25 @@ void Fallback::renderCreditsScreen()
 	// draw names
 	RECT nameRect;
 	nameRect.left = 150;	// upper left X
-	nameRect.top = GAME_HEIGHT / 2 + 10;		// upper left Y
+	nameRect.top = 169;		// upper left Y
 	nameRect.right = 650;	// lower right X
 	nameRect.bottom = nameRect.top + 150;	// lower right Y
 
 	// score shadow
-	dxCreditsFontLarge.setFontColor(graphicsNS::WHITE);
+	dxCreditsFontLarge.setFontColor(graphicsNS::FB_METAL);
 	dxCreditsFontLarge.print("Design, Art, and Programming\nKris Szafranski", nameRect, DT_CENTER | DT_VCENTER);
 
-	nameRect = { 150, nameRect.top += 60, 650, nameRect.top += 200 };
-	dxCreditsFontSmall.setFontColor(graphicsNS::FB_INVINCIBLE);
+	nameRect = { 150, nameRect.top += 120, 650, nameRect.top += 200 };
+	dxCreditsFontSmall.setFontColor(graphicsNS::WHITE);
 	dxCreditsFontSmall.print("With code from Programming 2D Games\nby Charles Kelly", nameRect, DT_CENTER | DT_WORDBREAK | DT_VCENTER);
+
+	nameRect = { 150, nameRect.top += 60, 650, nameRect.top += 200 };
+	dxCreditsFontSmall.print("Music and some SFX by Khron Studio/Jorge Sound", nameRect, DT_CENTER | DT_WORDBREAK | DT_VCENTER);
+
+	nameRect = { 150, nameRect.top += 60, 650, nameRect.top += 200 };
+	dxCreditsFontSmall.print("Agdasima Font by The Agdasima Project Authors\n(https://github.com/docrepair-fonts/agdasima-fonts).", nameRect, DT_CENTER | DT_WORDBREAK | DT_VCENTER);
+
+
 
 
 }
