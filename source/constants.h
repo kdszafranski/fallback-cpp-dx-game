@@ -48,7 +48,6 @@ const char BLOCK_PATH[] = "pictures\\blocks.png";
 const char NG_BUTTON_PATH[] = "pictures\\buttons.png";
 const char POWERUP_PATH[] = "pictures\\powerup-letters.png";
 
-
 // window
 const char CLASS_NAME[] = "Breakout";
 const char GAME_TITLE[] = "FALLBACK";
@@ -57,6 +56,7 @@ const UINT GAME_WIDTH =  800;               // width of game in pixels
 const UINT GAME_HEIGHT = 600;               // height of game in pixels
  
 // game
+const char VERSION_NUMBER[] = "1.0.0";
 const int POWERUP_POINT_VALUE = 50;
 const double PI = 3.14159265;
 const float FRAME_RATE  = 200.0f;               // the target frame rate (frames/sec)

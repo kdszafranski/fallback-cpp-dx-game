@@ -1162,6 +1162,7 @@ void Fallback::renderTitleScreen()
 		creditsButton.draw();
 	}
 
+	console.setLogText(VERSION_NUMBER);
 	console.renderLog();
 }
 
