@@ -46,7 +46,7 @@ Chapter 6 Challenge: Given the engine so far, make a game, any game. Keep it sim
 
 I chose to make a simple form of Breakout.
 
-Attribution: This project uses some of the code provided by Charles Kelly. I have altered it significanlty for the final game.
+Attribution: This project uses some of the code provided by Charles Kelly. I have altered it significantly for the final game.
 
 **Features**
 
