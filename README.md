@@ -17,6 +17,8 @@ I learned a ton about C++, managing memory, and using the standard library, incl
 
 Overall, it was a blast! 
 
+_Attribution: This project uses some of the code provided by Charles Kelly. I have altered some of it significantly for the final game. See the [license.md file](./license.md) for usage rights._
+
 ![Fallback Gameplay](source/pictures/fb-action2.png)
 
 ### Final Features
@@ -45,8 +47,6 @@ Book: [Programming 2D Games by Charles Kelly](http://www.programming2dgames.com/
 Chapter 6 Challenge: Given the engine so far, make a game, any game. Keep it simple.
 
 I chose to make a simple form of Breakout.
-
-Attribution: This project uses some of the code provided by Charles Kelly. I have altered it significantly for the final game.
 
 **Features**
 
