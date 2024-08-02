@@ -17,6 +17,8 @@ I learned a ton about C++, managing memory, and using the standard library, incl
 
 Overall, it was a blast! 
 
+To get the source code running, see [code-setup.md](/docs/code-setup.md)
+
 _Attribution: This project uses some of the code provided by Charles Kelly. I have altered some of it significantly for the final game. See the [license.md file](./license.md) for usage rights._
 
 ![Fallback Gameplay](source/pictures/fb-action2.png)
