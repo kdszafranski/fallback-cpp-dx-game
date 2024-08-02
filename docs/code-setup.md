@@ -5,7 +5,7 @@ The code is based off an older book, so the project targets the Win32 runtime an
 
 ## Install DX9 SDK
 
-DX9 is quite old but still works well with Win32. To get the SDK, you'll need to find and install the `Microsoft DirectX SDK (June 2010)`.
+DX9 is quite old but still works well with Win32. To get the SDK, you'll need to [install the Microsoft DirectX SDK (June 2010) release](https://www.microsoft.com/en-us/download/details.aspx?id=6812).
 
 Once installed, you need to update the C/C++ Include and Library directories to make sure you're including the parts of the SDK you need.
 
