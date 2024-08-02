@@ -111,6 +111,9 @@
     <ClCompile Include="ScaleXTo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Shake.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="constants.h">
@@ -201,6 +204,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ScaleXTo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IAnimation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Shake.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
